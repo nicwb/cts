@@ -21,11 +21,11 @@ export class StampRequisitionApprovalComponent implements OnInit {
   label: number = 0
   discountAmount: number = 0
   denomination: number = 0
-  noOfLabelsPerSheet: number = 0
-  taxAmount: number = 0.1 * this.discountAmount
-  quantity: number = (this.noOfLabelsPerSheet * this.sheet) + this.label
-  amount: number = this.quantity * this.denomination
-  challanAmount: number = this.amount - this.discountAmount + this.taxAmount;
+  // noOfLabelsPerSheet: number = 0
+  taxAmount: number = 0
+  quantity: number = 0
+  amount: number = 0
+  challanAmount: number = 0
   noOfSheets: number = 0
   noOfLabels: number = 0
   modal: boolean = false
@@ -74,6 +74,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
 
   getAllApprovedByClerkRequisitionsOrForwardedToTO() {
     this.stampRequisitionService.getAllRequisitionsForwardedToTOForApproval(this.tableQueryParameters).subscribe((response) => {
+      console.log({response})
       if (response.apiResponseStatus == 1) {
         this.tableData = response.result;
       } else {
