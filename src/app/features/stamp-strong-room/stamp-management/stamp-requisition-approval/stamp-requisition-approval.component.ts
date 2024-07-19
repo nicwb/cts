@@ -66,7 +66,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
         this.id = $event.rowData.vendorStampRequisitionId
         this.sheet = $event.rowData.sheet
         this.label = $event.rowData.label
-        this.getBalance({treasury: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId})
+        this.getBalance({treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId})
         this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
         break;
     }
@@ -190,7 +190,9 @@ export class StampRequisitionApprovalComponent implements OnInit {
   }
 
   getBalance(params: any) {
-    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({treasuryCode: params.treasury, combinationId: params.combinationId}).subscribe((response) => {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({treasuryCode: params.treasuryCode, combinationId: params.combinationId}).subscribe((response) => {
+      console.log(response);
+      
       if (response.apiResponseStatus == 1) {
         this.denom = response.result.denomination
         this.noOfSheets = response.result.sheetLedgerBalance

@@ -18,7 +18,7 @@ export class StampWalletService {
   ): Observable<IapiResponce<StampWalletGet>> {
     return this.http
       .get<IapiResponce<StampWalletGet>>(
-        `v1/StampWallet/getStampWalletBalanceByTreasuryCode?treasuryCode=${payload.treasury}&combinationId=${5}`        
+        `v1/StampWallet/getStampWalletBalanceByTreasuryCode?treasuryCode=${payload.treasuryCode}&combinationId=${payload.combinationId}`        
       )
       .pipe(
         catchError((error) => {
