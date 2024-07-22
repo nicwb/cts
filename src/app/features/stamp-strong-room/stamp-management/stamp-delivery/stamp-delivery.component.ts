@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { GetVendorStampRequisition } from 'src/app/core/models/stamp';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { ToastService } from 'src/app/core/services/toast.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { LabelService } from 'src/app/core/services/stamp/label.service';
 import { convertDate } from 'src/utils/dateConversion';

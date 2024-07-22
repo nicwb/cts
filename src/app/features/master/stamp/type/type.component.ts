@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampType, GetStampTypes } from 'src/app/core/models/stamp';
 import { TypeService } from 'src/app/core/services/stamp/type.service';
 import { ToastService } from 'src/app/core/services/toast.service';

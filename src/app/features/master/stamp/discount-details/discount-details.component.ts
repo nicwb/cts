@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { GetStampDiscountDetails, AddStampDiscountDetails } from 'src/app/core/models/stamp';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';

@@ -4,7 +4,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { VendorService } from 'src/app/core/services/stamp/vendor.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { AddStampVendors, GetStampVendors } from 'src/app/core/models/stamp';
-import { DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { formatDate } from 'src/utils/dateToString';
 
 @Component({
