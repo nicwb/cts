@@ -21,7 +21,8 @@ export class StampRequisitionApprovalComponent implements OnInit {
   label: number = 0
   discountAmount: number = 0
   denomination: number = 0
-  // noOfLabelsPerSheet: number = 0
+  combinationId: number = 0
+  treasuryCode: string = ""
   taxAmount: number = 0
   quantity: number = 0
   amount: number = 0
@@ -41,99 +42,6 @@ export class StampRequisitionApprovalComponent implements OnInit {
   ngOnInit(): void {
     this.initialozeForm()
     this.changeDynamicTable('forwarded')
-  }
-
-  initialozeForm() {
-    this.approveByTOForm = this.fb.group({
-      sheet: [0, [Validators.required, Validators.min(0)]],
-      label: [0, [Validators.required, Validators.min(0)]],
-    });
-  }
-  handleButtonClick($event: any) {
-    switch ($event.buttonIdentifier) {
-      case 'reject':
-        this.stampRequisitionService.rejectedByTO($event.rowData.vendorStampRequisitionId).subscribe((response) => {
-          if (response.apiResponseStatus == 1) {
-            this.toastService.showSuccess(response.message)
-            this.getAllApprovedByClerkRequisitionsOrForwardedToTO()
-          } else {
-            this.toastService.showError(response.message)
-          }
-        })
-        break;
-      case 'edit':
-        this.modal = true
-        this.id = $event.rowData.vendorStampRequisitionId
-        this.sheet = $event.rowData.sheet
-        this.label = $event.rowData.label
-        this.getBalance({treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId})
-        this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
-        break;
-    }
-  }
-
-  getAllApprovedByClerkRequisitionsOrForwardedToTO() {
-    this.stampRequisitionService.getAllRequisitionsForwardedToTOForApproval(this.tableQueryParameters).subscribe((response) => {
-      console.log({response})
-      if (response.apiResponseStatus == 1) {
-        this.tableData = response.result;
-      } else {
-        this.toastService.showError(response.message)
-      }
-    })
-  }
-
-  getAllStampRequisitionWaitingForPaymentVerificatonByTO() {
-    this.stampRequisitionService.getAllStampRequisitionWaitingForPaymentVerificatonByTO(this.tableQueryParameters).subscribe((response) => {
-      if (response.apiResponseStatus == 1) {
-        this.tableData = response.result
-      } else {
-        this.toastService.showError(response.message)
-      }
-    })
-  }
-
-  getAmountCalculations(params:any) {
-    this.stampRequisitionService.getCalcAmountDetails({
-      vendorStampRequisitionId: params.vendorStampRequisitionId,
-      sheet: params.sheet,
-      label: params.label
-    }).subscribe((response) => {
-      if (response.apiResponseStatus == 1) {
-        this.challanAmount = response.result.challanAmount
-        this.taxAmount = response.result.taxAmount
-        this.discountAmount = response.result.discountAmount
-        this.amount = response.result.amount
-      } else {
-        this.toastService.showError(response.message)
-      }
-    }) 
-  }
-
-  approveByTO() {
-    if (this.approveByTOForm.valid) {
-      this.approveByTOPayload = {
-        vendorStampRequisitionId: this.id,
-        labelByTo: this.approveByTOForm.value.label,
-        sheetByTo: this.approveByTOForm.value.sheet,
-        challanAmount: this.challanAmount,
-        discountedAmount: this.discountAmount,
-        taxAmount: this.taxAmount
-      }
-      console.log(this.approveByTOPayload)
-      this.stampRequisitionService.approveByTO(this.approveByTOPayload).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showSuccess(response.message)
-          this.getAllApprovedByClerkRequisitionsOrForwardedToTO()
-          this.approveByTOForm.reset()
-          this.modal = false
-        } else {
-          this.toastService.showError(response.message)
-        }
-      })
-    } else {
-      this.toastService.showWarning("Please fill all the fields.")
-    }
   }
 
   changeDynamicTable(listType: string) {
@@ -181,18 +89,122 @@ export class StampRequisitionApprovalComponent implements OnInit {
     }
   }
 
-  labelSelected($event: any) {
-
+  initialozeForm() {
+    this.approveByTOForm = this.fb.group({
+      sheet: [0, [Validators.required, Validators.min(0)]],
+      label: [0, [Validators.required, Validators.min(0)]],
+    });
+  }
+  handleButtonClick($event: any) {
+    switch ($event.buttonIdentifier) {
+      case 'reject':
+        this.stampRequisitionService.rejectedByTO($event.rowData.vendorStampRequisitionId).subscribe((response) => {
+          if (response.apiResponseStatus == 1) {
+            this.toastService.showSuccess(response.message)
+            this.getAllApprovedByClerkRequisitionsOrForwardedToTO()
+          } else {
+            this.toastService.showError(response.message)
+          }
+        })
+        break;
+      case 'edit':
+        this.modal = true
+        this.id = $event.rowData.vendorStampRequisitionId
+        this.sheet = $event.rowData.sheet
+        this.label = $event.rowData.label
+        this.combinationId = $event.rowData.combinationId
+        this.treasuryCode = $event.rowData.raisedToTreasury
+        this.getBalance({treasuryCode: this.treasuryCode, combinationId: this.combinationId})
+        this.getAmountCalculations({vendorStampRequisitionId: this.id, sheet: this.sheet, label: this.label})
+        break;
+    }
   }
 
-  sheetSelected($event: any) {
+  getAllApprovedByClerkRequisitionsOrForwardedToTO() {
+    this.stampRequisitionService.getAllRequisitionsForwardedToTOForApproval(this.tableQueryParameters).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.tableData = response.result;
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
+  }
 
+  getAllStampRequisitionWaitingForPaymentVerificatonByTO() {
+    this.stampRequisitionService.getAllStampRequisitionWaitingForPaymentVerificatonByTO(this.tableQueryParameters).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.tableData = response.result
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
+  }
+
+  getAmountCalculations(params:any) {
+    this.stampRequisitionService.getCalcAmountDetails({
+      vendorStampRequisitionId: params.vendorStampRequisitionId,
+      sheet: params.sheet,
+      label: params.label
+    }).subscribe((response) => {
+      console.log(response);
+      
+      if (response.apiResponseStatus == 1) {
+        this.challanAmount = response.result.challanAmount
+        this.taxAmount = response.result.taxAmount
+        this.discountAmount = response.result.discountAmount
+        this.amount = response.result.amount
+        this.quantity = response.result.quantity
+      } else {
+        this.toastService.showError(response.message)
+      }
+    }) 
+  }
+
+  approveByTO() {
+    if (this.approveByTOForm.valid) {
+      this.approveByTOPayload = {
+        vendorStampRequisitionId: this.id,
+        labelByTo: this.approveByTOForm.value.label,
+        sheetByTo: this.approveByTOForm.value.sheet,
+        challanAmount: this.challanAmount,
+        discountedAmount: this.discountAmount,
+        taxAmount: this.taxAmount
+      }
+      this.stampRequisitionService.approveByTO(this.approveByTOPayload).subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          this.toastService.showSuccess(response.message)
+          this.getAllApprovedByClerkRequisitionsOrForwardedToTO()
+          this.approveByTOForm.reset()
+          this.modal = false
+        } else {
+          this.toastService.showError(response.message)
+        }
+      })
+    } else {
+      this.toastService.showWarning("Please fill all the fields.")
+    }
+  }
+
+  
+
+  labelSelected($event: any) {
+    console.log($event);
+    
+    this.label = $event
+    if (this.label) {
+      this.getAmountCalculations({vendorStampRequisitionId: this.id, sheet: this.sheet, label: this.label})
+    }
+  }
+  
+  sheetSelected($event: any) {
+    this.sheet = $event
+    if (this.sheet) {
+      this.getAmountCalculations({vendorStampRequisitionId: this.id, sheet: this.sheet, label: this.label})
+    }
   }
 
   getBalance(params: any) {
     this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({treasuryCode: params.treasuryCode, combinationId: params.combinationId}).subscribe((response) => {
-      console.log(response);
-      
       if (response.apiResponseStatus == 1) {
         this.denom = response.result.denomination
         this.noOfSheets = response.result.sheetLedgerBalance

@@ -47,7 +47,7 @@ export class PaymentProcessingComponent implements OnInit {
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
       case 'print':
-        this.getDataForPrint($event.rowData.vendorStampRequisitionId)
+        this.getDataForPrint($event.rowData.vendorStampRequisitionId, $event.rowData.requisitionNo)
         break;
       case 'edit':
         this.registerGRNModal = true
@@ -86,10 +86,11 @@ export class PaymentProcessingComponent implements OnInit {
   GRNNoSelected($event: any) {
     this.GRNNo = $event
   }
-  getDataForPrint(id: number) {
+  getDataForPrint(id: number, reqNo: string) {
     this.stampRequisitionService.printtr7(id).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         this.printData = {
+          reqNo: reqNo,
           raisedToTreasury: response.result.raisedToTreasury,
           hoa: response.result.hoa,
           detailHead: response.result.detailHead,

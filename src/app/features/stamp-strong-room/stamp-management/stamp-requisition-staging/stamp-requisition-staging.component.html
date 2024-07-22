@@ -54,14 +54,24 @@
     <hr class="mb-2" />
     <div class="w-full border-rounded p-2 flex flex-column gap-2 align-items-start">
         <h5 class="text-red-500 p-0">Current Balance</h5>
-        <div class="flex align-items-center justify-content-between w-full">
-            <div class="flex flex-column align-items-start gap-2">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfSheets">No of sheets</label>
-                <input pinputtext="" disabled type="text" [value]="noOfSheets" class="pl-1 border-rounded py-1">
+        <div class="flex gap-4 md:flex-row align-items-center flex-column justify-content-between w-full">
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="category">Category</label>
+                <input pinputtext="" disabled type="text" [value]="category" class="pl-1 w-full border-rounded py-1">
             </div>
-            <div class="flex flex-column align-items-start gap-2">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfLabelsPerSheet">No of labels/sheet</label>
-                <input pinputtext="" disabled type="text" [value]="noOfLabelsPerSheet" class="pl-1 border-rounded py-1">
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="denom">Denomination</label>
+                <input pinputtext="" disabled type="text" [value]="denom" class="pl-1 w-full border-rounded py-1">
+            </div>
+        </div>
+        <div class="flex gap-4 md:flex-row align-items-center flex-column justify-content-between w-full">
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="noOfSheets">No of sheets</label>
+                <input pinputtext="" disabled type="text" [value]="noOfSheets" class="pl-1 w-full border-rounded py-1">
+            </div>
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="noOfLabels">No of labels</label>
+                <input pinputtext="" disabled type="text" [value]="noOfLabels" class="pl-1 w-full border-rounded py-1">
             </div>
         </div>
     </div>
@@ -83,7 +93,7 @@
                 <small class="p-error" *ngIf="approveByClerkForm.controls['label'].errors['min']">Minimun no of labels is 1.</small>
             </div>
         </div>
-        <div class="field mb-4 col-6 md:col-6">
+        <!-- <div class="field mb-4 col-6 md:col-6">
             <label for="quantity" class="font-medium text-900">Quantity</label>
             <input id="quantity" type="text" [value]="quantity" pinputtext="" readonly disabled class="p-inputtext p-component p-element">
         </div>
@@ -102,7 +112,7 @@
         <div class="field mb-4 col-6 md:col-12">
             <label for="challanAmount" class="font-medium text-900">Challan Amount</label>
             <input id="challanAmount" type="text" pinputtext="" [value]="challanAmount" readonly disabled class="p-inputtext p-component p-element">
-        </div>
+        </div> -->
       </form>
     <div class="w-full flex justify-content-end align-items-center">
         <button pbutton="" pripple="" icon="pi pi-file" (click)="approveByClerk()" class="p-element p-ripple w-auto p-button p-component">

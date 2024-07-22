@@ -4,6 +4,7 @@ import { DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-tabl
 import { ActionButtonConfig } from 'src/app/core/models/dynamic-table';
 import { ApprovedByClerk } from 'src/app/core/models/stamp';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
+import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -13,17 +14,19 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class StampRequisitionStagingComponent implements OnInit {
 
-  listType: string = 'new'
   id: number = 0
+  denom: number = 0
+  category: string = ""
+  listType: string = 'new'
   sheet: number = 0
   label: number = 0
   discountAmount: number = 0
   denomination: number = 0
-  noOfLabelsPerSheet: number = 0
-  taxAmount: number = 0.1 * this.discountAmount
-  quantity: number = (this.noOfLabelsPerSheet * this.sheet) + this.label
-  amount: number = this.quantity * this.denomination
-  challanAmount: number = this.amount - this.discountAmount + this.taxAmount;
+  noOfLabels: number = 0
+  taxAmount: number = 0
+  quantity: number = 0
+  amount: number = 0
+  challanAmount: number = 0
   noOfSheets: number = 0
   modal: boolean = false
   tableData!: DynamicTable<any>;
@@ -33,7 +36,7 @@ export class StampRequisitionStagingComponent implements OnInit {
   approveByClerkForm!: FormGroup
   constructor(private stampRequisitionService: StampRequisitionService,
     private toastService: ToastService,
-    private fb: FormBuilder,) { }
+    private fb: FormBuilder, private stampWalletService: StampWalletService) { }
 
   ngOnInit(): void {
     this.initialozeForm()
@@ -97,9 +100,23 @@ export class StampRequisitionStagingComponent implements OnInit {
         this.id = $event.rowData.vendorStampRequisitionId
         this.sheet = $event.rowData.sheet
         this.label = $event.rowData.label
+        this.getBalance({treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId})
+        // this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
     }
   }
-
+  getBalance(params: any) {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({treasuryCode: params.treasuryCode, combinationId: params.combinationId}).subscribe((response) => {
+      console.log(response, params);
+      if (response.apiResponseStatus == 1) {
+        this.denom = response.result.denomination
+        this.noOfSheets = response.result.sheetLedgerBalance
+        this.noOfLabels = response.result.labelLedgerBalance
+        this.category = response.result.category
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
+  }
   approveByClerk() {
     if (this.approveByClerkForm.valid) {
       this.approveByClerkPayload = {

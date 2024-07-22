@@ -210,9 +210,11 @@
       </h4>
     </div>
     <form class="flex flex-column gap-4">
-      <div class="flex flex-column gap-2">
-        <label for="bankBranch" class="text-xl">1. Name of the Bank & Branch:</label>
-        <input pInputText id="bankBranch" class="p-inputtext p-component p-element" disabled />
+      <div class="flex justify-content-end">
+        <div class="flex gap-2 align-items-center">
+          <label for="reqNo" class="text-xl">Req No: </label>
+          <p style="width: fit-content;">{{reqNo}}</p>
+        </div>
       </div>
       <div class="flex flex-column gap-2">
         <label for="treasuryName" class="text-xl">2. (a). Name of the Treasury:</label>
