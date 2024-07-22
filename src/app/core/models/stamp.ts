@@ -127,16 +127,19 @@ export interface GetStampIndents {
   createdAt: string;
 }
 
+export interface IndentItems {
+  stampCombinationId: number;
+  sheet: number;
+  label: number;
+  quantity: number; 
+  amount: number; 
+}
 export interface AddStampIndent {
   memoNumber: string;
   memoDate: string;
   remarks: string;
-  stampCombinationId: number;
   raisedToTreasuryCode: string
-  sheet: number;
-  label: number;
-  quantity: number;
-  amount: number;
+  items: IndentItems[]
 }
 
 export interface GetStampInvoices {

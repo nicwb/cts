@@ -18,6 +18,8 @@ import { InvoiceReceiveComponent } from './invoice-receive/invoice-receive.compo
 import { StampWalletRefillComponent } from './stamp-wallet-refill/stamp-wallet-refill.component';
 import { StampCombinationDropdownModule } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.module';
 import { DatatableSkeletonModule } from 'src/app/shared/modules/datatable-skeleton/datatable-skeleton.module';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import { DatatableSkeletonModule } from 'src/app/shared/modules/datatable-skelet
   ],
   imports: [
     CommonModule,
+    TableModule,
     StampsRoutingModule,
     DynamicTableModule,
     OptionCardModule,
@@ -42,7 +45,8 @@ import { DatatableSkeletonModule } from 'src/app/shared/modules/datatable-skelet
     TreasuryDropdownModule,
     FormsModule,
     DatatableSkeletonModule,
-    StampCombinationDropdownModule
+    StampCombinationDropdownModule,
+    MhPrimeDynamicTableModule
    ]
 })
 export class StampsModule { }

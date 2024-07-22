@@ -22,6 +22,7 @@ import { PaymentProcessingComponent } from './payment-processing/payment-process
 import { DialogModule } from 'primeng/dialog';
 import { Tr7FormModule } from 'src/app/shared/modules/tr7-form/tr7-form.module';
 import { StampDeliveryComponent } from './stamp-delivery/stamp-delivery.component';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { StampDeliveryComponent } from './stamp-delivery/stamp-delivery.componen
     TreasuryDropdownModule,
     StampCombinationDropdownModule,
     VendorDetailsDropdownModule,
+    MhPrimeDynamicTableModule,
     Tr7FormModule
   ]
 })

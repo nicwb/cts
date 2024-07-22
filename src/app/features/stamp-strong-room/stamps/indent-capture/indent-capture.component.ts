@@ -1,13 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { AddStampIndent, GetStampIndents } from 'src/app/core/models/stamp';
+import { AddStampIndent, GetStampIndents, IndentItems } from 'src/app/core/models/stamp';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { Status } from 'src/app/core/enum/stampIndentStatusEnum';
 import { convertDate } from 'src/utils/dateConversion';
-import { error } from 'console';
-
 
 @Component({
   selector: 'app-indent-capture',
@@ -16,7 +13,10 @@ import { error } from 'console';
 })
 export class IndentCaptureComponent implements OnInit {
 
+  indentList: IndentItems[] = []
+
   loading: boolean = false
+  isLoading: boolean = false
   labelPerSheet: number = 0
   denomination: number = 0
   description: string = ""
@@ -32,6 +32,7 @@ export class IndentCaptureComponent implements OnInit {
   tableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampIndentPayload!: AddStampIndent
+
   constructor(
     private stampIndentService: StampIndentService,
     private toastService: ToastService,
@@ -51,18 +52,24 @@ export class IndentCaptureComponent implements OnInit {
     this.getAllStampIndents();
   }
 
-
   initializeForm(): void {
     this.stampIndentForm = this.fb.group({
       memoNo: ['', Validators.required],
-      memoDate: ['', [Validators.required]],
-      noOfSheets: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Validates integer
-      noOfLabels: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Validates integer
-      remarks: ['', [Validators.required, Validators.maxLength(20)]]
+      memoDate: ['', Validators.required],
+      remarks: ['', [Validators.required, Validators.maxLength(20)]],
+      indents: this.fb.group({
+          noOfSheets: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+          noOfLabels: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+        })
     });
   }
 
+  get indents(): FormArray {
+    return this.stampIndentForm.get('indents') as FormArray;
+  }
+
   getAllStampIndents() {
+    this.isLoading = true
     this.stampIndentService
       .getAllStampIndents(this.tableQueryParameters)
       .subscribe((response) => {
@@ -70,6 +77,7 @@ export class IndentCaptureComponent implements OnInit {
           response.result.data.map((item: any) => {
             item.createdAt = convertDate(item.createdAt);
             item.memoDate = convertDate(item.memoDate);
+            this.isLoading = false
           });
           this.tableData = response.result;
         } else {
@@ -85,51 +93,39 @@ export class IndentCaptureComponent implements OnInit {
     this.displayInsertModal = true;
   }
 
-
   addStampIndent() {
-    this.loading = true
-    if (this.stampIndentForm.valid) {
-      this.stampIndentPayload = {
-        stampCombinationId: this.stamCombinationId,
-        amount: this.amount,
-        label: this.label,
-        sheet: this.sheet,
-        memoDate: this.stampIndentForm.value.memoDate,
-        memoNumber: this.stampIndentForm.value.memoNo,
-        quantity: this.quantity,
-        remarks: this.stampIndentForm.value.remarks,
-        raisedToTreasuryCode: this.raisedToTreasuryCode
-      };
-      console.log(this.stampIndentPayload);
+    // this.loading = true
+    // if (this.stampIndentForm.valid) {
+    //   this.stampIndentPayload = {
+    //     memoDate: this.stampIndentForm.value.memoDate,
+    //     memoNumber: this.stampIndentForm.value.memoNo,
+    //     remarks: this.stampIndentForm.value.remarks,
+    //     stampCombinationId: this.stamCombinationId,
+    //     amount: this.amount,
+    //     label: this.label,
+    //     sheet: this.sheet,
+    //     quantity: this.quantity,
+    //     raisedToTreasuryCode: this.raisedToTreasuryCode
+    //   };
+    //   console.log(this.stampIndentPayload);
 
-      this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showSuccess(response.message);
-          // this.stampIndentForm.reset()
-          // this.displayInsertModal = false;
-          this.getAllStampIndents();
-        } else {
-          this.toastService.showAlert(response.message, response.apiResponseStatus);
-        }
-      });
-    } else {
-      this.toastService.showWarning('Please fill all the required fields');
-    }
-    this.loading = false
+    //   this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
+    //     if (response.apiResponseStatus == 1) {
+    //       this.toastService.showSuccess(response.message);
+    //       this.getAllStampIndents();
+    //     } else {
+    //       this.toastService.showAlert(response.message, response.apiResponseStatus);
+    //     }
+    //   });
+    // } else {
+    //   this.toastService.showWarning('Please fill all the required fields');
+    // }
+    // this.loading = false
   }
 
   handleButtonClick($event: any) {
-    console.log($event.rowData.stampIndentId);
-
-    this.stampIndentService.getStampIndentDetails($event.rowData.stampIndentId)
-      .subscribe((response) => {
-        response.apiResponseStatus == 1 ? this.getAllStampIndents() : this.toastService.showAlert(
-          response.message,
-          response.apiResponseStatus
-        );
-      });
+    this.tableQueryParameters = $event
   }
-
 
   calcAmountQuantity() {
     this.quantity = (this.labelPerSheet * this.sheet) + this.label
@@ -155,6 +151,21 @@ export class IndentCaptureComponent implements OnInit {
     this.description = $event.description
     this.denomination = $event.denomination
     this.labelPerSheet = $event.noLabelPerSheet
+  }
+  addItems() {
+    // const items = this.stampIndentForm.controls.indents as FormArray;
+    // items.push(this.fb.group({
+    //   combination: '',
+    //   toTreasury: '',
+    //   description: '',
+    //   denomination: '',
+    //   labelPerSheet: '',
+    //   noOfSheets: '',
+    //   noOfLabels: '',
+    //   quantity: '',
+    //   amount: '',
+    // }));
+    // console.log(items)
   }
 
 }
