@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampIndent, GetStampIndents, IndentItems } from 'src/app/core/models/stamp';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
 import { convertDate } from 'src/utils/dateConversion';
 
 @Component({
@@ -13,8 +14,10 @@ import { convertDate } from 'src/utils/dateConversion';
 })
 export class IndentCaptureComponent implements OnInit {
 
-  indentList: IndentItems[] = []
+  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
 
+  indentList: IndentItems[] = []
+  minDate: Date = new Date()
   loading: boolean = false
   isLoading: boolean = false
   labelPerSheet: number = 0
@@ -22,12 +25,17 @@ export class IndentCaptureComponent implements OnInit {
   description: string = ""
   sheet: number = 0
   label: number = 0
+  sheetNegative: boolean = false
+  sheetEmpty: boolean = false
+  labelNegative: boolean = false
+  labelEmpty: boolean = false
   raisedToTreasuryCode!: string
   quantity: number = (this.labelPerSheet * this.sheet) + this.label
   amount: number = this.quantity * this.denomination
   stamCombinationId!: number
   displayInsertModal: boolean = false;
   stampIndentForm!: FormGroup
+  common!: FormGroup
   tableActionButton: ActionButtonConfig[] = [];
   tableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
@@ -56,16 +64,8 @@ export class IndentCaptureComponent implements OnInit {
     this.stampIndentForm = this.fb.group({
       memoNo: ['', Validators.required],
       memoDate: ['', Validators.required],
-      remarks: ['', [Validators.required, Validators.maxLength(20)]],
-      indents: this.fb.group({
-          noOfSheets: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-          noOfLabels: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-        })
+      remarks: ['', [Validators.required, Validators.maxLength(20)]]
     });
-  }
-
-  get indents(): FormArray {
-    return this.stampIndentForm.get('indents') as FormArray;
   }
 
   getAllStampIndents() {
@@ -94,33 +94,29 @@ export class IndentCaptureComponent implements OnInit {
   }
 
   addStampIndent() {
-    // this.loading = true
-    // if (this.stampIndentForm.valid) {
-    //   this.stampIndentPayload = {
-    //     memoDate: this.stampIndentForm.value.memoDate,
-    //     memoNumber: this.stampIndentForm.value.memoNo,
-    //     remarks: this.stampIndentForm.value.remarks,
-    //     stampCombinationId: this.stamCombinationId,
-    //     amount: this.amount,
-    //     label: this.label,
-    //     sheet: this.sheet,
-    //     quantity: this.quantity,
-    //     raisedToTreasuryCode: this.raisedToTreasuryCode
-    //   };
-    //   console.log(this.stampIndentPayload);
+    this.loading = true
+    if (this.stampIndentForm.valid) {
+      this.stampIndentPayload = {
+        memoDate: this.stampIndentForm.value.memoDate,
+        memoNumber: this.stampIndentForm.value.memoNo,
+        remarks: this.stampIndentForm.value.remarks,
+        raisedToTreasuryCode: this.raisedToTreasuryCode,
+        items: this.indentList
+      };
+      console.log(this.stampIndentPayload);
 
-    //   this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
-    //     if (response.apiResponseStatus == 1) {
-    //       this.toastService.showSuccess(response.message);
-    //       this.getAllStampIndents();
-    //     } else {
-    //       this.toastService.showAlert(response.message, response.apiResponseStatus);
-    //     }
-    //   });
-    // } else {
-    //   this.toastService.showWarning('Please fill all the required fields');
-    // }
-    // this.loading = false
+      // this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
+      //   if (response.apiResponseStatus == 1) {
+      //     this.toastService.showSuccess(response.message);
+      //     this.getAllStampIndents();
+      //   } else {
+      //     this.toastService.showAlert(response.message, response.apiResponseStatus);
+      //   }
+      // });
+    } else {
+      this.toastService.showWarning('Please fill all the required fields');
+    }
+    this.loading = false
   }
 
   handleButtonClick($event: any) {
@@ -153,19 +149,29 @@ export class IndentCaptureComponent implements OnInit {
     this.labelPerSheet = $event.noLabelPerSheet
   }
   addItems() {
-    // const items = this.stampIndentForm.controls.indents as FormArray;
-    // items.push(this.fb.group({
-    //   combination: '',
-    //   toTreasury: '',
-    //   description: '',
-    //   denomination: '',
-    //   labelPerSheet: '',
-    //   noOfSheets: '',
-    //   noOfLabels: '',
-    //   quantity: '',
-    //   amount: '',
-    // }));
-    // console.log(items)
+    if ((this.sheet || this.label) || (this.sheet < 0 || this.label < 0)) {
+      const obj = {
+        stampCombinationId: this.stamCombinationId,
+        description: this.description,
+        denomination: this.denomination,
+        labelPerSheet: this.labelPerSheet,
+        sheet: this.sheet,
+        label: this.label,
+        quantity: this.quantity, 
+        amount: this.amount, 
+      }
+      this.indentList.push(obj)
+      this.stamCombinationId = 0
+      this.description = ""
+      this.denomination = 
+      this.labelPerSheet = 0
+      this.sheet = 0
+      this.label = 0
+      this.quantity = 0
+      this.amount = 0
+      this.stampComp?.reset();
+    } else {
+      this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
+    }
   }
-
 }

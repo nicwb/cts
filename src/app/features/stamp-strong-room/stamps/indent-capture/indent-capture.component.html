@@ -14,157 +14,141 @@
     </div>
 </div>
 
-<p-dialog header="Stamp Indent" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '90%'}"
+<p-dialog header="Stamp Indent" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '95%'}"
     [baseZIndex]="10000">
-    <div class="flex gap-2 xl:flex-row flex-column">
-        <div class="flex-auto">
-            <label for="memoNo" class="block mb-1 font-medium text-900">Memo No:</label>
-            <input type="text" pinputtext="" formControlName="memoNo" placeholder="Eg: MEMO5256"
-                class="p-inputtext p-component p-element w-full">
-            <div
-                *ngIf="stampIndentForm.controls['memoNo'].errors && (stampIndentForm.controls['memoNo'].dirty || stampIndentForm.controls['memoNo'].touched)">
-                <small class="p-error" *ngIf="stampIndentForm.controls['memoNo'].errors['required']">Memo No is
-                    required.</small>
+    <form [formGroup]="stampIndentForm" class="flex flex-column gap-4 my-3">
+        <div class="flex flex-column gap-3">
+            <div class="flex gap-2 xl:flex-row flex-column">
+                <div class="flex-1">
+                    <label for="memoNo" class="block mb-1 font-medium text-900">Memo No:</label>
+                    <input type="text" pinputtext="" formControlName="memoNo" placeholder="Eg: MEMO5256"
+                        class="p-inputtext p-component p-element w-full">
+                    <div
+                        *ngIf="stampIndentForm.controls['memoNo'].errors && (stampIndentForm.controls['memoNo'].dirty || stampIndentForm.controls['memoNo'].touched)">
+                        <small class="p-error" *ngIf="stampIndentForm.controls['memoNo'].errors['required']">Memo No is
+                            required.</small>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label for="memoDate" class="block mb-1 font-medium text-900">Memo Date</label>
+                    <p-calendar [minDate]="minDate" class="p-component p-element w-full p-calendar" formControlName="memoDate"
+                        placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
+                    <div
+                        *ngIf="stampIndentForm.controls['memoDate'].errors && (stampIndentForm.controls['memoDate'].dirty || stampIndentForm.controls['memoDate'].touched)">
+                        <small class="p-error" *ngIf="stampIndentForm.controls['memoDate'].errors['required']">Memo Date is
+                            required.</small>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="flex-auto">
-            <label for="memoDate" class="block mb-1 font-medium text-900">Memo Date</label>
-            <p-calendar class="p-component p-element w-full p-calendar" formControlName="memoDate"
-                placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-            <div
-                *ngIf="stampIndentForm.controls['memoDate'].errors && (stampIndentForm.controls['memoDate'].dirty || stampIndentForm.controls['memoDate'].touched)">
-                <small class="p-error" *ngIf="stampIndentForm.controls['memoDate'].errors['required']">Memo Date is
-                    required.</small>
-            </div>
-        </div>
-    </div>
-    <div class="flex gap-2 xl:flex-row flex-column">
-        <div class="col-12 p-0 flex-1">
-            <label for="remarks" class="block mb-1 font-medium text-900">Remarks</label>
-            <input type="text" pinputtext="" formControlName="remarks"
-                placeholder="Eg: Indent for Kolkata treasury."
-                class="p-inputtext p-component p-element w-full"/>
-            <div
-                *ngIf="stampIndentForm.controls['remarks'].errors && (stampIndentForm.controls['remarks'].dirty || stampIndentForm.controls['remarks'].touched)">
-                <small class="p-error" *ngIf="stampIndentForm.controls['remarks'].errors['required']">Remarks are
-                    required.</small>
-                <small class="p-error" *ngIf="stampIndentForm.controls['remarks'].errors['minlength']">Remarks must
-                    be at least {{ stampIndentForm.controls['remarks'].errors['maxlength'].requiredLength }}
-                    characters long.</small>
-            </div>
-        </div>
-        <div class="flex-1">
-            <label for="toTreasury" class="block mb-1 font-medium text-900">To Treasury (<span
-                    class="font-medium text-sm text-gray-900">Default: </span><span
-                    class="font-medium text-sm text-gray-500">Superintendent</span>)</label>
-            <app-treasury-dropdown (treasurySelected)="onTreasurySelected($event)"></app-treasury-dropdown>
-        </div>
-    </div>
-    <form  class="flex flex-column gap-4 mt-3">
-        <div class="flex gap-2 align-items-end w-full">
-            <div class="p-0 flex-1">
-                <label for="Category" class="block mb-1 font-medium text-900">Combination</label>
-                <app-stamp-combination-dropdown
-                    (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
-            </div>
-            
-            <div class="flex-1">
-                <label for="Description" class="block mb-1 font-medium text-900">Description</label>
-                <input type="text" pinputtext="" [value]="description" readonly disabled
-                    class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-1">
-                <label for="denomination" class="block mb-1 font-medium text-900">Denomination (Rs.)</label>
-                <input type="number" pinputtext="" [value]="denomination" readonly disabled
-                    class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-1">
-                <label for="labelPerSheet" class="block mb-1 font-medium text-900">Label/Sheet</label>
-                <input type="text" pinputtext="" [value]="labelPerSheet" readonly disabled
-                    class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-1">
-                <label for="noOfSheets" class="block mb-1 font-medium text-900">No: of Sheets</label>
-                <input type="number" pinputtext="" formControlName="noOfSheets" [(ngModel)]="sheet"
-                    (ngModelChange)="sheetSelected($event)" placeholder="Eg: 10"
-                    class="p-inputtext p-component p-element w-full">
-                <!-- <div
-                    *ngIf="stampIndentForm.controls['noOfSheets'].errors && (stampIndentForm.controls['noOfSheets'].dirty || stampIndentForm.controls['noOfSheets'].touched)">
-                    <small class="p-error" *ngIf="stampIndentForm.controls['noOfSheets'].errors['required']">No of
-                        Sheets is required.</small>
-                    <small class="p-error" *ngIf="stampIndentForm.controls['noOfSheets'].errors['pattern']">No of
-                        Sheets must be a valid number.</small>
-                </div> -->
-            </div>
-            <div class="flex-1">
-                <label for="noOfLabels" class="block mb-1 font-medium text-900">No: of Labels</label>
-                <input type="number" pinputtext="" formControlName="noOfLabels" [(ngModel)]="label"
-                    (ngModelChange)="labelSelected($event)" placeholder="Eg: 10"
-                    class="p-inputtext p-component p-element w-full">
-                <!-- <div
-                    *ngIf="stampIndentForm.controls['noOfLabels'].errors && (stampIndentForm.controls['noOfLabels'].dirty || stampIndentForm.controls['noOfLabels'].touched)">
-                    <small class="p-error" *ngIf="stampIndentForm.controls['noOfLabels'].errors['required']">No of
-                        Labels is required.</small>
-                    <small class="p-error" *ngIf="stampIndentForm.controls['noOfLabels'].errors['pattern']">No of
-                        Labels must be a valid number.</small>
-                </div> -->
-            </div>
-            <div class="flex-1">
-                <label for="quantity" class="block mb-1 font-medium text-900">Quantity</label>
-                <input type="text" pinputtext="" readonly disabled [value]="quantity"
-                    class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-1">
-                <label for="amount" class="block mb-1 font-medium text-900">Amount (Rs.)</label>
-                <input type="text" pinputtext="" readonly disabled [value]="amount"
-                    class="p-inputtext p-component p-element w-full">
+            <div class="flex gap-2 xl:flex-row flex-column">
+                <div class="col-12 p-0 flex-1">
+                    <label for="remarks" class="block mb-1 font-medium text-900">Remarks</label>
+                    <input type="text" pinputtext="" formControlName="remarks" placeholder="Eg: Indent for Kolkata treasury."
+                        class="p-inputtext p-component p-element w-full" />
+                    <div
+                        *ngIf="stampIndentForm.controls['remarks'].errors && (stampIndentForm.controls['remarks'].dirty || stampIndentForm.controls['remarks'].touched)">
+                        <small class="p-error" *ngIf="stampIndentForm.controls['remarks'].errors['required']">Remarks are
+                            required.</small>
+                        <small class="p-error" *ngIf="stampIndentForm.controls['remarks'].errors['minlength']">Remarks must
+                            be at least {{ stampIndentForm.controls['remarks'].errors['maxlength'].requiredLength }}
+                            characters long.</small>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <label for="toTreasury" class="block mb-1 font-medium text-900">To Treasury (<span
+                            class="font-medium text-base text-gray-900">Default: </span><span
+                            class="font-medium text-base text-gray-500">Superintendent</span>)</label>
+                    <app-treasury-dropdown (treasurySelected)="onTreasurySelected($event)"></app-treasury-dropdown>
+                </div>
             </div>
         </div>
     </form>
-    <div class="flex gap-2 justify-content-between pt-3">
-        <p-button [loading]="loading" label="Submit" (click)="addItems()" class="rounded">
-        </p-button>
-        <p-button [loading]="loading" label="Submit" (click)="addStampIndent()" class="rounded">
+    <div class="flex gap-2 align-items-end w-full">
+        <div class="p-0 flex-1">
+            <label for="Category" class="block mb-1 font-medium text-900">Combination</label>
+            <app-stamp-combination-dropdown
+                (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
+        </div>
+
+        <div class="flex-1">
+            <label for="Description" class="block mb-1 font-medium text-900">Description</label>
+            <input type="text" pinputtext="" [value]="description" readonly disabled
+                class="p-inputtext p-component p-element w-full">
+        </div>
+        <div class="flex-1">
+            <label for="denomination" class="block mb-1 font-medium text-900">Denomination (Rs.)</label>
+            <input type="number" pinputtext="" [value]="denomination" readonly disabled
+                class="p-inputtext p-component p-element w-full">
+        </div>
+        <div class="flex-1">
+            <label for="labelPerSheet" class="block mb-1 font-medium text-900">Label/Sheet</label>
+            <input type="text" pinputtext="" [value]="labelPerSheet" readonly disabled
+                class="p-inputtext p-component p-element w-full">
+        </div>
+        <div class="flex-1">
+            <label for="noOfSheets" class="block mb-1 font-medium text-900">No: of Sheets</label>
+            <input type="number" pinputtext="" [(ngModel)]="sheet"
+                (ngModelChange)="sheetSelected($event)" placeholder="Eg: 10"
+                class="p-inputtext p-component p-element w-full">
+            <!-- <div
+                *ngIf="sheetEmpty">
+                <small class="p-error" *ngIf="sheetEmpty">No of
+                    Sheets is required.</small>
+                <small class="p-error" *ngIf="sheetNegative">No of
+                    Sheets must be a valid number.</small>
+            </div> -->
+        </div>
+        <div class="flex-1">
+            <label for="noOfLabels" class="block mb-1 font-medium text-900">No: of Labels</label>
+            <input type="number" pinputtext="" [(ngModel)]="label"
+                (ngModelChange)="labelSelected($event)" placeholder="Eg: 10"
+                class="p-inputtext p-component p-element w-full">
+            <!-- <div
+                *ngIf="labelEmpty">
+                <small class="p-error" *ngIf="labelEmpty">No of
+                    Labels is required.</small>
+                <small class="p-error" *ngIf="labelNegative">No of
+                    Labels must be a valid number.</small>
+            </div> -->
+        </div>
+        <div class="flex-1">
+            <label for="quantity" class="block mb-1 font-medium text-900">Quantity</label>
+            <input type="text" pinputtext="" readonly disabled [value]="quantity"
+                class="p-inputtext p-component p-element w-full">
+        </div>
+        <div class="flex-1">
+            <label for="amount" class="block mb-1 font-medium text-900">Amount (Rs.)</label>
+            <input type="text" pinputtext="" readonly disabled [value]="amount"
+                class="p-inputtext p-component p-element w-full">
+        </div>
+    </div>
+    <div class="flex gap-2 justify-content-start py-3">
+        <p-button [loading]="loading" label="Add New" (click)="addItems()" class="rounded">
         </p-button>
     </div>
-    <p-table [value]="indentList" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="false" responsiveLayout="scroll">
-        <ng-template pTemplate="caption">
-            <div class="flex justify-content-between flex-column sm:flex-row">
-                <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash"></button>
-                <span class="p-input-icon-left mb-2">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" placeholder="Search Keyword" class="w-full" />
-                </span>
-            </div>
-        </ng-template>
+    <p-table [value]="indentList" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
         <ng-template pTemplate="header">
-            <tr>
-                <!-- <th style="max-width: 4rem" pFrozenColumn><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th> -->
-                <th style="min-width: 12rem" alignFrozen="left">Sheet</th>
-                <th style="min-width: 26rem">Label</th>
-                <th style="min-width: 12rem">Amount</th>
-                <th style="min-width: 12rem">Quantity</th>
+            <tr >
+                <th style="min-width: 12rem">Combination ID</th>
                 <th style="min-width: 12rem">Description</th>
                 <th style="min-width: 12rem">Denomination</th>
-                <!-- <th style="min-width: 6rem" pFrozenColumn alignFrozen="right">Action</th> -->
+                <th style="min-width: 12rem">Label/Sheet</th>
+                <th style="min-width: 12rem">sheet</th>
+                <th style="min-width: 12rem">Label</th>
+                <th style="min-width: 12rem">Quantity</th>
+                <th style="min-width: 12rem">Amount</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-indentList>
             <tr class="p-selectable-row">
-                <td style="min-width: 12rem">{{ indentList.Sheet }}</td>
-                <td style="min-width: 26rem">{{ indentList.Label }}</td>
-                <td style="min-width: 12rem">{{ indentList.Amount }}</td>
-                <td style="min-width: 12rem">{{ indentList.Quantity }}</td>
-                <td style="min-width: 12rem">{{ indentList.Description }}</td>
-                <td style="min-width: 12rem">{{ indentList.Denomination }}</td>
-                <!-- <td style="min-width: 6rem" pFrozenColumn alignFrozen="right">
-                    <button
-                        pButton
-                        type="button"
-                        class="p-button-help"
-                        icon="pi pi-search-plus" (click)="editEmployee()"
-                    ></button>
-                </td> -->
+                <td style="min-width: 12rem">{{ indentList.stampCombinationId }}</td>
+                <td style="min-width: 12rem">{{ indentList.description }}</td>
+                <td style="min-width: 12rem">{{ indentList.denomination }}</td>
+                <td style="min-width: 12rem">{{ indentList.labelPerSheet }}</td>
+                <td style="min-width: 12rem">{{ indentList.sheet }}</td>
+                <td style="min-width: 12rem">{{ indentList.label }}</td>
+                <td style="min-width: 12rem">{{ indentList.quantity }}</td>
+                <td style="min-width: 12rem">{{ indentList.amount }}</td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -178,4 +162,8 @@
             </tr>
         </ng-template>
     </p-table>
+    <div class="flex justify-content-end align-content-center py-3">
+        <p-button [loading]="loading" label="Submit" (click)="addStampIndent()" class="rounded">
+        </p-button>
+    </div>
 </p-dialog>
