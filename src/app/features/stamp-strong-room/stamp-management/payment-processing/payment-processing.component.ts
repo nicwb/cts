@@ -88,6 +88,8 @@ export class PaymentProcessingComponent implements OnInit {
   }
   getDataForPrint(id: number, reqNo: string) {
     this.stampRequisitionService.printtr7(id).subscribe((response) => {
+      console.log(id);
+      
       if (response.apiResponseStatus == 1) {
         this.printData = {
           reqNo: reqNo,

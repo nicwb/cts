@@ -24,16 +24,13 @@ export class StampCombinationDropdownComponent implements OnInit {
     return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Description: ${item.description} | Denomination: ${item.denomination} | No of Labels per Sheet: ${item.noLabelPerSheet}` }
   }
   getAllStampCombination() {
-
     this.stampCombinationService
       .getAllStampCombinations()
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.data = response.result;
           response.result.map((item: any) => {
-
             this.CombinationTypeList.push(this.formatResultItem(item))
-
           });
         } else {
           this.toastService.showAlert(
@@ -56,6 +53,6 @@ export class StampCombinationDropdownComponent implements OnInit {
     this.StampCombinationSelected.emit(val[0]);
   }
   reset() {
-    this.CombinationTypeList = []
+    this.selectedCombinationType = null
   }
 }

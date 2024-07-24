@@ -14,8 +14,30 @@
     </div>
 </div>
 
-<p-dialog header="Stamp Indent" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '95%'}"
+<p-dialog header="Stamp Indent" [(visible)]="displayInsertModal" [modal]="false" [style]="{width: '95%'}"
     [baseZIndex]="10000">
+    <div class="w-full border-rounded py-2 flex flex-column gap-2 align-items-start">
+        <h5 class="text-red-500 p-0">Current Balance</h5>
+        <div class="flex gap-4 align-items-center justify-content-between w-full">
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="category">Category</label>
+                <input pinputtext="" disabled type="text" [value]="category" class="pl-1 w-full border-rounded py-1">
+            </div>
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="denom">Denomination</label>
+                <input pinputtext="" disabled type="text" [value]="denom" class="pl-1 w-full border-rounded py-1">
+            </div>
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="noOfSheets">No of sheets</label>
+                <input pinputtext="" disabled type="text" [value]="noOfSheetsInStock" class="pl-1 w-full border-rounded py-1">
+            </div>
+            <div class="flex flex-column align-items-start gap-2 w-full">
+                <label class="block mb-1 text-gray-500 font-medium" for="noOfLabels">No of labels</label>
+                <input pinputtext="" disabled type="text" [value]="noOfLabelsInStock" class="pl-1 w-full border-rounded py-1">
+            </div>
+        </div>
+    </div>
+    <hr class="my-4"/>
     <form [formGroup]="stampIndentForm" class="flex flex-column gap-4 my-3">
         <div class="flex flex-column gap-3">
             <div class="flex gap-2 xl:flex-row flex-column">

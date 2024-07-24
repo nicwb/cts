@@ -37,10 +37,10 @@ export class NewStampRequisitionComponent implements OnInit {
   @Output() VendorDetailsSelected = new EventEmitter<any>();
 
   ngOnInit(): void {
-    this.initialozeForm()
+    this.initiaiozeForm()
   }
 
-  initialozeForm() {
+  initiaiozeForm() {
     this.newStampRequisitionForm = this.fb.group({
       sheet: [0, [Validators.required, Validators.min(0)]],
       label: [0, [Validators.required, Validators.min(0)]],

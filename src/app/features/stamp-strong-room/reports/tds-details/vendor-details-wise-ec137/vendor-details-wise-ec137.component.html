@@ -1,1 +1,40 @@
-<p>vendor-details-wise-ec137 works!</p>
+<div class="grid">
+    <div class="col-12">
+        <app-common-header [headerName]="'Vendor Wise EC-136'" [imgSrc]="'assets/layout/images/icons/vendor-wise-ec136.png'">
+        </app-common-header>
+    </div>
+</div>
+<section class="w-full h-full">
+    <div class="w-11 mx-auto flex align-items-center justify-content-center">
+        <div class="surface-card px-6 py-5 shadow-2 border-round p-fluid">
+            <h3>Vendor Details Wise EC-137</h3>
+            <form [formGroup]="ec137Form" class="grid formgrid p-fluid">
+                <div class="field mb-4 col-12 md:col-6">
+                    <label for="fromDate" class="font-medium text-900">From Date</label>
+                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
+                    <div *ngIf="ec137Form.controls['fromDate'].errors && (ec137Form.controls['fromDate'].dirty || ec137Form.controls['fromDate'].touched)">
+                        <small class="p-error" *ngIf="ec137Form.controls['fromDate'].errors['required']">From Date is required.</small>
+                    </div>
+                </div>
+                <div class="field mb-4 col-12 md:col-6">
+                    <label for="toDate" class="font-medium text-900">To Date</label>
+                    <p-calendar [maxDate]="maxDateLimit" class="p-component p-element w-full p-calendar" formControlName="toDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
+                    <div *ngIf="ec137Form.controls['toDate'].errors && (ec137Form.controls['toDate'].dirty || ec137Form.controls['toDate'].touched)">
+                        <small class="p-error" *ngIf="ec137Form.controls['toDate'].errors['required']">To Date is required.</small>
+                    </div>
+                </div>
+            </form>
+            <div class="w-full flex justify-content-end align-items-center">
+                <button pbutton="" pripple="" icon="pi pi-file" (click)="generateEC137()" class="p-element p-ripple w-auto p-button p-component">
+                    <span class="p-button-label">Generate</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <mh-prime-dynamic-table [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [showTopMenubar]="true"
+            [data]="tableData" [isLoading]="isLoading">
+        </mh-prime-dynamic-table>
+    </div>
+</section>

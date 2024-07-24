@@ -7,7 +7,7 @@ import { TdsDetailsComponent } from './tds-details/tds-details.component';
 const routes: Routes = [
   {path: '', component: ReportsComponent},
   {path: 'stocks', component: StocksComponent},
-  {path: 'tds-details', component: TdsDetailsComponent},
+  {path: 'tds-details', loadChildren:()=>import("./tds-details/tds-details.module").then(m=>m.TdsDetailsModule)},
 ];
 
 @NgModule({

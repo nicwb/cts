@@ -2,7 +2,9 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampIndent, GetStampIndents, IndentItems } from 'src/app/core/models/stamp';
+import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
+import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
 import { convertDate } from 'src/utils/dateConversion';
@@ -17,6 +19,10 @@ export class IndentCaptureComponent implements OnInit {
   @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
 
   indentList: IndentItems[] = []
+  category: string = ""
+  denom: number = 0
+  noOfSheetsInStock: number = 0
+  noOfLabelsInStock: number = 0
   minDate: Date = new Date()
   loading: boolean = false
   isLoading: boolean = false
@@ -29,7 +35,7 @@ export class IndentCaptureComponent implements OnInit {
   sheetEmpty: boolean = false
   labelNegative: boolean = false
   labelEmpty: boolean = false
-  raisedToTreasuryCode!: string
+  raisedToTreasuryCode: string = 'CAA'
   quantity: number = (this.labelPerSheet * this.sheet) + this.label
   amount: number = this.quantity * this.denomination
   stamCombinationId!: number
@@ -44,7 +50,9 @@ export class IndentCaptureComponent implements OnInit {
   constructor(
     private stampIndentService: StampIndentService,
     private toastService: ToastService,
-    private fb: FormBuilder
+    private stampWalletService: StampWalletService,
+    private fb: FormBuilder,
+    private authTokenService: AuthTokenService
   ) { }
 
   @Output() StampCombinationSelected = new EventEmitter<any>();
@@ -95,13 +103,19 @@ export class IndentCaptureComponent implements OnInit {
 
   addStampIndent() {
     this.loading = true
-    if (this.stampIndentForm.valid) {
-      this.stampIndentPayload = {
+    if (this.stampIndentForm.valid && this.indentList.length > 0) {
+      const destructuredItems = this.indentList.map(({ stampCombinationId, sheet, label, quantity, amount }) => ({
+        stampCombinationId,
+        sheet,
+        label,
+        quantity,
+        amount
+      })); this.stampIndentPayload = {
         memoDate: this.stampIndentForm.value.memoDate,
         memoNumber: this.stampIndentForm.value.memoNo,
         remarks: this.stampIndentForm.value.remarks,
         raisedToTreasuryCode: this.raisedToTreasuryCode,
-        items: this.indentList
+        items: destructuredItems
       };
       console.log(this.stampIndentPayload);
 
@@ -147,6 +161,7 @@ export class IndentCaptureComponent implements OnInit {
     this.description = $event.description
     this.denomination = $event.denomination
     this.labelPerSheet = $event.noLabelPerSheet
+    this.getBalance({ treasuryCode: this.authTokenService.getDecodeToken().Levels[0].Scope[0], combinationId: this.stamCombinationId })
   }
   addItems() {
     if ((this.sheet || this.label) || (this.sheet < 0 || this.label < 0)) {
@@ -157,21 +172,37 @@ export class IndentCaptureComponent implements OnInit {
         labelPerSheet: this.labelPerSheet,
         sheet: this.sheet,
         label: this.label,
-        quantity: this.quantity, 
-        amount: this.amount, 
+        quantity: this.quantity,
+        amount: this.amount,
       }
       this.indentList.push(obj)
       this.stamCombinationId = 0
       this.description = ""
-      this.denomination = 
-      this.labelPerSheet = 0
+      this.denomination =
+        this.labelPerSheet = 0
       this.sheet = 0
       this.label = 0
       this.quantity = 0
       this.amount = 0
+      this.category = ""
+      this.denom = 0
+      this.noOfSheetsInStock = 0
+      this.noOfLabelsInStock = 0
       this.stampComp?.reset();
     } else {
       this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
     }
+  }
+  getBalance(params: any) {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.denom = response.result.denomination
+        this.noOfSheetsInStock = response.result.sheetLedgerBalance
+        this.noOfLabelsInStock = response.result.labelLedgerBalance
+        this.category = response.result.category
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
   }
 }

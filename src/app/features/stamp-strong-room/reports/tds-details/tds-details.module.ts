@@ -6,15 +6,23 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
 import { TdsDetailsComponent } from './tds-details.component';
 import { VendorDetailsWiseEC137Component } from './vendor-details-wise-ec137/vendor-details-wise-ec137.component';
 import { VendorWiseEC136Component } from './vendor-wise-ec136/vendor-wise-ec136.component';
-import { OptionCardComponent } from 'src/app/shared/modules/option-card/option-card.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 
 @NgModule({
   declarations: [TdsDetailsComponent, VendorDetailsWiseEC137Component, VendorWiseEC136Component],
   imports: [
     CommonModule,
-    // OptionCardModule,
-    TdsDetailsRoutingModule
+    TdsDetailsRoutingModule,
+    OptionCardModule,
+    ReactiveFormsModule,
+    CommonHeaderModule,
+    MhPrimeDynamicTableModule,
+    CalendarModule,
+    FormsModule,
   ],
 })
 export class TdsDetailsModule { }
