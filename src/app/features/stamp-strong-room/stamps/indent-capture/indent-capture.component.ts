@@ -205,4 +205,9 @@ export class IndentCaptureComponent implements OnInit {
       }
     })
   }
+  deleteProduct(item: any) {
+    console.log(item);
+    this.indentList = this.indentList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
+    
+  }
 }
