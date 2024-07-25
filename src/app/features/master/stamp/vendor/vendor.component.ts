@@ -129,7 +129,6 @@ export class VendorComponent implements OnInit {
       formData.append('vendorPhoto', this.vendorPhotoFile);
       formData.append('vendorPanPhoto', this.vendorPanPhotoFile);
       formData.append('vendorLicencePhoto', this.vendorLicencePhotoFile);
-      console.log(formatDate(this.VendorDetailsEntryForm.value.effectiveFrom));
       
       this.VendorService.addNewStampVendor(formData).subscribe((response) => {
         if (response.apiResponseStatus == 1) {

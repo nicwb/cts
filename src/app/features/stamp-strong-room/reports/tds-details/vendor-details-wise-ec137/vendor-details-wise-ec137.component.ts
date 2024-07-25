@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DynamicTable } from 'mh-prime-dynamic-table';
+import { formatDate } from 'src/utils/dateToString';
 
 @Component({
   selector: 'app-vendor-details-wise-ec137',
@@ -18,17 +19,17 @@ export class VendorDetailsWiseEC137Component implements OnInit {
 
   ngOnInit(): void {
     this.initiaiozeForm();
-    this.tableData.headers = [
-      {
-        name: "string",
-        dataType: "string",
-        fieldName: "string",
-        collapsible: false,
-        filterField: "string",
-        isSortable: false,
-        isFilterable: false
-      }
-    ]
+    // this.tableData.headers = [
+    //   {
+    //     name: "string",
+    //     dataType: "string",
+    //     fieldName: "string",
+    //     collapsible: false,
+    //     filterField: "string",
+    //     isSortable: false,
+    //     isFilterable: false
+    //   }
+    // ]
   }
   initiaiozeForm() {
     this.ec137Form = this.fb.group({
@@ -40,8 +41,8 @@ export class VendorDetailsWiseEC137Component implements OnInit {
   generateEC137() {
     if (this.ec137Form.valid) {
       const payload = {
-        fromDate: this.ec137Form.value.fromDate,
-        toDate: this.ec137Form.value.toDate
+        fromDate: formatDate(this.ec137Form.value.fromDate),
+        toDate: formatDate(this.ec137Form.value.toDate)
       }
       console.log(payload);
       

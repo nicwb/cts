@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicTable } from 'mh-prime-dynamic-table';
+import { StampReportsService } from 'src/app/core/services/stamp/stamp-reports.service';
+import { ToastService } from 'src/app/core/services/toast.service';
+import { formatDate } from 'src/utils/dateToString';
 
 @Component({
   selector: 'app-vendor-wise-ec136',
@@ -9,26 +12,18 @@ import { DynamicTable } from 'mh-prime-dynamic-table';
 })
 export class VendorWiseEC136Component implements OnInit {
 
+  data: any[] = []
   maxDateLimit: Date = new Date()
   ec136Form: FormGroup = new FormGroup({})
   isLoading: boolean = false
   tableData!: DynamicTable<any>;
   constructor(
-    private fb: FormBuilder,) { }
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private stampReportService: StampReportsService) { }
 
   ngOnInit(): void {
     this.initiaiozeForm();
-    this.tableData.headers = [
-      {
-        name: "string",
-        dataType: "string",
-        fieldName: "string",
-        collapsible: false,
-        filterField: "string",
-        isSortable: false,
-        isFilterable: false
-      }
-    ]
   }
   initiaiozeForm() {
     this.ec136Form = this.fb.group({
@@ -38,13 +33,24 @@ export class VendorWiseEC136Component implements OnInit {
   }
 
   generateEC136() {
+    this.isLoading = false
     if (this.ec136Form.valid) {
       const payload = {
-        fromDate: this.ec136Form.value.fromDate,
-        toDate: this.ec136Form.value.toDate
+        fromDate: formatDate(this.ec136Form.value.fromDate),
+        toDate: formatDate(this.ec136Form.value.toDate)
       }
-      console.log(payload);
-      
+      this.stampReportService.getEC136(payload).subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          // response.result.headers = this.headers
+          // this.tableData = response.result
+          this.data = response.result
+          this.isLoading = true
+        } else {
+          this.toastService.showError(response.message)
+        }
+      })
+    } else {
+      this.toastService.showWarning("Please fill all the fileds")
     }
   }
 }

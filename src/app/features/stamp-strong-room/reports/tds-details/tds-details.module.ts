@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
+import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
     ReactiveFormsModule,
     CommonHeaderModule,
     MhPrimeDynamicTableModule,
+    DynamicTableModule,
     CalendarModule,
+    TableModule,
     FormsModule,
   ],
 })
