@@ -7,9 +7,9 @@ import { NewInvoiceComponent } from './cheque-indent-invoice/cheque-invoice/new-
 
 const routes: Routes = [
   { path: "", component: ChequeComponent },
-  { path: 'cheque-entry', loadChildren: () => import('./cheque-entry/cheque-entry.module').then(m => m.ChequeEntryModule) },
-  { path: 'cheque-indent-invoice', loadChildren: () => import('./cheque-indent-invoice/cheque-indent-invoice.module').then(m => m.ChequeIndentInvoiceModule) },
-  { path: 'cheque-distribution', loadChildren: () => import('./cheque-distribution/cheque-distribution.module').then(m => m.ChequeDistributionModule) },
+  { path: 'cheque-entry', loadChildren: () => import('./cheque-entry/cheque-entry.module').then(m => m.ChequeEntryModule) , data: { breadcrumb: 'Cheque Entry' }},
+  { path: 'cheque-indent-invoice', loadChildren: () => import('./cheque-indent-invoice/cheque-indent-invoice.module').then(m => m.ChequeIndentInvoiceModule), data: { breadcrumb: 'Cheque Indent Invoice' }},
+  { path: 'cheque-distribution', loadChildren: () => import('./cheque-distribution/cheque-distribution.module').then(m => m.ChequeDistributionModule) , data: { breadcrumb: 'Cheque Distribution' }},
 ];
 
 @NgModule({
