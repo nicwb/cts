@@ -18,9 +18,9 @@ export class BreadcrumbComponent implements OnInit {
   constructor(public layoutService: LayoutService, private breadcrumbService: BreadcrumbService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
-    this.backButtonDisabled = this.location.isCurrentPathEqualTo('/');
     this.breadcrumbService.breadcrumbs$.subscribe(breadcrumbs => {
       this.breadcrumbs = breadcrumbs;
+      this.backButtonDisabled = this.location.isCurrentPathEqualTo('/');
     });
   }
 
