@@ -1,12 +1,11 @@
 <!-- <p-breadcrumb [model]="breadcrumbs" [home]="home"></p-breadcrumb> -->
 <div class="flex flex-row {{layoutService.config.colorScheme === 'light' ? 'sub-nav' : 'sub-nav-dark'}}">
     <div class="flex align-self-center align-items-center justify-content-center">
-        <button pButton pRipple type="button" icon="pi pi-angle-left" class="p-button-rounded p-button-secondary p-button-text" (click)="goBack()"></button>
+        <button pButton pRipple type="button" icon="pi pi-angle-left" class="p-button-rounded p-button-secondary p-button-text" (click)="goBack()" [disabled]="backButtonDisabled"></button>
         <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="pageReload()"></button>
     </div>
     <div class="flex-grow-1">
-        <p-breadcrumb [model]="breadcrumbs"></p-breadcrumb>
-     
+        <p-breadcrumb [model]="breadcrumbs" [home]="home" homeAriaLabel="Home"></p-breadcrumb>
     </div>
 </div>
 

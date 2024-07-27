@@ -12,65 +12,32 @@ import { filter } from 'rxjs';
 })
 export class BreadcrumbComponent implements OnInit {
   // breadcrumbs: Array<{ label: string, routerLink: string }> = [];
-  breadcrumbs: MenuItem[] = []; 
-  home: MenuItem | undefined;
-  static ROUTE_DATA_BREADCRUMB: any;
-  constructor(public layoutService: LayoutService,private breadcrumbService: BreadcrumbService, private router: Router, private activatedRoute: ActivatedRoute,private location: Location) { }
+  breadcrumbs: MenuItem[] = [];
+  home: MenuItem = { icon: 'pi pi-home', routerLink: '/' };
+  backButtonDisabled: boolean = false;
+  constructor(public layoutService: LayoutService, private breadcrumbService: BreadcrumbService, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
-    this.home = { icon: 'pi pi-home', routerLink: '/' };
-
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.updateBreadcrumbs(this.activatedRoute.root);
-    });
-
-    // Retrieve breadcrumb data from local storage on component initialization
-    // const storedBreadcrumbs = localStorage.getItem('breadcrumbs');
-    // if (storedBreadcrumbs) {
-    //   this.breadcrumbs = JSON.parse(storedBreadcrumbs);
-    // }
-  }
-
-  private updateBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: MenuItem[] = []): MenuItem[] {
-    const children: ActivatedRoute[] = route.children;
-
-    if (children.length === 0) {
+    this.backButtonDisabled = this.location.isCurrentPathEqualTo('/');
+    this.breadcrumbService.breadcrumbs$.subscribe(breadcrumbs => {
       this.breadcrumbs = breadcrumbs;
-      return breadcrumbs;
-    }
-
-    for (const child of children) {
-      const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-      if (routeURL !== '') {
-        url += `/${routeURL}`;
-
-        const data = child.snapshot.data;
-        if (data && data['breadcrumb']) {
-          breadcrumbs.push({ label: data['breadcrumb'], routerLink: url });
-        }
-      }
-      // Recursively call for child routes
-      return this.updateBreadcrumbs(child, url, breadcrumbs);
-    }
-    this.breadcrumbs = breadcrumbs.reverse(); // Reverse if needed for correct order
-    return breadcrumbs;
+    });
   }
 
 
-  pageReload(){
+  pageReload() {
     window.location.reload();
   }
-  goBack(){
-    this.location.back();
-    // let previousLink = '/';
-    // console.log(this.breadcrumbs.length);
-    
-    // if(this.breadcrumbs.length>1){
-    //   previousLink = this.breadcrumbs.slice(-2, -1)[0].routerLink[0];
-    // }
-    // this.router.navigate([previousLink]);
+  goBack() {
+    if (this.location.isCurrentPathEqualTo('/')) {
+      this.backButtonDisabled = true;
+      return;
+    }
+    let previousLink = '/';
+    const breadcrumbsLength = this.breadcrumbs.length;
+    if (breadcrumbsLength > 1) {
+      previousLink = this.breadcrumbs[breadcrumbsLength - 2].routerLink;
+    }
+    this.router.navigate([previousLink]);
   }
 }
