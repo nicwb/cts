@@ -139,7 +139,7 @@ export interface AddStampIndent {
   memoDate: string;
   remarks: string;
   raisedToTreasuryCode: string
-  items: IndentItems[]
+  stampIndentData: IndentItems[]
 }
 
 export interface GetStampInvoices {

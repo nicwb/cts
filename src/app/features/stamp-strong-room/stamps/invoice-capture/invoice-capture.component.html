@@ -42,17 +42,17 @@
         </div>
     </div>
     <div class="col-12">
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [showTopMenubar]="true"
+            [data]="tableData" [isLoading]="isLoading">
+        </mh-prime-dynamic-table>
     </div>
 </div>
 
-<p-dialog header="Modify Indent" [(visible)]="displayModifyModal" [modal]="true" [style]="{width: '50vw'}"
+<p-dialog header="Modify Indent" [(visible)]="displayModifyModal" [modal]="false" [style]="{width: 'fit-content'}"
     [baseZIndex]="10000" [draggable]="false">
     <hr class="mb-2" />
-    <div class="w-full border-rounded p-2 flex flex-column gap-2 align-items-start">
+    <!-- <div class="w-full border-rounded p-2 flex flex-column gap-2 align-items-start">
         <h5 class="text-red-500">Current Balance</h5>
         <div class="flex align-items-center justify-content-between w-full">
             <div class="flex align-items-center gap-2">
@@ -159,11 +159,86 @@
                 <textarea type="text" pinputtext="" readonly [value]="remarks" formControlName="remarks" placeholder="Eg: Indent for Kolkata treasury." class="p-inputtext p-component p-element w-full"></textarea>
             </div>
         </div>
-    </form>
+    </form> -->
+
+
+
+    <div class="card">
+        <p-toast></p-toast>
+        <p-table [value]="products" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}" [rowHover]="true"
+            styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="min-width: 8rem">Memo No.</th>
+                    <th style="min-width: 8rem">Memo Date</th>
+                    <th style="min-width: 8rem">Available Sheet</th>
+                    <th style="min-width: 8rem">Available Label</th>
+                    <th style="min-width: 8rem">Given Sheet</th>
+                    <th style="min-width: 8rem">Given Label</th>
+                    <th style="min-width: 8rem">Quantity</th>
+                    <th style="min-width: 8rem">Amount</th>
+                    <th style="min-width: 8rem">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="product">
+                    <td>{{product.code}}</td>
+                    <td>{{product.name}}</td>
+                    <td><p-tag [value]="product.inventoryStatus"></p-tag></td>
+                    <td>{{product.price | currency: 'USD'}}</td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="text"
+                                    [(ngModel)]="product.price" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{product.price | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="text"
+                                    [(ngModel)]="product.price" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{product.price | currency: 'USD'}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>{{product.price | currency: 'USD'}}</td>
+                    <td>{{product.price | currency: 'USD'}}</td>
+
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(product)" class="p-button-rounded p-button-text">
+                            </button>
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-trash" 
+                                (click)="onRowEditInit(product)" class="p-button-rounded p-button-text text-red-400">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(product)"
+                                class="p-button-rounded p-button-text p-button-success mr-2">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(product, ri)"
+                                class="p-button-rounded p-button-text p-button-danger">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
     <div class="flex gap-2 xl:flex-row flex-column justify-content-end pt-3">
-        <p-button label="Invoice" (click)="addStampInvoice()" iconPos="right"
-            class="p-0 p-button-rounded p-button p-component" icon="pi pi-arrow-right">
+        <p-button label="Invoice" (click)="addStampInvoice()" iconPos="right" class="p-0 rounded"
+            icon="pi pi-arrow-right">
         </p-button>
+
     </div>
 </p-dialog>
 
@@ -171,26 +246,26 @@
     [baseZIndex]="10000" [draggable]="false">
     <hr class="mb-4" />
 
-<div class="asked w-full flex flex-column gap-2">
-    <div class="treasury-code flex gap-4 align-items-center w-full">
-        <label class="w-12rem font-semibold" for="tcode">By Treasury Code: </label>
-        <input type="text" [value]="tcode" class="p-inputtext p-component p-element" readonly disabled>
+    <div class="asked w-full flex flex-column gap-2">
+        <div class="treasury-code flex gap-4 align-items-center w-full">
+            <label class="w-12rem font-semibold" for="tcode">By Treasury Code: </label>
+            <input type="text" [value]="tcode" class="p-inputtext p-component p-element" readonly disabled>
+        </div>
+        <div class="no-of-sheet flex gap-4 align-items-center w-full">
+            <label class="w-12rem font-semibold" for=">sheetAsked">No: Of sheet asked: </label>
+            <input type="text" [value]="sheetAsked" class="p-inputtext p-component p-element" readonly disabled>
+        </div>
+        <div class="no-of-sheet flex gap-4 align-items-center w-full">
+            <label class="w-12rem font-semibold" for="sheetGiven">No: Of sheet given: </label>
+            <input type="text" [value]="sheetGiven" class="p-inputtext p-component p-element" readonly disabled>
+        </div>
+        <div class="no-of-sheet flex gap-4 align-items-center w-full">
+            <label class="w-12rem font-semibold" for="labelAsked">No: Of label asked: </label>
+            <input type="text" [value]="labelAsked" class="p-inputtext p-component p-element" readonly disabled>
+        </div>
+        <div class="no-of-sheet flex gap-4 align-items-center w-full">
+            <label class="w-12rem font-semibold" for="labelGiven">No: Of label given: </label>
+            <input type="text" [value]="labelGiven" class="p-inputtext p-component p-element" readonly disabled>
+        </div>
     </div>
-    <div class="no-of-sheet flex gap-4 align-items-center w-full">
-        <label class="w-12rem font-semibold" for=">sheetAsked">No: Of sheet asked: </label>
-        <input type="text" [value]="sheetAsked" class="p-inputtext p-component p-element" readonly disabled>
-    </div>
-    <div class="no-of-sheet flex gap-4 align-items-center w-full">
-        <label class="w-12rem font-semibold" for="sheetGiven">No: Of sheet given: </label>
-        <input type="text" [value]="sheetGiven" class="p-inputtext p-component p-element" readonly disabled>
-    </div>
-    <div class="no-of-sheet flex gap-4 align-items-center w-full">
-        <label class="w-12rem font-semibold" for="labelAsked">No: Of label asked: </label>
-        <input type="text" [value]="labelAsked" class="p-inputtext p-component p-element" readonly disabled>
-    </div>
-    <div class="no-of-sheet flex gap-4 align-items-center w-full">
-        <label class="w-12rem font-semibold" for="labelGiven">No: Of label given: </label>
-        <input type="text" [value]="labelGiven" class="p-inputtext p-component p-element" readonly disabled>
-    </div>
-</div>
 </p-dialog>

@@ -25,7 +25,7 @@ export class IndentCaptureComponent implements OnInit {
   noOfLabelsInStock: number = 0
   minDate: Date = new Date()
   loading: boolean = false
-  isLoading: boolean = false
+  isLoading: boolean = true
   labelPerSheet: number = 0
   denomination: number = 0
   description: string = ""
@@ -82,6 +82,8 @@ export class IndentCaptureComponent implements OnInit {
       .getAllStampIndents(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
+          console.log(response);
+          
           response.result.data.map((item: any) => {
             item.createdAt = convertDate(item.createdAt);
             item.memoDate = convertDate(item.memoDate);
@@ -115,18 +117,20 @@ export class IndentCaptureComponent implements OnInit {
         memoNumber: this.stampIndentForm.value.memoNo,
         remarks: this.stampIndentForm.value.remarks,
         raisedToTreasuryCode: this.raisedToTreasuryCode,
-        items: destructuredItems
+        stampIndentData: destructuredItems
       };
       console.log(this.stampIndentPayload);
 
-      // this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
-      //   if (response.apiResponseStatus == 1) {
-      //     this.toastService.showSuccess(response.message);
-      //     this.getAllStampIndents();
-      //   } else {
-      //     this.toastService.showAlert(response.message, response.apiResponseStatus);
-      //   }
-      // });
+      this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          this.toastService.showSuccess(response.message);
+          this.stampIndentForm.reset();
+          this.getAllStampIndents();
+          this.indentList = []
+        } else {
+          this.toastService.showAlert(response.message, response.apiResponseStatus);
+        }
+      });
     } else {
       this.toastService.showWarning('Please fill all the required fields');
     }
@@ -164,7 +168,7 @@ export class IndentCaptureComponent implements OnInit {
     this.getBalance({ treasuryCode: this.authTokenService.getDecodeToken().Levels[0].Scope[0], combinationId: this.stamCombinationId })
   }
   addItems() {
-    if ((this.sheet || this.label) || (this.sheet < 0 || this.label < 0)) {
+    if (((this.sheet + this.label) > 0) && this.sheet >= 0 && this.label >= 0) {
       const obj = {
         stampCombinationId: this.stamCombinationId,
         description: this.description,

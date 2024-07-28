@@ -15,6 +15,7 @@ import { convertDate } from 'src/utils/dateConversion';
 })
 export class InvoiceCaptureComponent implements OnInit {
 
+  isLoading: boolean = true
   minDate: Date = new Date()
   noOfLabelsPerSheet: number = 0
   noOfSheets: number = 0
@@ -45,6 +46,7 @@ export class InvoiceCaptureComponent implements OnInit {
   tableData!: DynamicTable<GetStampInvoices>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampInvoiceEntryPayload!: AddStampInvoice
+  products: any[] = []
 
   constructor(
     private stampInvoiceService: StampInvoiceService,
@@ -61,16 +63,53 @@ export class InvoiceCaptureComponent implements OnInit {
 
     // this.getAllStampIndents();
     this.changeDynamicTable(this.listType);
-
     this.initializeForm();
+    this.products = [
+      {
+        id: '1000',
+        code: 'f230fh0g3',
+        name: 'Bamboo Watch',
+        description: 'Product Description',
+        image: 'bamboo-watch.jpg',
+        price: 65,
+        category: 'Accessories',
+        quantity: 24,
+        inventoryStatus: 'INSTOCK',
+        rating: 5
+      },
+      {
+        id: '1001',
+        code: 'nvklal433',
+        name: 'Black Watch',
+        description: 'Product Description',
+        image: 'black-watch.jpg',
+        price: 72,
+        category: 'Accessories',
+        quantity: 61,
+        inventoryStatus: 'OUTOFSTOCK',
+        rating: 4
+      },
+      {
+        id: '1002',
+        code: 'zz21cz3c1',
+        name: 'Blue Band',
+        description: 'Product Description',
+        image: 'blue-band.jpg',
+        price: 79,
+        category: 'Fitness',
+        quantity: 2,
+        inventoryStatus: 'LOWSTOCK',
+        rating: 3
+      }
+    ]
   }
 
   initializeForm(): void {
     this.stampInvoiceForm = this.fb.group({
-      noOfSheets: [null, [Validators.required, Validators.pattern(/^\d+$/)]], 
-      noOfLabels: [null, [Validators.required, Validators.pattern(/^\d+$/)]], 
+      noOfSheets: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
+      noOfLabels: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
       invoiceNumber: [null, [Validators.required]],
-      invoiceDate: [null, [Validators.required]] 
+      invoiceDate: [null, [Validators.required]]
     });
   }
 
@@ -165,6 +204,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   getAllStampIndents() {
+    this.isLoading = true
     this.stampIndentService.getAllStampIndentsProcessing(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1 || response.apiResponseStatus === 3) {
         response.result.data.map((item: any) => {
@@ -172,6 +212,7 @@ export class InvoiceCaptureComponent implements OnInit {
           item.memoDate = convertDate(item.memoDate);
         });
         this.tableData = response.result;
+        this.isLoading = false
       } else {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
@@ -238,4 +279,17 @@ export class InvoiceCaptureComponent implements OnInit {
     this.label = $event;
     this.calcAmountQuantity();
   }
+
+  onRowEditInit(product: any) {
+  }
+
+  onRowEditSave(product: any) {
+
+  }
+
+  onRowEditCancel(product: any, index: number) {
+
+  }
+
+
 }

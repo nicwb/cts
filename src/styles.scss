@@ -87,22 +87,25 @@ $gutter: 1rem; //for primeflex grid system
     }
 }
 
-// Scroll-Bar
 ::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    border-radius: 12px;
+    width: 7px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
     background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
     background: #888;
-    border-radius: 12px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #797979;
-}
+    border-radius: 0.25em;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #787878;
+  }
 .p-calendar {
     width: 100% !important;
 }

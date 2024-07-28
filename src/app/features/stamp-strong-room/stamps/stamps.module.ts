@@ -20,6 +20,8 @@ import { StampCombinationDropdownModule } from 'src/app/shared/modules/stamp-com
 import { DatatableSkeletonModule } from 'src/app/shared/modules/datatable-skeleton/datatable-skeleton.module';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { TagModule } from 'primeng/tag';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { TableModule } from 'primeng/table';
     DropdownModule,
     DialogModule,
     CalendarModule,
+    ToastModule,
+    TagModule,
     ReactiveFormsModule,
     TreasuryDropdownModule,
     FormsModule,
