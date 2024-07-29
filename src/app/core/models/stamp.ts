@@ -109,13 +109,21 @@ export interface GetStampCombinations {
 
 
 export interface GetStampIndents {
-  stampIndentId: number;
+  id: number;
   memoNumber: string;
-  memoDate: string;
+  memoDate: Date;
   remarks: string;
-  raisedByTreasuryCode: string;
   raisedToTreasuryCode: string;
-  stmapCategory: string;
+  raisedByTreasuryCode: string;
+  createdAt: string;
+  status: string;
+  childData: ChildData[];
+}
+
+export interface ChildData {
+  id: number;
+  combinationId: number;
+  stampCategory: string;
   description: string;
   denomination: number;
   labelPerSheet: number;
@@ -123,8 +131,7 @@ export interface GetStampIndents {
   label: number;
   quantity: number;
   amount: number;
-  status: string;
-  createdAt: string;
+  isInvoiced: boolean;
 }
 
 export interface IndentItems {
@@ -134,12 +141,29 @@ export interface IndentItems {
   quantity: number; 
   amount: number; 
 }
+
 export interface AddStampIndent {
   memoNumber: string;
   memoDate: string;
   remarks: string;
   raisedToTreasuryCode: string
   stampIndentData: IndentItems[]
+}
+
+export interface Indent {
+  amount: number;
+  availableLabel: number;
+  availableSheet: number;
+  combinationId: number;
+  denomination: number;
+  description: string;
+  id: number;
+  isInvoiced: boolean;
+  label: number;
+  labelPerSheet: number;
+  quantity: number;
+  sheet: number;
+  stampCategory: string;
 }
 
 export interface GetStampInvoices {
@@ -151,9 +175,6 @@ export interface GetStampInvoices {
   stmapCategory: string;
   description: string;
   denomination: number;
-  // labelPerSheet: number;
-  // indentedSheet: number;
-  // indentedLabel: number;
   sheet: number;
   label: number;
   quantity: number;
@@ -162,17 +183,19 @@ export interface GetStampInvoices {
   stampInvoiceId: number;
   invoiceNumber: string;
   invoiceDate: string;
-  // createdBy: number;
 }
 
 export interface AddStampInvoice {
-  stampIndentId: number;
+  indentId: number;
+  stampIndentData: StampIndentData[];
+}
+
+export interface StampIndentData {
+  stampCombinationId: number;
   sheet: number;
   label: number;
-  invoiceNumber: string;
-  invoiceDate: string;
-  amount: number;
   quantity: number;
+  amount: number;
 }
 
 export interface StampWalletGet {

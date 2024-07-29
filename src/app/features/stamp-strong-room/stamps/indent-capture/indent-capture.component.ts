@@ -183,7 +183,7 @@ export class IndentCaptureComponent implements OnInit {
       this.stamCombinationId = 0
       this.description = ""
       this.denomination =
-        this.labelPerSheet = 0
+      this.labelPerSheet = 0
       this.sheet = 0
       this.label = 0
       this.quantity = 0
