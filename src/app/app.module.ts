@@ -33,6 +33,7 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
 import { PaymentMandateComponent } from './features/payment-mandate/payment-mandate.component';
 import { CommonHeaderComponent } from './shared/modules/common-header/common-header.component';
 import { DynamicTableComponent } from './shared/modules/dynamic-table/dynamic-table.component';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 @NgModule({
     declarations: [
         AppComponent, NotfoundComponent, ServerDownComponent, LoginComponent, NotFoundComponent, StaticLoginComponent,
@@ -43,6 +44,7 @@ import { DynamicTableComponent } from './shared/modules/dynamic-table/dynamic-ta
         ToastModule,
         NgxPermissionsModule.forRoot(),
         NgxSpinnerModule,
+        BreadcrumbModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
