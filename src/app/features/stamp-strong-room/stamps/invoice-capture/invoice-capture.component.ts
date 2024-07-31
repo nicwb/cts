@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { AddStampInvoice, GetStampInvoices, Indent } from 'src/app/core/models/stamp';
+import { AddStampInvoice, GetStampIndents, GetStampInvoices, Indent } from 'src/app/core/models/stamp';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -267,7 +267,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   onRowEditSave(indent: Indent, index: number) {
-    
+
 
     if ((indent.label !== null && indent.label >= 0 && indent.label <= indent.availableLabel) && (indent.sheet !== null && indent.sheet >= 0 && indent.sheet <= indent.availableSheet)) {
       delete this.clonedIndents[indent.id as number];
