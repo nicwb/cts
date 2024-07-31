@@ -41,10 +41,6 @@
         </div>
     </div>
     <div class="col-12 my-8">
-        <!-- <mh-prime-dynamic-table [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [showTopMenubar]="true"
-            [data]="tableData" [isLoading]="isLoading">
-        </mh-prime-dynamic-table> -->
         <p-table [value]="data" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
             [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
             <ng-template pTemplate="header">

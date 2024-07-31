@@ -148,7 +148,7 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                <input [ngClass]="{'text-red-500 ng-invalid ng-dirty': (indent.sheet == null || indent.sheet < 0 || indent.sheet > indent.availableSheet)}" class="p-inputtext p-component w-10rem p-element" pInputText type="number"
                                     [(ngModel)]="indent.sheet" (ngModelChange)="childSheetSelected($event, indent)" />
                             </ng-template>
                             <ng-template pTemplate="output">
@@ -159,7 +159,7 @@
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                <input [ngClass]="{'text-red-500 ng-invalid ng-dirty': (indent.label == null || indent.label < 0 || indent.label > indent.availableLabel)}" class="p-inputtext p-component w-10rem p-element" pInputText type="number"
                                     [(ngModel)]="indent.label" (ngModelChange)="childLabelSelected($event, indent)"/>
                             </ng-template>
                             <ng-template pTemplate="output">
@@ -179,7 +179,7 @@
                             (click)="deleteProduct(indent)" class="p-button-rounded p-button-text text-red-400">
                             </button>
                             <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                                (click)="onRowEditSave(indent)"
+                                (click)="onRowEditSave(indent, ri)"
                                 class="p-button-rounded p-button-text p-button-success mr-2">
                             </button>
                             <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"

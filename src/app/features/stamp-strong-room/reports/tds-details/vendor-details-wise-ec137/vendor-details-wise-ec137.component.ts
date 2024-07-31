@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DynamicTable } from 'mh-prime-dynamic-table';
+import { StampReportsService } from 'src/app/core/services/stamp/stamp-reports.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 import { formatDate } from 'src/utils/dateToString';
 
 @Component({
@@ -10,26 +12,18 @@ import { formatDate } from 'src/utils/dateToString';
 })
 export class VendorDetailsWiseEC137Component implements OnInit {
 
+  data: any[] = []
   maxDateLimit: Date = new Date()
   ec137Form: FormGroup = new FormGroup({})
   isLoading: boolean = false
   tableData!: DynamicTable<any>;
   constructor(
-    private fb: FormBuilder,) { }
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private stampReportService: StampReportsService) { }
 
   ngOnInit(): void {
     this.initiaiozeForm();
-    // this.tableData.headers = [
-    //   {
-    //     name: "string",
-    //     dataType: "string",
-    //     fieldName: "string",
-    //     collapsible: false,
-    //     filterField: "string",
-    //     isSortable: false,
-    //     isFilterable: false
-    //   }
-    // ]
   }
   initiaiozeForm() {
     this.ec137Form = this.fb.group({
@@ -39,11 +33,20 @@ export class VendorDetailsWiseEC137Component implements OnInit {
   }
 
   generateEC137() {
+    this.isLoading = true
     if (this.ec137Form.valid) {
       const payload = {
         fromDate: formatDate(this.ec137Form.value.fromDate),
         toDate: formatDate(this.ec137Form.value.toDate)
       }
+      this.stampReportService.getEC137(payload).subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          this.data = response.result
+          this.isLoading = true
+        } else {
+          this.toastService.showError(response.message)
+        }
+      })
       console.log(payload);
       
     }

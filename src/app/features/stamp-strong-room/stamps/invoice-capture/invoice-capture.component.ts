@@ -112,13 +112,13 @@ export class InvoiceCaptureComponent implements OnInit {
   getAllStampInvoices() {
     this.stampInvoiceService.getAllStampInvoice(this.tableQueryParameters).subscribe((response) => {
       console.log(response);
-      if (response.apiResponseStatus === 1 || response.apiResponseStatus === 3) {
-        response.result.data.map((item: any) => {
-          item.createdAt = convertDate(item.createdAt);
-          item.memoDate = convertDate(item.memoDate);
-          item.invoiceDate = convertDate(item.invoiceDate)
-        });
-        this.tableData = response.result;
+      if (response.apiResponseStatus == 1) {
+        // response.result.data.map((item: any) => {
+        //   item.createdAt = convertDate(item.createdAt);
+        //   item.memoDate = convertDate(item.memoDate);
+        //   item.invoiceDate = convertDate(item.invoiceDate)
+        // });
+        // this.tableData = response.result;
       } else {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
@@ -128,23 +128,36 @@ export class InvoiceCaptureComponent implements OnInit {
   addStampInvoice() {
     this.loading = true
     if (this.stampIndentId && this.indents.length > 0) {
-      this.stampInvoiceEntryPayload = {
-        indentId: this.stampIndentId,
-        stampIndentData: this.indents
-      };
-      console.log(this.stampInvoiceEntryPayload);
+      let flag = false
+      let indexes = ""
+      this.indents.forEach((element, index) => {
+        if ((element.sheet > element.availableSheet || element.sheet < 0 || element.label == null) || element.label > element.availableLabel || element.label < 0 || element.label == null) {
+          flag = true
+          indexes += `${index + 1},`
+        }
+      })
 
-      // this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
-      //   if (response.apiResponseStatus == 1) {
-      //     this.toastService.showAlert(response.message, 1);
-      //     this.stampInvoiceForm.reset()
-      //     this.displayModifyModal = false;
-      //     this.getAllStampIndents();
-      //   } else {
-      //     this.toastService.showAlert(response.message, response.apiResponseStatus);
-      //   }
-      // });
-      this.loading = false
+      if (!flag) {
+        this.stampInvoiceEntryPayload = {
+          indentId: this.stampIndentId,
+          stampIndentData: this.indents
+        };
+        console.log(this.stampInvoiceEntryPayload);
+
+        // this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
+        //   if (response.apiResponseStatus == 1) {
+        //     this.toastService.showAlert(response.message, 1);
+        //     this.stampInvoiceForm.reset()
+        //     this.displayModifyModal = false;
+        //     this.getAllStampIndents();
+        //   } else {
+        //     this.toastService.showAlert(response.message, response.apiResponseStatus);
+        //   }
+        // });
+        this.loading = false
+      } else {
+        this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has invalid number of sheets or label`)
+      }
     } else {
       this.toastService.showWarning('Please fill all the required fields');
     }
@@ -251,16 +264,15 @@ export class InvoiceCaptureComponent implements OnInit {
     this.clonedIndents[indent.id as number] = { ...indent }
   }
 
-  onRowEditSave(indent: Indent) {
-    console.log(indent.label, indent.sheet);
+  onRowEditSave(indent: Indent, index: number) {
     
-    if ((indent.label && indent.label >= 0) && (indent.sheet && indent.sheet >= 0)) {
-      console.log(indent.sheet, indent.label);
+
+    if ((indent.label !== null && indent.label >= 0 && indent.label <= indent.availableLabel) && (indent.sheet !== null && indent.sheet >= 0 && indent.sheet <= indent.availableSheet)) {
       delete this.clonedIndents[indent.id as number];
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Indent is updated' });
     } else {
-      indent.sheet = 0
-      indent.label = 0
+      this.indents[index] = this.clonedIndents[indent.id as number];
+      delete this.clonedIndents[indent.id as number];
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Sheet or Label' });
     }
   }
