@@ -145,16 +145,16 @@ export class InvoiceCaptureComponent implements OnInit {
         };
         console.log(this.stampInvoiceEntryPayload);
 
-        // this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
-        //   if (response.apiResponseStatus == 1) {
-        //     this.toastService.showAlert(response.message, 1);
-        //     this.stampInvoiceForm.reset()
-        //     this.displayModifyModal = false;
-        //     this.getAllStampIndents();
-        //   } else {
-        //     this.toastService.showAlert(response.message, response.apiResponseStatus);
-        //   }
-        // });
+        this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
+          if (response.apiResponseStatus == 1) {
+            this.toastService.showAlert(response.message, 1);
+            this.stampInvoiceForm.reset()
+            this.displayModifyModal = false;
+            this.getAllStampIndents();
+          } else {
+            this.toastService.showAlert(response.message, response.apiResponseStatus);
+          }
+        });
         this.loading = false
       } else {
         this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has invalid number of sheets or label`)
