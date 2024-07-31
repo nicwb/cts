@@ -227,6 +227,8 @@ export class InvoiceCaptureComponent implements OnInit {
         this.rejectIndent($event.rowData.id)
         break;
       case 'indent-edit':
+        console.log($event.rowData.childData);
+        
         this.stampIndentId = $event.rowData.id
         this.indents = $event.rowData.childData
         this.memoNumber = $event.rowData.memoNumber;
