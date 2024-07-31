@@ -33,7 +33,7 @@
                 </div>
                 <div class="flex-1">
                     <label for="memoDate" class="block mb-1 font-medium text-900">Memo Date</label>
-                    <p-calendar [minDate]="minDate" class="p-component p-element w-full p-calendar" formControlName="memoDate"
+                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="memoDate"
                         placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
                     <div
                         *ngIf="stampIndentForm.controls['memoDate'].errors && (stampIndentForm.controls['memoDate'].dirty || stampIndentForm.controls['memoDate'].touched)">
@@ -159,7 +159,7 @@
                 <th style="min-width: 12rem">Description</th>
                 <th style="min-width: 12rem">Denomination</th>
                 <th style="min-width: 12rem">Label/Sheet</th>
-                <th style="min-width: 12rem">sheet</th>
+                <th style="min-width: 12rem">Sheet</th>
                 <th style="min-width: 12rem">Label</th>
                 <th style="min-width: 12rem">Quantity</th>
                 <th style="min-width: 12rem">Amount</th>

@@ -46,124 +46,161 @@
             [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [showTopMenubar]="true"
             [data]="tableData" [isLoading]="isLoading">
         </mh-prime-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [showTopMenubar]="true"
+            [data]="tableData" [isLoading]="isLoading">
+        </mh-prime-dynamic-table>
     </div>
 </div>
 
-<p-dialog header="Modify Indent" [(visible)]="displayModifyModal" [modal]="true" [style]="{width: '50vw'}"
+<p-dialog header="Modify Indent" [(visible)]="displayModifyModal" [modal]="false" [style]="{width: 'fit-content', 'max-width': '95%'}"
     [baseZIndex]="10000" [draggable]="false">
     <hr class="mb-2" />
-    <div class="w-full border-rounded p-2 flex flex-column gap-2 align-items-start">
-        <h5 class="text-red-500">Current Balance</h5>
-        <div class="flex align-items-center justify-content-between w-full">
-            <div class="flex align-items-center gap-2">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfSheets">No of sheets</label>
-                <input pinputtext="" disabled type="text" [value]="noOfSheets" class="pl-1 border-rounded py-1">
-            </div>
-            <div class="flex align-items-center gap-2">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfLabelsPerSheet">No of labels/sheet</label>
-                <input pinputtext="" disabled type="text" [value]="noOfLabelsPerSheet" class="pl-1 border-rounded py-1">
-            </div>
+    <div class="flex gap-2 xl:flex-row flex-column pb-4 pt-1">
+        <div class="flex-1">
+            <label for="memoNo" class="block mb-1 font-medium text-900">Memo No:</label>
+            <input type="text" [value]="memoNumber" disabled
+                class="p-inputtext p-component p-element w-full text-gray-900 font-bold">
+        </div>
+        <div class="flex-1">
+            <label for="memoDate" class="block mb-1 font-medium text-900">Memo Date</label>
+            <input type="text" [value]="memoDate" disabled
+                class="p-inputtext p-component p-element w-full text-gray-900 font-bold">
+        </div>
+        <div class="flex-1">
+            <label for="remarks" class="block mb-1 font-medium text-900">Remarks</label>
+            <input type="text" [value]="remarks" disabled
+                class="p-inputtext p-component p-element w-full text-gray-900 font-bold" />
+        </div>
+        <div class="flex-1">
+            <label for="remarks" class="block mb-1 font-medium text-900">Source Treasury</label>
+            <input type="text" [value]="treasury" disabled
+                class="p-inputtext p-component p-element w-full text-gray-900 font-bold" />
         </div>
     </div>
-    <hr class="mb-4" />
-    <form [formGroup]="stampInvoiceForm" class="flex flex-column gap-4 mt-3">
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="memoNumber" class="block mb-1 font-medium text-900">Memo No:</label>
-                <input type="text" pinputtext="" readonly disabled [value]="memoNumber" placeholder="Eg: MEMO5256" class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-auto">
-                <label for="memoDate" class="block mb-1 font-medium text-900">Memo Date</label>
-                <input class="p-inputtext p-component p-element w-full" readonly disabled [value]="memoDate" placeholder="mm/dd/yyyy"/>
-            </div>
+    <div class="flex gap-2 align-items-end w-full mb-3">
+        <div class="p-0 flex-1">
+            <label for="Category" class="block mb-1 font-medium text-900">Combination</label>
+            <app-stamp-combination-dropdown
+                (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="col-12 p-0 flex-auto">
-                <label for="combination" class="block mb-1 font-medium text-900">Combination</label>
-                <input type="text" pinputtext="" [value]="combination" readonly disabled class="p-inputtext p-component p-element w-full">
-            </div>
+
+        <div class="flex-1">
+            <label for="Description" class="block mb-1 font-medium text-900">Description</label>
+            <input type="text" pinputtext="" [value]="description" readonly disabled
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-1">
-                <label for="treasury" class="block mb-1 font-medium text-900">Treasury
-                    (<span class="font-medium text-gray-900">Default: </span> <span
-                        class="font-medium text-gray-500">Superintendent</span>)</label>
-                <input class="p-inputtext p-component p-element w-full" [value]="treasury" readonly disabled />
-            </div>
-            <div class="flex-1">
-                <label for="description" class="block mb-1 font-medium text-900">Description</label>
-                <input type="text" pinputtext="" [value]="description" readonly disabled
-                    class="p-inputtext p-component p-element w-full">
-            </div>
+        <div class="flex-1">
+            <label for="denomination" class="block mb-1 font-medium text-900">Denomination (Rs.)</label>
+            <input type="number" pinputtext="" [value]="denomination" readonly disabled
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="denomination" class="block mb-1 font-medium text-900">Denomination (Rs.)</label>
-                <input type="number" pinputtext="" [value]="denomination" readonly disabled class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-auto">
-                <label for="labelPerSheet" class="block mb-1 font-medium text-900">Label/Sheet</label>
-                <input type="text" pinputtext="" [value]="labelPerSheet" readonly disabled class="p-inputtext p-component p-element w-full">
-            </div>
+        <div class="flex-1">
+            <label for="labelPerSheet" class="block mb-1 font-medium text-900">Label/Sheet</label>
+            <input type="text" pinputtext="" [value]="labelPerSheet" readonly disabled
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="noOfSheets" class="block mb-1 font-medium text-900">No: of Sheets</label>
-                <input type="number" pinputtext="" [value]="sheet" formControlName="noOfSheets" placeholder="Eg: 10"
-                    class="p-inputtext p-component p-element w-full">
-                <div *ngIf="stampInvoiceForm.controls['noOfSheets'].errors && (stampInvoiceForm.controls['noOfSheets'].dirty || stampInvoiceForm.controls['noOfSheets'].touched)">
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['noOfSheets'].errors['required']">No: of Sheets is required.</small>
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['noOfSheets'].errors['pattern']">Please enter a valid number.</small>
-                </div>
-            </div>
-            <div class="flex-auto">
-                <label for="noOfLabels" class="block mb-1 font-medium text-900">No: of Labels</label>
-                <input type="number" pinputtext="" [value]="label" formControlName="noOfLabels" placeholder="Eg: 10"
-                    class="p-inputtext p-component p-element w-full">
-                <div *ngIf="stampInvoiceForm.controls['noOfLabels'].errors && (stampInvoiceForm.controls['noOfLabels'].dirty || stampInvoiceForm.controls['noOfLabels'].touched)">
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['noOfLabels'].errors['required']">No: of Labels is required.</small>
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['noOfLabels'].errors['pattern']">Please enter a valid number.</small>
-                </div>
-            </div>
+        <div class="flex-1">
+            <label for="noOfSheets" class="block mb-1 font-medium text-900">No: of Sheets</label>
+            <input type="number" pinputtext="" [(ngModel)]="inputSheet"
+                (ngModelChange)="sheetSelected($event)" placeholder="Eg: 10"
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="quantity" class="block mb-1 font-medium text-900">Quantity</label>
-                <input type="text" pinputtext="" readonly disabled [value]="quantity" class="p-inputtext p-component p-element w-full">
-            </div>
-            <div class="flex-auto">
-                <label for="amount" class="block mb-1 font-medium text-900">Amount (Rs.)</label>
-                <input type="text" pinputtext="" readonly disabled [value]="amount" class="p-inputtext p-component p-element w-full">
-            </div>
+        <div class="flex-1">
+            <label for="noOfLabels" class="block mb-1 font-medium text-900">No: of Labels</label>
+            <input type="number" pinputtext="" [(ngModel)]="inputLabel"
+                (ngModelChange)="labelSelected($event)" placeholder="Eg: 10"
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="Invoice Number" class="block mb-1 font-medium text-900">Invoice Number</label>
-                <input type="text" pinputtext="" formControlName="invoiceNumber" class="p-inputtext p-component p-element w-full">
-                <div *ngIf="stampInvoiceForm.controls['invoiceNumber'].errors && (stampInvoiceForm.controls['invoiceNumber'].dirty || stampInvoiceForm.controls['invoiceNumber'].touched)">
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['invoiceNumber'].errors['required']">Invoice Number is required.</small>
-                </div>
-            </div>
-            <div class="flex-auto">
-                <label for="Invoice Date" class="block mb-1 font-medium text-900">Invoice Date</label>
-                <p-calendar [minDate]="minDate" class="p-component p-element w-full p-calendar" formControlName="invoiceDate" placeholder="mm/dd/yyyy"
-                    appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-                <div *ngIf="stampInvoiceForm.controls['invoiceDate'].errors && (stampInvoiceForm.controls['invoiceDate'].dirty || stampInvoiceForm.controls['invoiceDate'].touched)">
-                    <small class="p-error" *ngIf="stampInvoiceForm.controls['invoiceDate'].errors['required']">Invoice Date is required.</small>
-                </div>
-            </div>
+        <div class="flex-1">
+            <label for="quantity" class="block mb-1 font-medium text-900">Quantity</label>
+            <input type="text" pinputtext="" readonly disabled [value]="quantity"
+                class="p-inputtext p-component p-element w-full">
         </div>
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="Remarks" class="block mb-1 font-medium text-900">Remarks</label>
-                <textarea type="text" pinputtext="" readonly [value]="remarks" formControlName="remarks" placeholder="Eg: Indent for Kolkata treasury." class="p-inputtext p-component p-element w-full"></textarea>
-            </div>
+        <div class="flex-1">
+            <label for="amount" class="block mb-1 font-medium text-900">Amount (Rs.)</label>
+            <input type="text" pinputtext="" readonly disabled [value]="amount"
+                class="p-inputtext p-component p-element w-full">
         </div>
-    </form>
-    <div class="flex gap-2 xl:flex-row flex-column justify-content-end pt-3">
-        <p-button label="Invoice" (click)="addStampInvoice()" iconPos="right"
-            class="p-0 p-button-rounded p-button p-component" icon="pi pi-arrow-right">
+    </div>
+    <div class="flex justify-content-start mb-3">
+        <p-button label="Add New" (click)="addItems()" class="rounded">
         </p-button>
+    </div>
+    <div class="card">
+        <p-table [value]="indents" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem', 'width': '100%'}" [rowHover]="true"
+            styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="min-width: 10rem">Stamp Category</th>
+                    <th style="min-width: 10rem">Denomination</th>
+                    <th style="min-width: 10rem">Available Sheet</th>
+                    <th style="min-width: 10rem">Available Label</th>
+                    <th style="min-width: 10rem">Given Sheet</th>
+                    <th style="min-width: 10rem">Given Label</th>
+                    <th style="min-width: 10rem">Quantity</th>
+                    <th style="min-width: 10rem">Amount</th>
+                    <th style="min-width: 10rem">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-indent let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="indent" class="font-medium text-gray-900">
+                    <td>{{indent.stmapCategory}}</td>
+                    <td>{{indent.denomination | currency: 'INR'}}</td>
+                    <td>{{indent.availableSheet}}</td>
+                    <td>{{indent.availableLabel}}</td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                    [(ngModel)]="indent.sheet" (ngModelChange)="childSheetSelected($event, indent)" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{(indent.sheet && indent.sheet >= 0) && indent.sheet}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                    [(ngModel)]="indent.label" (ngModelChange)="childLabelSelected($event, indent)"/>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{(indent.label && indent.label >= 0) && indent.label}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>{{indent.quantity}}</td>
+                    <td>{{indent.amount | currency: 'INR'}}</td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(indent)" class="p-button-rounded p-button-text">
+                            </button>
+                            <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" 
+                            severity="danger" 
+                            (click)="deleteProduct(indent)" class="p-button-rounded p-button-text text-red-400">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(indent)"
+                                class="p-button-rounded p-button-text p-button-success mr-2">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(indent, ri)"
+                                class="p-button-rounded p-button-text p-button-danger">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="flex gap-2 xl:flex-row flex-column justify-content-end pt-3">
+        <p-button [loading]="loading" label="Invoice" (click)="addStampInvoice()" iconPos="right" class="p-0 rounded"
+            icon="pi pi-arrow-right">
+        </p-button>
+
     </div>
 </p-dialog>
 

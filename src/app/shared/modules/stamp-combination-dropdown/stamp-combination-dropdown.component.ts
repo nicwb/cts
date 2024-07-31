@@ -48,8 +48,13 @@ export class StampCombinationDropdownComponent implements OnInit {
 
   onStampCombinationSelected() {
     const val = this.data.filter((item) => {
-      return item.stampCombinationId == this.extractFirstNumber(this.selectedCombinationType.combination)
+      if (this.selectedCombinationType) {
+        return item.stampCombinationId == this.extractFirstNumber(this.selectedCombinationType.combination)
+      }
+      return []
     })
+    // console.log(val[0]);
+    
     this.StampCombinationSelected.emit(val[0]);
   }
   reset() {

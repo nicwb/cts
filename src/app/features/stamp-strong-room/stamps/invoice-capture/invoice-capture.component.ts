@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { AddStampInvoice, GetStampIndents, GetStampInvoices } from 'src/app/core/models/stamp';
+import { AddStampInvoice, GetStampInvoices, Indent } from 'src/app/core/models/stamp';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { Status } from 'src/app/core/enum/stampIndentStatusEnum';
 import { convertDate } from 'src/utils/dateConversion';
+import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
+import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
+import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-invoice-capture',
@@ -15,9 +18,9 @@ import { convertDate } from 'src/utils/dateConversion';
 })
 export class InvoiceCaptureComponent implements OnInit {
 
-  minDate: Date = new Date()
-  noOfLabelsPerSheet: number = 0
-  noOfSheets: number = 0
+  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+
+  isLoading: boolean = true
   tcode: string = ""
   sheetAsked: number = 0
   sheetGiven: number = 0
@@ -28,14 +31,13 @@ export class InvoiceCaptureComponent implements OnInit {
   description: string = "Eg: Court fees.";
   sheet: number = 0;
   label: number = 0;
-  combination: string = "";
   treasury: string = "";
   quantity: number = 0;
   amount: number = 0;
   memoNumber: string = "";
   memoDate!: Date;
   remarks: string = "";
-  stampIndentId: number = -1;
+  stampIndentId: number = 0;
   stamCombinationId!: number;
   listType: string = 'indent';
   stampInvoiceForm!: FormGroup;
@@ -46,12 +48,21 @@ export class InvoiceCaptureComponent implements OnInit {
   detailTableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampInvoiceEntryPayload!: AddStampInvoice
-  isLoading:boolean = false
+  indents: any[] = []
+  noOfSheetsInStock: number = 0
+  noOfLabelsInStock: number = 0
+  inputSheet: number = 0
+  inputLabel: number = 0
+  category: string = ""
+  loading: boolean = false
+  clonedIndents: { [s: string]: Indent } = {};
   constructor(
     private stampInvoiceService: StampInvoiceService,
     private stampIndentService: StampIndentService,
+    private stampWalletService: StampWalletService,
+    private authTokenService: AuthTokenService,
+    private messageService: MessageService,
     private toastService: ToastService,
-    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -60,20 +71,9 @@ export class InvoiceCaptureComponent implements OnInit {
       pageIndex: 0,
     };
 
-    // this.getAllStampIndents();
     this.changeDynamicTable(this.listType);
-
-    this.initializeForm();
   }
 
-  initializeForm(): void {
-    this.stampInvoiceForm = this.fb.group({
-      noOfSheets: [null, [Validators.required, Validators.pattern(/^\d+$/)]], 
-      noOfLabels: [null, [Validators.required, Validators.pattern(/^\d+$/)]], 
-      invoiceNumber: [null, [Validators.required]],
-      invoiceDate: [null, [Validators.required]] 
-    });
-  }
 
   changeDynamicTable(type: string) {
     this.listType = type;
@@ -127,28 +127,25 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   addStampInvoice() {
-    if (this.stampInvoiceForm.valid) {
+    this.loading = true
+    if (this.stampIndentId && this.indents.length > 0) {
       this.stampInvoiceEntryPayload = {
-        amount: this.amount,
-        quantity: this.quantity,
-        stampIndentId: this.stampIndentId,
-        label: this.stampInvoiceForm.value.noOfLabels,
-        sheet: this.stampInvoiceForm.value.noOfSheets,
-        invoiceDate: this.stampInvoiceForm.value.invoiceDate,
-        invoiceNumber: this.stampInvoiceForm.value.invoiceNumber
+        indentId: this.stampIndentId,
+        stampIndentData: this.indents
       };
       console.log(this.stampInvoiceEntryPayload);
 
-      this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showAlert(response.message, 1);
-          this.stampInvoiceForm.reset()
-          this.displayModifyModal = false;
-          this.getAllStampIndents();
-        } else {
-          this.toastService.showAlert(response.message, response.apiResponseStatus);
-        }
-      });
+      // this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
+      //   if (response.apiResponseStatus == 1) {
+      //     this.toastService.showAlert(response.message, 1);
+      //     this.stampInvoiceForm.reset()
+      //     this.displayModifyModal = false;
+      //     this.getAllStampIndents();
+      //   } else {
+      //     this.toastService.showAlert(response.message, response.apiResponseStatus);
+      //   }
+      // });
+      this.loading = false
     } else {
       this.toastService.showWarning('Please fill all the required fields');
     }
@@ -174,12 +171,22 @@ export class InvoiceCaptureComponent implements OnInit {
           item.memoDate = convertDate(item.memoDate);
         });
         this.tableData = response.result;
+        this.isLoading = false
       } else {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
     });
-    this.isLoading=false
+  }
 
+  getBalance(params: any, item: any) {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        item.availableSheet = response.result.sheetLedgerBalance
+        item.availableLabel = response.result.labelLedgerBalance
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
   }
 
   getIndentDetailsById(rowData: any) {
@@ -204,21 +211,19 @@ export class InvoiceCaptureComponent implements OnInit {
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
       case 'indent-reject':
-        this.rejectIndent($event.rowData.stampIndentId)
+        this.rejectIndent($event.rowData.id)
         break;
       case 'indent-edit':
-        this.displayModifyModal = true;
-        this.denomination = $event.rowData.denomination;
+        this.stampIndentId = $event.rowData.id
+        this.indents = $event.rowData.childData
         this.memoNumber = $event.rowData.memoNumber;
         this.memoDate = $event.rowData.memoDate;
-        this.label = $event.rowData.label;
-        this.labelPerSheet = $event.rowData.labelPerSheet;
-        this.description = $event.rowData.description;
-        this.treasury = $event.rowData.raisedToTreasuryCode;
-        this.sheet = $event.rowData.sheet;
+        this.treasury = $event.rowData.raisedByTreasuryCode;
         this.remarks = $event.rowData.remarks;
-        this.stampIndentId = $event.rowData.stampIndentId;
-        this.combination = `Category: ${$event.rowData.stmapCategory} | Description: ${$event.rowData.description} | Denomination: ${$event.rowData.denomination} | No of Labels per Sheet: ${$event.rowData.labelPerSheet}`;
+        this.indents.map((item) => {
+          this.getBalance({ treasuryCode: this.authTokenService.getDecodeToken().Levels[0].Scope[0], combinationId: item.combinationId }, item)
+        })
+        this.displayModifyModal = true;
         this.calcAmountQuantity();
         break;
       case 'invoice-details':
@@ -230,17 +235,111 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   calcAmountQuantity() {
-    this.quantity = (this.labelPerSheet * this.sheet) + this.label;
+    this.quantity = (this.labelPerSheet * this.inputSheet) + this.inputLabel;
     this.amount = this.quantity * this.denomination;
   }
 
   sheetSelected($event: any) {
-    this.sheet = $event;
+    this.inputSheet = $event;
     this.calcAmountQuantity();
   }
 
   labelSelected($event: any) {
-    this.label = $event;
+    this.inputLabel = $event;
     this.calcAmountQuantity();
+  }
+
+  onRowEditInit(indent: Indent) {
+    this.clonedIndents[indent.id as number] = { ...indent }
+  }
+
+  onRowEditSave(indent: Indent) {
+    console.log(indent.label, indent.sheet);
+    
+    if ((indent.label && indent.label >= 0) && (indent.sheet && indent.sheet >= 0)) {
+      console.log(indent.sheet, indent.label);
+      delete this.clonedIndents[indent.id as number];
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Indent is updated' });
+    } else {
+      indent.sheet = 0
+      indent.label = 0
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Sheet or Label' });
+    }
+  }
+
+  onRowEditCancel(indent: Indent, index: number) {
+    this.indents[index] = this.clonedIndents[indent.id as number];
+    delete this.clonedIndents[indent.id as number];
+
+  }
+
+  deleteProduct(item: any) {
+    this.indents = this.indents.filter((val) => val.id !== item.id)
+
+  }
+  getBal(params: any) {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.noOfSheetsInStock = response.result.sheetLedgerBalance
+        this.noOfLabelsInStock = response.result.labelLedgerBalance
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
+  }
+  onStampCombinationSelected($event: any) {
+    if ($event) {
+      this.category = $event.stampCategory1
+      this.stamCombinationId = $event.stampCombinationId
+      this.description = $event.description
+      this.denomination = $event.denomination
+      this.labelPerSheet = $event.noLabelPerSheet
+      this.getBal({ treasuryCode: this.authTokenService.getDecodeToken().Levels[0].Scope[0], combinationId: this.stamCombinationId })
+    }
+  }
+  addItems() {
+    if (((this.inputSheet + this.inputLabel) > 0) && this.inputSheet >= 0 && this.inputLabel >= 0) {
+      const obj = {
+        stmapCategory: this.category,
+        denomination: this.denomination,
+        availableSheet: this.noOfSheetsInStock,
+        availableLabel: this.noOfLabelsInStock,
+        sheet: this.inputSheet,
+        label: this.inputLabel,
+        quantity: this.quantity,
+        amount: this.amount,
+      }
+      console.log(obj);
+
+      this.indents.push(obj)
+      this.stamCombinationId = 0
+      this.description = ""
+      this.denomination =
+        this.labelPerSheet = 0
+      this.inputSheet = 0
+      this.inputLabel = 0
+      this.quantity = 0
+      this.amount = 0
+      this.category = ""
+      this.noOfSheetsInStock = 0
+      this.noOfLabelsInStock = 0
+      this.stampComp?.reset();
+    } else {
+      this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
+    }
+  }
+
+  childSheetSelected($event: any, indent: Indent) {
+    if ($event >= 0 && $event < indent.availableSheet) {
+      indent.quantity = (indent.labelPerSheet * indent.sheet) + indent.label;
+      indent.amount = indent.quantity * indent.denomination;
+    }
+  }
+
+  childLabelSelected($event: any, indent: Indent) {
+    if ($event >= 0 && $event < indent.availableLabel) {
+      indent.quantity = (indent.labelPerSheet * indent.sheet) + indent.label;
+      indent.amount = indent.quantity * indent.denomination;
+    }
   }
 }
