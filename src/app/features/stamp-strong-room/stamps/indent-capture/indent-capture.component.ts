@@ -87,7 +87,6 @@ export class IndentCaptureComponent implements OnInit {
           response.result.data.map((item: any) => {
             item.createdAt = convertDate(item.createdAt);
             item.memoDate = convertDate(item.memoDate);
-            this.isLoading = false
           });
           this.tableData = response.result;
         } else {
@@ -96,6 +95,7 @@ export class IndentCaptureComponent implements OnInit {
             response.apiResponseStatus
           );
         }
+        this.isLoading = false
       });
   }
 
