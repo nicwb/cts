@@ -45,6 +45,7 @@ export class InvoiceCaptureComponent implements OnInit {
   displayDetailsModal!: boolean;
   tableActionButton: ActionButtonConfig[] = [];
   tableData!: DynamicTable<GetStampInvoices>;
+  detailTableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampInvoiceEntryPayload!: AddStampInvoice
   indents: any[] = []
@@ -175,7 +176,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   getAllStampIndents() {
-    this.isLoading = true
+    this.isLoading=true
     this.stampIndentService.getAllStampIndentsProcessing(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1 || response.apiResponseStatus === 3) {
         response.result.data.map((item: any) => {
@@ -240,7 +241,8 @@ export class InvoiceCaptureComponent implements OnInit {
         break;
       case 'invoice-details':
         this.displayDetailsModal = true
-        this.getIndentDetailsById($event.rowData)
+        this.detailTableData = $event.rowData.indentData;
+        console.log($event.rowData)
         break;
     }
   }
