@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { AddStampInvoice, GetStampInvoices } from 'src/app/core/models/stamp';
+import { AddStampInvoice, GetStampIndents, GetStampInvoices } from 'src/app/core/models/stamp';
 import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -43,9 +43,10 @@ export class InvoiceCaptureComponent implements OnInit {
   displayDetailsModal!: boolean;
   tableActionButton: ActionButtonConfig[] = [];
   tableData!: DynamicTable<GetStampInvoices>;
+  detailTableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampInvoiceEntryPayload!: AddStampInvoice
-
+  isLoading:boolean = false
   constructor(
     private stampInvoiceService: StampInvoiceService,
     private stampIndentService: StampIndentService,
@@ -165,6 +166,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   getAllStampIndents() {
+    this.isLoading=true
     this.stampIndentService.getAllStampIndentsProcessing(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1 || response.apiResponseStatus === 3) {
         response.result.data.map((item: any) => {
@@ -176,6 +178,8 @@ export class InvoiceCaptureComponent implements OnInit {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
     });
+    this.isLoading=false
+
   }
 
   getIndentDetailsById(rowData: any) {
@@ -219,7 +223,8 @@ export class InvoiceCaptureComponent implements OnInit {
         break;
       case 'invoice-details':
         this.displayDetailsModal = true
-        this.getIndentDetailsById($event.rowData)
+        this.detailTableData = $event.rowData.indentData;
+        console.log($event.rowData)
         break;
     }
   }

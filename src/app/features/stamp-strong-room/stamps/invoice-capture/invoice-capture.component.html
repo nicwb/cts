@@ -42,10 +42,10 @@
         </div>
     </div>
     <div class="col-12">
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [showTopMenubar]="true"
+            [data]="tableData" [isLoading]="isLoading">
+        </mh-prime-dynamic-table>
     </div>
 </div>
 
@@ -170,7 +170,7 @@
 <p-dialog header="Invoice Details" [(visible)]="displayDetailsModal" [modal]="true" [style]="{width: 'max-content'}"
     [baseZIndex]="10000" [draggable]="false">
     <hr class="mb-4" />
-
+<!-- 
 <div class="asked w-full flex flex-column gap-2">
     <div class="treasury-code flex gap-4 align-items-center w-full">
         <label class="w-12rem font-semibold" for="tcode">By Treasury Code: </label>
@@ -192,5 +192,9 @@
         <label class="w-12rem font-semibold" for="labelGiven">No: Of label given: </label>
         <input type="text" [value]="labelGiven" class="p-inputtext p-component p-element" readonly disabled>
     </div>
-</div>
+</div> -->
+<mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [showTopMenubar]="true"
+            [data]="detailTableData" [isLoading]="isLoading">
+</mh-prime-dynamic-table>
 </p-dialog>
