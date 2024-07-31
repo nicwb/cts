@@ -114,12 +114,12 @@ export class InvoiceCaptureComponent implements OnInit {
     this.stampInvoiceService.getAllStampInvoice(this.tableQueryParameters).subscribe((response) => {
       console.log(response);
       if (response.apiResponseStatus == 1) {
-        // response.result.data.map((item: any) => {
-        //   item.createdAt = convertDate(item.createdAt);
-        //   item.memoDate = convertDate(item.memoDate);
-        //   item.invoiceDate = convertDate(item.invoiceDate)
-        // });
-        // this.tableData = response.result;
+        response.result.data.map((item: any) => {
+          item.createdAt = convertDate(item.createdAt);
+          item.memoDate = convertDate(item.memoDate);
+          item.invoiceDate = convertDate(item.invoiceDate)
+        });
+        this.tableData = response.result;
       } else {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
