@@ -316,7 +316,7 @@ export class InvoiceCaptureComponent implements OnInit {
   addItems() {
     if (((this.inputSheet + this.inputLabel) > 0) && this.inputSheet >= 0 && this.inputLabel >= 0) {
       const obj = {
-        stmapCategory: this.category,
+        stampCategory: this.category,
         denomination: this.denomination,
         availableSheet: this.noOfSheetsInStock,
         availableLabel: this.noOfLabelsInStock,

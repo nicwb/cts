@@ -59,24 +59,33 @@ export class InvoiceReceiveComponent implements OnInit {
       });
   }
   handleButtonClick($event: any) {
+    let indents = $event.rowData.childData
+    indents = indents.map((element: any, index: number) => {
+      return {
+        stampCombinationId:element.combinationId,
+        sheet:element.sheet,
+        label:element.label,
+        quantity:element.quantity,
+        amount:element.amount
+      }
+    })
     this.stampIndentReceivePayload = {
       indentId: $event.rowData.id,
-      stampIndentData: $event.rowData.childData
+      stampIndentData: indents
     }
     console.log(this.stampIndentReceivePayload);
-    
-    // this.stampIndentService.receiveIndent(this.stampIndentReceivePayload).subscribe((response) => {
-    //   if (response.apiResponseStatus == 1) {
-    //     this.toastService.showSuccess(
-    //       response.message,
-    //     );
-    //     this.getAllStampIndents()
-    //   } else {
-    //     this.toastService.showAlert(
-    //       response.message,
-    //       response.apiResponseStatus
-    //     );
-    //   }
-    // })
+    this.stampIndentService.receiveIndent(this.stampIndentReceivePayload).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.toastService.showSuccess(
+          response.message,
+        );
+        this.getAllStampIndents()
+      } else {
+        this.toastService.showAlert(
+          response.message,
+          response.apiResponseStatus
+        );
+      }
+    })
   }
 }

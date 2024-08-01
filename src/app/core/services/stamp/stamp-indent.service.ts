@@ -79,7 +79,6 @@ export class StampIndentService {
   }
 
  rejectIndentByIndentId(id: number): Observable<IapiResponce<boolean>> {
-
       return this.http.get<IapiResponce<boolean>>(`v1/Stamp/RejectStampIndent?stampIndentId=${id}`).pipe(
         catchError((error) => {
           throw this.toastService.showError(error.message)

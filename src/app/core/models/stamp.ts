@@ -172,7 +172,7 @@ export interface GetStampInvoices {
   memoDate: string;
   remarks: string;
   raisedToTreasuryCode: string;
-  stmapCategory: string;
+  stampCategory: string;
   description: string;
   denomination: number;
   sheet: number;
