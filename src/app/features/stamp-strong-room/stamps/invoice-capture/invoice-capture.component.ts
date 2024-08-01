@@ -40,7 +40,6 @@ export class InvoiceCaptureComponent implements OnInit {
   stampIndentId: number = 0;
   stamCombinationId!: number;
   listType: string = 'indent';
-  // stampInvoiceForm!: FormGroup;
   displayModifyModal!: boolean;
   displayDetailsModal!: boolean;
   tableActionButton: ActionButtonConfig[] = [];
@@ -156,7 +155,6 @@ export class InvoiceCaptureComponent implements OnInit {
         this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
           if (response.apiResponseStatus == 1) {
             this.toastService.showAlert(response.message, 1);
-            // this.stampInvoiceForm.reset()
             this.displayModifyModal = false;
             this.getAllStampIndents();
           } else {
@@ -210,24 +208,19 @@ export class InvoiceCaptureComponent implements OnInit {
     })
   }
 
-  // getIndentDetailsById(rowData: any) {
-  //   this.stampIndentService.getStampIndentDetails(rowData.stampIndentId).subscribe((response) => {
-  //     if (response.apiResponseStatus === 1) {
-  //       console.log(response.result);
-  //       this.labelAsked = response.result.label
-  //       this.labelGiven = rowData.label
-  //       this.sheetAsked = response.result.sheet
-  //       this.sheetGiven = rowData.sheet
-  //       this.tcode = response.result.raisedByTreasuryCode
-  //       this.stampInvoiceForm.setValue({
-  //         noOfSheets: this.sheet,
-  //         noOfLabels: this.label
-  //       });
-  //     } else {
-  //       this.toastService.showAlert(response.message, response.apiResponseStatus);
-  //     }
-  //   })
-  // }
+  getIndentDetailsById(id: number) {
+    this.stampIndentService.getStampIndentDetails(id, this.tableQueryParameters).subscribe((response) => {
+      if (response.apiResponseStatus === 1) {
+        response.result.data.map((item: any) => {
+          item.createdAt = convertDate(item.createdAt);
+          item.memoDate = convertDate(item.memoDate);
+        });
+        this.detailTableData = response.result
+      } else {
+        this.toastService.showAlert(response.message, response.apiResponseStatus);
+      }
+    })
+  }
 
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
@@ -251,8 +244,7 @@ export class InvoiceCaptureComponent implements OnInit {
         break;
       case 'invoice-details':
         this.displayDetailsModal = true
-        this.detailTableData = $event.rowData.indentData;
-        console.log($event.rowData)
+        this.getIndentDetailsById($event.rowData.id)
         break;
     }
   }
@@ -337,7 +329,7 @@ export class InvoiceCaptureComponent implements OnInit {
       this.stamCombinationId = 0
       this.description = ""
       this.denomination =
-        this.labelPerSheet = 0
+      this.labelPerSheet = 0
       this.inputSheet = 0
       this.inputLabel = 0
       this.quantity = 0

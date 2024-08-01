@@ -151,13 +151,13 @@ export interface AddStampIndent {
 }
 
 export interface Indent {
+  id: number;
   amount: number;
   availableLabel: number;
   availableSheet: number;
   combinationId: number;
   denomination: number;
   description: string;
-  id: number;
   isInvoiced: boolean;
   label: number;
   labelPerSheet: number;
