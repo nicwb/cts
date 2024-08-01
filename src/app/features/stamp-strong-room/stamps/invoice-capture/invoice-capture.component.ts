@@ -40,7 +40,7 @@ export class InvoiceCaptureComponent implements OnInit {
   stampIndentId: number = 0;
   stamCombinationId!: number;
   listType: string = 'indent';
-  stampInvoiceForm!: FormGroup;
+  // stampInvoiceForm!: FormGroup;
   displayModifyModal!: boolean;
   displayDetailsModal!: boolean;
   tableActionButton: ActionButtonConfig[] = [];
@@ -104,6 +104,7 @@ export class InvoiceCaptureComponent implements OnInit {
           class: 'p-button-info p-button-sm',
           icon: 'pi pi-info-circle',
           lable: 'Details',
+          renderButton: () => !this.displayDetailsModal 
         },
       ];
       this.getAllStampInvoices();
@@ -131,24 +132,31 @@ export class InvoiceCaptureComponent implements OnInit {
     if (this.stampIndentId && this.indents.length > 0) {
       let flag = false
       let indexes = ""
-      this.indents.forEach((element, index) => {
+      let data = this.indents.map((element, index) => {
         if ((element.sheet > element.availableSheet || element.sheet < 0 || element.label == null) || element.label > element.availableLabel || element.label < 0 || element.label == null) {
           flag = true
           indexes += `${index + 1},`
+        }
+        return {
+          stampCombinationId:element.combinationId,
+          sheet:element.sheet,
+          label:element.label,
+          quantity:element.quantity,
+          amount:element.amount
         }
       })
 
       if (!flag) {
         this.stampInvoiceEntryPayload = {
           indentId: this.stampIndentId,
-          stampIndentData: this.indents
+          stampIndentData: data
         };
         console.log(this.stampInvoiceEntryPayload);
 
         this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
           if (response.apiResponseStatus == 1) {
             this.toastService.showAlert(response.message, 1);
-            this.stampInvoiceForm.reset()
+            // this.stampInvoiceForm.reset()
             this.displayModifyModal = false;
             this.getAllStampIndents();
           } else {
@@ -202,24 +210,24 @@ export class InvoiceCaptureComponent implements OnInit {
     })
   }
 
-  getIndentDetailsById(rowData: any) {
-    this.stampIndentService.getStampIndentDetails(rowData.stampIndentId).subscribe((response) => {
-      if (response.apiResponseStatus === 1) {
-        console.log(response.result);
-        this.labelAsked = response.result.label
-        this.labelGiven = rowData.label
-        this.sheetAsked = response.result.sheet
-        this.sheetGiven = rowData.sheet
-        this.tcode = response.result.raisedByTreasuryCode
-        this.stampInvoiceForm.setValue({
-          noOfSheets: this.sheet,
-          noOfLabels: this.label
-        });
-      } else {
-        this.toastService.showAlert(response.message, response.apiResponseStatus);
-      }
-    })
-  }
+  // getIndentDetailsById(rowData: any) {
+  //   this.stampIndentService.getStampIndentDetails(rowData.stampIndentId).subscribe((response) => {
+  //     if (response.apiResponseStatus === 1) {
+  //       console.log(response.result);
+  //       this.labelAsked = response.result.label
+  //       this.labelGiven = rowData.label
+  //       this.sheetAsked = response.result.sheet
+  //       this.sheetGiven = rowData.sheet
+  //       this.tcode = response.result.raisedByTreasuryCode
+  //       this.stampInvoiceForm.setValue({
+  //         noOfSheets: this.sheet,
+  //         noOfLabels: this.label
+  //       });
+  //     } else {
+  //       this.toastService.showAlert(response.message, response.apiResponseStatus);
+  //     }
+  //   })
+  // }
 
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {

@@ -4,9 +4,9 @@
         </app-common-header>
     </div>
     <div class="col-12">
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10" [showTopMenubar]="true"
             [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
+            [data]="tableData" >
+        </mh-prime-dynamic-table>
     </div>
 </div>
