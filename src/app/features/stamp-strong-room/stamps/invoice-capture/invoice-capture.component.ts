@@ -112,7 +112,6 @@ export class InvoiceCaptureComponent implements OnInit {
 
   getAllStampInvoices() {
     this.stampInvoiceService.getAllStampInvoice(this.tableQueryParameters).subscribe((response) => {
-      console.log(response);
       if (response.apiResponseStatus == 1) {
         response.result.data.map((item: any) => {
           item.createdAt = convertDate(item.createdAt);
@@ -209,8 +208,13 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   getIndentDetailsById(id: number) {
+    this.tableQueryParameters = {
+      pageSize: 10,
+      pageIndex: 0,
+    };
     this.stampIndentService.getStampIndentDetails(id, this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1) {
+        console.log(response);
         response.result.data.map((item: any) => {
           item.createdAt = convertDate(item.createdAt);
           item.memoDate = convertDate(item.memoDate);
@@ -228,8 +232,6 @@ export class InvoiceCaptureComponent implements OnInit {
         this.rejectIndent($event.rowData.id)
         break;
       case 'indent-edit':
-        console.log($event.rowData.childData);
-        
         this.stampIndentId = $event.rowData.id
         this.indents = $event.rowData.childData
         this.memoNumber = $event.rowData.memoNumber;
