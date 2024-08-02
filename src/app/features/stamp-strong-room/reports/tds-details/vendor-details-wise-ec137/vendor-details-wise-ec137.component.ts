@@ -32,24 +32,16 @@ export class VendorDetailsWiseEC137Component implements OnInit {
     });
   }
 
-  generateEC137() {
+  generateEC137($event: any) {
     this.isLoading = true
-    if (this.ec137Form.valid) {
-      const payload = {
-        fromDate: formatDate(this.ec137Form.value.fromDate),
-        toDate: formatDate(this.ec137Form.value.toDate)
+    this.stampReportService.getEC($event, 'EC137').subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.data = response.result
+      } else {
+        this.toastService.showError(response.message)
       }
-      this.stampReportService.getEC(payload, 'EC137').subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.data = response.result
-          this.isLoading = true
-        } else {
-          this.toastService.showError(response.message)
-        }
-      })
-      console.log(payload);
-      
-    }
+    })
+    this.isLoading = false
   }
 
 }

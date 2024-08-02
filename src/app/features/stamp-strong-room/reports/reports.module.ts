@@ -5,7 +5,6 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsComponent } from './reports.component';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 
-
 @NgModule({
   declarations: [ReportsComponent],
   imports: [

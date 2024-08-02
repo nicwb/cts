@@ -11,6 +11,7 @@ import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { StocksComponent } from './stocks.component';
 import { StampStockRegisterComponent } from './stamp-stock-register/stamp-stock-register.component';
+import { EcFormModule } from "../shared/ec-form/ec-form.module";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { StampStockRegisterComponent } from './stamp-stock-register/stamp-stock-
     CalendarModule,
     TableModule,
     FormsModule,
-  ]
+    EcFormModule
+]
 })
 export class StocksModule { }

@@ -13,10 +13,10 @@ import { Component, OnInit } from '@angular/core';
 export class StampStockRegisterComponent implements OnInit {
 
   data: any[] = []
-  maxDateLimit: Date = new Date()
-  ec134Form: FormGroup = new FormGroup({})
   isLoading: boolean = false
   tableData!: DynamicTable<any>;
+  ec134Form: FormGroup = new FormGroup({})
+  maxDateLimit: Date = new Date()
   constructor(
     private fb: FormBuilder,
     private toastService: ToastService,
@@ -32,26 +32,18 @@ export class StampStockRegisterComponent implements OnInit {
     });
   }
 
-  generateEC134() {
-    this.isLoading = false
-    if (this.ec134Form.valid) {
-      const payload = {
-        fromDate: formatDate(this.ec134Form.value.fromDate),
-        toDate: formatDate(this.ec134Form.value.toDate)
+  generateEC134($event: any) {
+    this.isLoading = true
+    this.stampReportService.getEC($event, 'EC134').subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        // response.result.headers = this.headers
+        // this.tableData = response.result
+        this.data = response.result
+      } else {
+        this.toastService.showError(response.message)
       }
-      this.stampReportService.getEC(payload, 'EC134').subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          // response.result.headers = this.headers
-          // this.tableData = response.result
-          this.data = response.result
-          this.isLoading = true
-        } else {
-          this.toastService.showError(response.message)
-        }
-      })
-    } else {
-      this.toastService.showWarning("Please fill all the fileds")
-    }
+    })
+    this.isLoading = false
   }
 
 }

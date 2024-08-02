@@ -6,40 +6,7 @@
     </div>
 </div>
 <section class="w-full h-full">
-    <div class="w-11 mx-auto flex align-items-center justify-content-center">
-        <div class="surface-card px-6 py-5 shadow-2 border-round p-fluid">
-            <h3>Vendor Wise</h3>
-            <form [formGroup]="ec136Form" class="grid formgrid p-fluid">
-                <div class="field mb-4 col-12 md:col-6">
-                    <label for="fromDate" class="font-medium text-900">From Date</label>
-                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate"
-                        placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-                    <div
-                        *ngIf="ec136Form.controls['fromDate'].errors && (ec136Form.controls['fromDate'].dirty || ec136Form.controls['fromDate'].touched)">
-                        <small class="p-error" *ngIf="ec136Form.controls['fromDate'].errors['required']">From Date is
-                            required.</small>
-                    </div>
-                </div>
-                <div class="field mb-4 col-12 md:col-6">
-                    <label for="toDate" class="font-medium text-900">To Date</label>
-                    <p-calendar [maxDate]="maxDateLimit" class="p-component p-element w-full p-calendar"
-                        formControlName="toDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true"
-                        inputId="icon"></p-calendar>
-                    <div
-                        *ngIf="ec136Form.controls['toDate'].errors && (ec136Form.controls['toDate'].dirty || ec136Form.controls['toDate'].touched)">
-                        <small class="p-error" *ngIf="ec136Form.controls['toDate'].errors['required']">To Date is
-                            required.</small>
-                    </div>
-                </div>
-            </form>
-            <div class="w-full flex justify-content-end align-items-center">
-                <button pbutton="" pripple="" icon="pi pi-file" (click)="generateEC136()"
-                    class="p-element p-ripple w-auto p-button p-component">
-                    <span class="p-button-label">Generate</span>
-                </button>
-            </div>
-        </div>
-    </div>
+    <app-ec-form (newItemEvent)="generateEC136($event)" [heading]="'Vendor Wise'"></app-ec-form>
     <div class="col-12 my-8">
         <p-table [value]="data" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
             [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">

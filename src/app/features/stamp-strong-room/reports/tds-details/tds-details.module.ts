@@ -13,6 +13,7 @@ import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { TableModule } from 'primeng/table';
 import { FromToDateFormComponent } from './shared/from-to-date-form/from-to-date-form.component';
+import { EcFormModule } from '../shared/ec-form/ec-form.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { FromToDateFormComponent } from './shared/from-to-date-form/from-to-date
     MhPrimeDynamicTableModule,
     DynamicTableModule,
     CalendarModule,
+    EcFormModule,
     TableModule,
     FormsModule,
   ],

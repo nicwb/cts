@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicTable } from 'mh-prime-dynamic-table';
 import { StampReportsService } from 'src/app/core/services/stamp/stamp-reports.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { formatDate } from 'src/utils/dateToString';
 
 @Component({
   selector: 'app-vendor-wise-ec136',
@@ -32,25 +31,17 @@ export class VendorWiseEC136Component implements OnInit {
     });
   }
 
-  generateEC136() {
-    this.isLoading = false
-    if (this.ec136Form.valid) {
-      const payload = {
-        fromDate: formatDate(this.ec136Form.value.fromDate),
-        toDate: formatDate(this.ec136Form.value.toDate)
+  generateEC136($event: any) {
+    this.isLoading = true
+    this.stampReportService.getEC($event, 'EC136').subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        // response.result.headers = this.headers
+        // this.tableData = response.result
+        this.data = response.result
+      } else {
+        this.toastService.showError(response.message)
       }
-      this.stampReportService.getEC(payload, 'EC136').subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          // response.result.headers = this.headers
-          // this.tableData = response.result
-          this.data = response.result
-          this.isLoading = true
-        } else {
-          this.toastService.showError(response.message)
-        }
-      })
-    } else {
-      this.toastService.showWarning("Please fill all the fileds")
-    }
+    })
+    this.isLoading = false
   }
 }
