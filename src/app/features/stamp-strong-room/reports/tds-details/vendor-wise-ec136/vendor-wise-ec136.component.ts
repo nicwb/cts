@@ -39,7 +39,7 @@ export class VendorWiseEC136Component implements OnInit {
         fromDate: formatDate(this.ec136Form.value.fromDate),
         toDate: formatDate(this.ec136Form.value.toDate)
       }
-      this.stampReportService.getEC136(payload).subscribe((response) => {
+      this.stampReportService.getEC(payload, 'EC136').subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           // response.result.headers = this.headers
           // this.tableData = response.result

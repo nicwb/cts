@@ -1,22 +1,22 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Vendor Wise'" [SubHeaderName]="'EC-136'"
-            [imgSrc]="'assets/layout/images/icons/vendor-wise-ec136.png'">
+        <app-common-header [headerName]="'Stamps Stock Register'" [SubHeaderName]="'EC-134'"
+            [imgSrc]="'assets/layout/images/icons/ec134.png'">
         </app-common-header>
     </div>
 </div>
 <section class="w-full h-full">
     <div class="w-11 mx-auto flex align-items-center justify-content-center">
         <div class="surface-card px-6 py-5 shadow-2 border-round p-fluid">
-            <h3>Vendor Wise</h3>
-            <form [formGroup]="ec136Form" class="grid formgrid p-fluid">
+            <h3>Stamps Stock Register</h3>
+            <form [formGroup]="ec134Form" class="grid formgrid p-fluid">
                 <div class="field mb-4 col-12 md:col-6">
                     <label for="fromDate" class="font-medium text-900">From Date</label>
                     <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate"
                         placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
                     <div
-                        *ngIf="ec136Form.controls['fromDate'].errors && (ec136Form.controls['fromDate'].dirty || ec136Form.controls['fromDate'].touched)">
-                        <small class="p-error" *ngIf="ec136Form.controls['fromDate'].errors['required']">From Date is
+                        *ngIf="ec134Form.controls['fromDate'].errors && (ec134Form.controls['fromDate'].dirty || ec134Form.controls['fromDate'].touched)">
+                        <small class="p-error" *ngIf="ec134Form.controls['fromDate'].errors['required']">From Date is
                             required.</small>
                     </div>
                 </div>
@@ -26,14 +26,14 @@
                         formControlName="toDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true"
                         inputId="icon"></p-calendar>
                     <div
-                        *ngIf="ec136Form.controls['toDate'].errors && (ec136Form.controls['toDate'].dirty || ec136Form.controls['toDate'].touched)">
-                        <small class="p-error" *ngIf="ec136Form.controls['toDate'].errors['required']">To Date is
+                        *ngIf="ec134Form.controls['toDate'].errors && (ec134Form.controls['toDate'].dirty || ec134Form.controls['toDate'].touched)">
+                        <small class="p-error" *ngIf="ec134Form.controls['toDate'].errors['required']">To Date is
                             required.</small>
                     </div>
                 </div>
             </form>
             <div class="w-full flex justify-content-end align-items-center">
-                <button pbutton="" pripple="" icon="pi pi-file" (click)="generateEC136()"
+                <button pbutton="" pripple="" icon="pi pi-file" (click)="generateEC134()"
                     class="p-element p-ripple w-auto p-button p-component">
                     <span class="p-button-label">Generate</span>
                 </button>

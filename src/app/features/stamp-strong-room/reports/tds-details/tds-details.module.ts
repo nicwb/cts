@@ -16,7 +16,7 @@ import { FromToDateFormComponent } from './shared/from-to-date-form/from-to-date
 
 
 @NgModule({
-  declarations: [TdsDetailsComponent, VendorDetailsWiseEC137Component, VendorWiseEC136Component, FromToDateFormComponent],
+  declarations: [TdsDetailsComponent, VendorDetailsWiseEC137Component, VendorWiseEC136Component],
   imports: [
     CommonModule,
     TdsDetailsRoutingModule,
