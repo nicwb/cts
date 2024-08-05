@@ -23,6 +23,7 @@ import { DialogModule } from 'primeng/dialog';
 import { Tr7FormModule } from 'src/app/shared/modules/tr7-form/tr7-form.module';
 import { StampDeliveryComponent } from './stamp-delivery/stamp-delivery.component';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
     DynamicTableModule,
     FormsModule,
     DialogModule,
+    TableModule,
     ReactiveFormsModule,
     CheckboxModule,
     OptionCardModule,

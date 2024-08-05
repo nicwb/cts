@@ -28,6 +28,8 @@ export class NewStampRequisitionComponent implements OnInit {
   challanAmount: number = this.amount - this.discountAmount + this.taxAmount;
   newStampRequisitionForm!: FormGroup
   newStampRequisitionPayload!: AddVendorStampRequisition
+  stampList: any[] = []
+  loading: boolean = false
   constructor(
     private fb: FormBuilder, 
     private stampRequisitionService: StampRequisitionService, 
@@ -48,10 +50,6 @@ export class NewStampRequisitionComponent implements OnInit {
       requisitionNo: ['', Validators.required]
     });
   }
-
-  // onTreasurySelected($event: any) {
-  //   this.treasuryCode = $event
-  // }
 
   onStampCombinationSelected($event: any) {
     
@@ -86,7 +84,6 @@ export class NewStampRequisitionComponent implements OnInit {
       this.stampRequisitionService.addNewStampRequisition(this.newStampRequisitionPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message);
-          // this.newStampRequisitionForm.reset()
         } else {
           this.toastService.showAlert(response.message, response.apiResponseStatus);
         }
@@ -121,5 +118,40 @@ export class NewStampRequisitionComponent implements OnInit {
   sheetSelected($event: any) {
     this.sheet = $event
     this.calcAmountQuantity()
+  }
+  addItems() {
+    if (((this.sheet + this.label) > 0) && this.sheet >= 0 && this.label >= 0) {
+      const obj = {
+        // stampCombinationId: this.stamCombinationId,
+        // description: this.description,
+        // denomination: this.denomination,
+        // labelPerSheet: this.labelPerSheet,
+        sheet: this.sheet,
+        label: this.label,
+        quantity: this.quantity,
+        amount: this.amount,
+      }
+      this.stampList.push(obj)
+      // this.stamCombinationId = 0
+      // this.description = ""
+      // this.denomination =
+      // this.labelPerSheet = 0
+      // this.sheet = 0
+      // this.label = 0
+      // this.quantity = 0
+      // this.amount = 0
+      // this.category = ""
+      // this.denom = 0
+      // this.noOfSheetsInStock = 0
+      // this.noOfLabelsInStock = 0
+      // this.stampComp?.reset();
+    } else {
+      this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
+    }
+  }
+  deleteProduct(item: any) {
+    console.log(item);
+    this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
+    
   }
 }
