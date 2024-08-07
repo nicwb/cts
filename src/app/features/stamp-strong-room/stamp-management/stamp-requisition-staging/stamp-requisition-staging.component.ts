@@ -86,7 +86,9 @@ export class StampRequisitionStagingComponent implements OnInit {
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
       case 'reject':
-        this.stampRequisitionService.rejectedByStampClerk($event.rowData.vendorStampRequisitionId).subscribe((response) => {
+        console.log($event);
+        
+        this.stampRequisitionService.rejectedByStampClerk($event.rowData.id).subscribe((response) => {
           if (response.apiResponseStatus == 1) {
             this.toastService.showSuccess(response.message)
             this.getAllNewRequisitions()
