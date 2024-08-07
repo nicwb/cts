@@ -1,9 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { debounceTime, Subject } from 'rxjs';
 import { AddVendorStampRequisition } from 'src/app/core/models/stamp';
 import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
+import { VendorDetailsDropdownComponent } from 'src/app/shared/modules/vendor-details-dropdown/vendor-details-dropdown.component';
 
 @Component({
   selector: 'app-new-stamp-requisition',
@@ -11,147 +13,157 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./new-stamp-requisition.component.scss']
 })
 export class NewStampRequisitionComponent implements OnInit {
+  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+  @ViewChild(VendorDetailsDropdownComponent) vendorComp: VendorDetailsDropdownComponent | undefined;
   minDateLimit: Date = new Date()
-  vendorTypeId:number = 0
-  treasuryCode: string = ""
-  sheet: number = 0
-  label: number = 0
+  vendorTypeId: number = 0
+  description: string = ""
+  category: string = ""
   vendorId: any = null
   combinationId: any = null
   stampCategoryId: any = null
-  discountAmount: number = 0
   denomination: number = 0
-  noOfLabelsPerSheet: number = 0
+  discountAmount: number = 0
   taxAmount: number = 0.1 * this.discountAmount
-  quantity: number = (this.noOfLabelsPerSheet * this.sheet) + this.label
+  quantity: number = 0
   amount: number = this.quantity * this.denomination
-  challanAmount: number = this.amount - this.discountAmount + this.taxAmount;
-  newStampRequisitionForm!: FormGroup
+  netAmount: number = this.amount - this.discountAmount + this.taxAmount;
   newStampRequisitionPayload!: AddVendorStampRequisition
-  stampList: any[] = []
   loading: boolean = false
+  totalAmount: number = 0
+  totalDiscountAmount: number = 0
+  totalTaxAmount: number = 0
+  totalNetAmount: number = 0
+  labelPerSheet: number = 0
+  stampList: any[] = []
+  private quantitySubject = new Subject<number>();
   constructor(
-    private fb: FormBuilder, 
-    private stampRequisitionService: StampRequisitionService, 
-    private discountDetailsService: DiscountDetailsService, 
+    private stampRequisitionService: StampRequisitionService,
+    private discountDetailsService: DiscountDetailsService,
     private toastService: ToastService) { }
 
   @Output() VendorDetailsSelected = new EventEmitter<any>();
 
   ngOnInit(): void {
-    this.initiaiozeForm()
-  }
-
-  initiaiozeForm() {
-    this.newStampRequisitionForm = this.fb.group({
-      sheet: [0, [Validators.required, Validators.min(0)]],
-      label: [0, [Validators.required, Validators.min(0)]],
-      requisitionDate: [null, Validators.required],
-      requisitionNo: ['', Validators.required]
-    });
+    this.quantitySubject.pipe(
+      debounceTime(1000)
+    ).subscribe(() => this.calcAmountQuantity());
   }
 
   onStampCombinationSelected($event: any) {
-    
+    this.labelPerSheet = $event.noLabelPerSheet
+    this.stampCategoryId = $event.stampCategoryId;
     this.combinationId = $event.stampCombinationId
-    this.stampCategoryId = $event.stampCategoryId
     this.denomination = $event.denomination
-    this.noOfLabelsPerSheet = $event.noLabelPerSheet
+    this.category = $event.stampCategory1
     this.calcAmountQuantity()
   }
 
   onVendorDetailsSelected($event: any) {
     this.vendorId = $event.stampVendorId
     this.vendorTypeId = $event.vendorTypeId
-    this.treasuryCode = $event.vendorTreasury
     this.calcAmountQuantity()
   }
 
   addStampRequisition() {
-    if (this.newStampRequisitionForm.valid) {
+    if (this.stampList.length > 0) {
+      const destructuredItems = this.stampList.map(({ stampCombinationId, labelPerSheet, netAmount, quantity, amount, taxAmount, discountAmount }) => ({
+        stampCombinationId,
+        labelPerSheet,
+        netAmount,
+        taxAmount,
+        discountAmount,
+        quantity,
+        amount
+      })); 
       this.newStampRequisitionPayload = {
-        challanAmount: this.challanAmount,
-        combinationId: this.combinationId,
-        label: Number(this.newStampRequisitionForm.value.label),
-        sheet: Number(this.newStampRequisitionForm.value.sheet),
-        raisedToTreasury: this.treasuryCode,
-        requisitionDate: this.newStampRequisitionForm.value.requisitionDate,
-        requisitionNo: this.newStampRequisitionForm.value.requisitionNo,
-        vendorId: this.vendorId
-      };
-      console.log(this.newStampRequisitionPayload);
-      
-      this.stampRequisitionService.addNewStampRequisition(this.newStampRequisitionPayload).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showSuccess(response.message);
-        } else {
-          this.toastService.showAlert(response.message, response.apiResponseStatus);
-        }
-      });
-    } else {
-      this.toastService.showWarning('Please fill all the required fields');
+        vendorId: this.vendorId,
+        totalGrossAmount: this.totalAmount,
+        totalNetAmount: this.totalNetAmount,
+        totalTaxAmount: this.totalTaxAmount,
+        totalDiscountAmount: this.totalDiscountAmount,
+        childData: destructuredItems,
+      }
     }
+    console.log(this.newStampRequisitionPayload); 
   }
   getDiscount() {
     this.discountDetailsService.getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount).subscribe((response) => {
-      if (response.apiResponseStatus == 1) {        
+      if (response.apiResponseStatus == 1) {
         this.discountAmount = response.result
         this.taxAmount = this.discountAmount * 0.1
-        this.challanAmount = this.amount - this.discountAmount + this.taxAmount
+        this.netAmount = this.amount - this.discountAmount + this.taxAmount
       } else {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
     })
   }
+
   calcAmountQuantity() {
-    this.quantity = (this.noOfLabelsPerSheet * this.sheet) + this.label
-    this.amount = this.quantity * this.denomination
+    this.amount = Number(this.quantity) * this.denomination
     if (this.vendorId && this.stampCategoryId && this.amount) {
       this.getDiscount()
     }
   }
-  labelSelected($event: any) {
-    this.label = $event
-    this.calcAmountQuantity()
-  }
 
-  sheetSelected($event: any) {
-    this.sheet = $event
-    this.calcAmountQuantity()
-  }
-  addItems() {
-    if (((this.sheet + this.label) > 0) && this.sheet >= 0 && this.label >= 0) {
-      const obj = {
-        // stampCombinationId: this.stamCombinationId,
-        // description: this.description,
-        // denomination: this.denomination,
-        // labelPerSheet: this.labelPerSheet,
-        sheet: this.sheet,
-        label: this.label,
-        quantity: this.quantity,
-        amount: this.amount,
-      }
-      this.stampList.push(obj)
-      // this.stamCombinationId = 0
-      // this.description = ""
-      // this.denomination =
-      // this.labelPerSheet = 0
-      // this.sheet = 0
-      // this.label = 0
-      // this.quantity = 0
-      // this.amount = 0
-      // this.category = ""
-      // this.denom = 0
-      // this.noOfSheetsInStock = 0
-      // this.noOfLabelsInStock = 0
-      // this.stampComp?.reset();
+
+  onQuantityChange(value: number) {
+    if (value < 0) {
+      this.toastService.showWarning("Quantity should be greater than zero.");
+      this.quantity = 0;
     } else {
-      this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
+      this.quantity = value;
+      this.quantitySubject.next(value);
     }
   }
+
+
+  addItems() {
+    if (this.quantity > 0) {
+      let flag = false
+      this.stampList.forEach((element) => {
+        if (element.stampCombinationId === this.combinationId) {
+          flag = true
+          this.toastService.showWarning(`The category ${this.category} with denomination ${this.denomination} already added. Please add different combination.`)
+          return
+        }
+      })
+
+      if (flag == false) {
+        const obj = {
+          labelPerSheet: this.labelPerSheet,
+          stampCombinationId: this.combinationId,
+          category: this.category,
+          denomination: this.denomination,
+          quantity: this.quantity,
+          amount: this.amount,
+          taxAmount: this.taxAmount,
+          discountAmount: this.discountAmount,
+          netAmount: this.netAmount,
+
+        }
+        this.totalAmount += this.amount
+        this.totalDiscountAmount += this.discountAmount
+        this.totalTaxAmount += this.taxAmount
+        this.totalNetAmount += this.netAmount
+        this.stampList.push(obj)
+        this.category = ""
+        this.denomination = 0
+        this.quantity = 0
+        this.amount = 0
+        this.taxAmount = 0
+        this.discountAmount = 0
+        this.netAmount = 0
+        this.stampComp?.reset();
+        this.vendorComp?.reset()
+      }
+    } else {
+      this.toastService.showWarning("Quantity should be greater than zero.")
+    }
+  }
+
   deleteProduct(item: any) {
-    console.log(item);
     this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
-    
+
   }
 }

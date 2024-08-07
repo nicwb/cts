@@ -4,9 +4,40 @@
         </app-common-header>
     </div>
 </div>
-<section class="px-4 py-2 w-11 mx-auto flex align-items-center justify-content-center">
+<section class="px-4 py-2 mx-auto w-full flex align-items-center justify-content-center">
     <div class="surface-card px-8 py-6 shadow-2 border-round p-fluid">
         <div class="grid formgrid p-fluid">
+            <div class="py-4 w-full">
+                <h1 class="font-bold">Summary</h1>
+                <div class="flex gap-2 align-items-end w-full">
+                    <div class="flex-1">
+                        <label for="totalAmount" class="block mb-1 font-medium text-900">Total Amount</label>
+                        <input type="text" pinputtext="" readonly disabled [value]="totalAmount"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-1">
+                        <label for="totalDiscountAmount" class="block mb-1 font-medium text-900">Total Discount Amount</label>
+                        <input type="number" pinputtext="" readonly disabled [value]="totalDiscountAmount"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-1">
+                        <label for="totalTaxAmount" class="block mb-1 font-medium text-900">Total Tax Amount</label>
+                        <input pinputtext="" placeholder="Eg: 10" type="number" [value]="totalTaxAmount"
+                               class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-1">
+                        <label for="totalNetAmount" class="block mb-1 font-medium text-900">Total Net Amount</label>
+                        <input type="text" pinputtext="" readonly disabled [value]="totalTaxAmount"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-1">
+                        <label for="discount" class="block mb-1 font-medium text-900">Discount</label>
+                        <input pinputtext="" [value]="discountAmount" disabled
+                        class="p-inputtext p-component p-element w-full">
+                    </div>
+                </div>
+            </div>
+            <hr class="w-full pt-4">
             
             <!-- <div class="field mb-4 col-12 md:col-12">
                 <label for="requisitionNo" class="font-medium text-900">Requisition No</label>
@@ -76,42 +107,43 @@
                     <app-stamp-combination-dropdown
                         (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
                 </div>
-        
                 <div class="flex-1">
-                    <label for="Description" class="block mb-1 font-medium text-900">Description</label>
-                    <input type="text" pinputtext="" readonly disabled
+                    <label for="vendorDetails" class="font-medium text-900">Vendor Details</label>
+                    <app-vendor-details-dropdown (VendorDetailsSelected)="onVendorDetailsSelected($event)"></app-vendor-details-dropdown>
+                </div>
+                <div class="flex-1">
+                    <label for="Category" class="block mb-1 font-medium text-900">Category</label>
+                    <input type="text" pinputtext="" readonly disabled [value]="category"
                         class="p-inputtext p-component p-element w-full">
                 </div>
                 <div class="flex-1">
                     <label for="denomination" class="block mb-1 font-medium text-900">Denomination (Rs.)</label>
-                    <input type="number" pinputtext="" readonly disabled
+                    <input type="number" pinputtext="" readonly disabled [value]="denomination"
                         class="p-inputtext p-component p-element w-full">
                 </div>
                 <div class="flex-1">
-                    <label for="noOfSheets" class="block mb-1 font-medium text-900">Quantity</label>
-                    <input type="number" pinputtext="" [(ngModel)]="sheet"
-                    (ngModelChange)="sheetSelected($event)" placeholder="Eg: 10"
+                    <label for="quantity" class="block mb-1 font-medium text-900">Quantity</label>
+                    <input pinputtext="" placeholder="Eg: 10" type="number" [(ngModel)]="quantity" (ngModelChange)="onQuantityChange($event)" [value]="quantity"
+                           class="p-inputtext p-component p-element w-full">
+                </div>
+                <div class="flex-1">
+                    <label for="grossAmount" class="block mb-1 font-medium text-900">Gross Amount (Rs.)</label>
+                    <input type="text" pinputtext="" readonly disabled [value]="amount"
+                        class="p-inputtext p-component p-element w-full">
+                </div>
+                <div class="flex-1">
+                    <label for="discount" class="block mb-1 font-medium text-900">Discount</label>
+                    <input pinputtext="" [value]="discountAmount" disabled
                     class="p-inputtext p-component p-element w-full">
                 </div>
                 <div class="flex-1">
-                    <label for="quantity" class="block mb-1 font-medium text-900">Gross Amount (Rs.)</label>
-                    <input type="text" pinputtext="" readonly disabled [value]="quantity"
+                    <label for="tax" class="block mb-1 font-medium text-900">Tax</label>
+                    <input type="text" pinputtext="" readonly disabled [value]="taxAmount"
                         class="p-inputtext p-component p-element w-full">
                 </div>
                 <div class="flex-1">
-                    <label for="labelPerSheet" class="block mb-1 font-medium text-900">Tax</label>
-                    <input type="text" pinputtext="" readonly disabled
-                        class="p-inputtext p-component p-element w-full">
-                </div>
-                <div class="flex-1">
-                    <label for="noOfLabels" class="block mb-1 font-medium text-900">Discount</label>
-                    <input type="number" pinputtext="" [(ngModel)]="label"
-                        (ngModelChange)="labelSelected($event)" placeholder="Eg: 10"
-                        class="p-inputtext p-component p-element w-full">
-                </div>
-                <div class="flex-1">
-                    <label for="amount" class="block mb-1 font-medium text-900">Net Amount (Rs.)</label>
-                    <input type="text" pinputtext="" readonly disabled [value]="amount"
+                    <label for="netAmount" class="block mb-1 font-medium text-900">Net Amount (Rs.)</label>
+                    <input type="text" pinputtext="" readonly disabled [value]="netAmount"
                         class="p-inputtext p-component p-element w-full">
                 </div>
             </div>
@@ -119,30 +151,28 @@
                 <p-button [loading]="loading" label="Add New" (click)="addItems()" class="rounded">
                 </p-button>
             </div>
-            <p-table [value]="stampList" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+            <p-table [value]="stampList" [rowHover]="true" styleClass="p-datatable-gridlines" class="w-full" responsiveLayout="scroll">
                 <ng-template pTemplate="header">
                     <tr >
-                        <th style="min-width: 12rem">Combination ID</th>
-                        <th style="min-width: 12rem">Description</th>
+                        <th style="min-width: 12rem">Category</th>
                         <th style="min-width: 12rem">Denomination</th>
                         <th style="min-width: 12rem">Quantity</th>
                         <th style="min-width: 12rem">Gross Amount (Rs.)</th>
-                        <th style="min-width: 12rem">Tax</th>
                         <th style="min-width: 12rem">Discount</th>
+                        <th style="min-width: 12rem">Tax</th>
                         <th style="min-width: 12rem">Net Amount (Rs.)</th>
                         <th style="min-width: 12rem">Actions</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-stampList>
                     <tr class="p-selectable-row">
-                        <td style="min-width: 12rem">{{ stampList.stampCombinationId }}</td>
-                        <td style="min-width: 12rem">{{ stampList.description }}</td>
+                        <td style="min-width: 12rem">{{ stampList.category }}</td>
                         <td style="min-width: 12rem">{{ stampList.denomination }}</td>
-                        <td style="min-width: 12rem">{{ stampList.labelPerSheet }}</td>
-                        <td style="min-width: 12rem">{{ stampList.sheet }}</td>
-                        <td style="min-width: 12rem">{{ stampList.label }}</td>
                         <td style="min-width: 12rem">{{ stampList.quantity }}</td>
                         <td style="min-width: 12rem">{{ stampList.amount }}</td>
+                        <td style="min-width: 12rem">{{ stampList.discountAmount }}</td>
+                        <td style="min-width: 12rem">{{ stampList.taxAmount }}</td>
+                        <td style="min-width: 12rem">{{ stampList.netAmount }}</td>
                         <td>
                             <p-button 
                                 icon="pi pi-trash" 

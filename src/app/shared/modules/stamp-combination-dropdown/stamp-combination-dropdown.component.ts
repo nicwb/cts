@@ -21,7 +21,7 @@ export class StampCombinationDropdownComponent implements OnInit {
 
   formatResultItem(item: any): any {
     // return { combination: `${item.stampCombinationId}-${item.stampCategory1}-${item.description}-${item.denomination}-${item.noLabelPerSheet}` };
-    return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Description: ${item.description} | Denomination: ${item.denomination} | No of Labels per Sheet: ${item.noLabelPerSheet}` }
+    return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Denomination: ${item.denomination}` }
   }
   getAllStampCombination() {
     this.stampCombinationService

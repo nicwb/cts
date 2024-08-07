@@ -17,7 +17,6 @@ import { convertDate } from 'src/utils/dateConversion';
 export class IndentCaptureComponent implements OnInit {
 
   @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
-
   indentList: IndentItems[] = []
   category: string = ""
   denom: number = 0
@@ -112,7 +111,8 @@ export class IndentCaptureComponent implements OnInit {
         label,
         quantity,
         amount
-      })); this.stampIndentPayload = {
+      })); 
+      this.stampIndentPayload = {
         memoDate: this.stampIndentForm.value.memoDate,
         memoNumber: this.stampIndentForm.value.memoNo,
         remarks: this.stampIndentForm.value.remarks,

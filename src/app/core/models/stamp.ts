@@ -239,13 +239,21 @@ export interface GetVendorStampRequisition {
 
 export interface AddVendorStampRequisition {
   vendorId: number;
-  sheet: number;
-  label: number;
-  combinationId: number;
-  requisitionDate: string;
-  requisitionNo: string;
-  challanAmount: number;
-  raisedToTreasury: string;
+  totalGrossAmount: number;
+  totalNetAmount: number;
+  totalTaxAmount: number;
+  totalDiscountAmount: number;
+  childData: VendorStampRequisitionData[];
+}
+
+interface VendorStampRequisitionData {
+  stampCombinationId: number;
+  quantity: number;
+  labelPerSheet: number;
+  amount: number;
+  netAmount: number;
+  taxAmount: number;
+  discountAmount: number;
 }
 
 export interface PrintData {
