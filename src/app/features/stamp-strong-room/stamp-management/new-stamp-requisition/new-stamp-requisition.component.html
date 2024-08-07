@@ -30,11 +30,6 @@
                         <input type="text" pinputtext="" readonly disabled [value]="totalTaxAmount"
                             class="p-inputtext p-component p-element w-full">
                     </div>
-                    <div class="flex-1">
-                        <label for="discount" class="block mb-1 font-medium text-900">Discount</label>
-                        <input pinputtext="" [value]="discountAmount" disabled
-                        class="p-inputtext p-component p-element w-full">
-                    </div>
                 </div>
             </div>
             <hr class="w-full pt-4">
@@ -169,7 +164,7 @@
                         <td style="min-width: 12rem">{{ stampList.category }}</td>
                         <td style="min-width: 12rem">{{ stampList.denomination }}</td>
                         <td style="min-width: 12rem">{{ stampList.quantity }}</td>
-                        <td style="min-width: 12rem">{{ stampList.amount }}</td>
+                        <td style="min-width: 12rem">{{ stampList.grossAmount }}</td>
                         <td style="min-width: 12rem">{{ stampList.discountAmount }}</td>
                         <td style="min-width: 12rem">{{ stampList.taxAmount }}</td>
                         <td style="min-width: 12rem">{{ stampList.netAmount }}</td>

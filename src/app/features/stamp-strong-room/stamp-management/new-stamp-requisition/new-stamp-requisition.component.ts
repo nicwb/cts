@@ -67,14 +67,14 @@ export class NewStampRequisitionComponent implements OnInit {
 
   addStampRequisition() {
     if (this.stampList.length > 0) {
-      const destructuredItems = this.stampList.map(({ stampCombinationId, labelPerSheet, netAmount, quantity, amount, taxAmount, discountAmount }) => ({
+      const destructuredItems = this.stampList.map(({ stampCombinationId, labelPerSheet, netAmount, quantity, grossAmount, taxAmount, discountAmount }) => ({
         stampCombinationId,
         labelPerSheet,
         netAmount,
         taxAmount,
         discountAmount,
         quantity,
-        amount
+        grossAmount
       })); 
       this.newStampRequisitionPayload = {
         vendorId: this.vendorId,
@@ -85,7 +85,13 @@ export class NewStampRequisitionComponent implements OnInit {
         childData: destructuredItems,
       }
     }
-    console.log(this.newStampRequisitionPayload); 
+    this.stampRequisitionService.addNewStampRequisition(this.newStampRequisitionPayload).subscribe((response) => {
+      if (response.apiResponseStatus === 1) {
+        this.toastService.showSuccess(response.message)
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
   }
   getDiscount() {
     this.discountDetailsService.getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount).subscribe((response) => {
@@ -136,7 +142,7 @@ export class NewStampRequisitionComponent implements OnInit {
           category: this.category,
           denomination: this.denomination,
           quantity: this.quantity,
-          amount: this.amount,
+          grossAmount: this.amount,
           taxAmount: this.taxAmount,
           discountAmount: this.discountAmount,
           netAmount: this.netAmount,

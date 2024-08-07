@@ -250,7 +250,7 @@ interface VendorStampRequisitionData {
   stampCombinationId: number;
   quantity: number;
   labelPerSheet: number;
-  amount: number;
+  grossAmount: number;
   netAmount: number;
   taxAmount: number;
   discountAmount: number;
