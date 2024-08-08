@@ -36,6 +36,7 @@ export class NewStampRequisitionComponent implements OnInit {
   totalNetAmount: number = 0
   labelPerSheet: number = 0
   stampList: any[] = []
+  isVendorSelect: boolean = this.stampList.length === 0 
   private quantitySubject = new Subject<number>();
   constructor(
     private stampRequisitionService: StampRequisitionService,
@@ -111,6 +112,7 @@ export class NewStampRequisitionComponent implements OnInit {
   }
 
   calcAmountQuantity() {
+    debugger;
     this.amount = Number(this.quantity) * this.denomination
     if (this.vendorId && this.stampCategoryId && this.amount) {
       this.getDiscount()
@@ -168,6 +170,7 @@ export class NewStampRequisitionComponent implements OnInit {
         this.stampComp?.reset();
         // this.vendorComp?.reset()
       }
+      this.isVendorSelect = this.stampList.length === 0
     } else {
       this.toastService.showWarning("Quantity should be greater than zero.")
     }
@@ -175,6 +178,12 @@ export class NewStampRequisitionComponent implements OnInit {
 
   deleteProduct(item: any) {
     this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
-
+    this.isVendorSelect = this.stampList.length === 0
+    if (this.stampList.length === 0) {
+      this.totalAmount = 0
+      this.totalDiscountAmount = 0
+      this.totalNetAmount = 0
+      this.totalTaxAmount = 0
+    }
   }
 }

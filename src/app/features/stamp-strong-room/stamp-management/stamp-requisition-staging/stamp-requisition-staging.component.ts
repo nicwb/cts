@@ -35,6 +35,13 @@ export class StampRequisitionStagingComponent implements OnInit {
   tableQueryParameters!: DynamicTableQueryParameters | any;
   approveByClerkPayload!: ApprovedByClerk
   approveByClerkForm!: FormGroup
+  reqNo: string = ""
+  loading: boolean = false
+  netAmount: number = 0
+  vendorLicence: string = ""
+  vendorName: string = ""
+  reqDate: Date = new Date()
+  stamps: any[] = []
   constructor(private stampRequisitionService: StampRequisitionService,
     private toastService: ToastService,
     private fb: FormBuilder, private stampWalletService: StampWalletService) { }
@@ -88,7 +95,7 @@ export class StampRequisitionStagingComponent implements OnInit {
     switch ($event.buttonIdentifier) {
       case 'reject':
         console.log($event);
-        
+
         this.stampRequisitionService.rejectedByStampClerk($event.rowData.id).subscribe((response) => {
           if (response.apiResponseStatus == 1) {
             this.toastService.showSuccess(response.message)
@@ -103,12 +110,12 @@ export class StampRequisitionStagingComponent implements OnInit {
         this.id = $event.rowData.vendorStampRequisitionId
         this.sheet = $event.rowData.sheet
         this.label = $event.rowData.label
-        this.getBalance({treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId})
-        // this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
+        this.getBalance({ treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId })
+      // this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
     }
   }
   getBalance(params: any) {
-    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({treasuryCode: params.treasuryCode, combinationId: params.combinationId}).subscribe((response) => {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
       console.log(response, params);
       if (response.apiResponseStatus == 1) {
         this.denom = response.result.denomination
@@ -165,12 +172,23 @@ export class StampRequisitionStagingComponent implements OnInit {
       }
     })
   }
+  addItems() {
 
-  labelSelected($event: any) {
+  }
+  onRowEditCancel(stamp: any, index: number) {
+
+  }
+  modifyRequisition() {
+
+  }
+  onRowEditSave(stamp: any, index: number){
+
+  }
+  onRowEditInit(stamp: any) {
 
   }
 
-  sheetSelected($event: any) {
+  deleteProduct(stamp: any){
 
   }
 }
