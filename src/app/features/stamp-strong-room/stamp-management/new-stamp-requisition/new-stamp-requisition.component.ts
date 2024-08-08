@@ -88,6 +88,11 @@ export class NewStampRequisitionComponent implements OnInit {
     this.stampRequisitionService.addNewStampRequisition(this.newStampRequisitionPayload).subscribe((response) => {
       if (response.apiResponseStatus === 1) {
         this.toastService.showSuccess(response.message)
+        this.stampList = []
+        this.totalAmount = 0
+        this.totalDiscountAmount = 0
+        this.totalTaxAmount = 0
+        this.totalNetAmount = 0
       } else {
         this.toastService.showError(response.message)
       }
@@ -161,7 +166,7 @@ export class NewStampRequisitionComponent implements OnInit {
         this.discountAmount = 0
         this.netAmount = 0
         this.stampComp?.reset();
-        this.vendorComp?.reset()
+        // this.vendorComp?.reset()
       }
     } else {
       this.toastService.showWarning("Quantity should be greater than zero.")

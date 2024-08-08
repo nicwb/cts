@@ -6,6 +6,7 @@ import { ApprovedByClerk } from 'src/app/core/models/stamp';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { convertDate } from 'src/utils/dateConversion';
 
 @Component({
   selector: 'app-stamp-requisition-staging',
@@ -145,6 +146,9 @@ export class StampRequisitionStagingComponent implements OnInit {
   getAllNewRequisitions() {
     this.stampRequisitionService.newRequisitions(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
+        response.result.data.map((element: any) => {
+          element.requisitionDate = convertDate(element.requisitionDate)
+        })
         this.tableData = response.result;
       } else {
         this.toastService.showError(response.message)
