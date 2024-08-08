@@ -119,8 +119,8 @@ export class NewStampRequisitionComponent implements OnInit {
 
 
   onQuantityChange(value: number) {
-    if (value < 0) {
-      this.toastService.showWarning("Quantity should be greater than zero.");
+    if (value < 0 || value > 100000) {
+      this.toastService.showWarning("Quantity should be greater than zero and less than 100000.");
       this.quantity = 0;
     } else {
       this.quantity = value;
