@@ -1,66 +1,83 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table/lib/mh-prime-dynamic-table-interface';
+import {
+  DynamicTable,
+  DynamicTableQueryParameters,
+} from 'mh-prime-dynamic-table/lib/mh-prime-dynamic-table-interface';
+import { debounceTime, Subject } from 'rxjs';
 import { ActionButtonConfig } from 'src/app/core/models/dynamic-table';
-import { ApprovedByClerk } from 'src/app/core/models/stamp';
+import { ApprovedByClerk, StampRequisitions } from 'src/app/core/models/stamp';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
 import { convertDate } from 'src/utils/dateConversion';
 
 @Component({
   selector: 'app-stamp-requisition-staging',
   templateUrl: './stamp-requisition-staging.component.html',
-  styleUrls: ['./stamp-requisition-staging.component.scss']
+  styleUrls: ['./stamp-requisition-staging.component.scss'],
 })
 export class StampRequisitionStagingComponent implements OnInit {
-
-  id: number = 0
-  denom: number = 0
-  category: string = ""
-  listType: string = 'new'
-  sheet: number = 0
-  label: number = 0
-  discountAmount: number = 0
-  denomination: number = 0
-  noOfLabels: number = 0
-  taxAmount: number = 0
-  quantity: number = 0
-  amount: number = 0
-  challanAmount: number = 0
-  noOfSheets: number = 0
-  modal: boolean = false
+  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+  id: number = 0;
+  denom: number = 0;
+  category: string = '';
+  listType: string = 'new';
+  discountAmount: number = 0;
+  denomination: number = 0;
+  noOfLabels: number = 0;
+  taxAmount: number = 0;
+  totalNetAmount: number = 0;
+  quantity: number = 0;
+  childQuantity: number = 0;
+  availableQuantity: number = 0;
+  combinationId: number = 0;
+  amount: number = 0;
+  challanAmount: number = 0;
+  noOfSheets: number = 0;
+  modal: boolean = false;
   tableData!: DynamicTable<any>;
   tableActionButton: ActionButtonConfig[] = [];
   tableQueryParameters!: DynamicTableQueryParameters | any;
-  approveByClerkPayload!: ApprovedByClerk
-  approveByClerkForm!: FormGroup
-  reqNo: string = ""
-  loading: boolean = false
-  netAmount: number = 0
-  vendorLicence: string = ""
-  vendorName: string = ""
-  reqDate: Date = new Date()
-  stamps: any[] = []
-  constructor(private stampRequisitionService: StampRequisitionService,
+  approveByClerkPayload!: any; // ApproveByCleak
+  reqNo: string = '';
+  loading: boolean = false;
+  netAmount: number = 0;
+  vendorLicence: string = '';
+  vendorName: string = '';
+  stampCategoryId: number = 0;
+  vendorTypeId: number = 0;
+  reqDate: Date = new Date();
+  clonedStamps: { [s: string]: StampRequisitions } = {};
+  private quantitySubject = new Subject<number>();
+  private childQuantitySubject = new Subject<any>();
+  stamps: any[] = [];
+  constructor(
+    private stampRequisitionService: StampRequisitionService,
     private toastService: ToastService,
-    private fb: FormBuilder, private stampWalletService: StampWalletService) { }
+    private stampWalletService: StampWalletService,
+    private authService: AuthService,
+    private discountDetailsService: DiscountDetailsService
+  ) { }
 
   ngOnInit(): void {
-    this.initialozeForm()
     this.tableQueryParameters = {
       pageSize: 10,
       pageIndex: 0,
     };
+    this.quantitySubject
+      .pipe(debounceTime(1000))
+      .subscribe(() => this.calcAmountQuantity());
 
+    this.childQuantitySubject
+      .pipe(debounceTime(1000))
+      .subscribe(({ grossAmount, stamp }) => {
+        this.childCalculations(grossAmount, stamp);
+      });
     this.changeDynamicTable(this.listType);
-  }
-
-  initialozeForm() {
-    this.approveByClerkForm = this.fb.group({
-      sheet: [0, [Validators.required, Validators.min(0)]],
-      label: [0, [Validators.required, Validators.min(0)]],
-    });
   }
 
   changeDynamicTable(listType: string) {
@@ -91,104 +108,264 @@ export class StampRequisitionStagingComponent implements OnInit {
     }
   }
 
+  calcAmountQuantity() {
+    this.amount = Number(this.quantity) * this.denomination;
+    if (this.vendorTypeId && this.stampCategoryId && this.amount) {
+      this.getDiscount();
+    }
+  }
+
+  getDiscount() {
+    this.discountDetailsService
+      .getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount)
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          this.discountAmount = response.result;
+          this.taxAmount = this.discountAmount * 0.1;
+          this.netAmount =
+            this.amount - this.discountAmount + this.taxAmount;
+        } else {
+          this.toastService.showAlert(
+            response.message,
+            response.apiResponseStatus
+          );
+        }
+      });
+  }
+
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
       case 'reject':
-        console.log($event);
-
-        this.stampRequisitionService.rejectedByStampClerk($event.rowData.id).subscribe((response) => {
-          if (response.apiResponseStatus == 1) {
-            this.toastService.showSuccess(response.message)
-            this.getAllNewRequisitions()
-          } else {
-            this.toastService.showError(response.message)
-          }
-        })
+        this.stampRequisitionService
+          .rejectedByStampClerk($event.rowData.id)
+          .subscribe((response) => {
+            if (response.apiResponseStatus == 1) {
+              this.toastService.showSuccess(response.message);
+              this.getAllNewRequisitions();
+            } else {
+              this.toastService.showError(response.message);
+            }
+          });
         break;
       case 'edit':
-        this.modal = true
-        this.id = $event.rowData.vendorStampRequisitionId
-        this.sheet = $event.rowData.sheet
-        this.label = $event.rowData.label
-        this.getBalance({ treasuryCode: $event.rowData.raisedToTreasury, combinationId: $event.rowData.combinationId })
-      // this.getAmountCalculations({vendorStampRequisitionId: $event.rowData.vendorStampRequisitionId, sheet: this.sheet, label: this.label})
+        console.log($event);
+        this.modal = true;
+        this.stamps = $event.rowData.childData;
+        this.vendorLicence = $event.rowData.licenseNo;
+        this.vendorName = $event.rowData.vendorName;
+        this.vendorTypeId = $event.rowData.vendorTypeId;
+        this.reqDate = $event.rowData.requisitionDate;
+        this.reqNo = $event.rowData.requisitionNo;
+        this.totalNetAmount = $event.rowData.netAmount;
+        this.stamps.map((item) => {
+          this.getBalance(
+            {
+              treasuryCode:
+                this.authService.getUserDetails().Level
+                  .Scope[0],
+              combinationId: item.combinationId,
+            },
+            item
+          );
+        });
     }
   }
-  getBalance(params: any) {
-    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
-      console.log(response, params);
-      if (response.apiResponseStatus == 1) {
-        this.denom = response.result.denomination
-        this.noOfSheets = response.result.sheetLedgerBalance
-        this.noOfLabels = response.result.labelLedgerBalance
-        this.category = response.result.category
-      } else {
-        this.toastService.showError(response.message)
-      }
-    })
-  }
-  approveByClerk() {
-    if (this.approveByClerkForm.valid) {
-      this.approveByClerkPayload = {
-        labelByClerk: Number(this.approveByClerkForm.value.label),
-        sheetByClerk: Number(this.approveByClerkForm.value.sheet),
-        vendorStampRequisitionId: this.id
-      }
-      // console.log(this.approveByClerkPayload)
-      this.stampRequisitionService.approveByClerk(this.approveByClerkPayload).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showSuccess(response.message)
-          this.getAllNewRequisitions()
-          this.approveByClerkForm.reset()
-          this.modal = false
-        } else {
-          this.toastService.showError(response.message)
-        }
+  getBalance(params: any, item?: any) {
+    this.stampWalletService
+      .getStampWalletBalanceByTreasuryCodeAndCombinationId({
+        treasuryCode: params.treasuryCode,
+        combinationId: params.combinationId,
       })
-    } else {
-      this.toastService.showWarning("Please fill all the fields.")
-    }
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          if (item) {
+            item.availableQuantity = response.result.quantity;
+          } else {
+            this.availableQuantity = response.result.quantity;
+          }
+        } else {
+          this.toastService.showError(response.message);
+        }
+      });
+  }
+  approveByClerk() { 
+
   }
 
   getAllNewRequisitions() {
-    this.stampRequisitionService.newRequisitions(this.tableQueryParameters).subscribe((response) => {
-      if (response.apiResponseStatus == 1) {
-        response.result.data.map((element: any) => {
-          element.requisitionDate = convertDate(element.requisitionDate)
-        })
-        this.tableData = response.result;
-      } else {
-        this.toastService.showError(response.message)
-      }
-    })
+    this.stampRequisitionService
+      .newRequisitions(this.tableQueryParameters)
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          response.result.data.map((element: any) => {
+            element.requisitionDate = convertDate(
+              element.requisitionDate
+            );
+          });
+          this.tableData = response.result;
+        } else {
+          this.toastService.showError(response.message);
+        }
+      });
+  }
+  getAllApprovedByClerkRequisitions() {
+    this.stampRequisitionService
+      .getAllRequisitionsForwardedToTOForApproval(
+        this.tableQueryParameters
+      )
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          this.tableData = response.result;
+        } else {
+          this.toastService.showError(response.message);
+        }
+      });
   }
 
-  getAllApprovedByClerkRequisitions() {
-    this.stampRequisitionService.getAllRequisitionsForwardedToTOForApproval(this.tableQueryParameters).subscribe((response) => {
-      if (response.apiResponseStatus == 1) {
-        this.tableData = response.result;
-      } else {
-        this.toastService.showError(response.message)
-      }
-    })
+  onQuantityChange(value: number) {
+    if (value < 0 || value > 100000) {
+      this.toastService.showWarning(
+        'Quantity should be greater than zero and less than 100000.'
+      );
+      this.quantity = 0;
+    } else {
+      this.quantity = value;
+      this.quantitySubject.next(value);
+    }
+  }
+
+  onStampCombinationSelected($event: any) {
+    this.combinationId = $event.stampCombinationId;
+    this.stampCategoryId = $event.stampCategoryId;
+    this.category = $event.stampCategory1;
+    this.denomination = $event.denomination;
+    this.getBalance({
+      treasuryCode: this.authService.getUserDetails().Level.Scope[0],
+      combinationId: this.combinationId,
+    });
+    this.calcAmountQuantity();
+  }
+  childQuantityChange($event: any, stamp: StampRequisitions) {
+    if ($event >= 0 && $event <= stamp.availableQuantity) {
+      stamp.quantity = $event;
+      stamp.grossAmount = stamp.quantity * stamp.denomination;
+      this.childQuantitySubject.next({ grossAmount: stamp.grossAmount, stampCategoryId: stamp.stampCategoryId, stamp: stamp });
+    } else {
+      this.toastService.showWarning(
+        'Quantity should be greater than zero and less than Available Quantity.'
+      );
+    }
+  }
+
+  childCalculations(grossAmount: number, stamp: StampRequisitions) {
+    if (grossAmount && stamp.stampCategoryId && stamp) {
+      this.discountDetailsService
+      .getDiscount(this.vendorTypeId, stamp.stampCategoryId, grossAmount)
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          stamp.discountAmount = response.result;
+          stamp.taxAmount = stamp.discountAmount * 0.1;
+          this.totalNetAmount -= stamp.netAmount
+          stamp.netAmount = stamp.grossAmount - stamp.discountAmount + stamp.taxAmount;
+          this.totalNetAmount += stamp.netAmount
+        } else {
+          this.toastService.showAlert(
+            response.message,
+            response.apiResponseStatus
+          );
+        }
+      });
+    }
   }
   addItems() {
-
+    if (this.quantity <= this.availableQuantity && this.quantity > 0) {
+      const obj = {
+        quantity: this.quantity,
+        stampCategory: this.category,
+        denomination: this.denomination,
+        availableQuantity: this.availableQuantity,
+        grossAmount: this.amount,
+        discountAmount: this.discountAmount,
+        taxAmount: this.taxAmount,
+        netAmount: this.netAmount,  
+        stampCategoryId: this.stampCategoryId, 
+        combinationId: this.combinationId   
+      }
+      
+      this.stamps.push(obj)
+      this.totalNetAmount += this.netAmount
+        this.quantity = 0
+        this.category = ""
+        this.denomination = 0
+        this.availableQuantity = 0
+        this.amount = 0
+        this.discountAmount = 0
+        this.taxAmount = 0
+        this.netAmount = 0
+        this.stampComp?.reset();
+    }
   }
-  onRowEditCancel(stamp: any, index: number) {
+  modifyRequisition() { 
+    this.loading = true
+    // if (this.stampIndentId && this.indents.length > 0) {
+    //   let flag = false
+    //   let indexes = ""
+    //   let data = this.indents.map((element, index) => {
+    //     if ((element.sheet > element.availableSheet || element.sheet < 0 || element.label == null) || element.label > element.availableLabel || element.label < 0 || element.label == null) {
+    //       flag = true
+    //       indexes += `${index + 1},`
+    //     }
+    //     return {
+    //       stampCombinationId:element.combinationId,
+    //       sheet:element.sheet,
+    //       label:element.label,
+    //       quantity:element.quantity,
+    //       amount:element.amount
+    //     }
+    //   })
 
+    //   if (!flag) {
+    //     this.stampInvoiceEntryPayload = {
+    //       indentId: this.stampIndentId,
+    //       stampIndentData: data
+    //     };
+    //     console.log(this.stampInvoiceEntryPayload);
+
+    //     this.stampRequisitionService.approveByClerk(this.stampInvoiceEntryPayload).subscribe((response) => {
+    //       if (response.apiResponseStatus == 1) {
+    //         this.toastService.showAlert(response.message, 1);
+    //         this.modal = false;
+    //         this.getAllNewRequisitions();
+    //       } else {
+    //         this.toastService.showAlert(response.message, response.apiResponseStatus);
+    //       }
+    //     });
+    //     this.loading = false
+    //   } else {
+    //     this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has less number of sheets or labels in stock. `)
+    //   }
+    // } else {
+    //   this.toastService.showWarning('Please fill all the required fields');
+    // }
+    this.loading = false
   }
-  modifyRequisition() {
-
+  onRowEditCancel(stamp: StampRequisitions, index: number) {
+    this.stamps[index] = this.clonedStamps[stamp.id as number];
+    delete this.clonedStamps[stamp.id as number];
   }
-  onRowEditSave(stamp: any, index: number){
-
+  onRowEditSave(stamp: StampRequisitions, index: number) {
+    if (stamp.quantity != null && stamp.quantity != undefined && stamp.quantity > 0) {
+      delete this.clonedStamps[stamp.id as number];
+      this.toastService.showSuccess("Requisition Updated.")
+    } else {
+      this.toastService.showSuccess("Invalid Quantity.")
+    }
   }
-  onRowEditInit(stamp: any) {
-
+  onRowEditInit(stamp: StampRequisitions) {
+    this.clonedStamps[stamp.id as number] = { ...stamp };
   }
-
-  deleteProduct(stamp: any){
-
+  deleteProduct(stamp: StampRequisitions) {
+    this.totalNetAmount -= stamp.netAmount
+    this.stamps = this.stamps.filter((val) => val.combinationId !== stamp.combinationId);
   }
 }

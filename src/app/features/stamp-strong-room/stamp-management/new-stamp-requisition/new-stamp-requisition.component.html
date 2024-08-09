@@ -23,7 +23,7 @@
                     </div>
                     <div class="flex-1">
                         <label for="totalTaxAmount" class="block mb-1 text font-medium text-900">Total Tax Amount</label>
-                        <input pinputtext="" placeholder="Eg: 10" type="number" [value]="totalTaxAmount"
+                        <input pinputtext="" [value]="totalTaxAmount" readonly disabled
                             class="p-inputtext p-component p-element w-full">
                     </div>
                     <div class="flex-1">
@@ -34,69 +34,6 @@
                 </div>
             </div>
             <hr class="w-full pt-4">
-
-            <!-- <div class="field mb-4 col-12 md:col-12">
-                <label for="requisitionNo" class="font-medium text-900">Requisition No</label>
-                <input type="text" pinputtext="" formControlName="requisitionNo" class="p-inputtext p-component p-element">
-                <div *ngIf="newStampRequisitionForm.controls['requisitionNo'].errors && (newStampRequisitionForm.controls['requisitionNo'].dirty || newStampRequisitionForm.controls['requisitionNo'].touched)">
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['requisitionNo'].errors['required']">Requisution No is required.</small>
-                </div>
-            </div>
-            <div class="surface-border border-top-1 opacity-50 my-4 col-12"></div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="combination" class="font-medium text-900">Combination</label>
-                <app-stamp-combination-dropdown
-                (StampCombinationSelected)="onStampCombinationSelected($event)"
-              ></app-stamp-combination-dropdown>
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="vendorDetails" class="font-medium text-900">Vendor Details</label>
-                <app-vendor-details-dropdown (VendorDetailsSelected)="onVendorDetailsSelected($event)"></app-vendor-details-dropdown>
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="requisitionDate" class="font-medium text-900">Requisution Date</label>
-                <p-calendar [minDate]="minDateLimit" class="p-component p-element w-full p-calendar" formControlName="requisitionDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-                <div *ngIf="newStampRequisitionForm.controls['requisitionDate'].errors && (newStampRequisitionForm.controls['requisitionDate'].dirty || newStampRequisitionForm.controls['requisitionDate'].touched)">
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['requisitionDate'].errors['required']">Requisution Date is required.</small>
-                </div>
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="sheet" class="font-medium text-900">Sheet</label>
-                <input formControlName="sheet" type="text" [(ngModel)]="sheet" (ngModelChange)="sheetSelected($event)" pinputtext="" class="p-inputtext p-component p-element">
-                <div *ngIf="newStampRequisitionForm.controls['sheet'].errors && (newStampRequisitionForm.controls['sheet'].dirty || newStampRequisitionForm.controls['sheet'].touched)">
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['sheet'].errors['required']">No of Sheets is required.</small>
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['sheet'].errors['min']">Minimun no of sheets is 1.</small>
-                </div>
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="label" class="font-medium text-900">Label</label>
-                <input type="text" formControlName="label" pinputtext="" [(ngModel)]="label" (ngModelChange)="labelSelected($event)" class="p-inputtext p-component p-element">
-                <div *ngIf="newStampRequisitionForm.controls['label'].errors && (newStampRequisitionForm.controls['label'].dirty || newStampRequisitionForm.controls['label'].touched)">
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['label'].errors['required']">No of labels is required.</small>
-                    <small class="p-error" *ngIf="newStampRequisitionForm.controls['label'].errors['min']">Minimun no of labels is 1.</small>
-                </div>
-            </div>
-            
-            <div class="field mb-4 col-6 md:col-6">
-                <label for="quantity" class="font-medium text-900">Quantity</label>
-                <input id="quantity" type="text" [value]="quantity" pinputtext="" readonly disabled class="p-inputtext p-component p-element">
-            </div>
-            <div class="field mb-4 col-6 md:col-6">
-                <label for="amount" class="font-medium text-900">Amount</label>
-                <input id="amount" type="text" pinputtext="" [value]="amount" readonly disabled class="p-inputtext p-component p-element">
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="discountAmount" class="font-medium text-900">Discount Amount</label>
-                <input id="discountAmount" type="text" pinputtext="" [value]="discountAmount" readonly disabled class="p-inputtext p-component p-element">
-            </div>
-            <div class="field mb-4 col-6 md:col-6">
-                <label for="taxAmount" class="font-medium text-900">Tax Amount</label>
-                <input id="taxAmount" type="text" pinputtext="" [value]="taxAmount" readonly disabled class="p-inputtext p-component p-element">
-            </div>
-            <div class="field mb-4 col-6 md:col-6">
-                <label for="challanAmount" class="font-medium text-900">Challan Amount</label>
-                <input id="challanAmount" type="text" pinputtext="" [value]="challanAmount" readonly disabled class="p-inputtext p-component p-element">
-            </div> -->
             <div class="flex gap-2 align-items-end w-full">
                 <div class="p-0 flex-1">
                     <label for="Category" class="block mb-1 text font-medium text-900">Combination</label>

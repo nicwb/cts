@@ -221,21 +221,31 @@ export interface AddStampCombination {
 
 // =============Vendor Requisition==================
 export interface GetVendorStampRequisition {
-  vendorStampRequisitionId: number;
-  vendorId: number;
-  vendorName: string;
-  vendorType: string;
-  licenseNo: string;
-  amount: number;
-  quantity: number;
-  status: string;
-  requisitionDate: string;
-  raisedToTreasury: string;
-  sheet: number;
-  label: number;
+  id: number;
   requisitionNo: string;
+  requisitionDate: string;
+  vendorName: string;
+  licenseNo: string;
+  grossAmount: number;
+  discountAmount: number;
+  taxAmount: number;
+  netAmount: number;
+  status: string;
+  childData: StampChildData[];
 }
 
+interface StampChildData {
+  id: number;
+  stampCategory: string;
+  denomination: number;
+  quantity: number;
+  grossAmount: number;
+  netAmount: number;
+  taxAmount: number;
+  discountAmount: number;
+  combinationId: number;
+  stampCategoryId: number;
+}
 
 export interface AddVendorStampRequisition {
   vendorId: number;
@@ -256,6 +266,19 @@ interface VendorStampRequisitionData {
   discountAmount: number;
 }
 
+export interface StampRequisitions {
+    id: number;               
+    combinationId: number;    
+    availableQuantity: number;
+    denomination: number;     
+    grossAmount: number;      
+    discountAmount: number;   
+    taxAmount: number;        
+    netAmount: number;        
+    quantity: number;         
+    stampCategory: string; 
+    stampCategoryId: number;
+}
 export interface PrintData {
   raisedToTreasury: string;
   hoa: string;

@@ -33,7 +33,6 @@ export class VendorComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForms();
-
     this.tableActionButton = [
       {
         buttonIdentifier: 'delete',
@@ -115,7 +114,6 @@ export class VendorComponent implements OnInit {
 
   addVendors() {
     if (this.VendorDetailsEntryForm.valid) {
-      
       const formData = new FormData();
       formData.append('vendorType', this.vendorType);
       // formData.append('treasury', this.vendorTreasury);

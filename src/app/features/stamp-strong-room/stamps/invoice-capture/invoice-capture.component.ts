@@ -38,7 +38,8 @@ export class InvoiceCaptureComponent implements OnInit {
   memoDate!: Date;
   remarks: string = "";
   stampIndentId: number = 0;
-  stamCombinationId!: number;
+  stamCombinationId: number = 0;
+  stampCategoryId: number = 0;
   listType: string = 'indent';
   displayModifyModal!: boolean;
   displayDetailsModal!: boolean;
@@ -289,7 +290,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   deleteProduct(item: any) {
-    this.indents = this.indents.filter((val) => val.id !== item.id)
+    this.indents = this.indents.filter((val) => val.combinationId !== item.combinationId)
 
   }
   getBal(params: any) {
@@ -305,6 +306,7 @@ export class InvoiceCaptureComponent implements OnInit {
   onStampCombinationSelected($event: any) {
     if ($event) {
       this.category = $event.stampCategory1
+      this.stampCategoryId = $event.stampCategoryId
       this.stamCombinationId = $event.stampCombinationId
       this.description = $event.description
       this.denomination = $event.denomination
@@ -315,6 +317,8 @@ export class InvoiceCaptureComponent implements OnInit {
   addItems() {
     if (((this.inputSheet + this.inputLabel) > 0) && this.inputSheet >= 0 && this.inputLabel >= 0) {
       const obj = {
+        stampCategoryId: this.stampCategoryId, 
+        combinationId: this.stamCombinationId ,
         stampCategory: this.category,
         denomination: this.denomination,
         availableSheet: this.noOfSheetsInStock,
