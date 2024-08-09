@@ -94,6 +94,7 @@ export class NewStampRequisitionComponent implements OnInit {
         this.totalDiscountAmount = 0
         this.totalTaxAmount = 0
         this.totalNetAmount = 0
+        this.vendorComp?.reset()
       } else {
         this.toastService.showError(response.message)
       }
@@ -112,7 +113,6 @@ export class NewStampRequisitionComponent implements OnInit {
   }
 
   calcAmountQuantity() {
-    debugger;
     this.amount = Number(this.quantity) * this.denomination
     if (this.vendorId && this.stampCategoryId && this.amount) {
       this.getDiscount()
@@ -168,7 +168,6 @@ export class NewStampRequisitionComponent implements OnInit {
         this.discountAmount = 0
         this.netAmount = 0
         this.stampComp?.reset();
-        // this.vendorComp?.reset()
       }
       this.isVendorSelect = this.stampList.length === 0
     } else {

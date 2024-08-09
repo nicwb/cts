@@ -162,11 +162,12 @@ export class InvoiceCaptureComponent implements OnInit {
         });
         this.loading = false
       } else {
-        this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has invalid number of sheets or label`)
+        this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has less number of sheets or labels in stock. `)
       }
     } else {
       this.toastService.showWarning('Please fill all the required fields');
     }
+    this.loading = false
   }
 
   rejectIndent(id: number) {
@@ -271,15 +272,13 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   onRowEditSave(indent: Indent, index: number) {
-
-
     if ((indent.label !== null && indent.label >= 0 && indent.label <= indent.availableLabel) && (indent.sheet !== null && indent.sheet >= 0 && indent.sheet <= indent.availableSheet)) {
       delete this.clonedIndents[indent.id as number];
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Indent is updated' });
     } else {
-      this.indents[index] = this.clonedIndents[indent.id as number];
-      delete this.clonedIndents[indent.id as number];
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Sheet or Label' });
+      // this.indents[index] = this.clonedIndents[indent.id as number];
+      // delete this.clonedIndents[indent.id as number];
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid no. of Sheet or Label' });
     }
   }
 

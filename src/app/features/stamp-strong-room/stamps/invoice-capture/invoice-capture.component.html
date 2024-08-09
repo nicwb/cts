@@ -156,18 +156,18 @@
                                     [(ngModel)]="indent.sheet" (ngModelChange)="childSheetSelected($event, indent)" />
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{(indent.sheet && indent.sheet >= 0) && indent.sheet}}
+                                <p [ngClass]="{'text-red-500 ng-invalid ng-dirty': (indent.sheet == null || indent.sheet < 0 || indent.sheet > indent.availableSheet)}">{{(indent.sheet && indent.sheet >= 0) && indent.sheet}}</p>
                             </ng-template>
                         </p-cellEditor>
                     </td>
                     <td>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
-                                <input [ngClass]="{'text-red-500 ng-invalid ng-dirty': (indent.label == null || indent.label < 0 || indent.label > indent.availableLabel)}" class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                <input [ngClass]="{'text-red-500': (indent.label == null || indent.label < 0 || indent.label > indent.availableLabel)}" class="p-inputtext p-component w-10rem p-element" pInputText type="number"
                                     [(ngModel)]="indent.label" (ngModelChange)="childLabelSelected($event, indent)"/>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{(indent.label && indent.label >= 0) && indent.label}}
+                                <p [ngClass]="{'text-red-500': (indent.label == null || indent.label < 0 || indent.label > indent.availableLabel)}">{{(indent.label && indent.label >= 0) && indent.label}}</p>
                             </ng-template>
                         </p-cellEditor>
                     </td>
