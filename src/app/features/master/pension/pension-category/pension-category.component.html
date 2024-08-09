@@ -13,6 +13,16 @@
                 label="New"
                 class="p-button-rounded p-button-raised"
             ></button>
+            <button
+                pButton
+                pRipple
+                (click)="fun_refresh()"
+                *ngIf="refresh_b"
+                type="button"
+                icon="pi pi-refresh"
+                label="Refresh"
+                class="p-button-rounded p-button-raised"
+            ></button>
         </app-common-header>
     </div>
     <div class="col-12">

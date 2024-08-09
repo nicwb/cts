@@ -52,6 +52,7 @@ export class PensionCategoryComponent implements OnInit {
     primary_id_select: SelectItem[] = [];
     sub_id_select: SelectItem[] = [];
     rowData: any;
+    refresh_b = false;
 
     constructor(
         private datePipe: DatePipe,
@@ -100,8 +101,26 @@ export class PensionCategoryComponent implements OnInit {
 
     handsearchKeyChange(event: string): void {
         console.log('Search key changed:', event);
-        this.findById(event);
 
+        if (event == '') {
+            this.toastService.showError(`Search can not be empty`);
+            return;
+        }
+        let flag = true;
+        const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        const eve_len = event.length;
+        for (let i = 0; i < eve_len; i++) {
+            if (!numArr.includes(parseInt(event[i]))) {
+                flag = false;
+                break;
+            }
+        }
+        if (!flag) {
+            this.toastService.showError(`Search can only contain Category ID`);
+            return;
+        } else {
+            this.findById(parseInt(event));
+        }
     }
 
     initializeForm(): void {
@@ -131,6 +150,7 @@ export class PensionCategoryComponent implements OnInit {
             ).subscribe(
                 (response) => {
                     if (response) {
+                        console.log(response);
                         // Assuming 1 means success
                         this.displayInsertModal = false; // Close the dialog
 
@@ -263,10 +283,11 @@ export class PensionCategoryComponent implements OnInit {
         let match_from2 = parms.SubCategoryId;
         let len_val = value.length;
         for (let i = 0; i < len_val; i++) {
-            if (value[i].primaryCategoryId == match_from1) {
-                if (value[i].subCategoryId == match_from2) {
-                    flag = false;
-                }
+            if (
+                value[i].primaryCategoryId == match_from1 &&
+                value[i].subCategoryId == match_from2
+            ) {
+                flag = false;
             }
         }
         if (flag == true) {
@@ -281,9 +302,54 @@ export class PensionCategoryComponent implements OnInit {
     }
 
     findById(id: any) {
-        let value = this.tableData;
-        console.log(value);
+        // this.isTableDataLoading = true;
+        // this.tableData.data=[];
+        // console.log(this.tableData);
+        // this.isTableDataLoading = false;
+        const data = this.tableQueryParameters;
+        this.isTableDataLoading = true;
+        this.PensionCategoryDetailsService.get_all_Pension_details(
+            data
+        ).subscribe(
+            (response: any) => {
+                let flag = false;
+                let data= response.result;
+                let value = response.result.data;
+                console.log(value);
+                let len_val = value.length;
+                for (let i = 0; i < len_val; i++) {
+                    if (value[i].id == id) {
+                        data.data = [value[i]];
+                        data.dataCount = 1;
+                        this.refresh_b = true;
+                        flag = true;
+                        this.tableData=data;
+                    }
+                }
+                if (flag == false) {
+                    this.toastService.showError('No Pension Category ID found');
+                }
+
+                console.log(this.tableData);
+                this.isTableDataLoading = false;
+            },
+            (error) => {
+                this.isTableDataLoading = false;
+                console.error('API Error:', error);
+                this.toastService.showAlert(
+                    'An error occurred while fetching data',
+                    0
+                );
+            }
+        );
+
     }
+
+    fun_refresh() {
+        this.refresh_b = false;
+        this.getData();
+    }
+
     emitPensionCategorySelected(): void {
         this.PensionCategorySelected.emit(this.PensionForm.value);
     }
