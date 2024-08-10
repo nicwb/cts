@@ -98,10 +98,8 @@ export class PensionCategoryComponent implements OnInit {
         };
         console.log(this.tableQueryParameters.pageSize);
     }
-
+    // searching without get api
     handsearchKeyChange(event: string): void {
-        console.log('Search key changed:', event);
-
         if (event == '') {
             this.toastService.showError(`Search can not be empty`);
             return;
@@ -122,25 +120,21 @@ export class PensionCategoryComponent implements OnInit {
             this.findById(parseInt(event));
         }
     }
-
     initializeForm(): void {
         this.PensionForm = this.fb.group({
             PrimaryCategoryId: ['', Validators.required],
             SubCategoryId: ['', Validators.required],
         });
     }
-
     clear(table: any) {
         table.clear();
     }
-
     onGlobalFilter(dt: any, event: any): void {
         if (event && event.target) {
             const input = event.target as HTMLInputElement;
             dt.filterGlobal(input.value, 'contains');
         }
     }
-
     // Add pension category
     add_Pension_category() {
         if (this.PensionForm.valid) {
@@ -153,7 +147,6 @@ export class PensionCategoryComponent implements OnInit {
                         console.log(response);
                         // Assuming 1 means success
                         this.displayInsertModal = false; // Close the dialog
-
                         this.checkIfAlreadyExsist(formData);
                     } else {
                         this.handleErrorResponse(response);
@@ -172,7 +165,6 @@ export class PensionCategoryComponent implements OnInit {
             );
         }
     }
-
     private handleErrorResponse(response: any) {
         if (
             response.message &&
@@ -191,7 +183,6 @@ export class PensionCategoryComponent implements OnInit {
             );
         }
     }
-
     resetForm() {
         this.PensionForm.reset();
     }
@@ -302,10 +293,7 @@ export class PensionCategoryComponent implements OnInit {
     }
 
     findById(id: any) {
-        // this.isTableDataLoading = true;
-        // this.tableData.data=[];
-        // console.log(this.tableData);
-        // this.isTableDataLoading = false;
+
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
         this.PensionCategoryDetailsService.get_all_Pension_details(
