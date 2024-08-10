@@ -243,7 +243,7 @@ interface StampChildData {
   netAmount: number;
   taxAmount: number;
   discountAmount: number;
-  combinationId: number;
+  stampCombinationId: number;
   stampCategoryId: number;
 }
 
@@ -279,6 +279,7 @@ export interface StampRequisitions {
     stampCategory: string; 
     stampCategoryId: number;
 }
+
 export interface PrintData {
   raisedToTreasury: string;
   hoa: string;
@@ -291,17 +292,17 @@ export interface PrintData {
 
 export interface ApprovedByClerk {
   vendorStampRequisitionId: number,
-  sheetByClerk: number,
-  labelByClerk: number
+  childData: VendorStampRequisitionData[];
 }
 
 export interface ApprovedByTO {
-  vendorStampRequisitionId: number,
-  sheetByTo: number,
-  labelByTo: number,
-  discountedAmount: number,
-  taxAmount: number,
-  challanAmount: number,
+  vendorStampRequisitionId: number;
+  totalGrossAmount: number;
+  totalDiscountAmount: number;
+  totalTaxAmount: number;
+  totalNetAmount: number;
+  requisitionNo: string;
+  childData: VendorStampRequisitionData[];
 }
 
 export interface calcAmountDetails {

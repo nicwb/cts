@@ -163,6 +163,7 @@ export class InvoiceCaptureComponent implements OnInit {
         });
         this.loading = false
       } else {
+        indexes = indexes.trim().replace(/,\s*$/, "");
         this.toastService.showError(`Item ${indexes.substring(0, indexes.length)} has less number of sheets or labels in stock. `)
       }
     } else {

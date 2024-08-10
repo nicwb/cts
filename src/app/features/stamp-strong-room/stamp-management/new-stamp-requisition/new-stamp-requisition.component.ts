@@ -19,9 +19,9 @@ export class NewStampRequisitionComponent implements OnInit {
   vendorTypeId: number = 0
   description: string = ""
   category: string = ""
-  vendorId: any = null
-  combinationId: any = null
-  stampCategoryId: any = null
+  vendorId: number = 0
+  combinationId: number = 0
+  stampCategoryId: number = 0
   denomination: number = 0
   discountAmount: number = 0
   taxAmount: number = 0.1 * this.discountAmount
@@ -36,7 +36,7 @@ export class NewStampRequisitionComponent implements OnInit {
   totalNetAmount: number = 0
   labelPerSheet: number = 0
   stampList: any[] = []
-  isVendorSelect: boolean = this.stampList.length === 0 
+  isVendorSelect: boolean = this.stampList.length === 0
   private quantitySubject = new Subject<number>();
   constructor(
     private stampRequisitionService: StampRequisitionService,
@@ -76,7 +76,7 @@ export class NewStampRequisitionComponent implements OnInit {
         discountAmount,
         quantity,
         grossAmount
-      })); 
+      }));
       this.newStampRequisitionPayload = {
         vendorId: this.vendorId,
         totalGrossAmount: this.totalAmount,
@@ -146,6 +146,7 @@ export class NewStampRequisitionComponent implements OnInit {
         const obj = {
           labelPerSheet: this.labelPerSheet,
           stampCombinationId: this.combinationId,
+          stampCategoryId: this.stampCategoryId,
           category: this.category,
           denomination: this.denomination,
           quantity: this.quantity,
