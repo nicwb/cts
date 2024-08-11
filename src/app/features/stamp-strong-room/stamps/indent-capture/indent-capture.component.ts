@@ -24,7 +24,7 @@ export class IndentCaptureComponent implements OnInit {
   noOfLabelsInStock: number = 0
   minDate: Date = new Date()
   loading: boolean = false
-  isLoading: boolean = true
+  isLoading: boolean = false
   labelPerSheet: number = 0
   denomination: number = 0
   description: string = ""
@@ -58,13 +58,10 @@ export class IndentCaptureComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm()
-
     this.tableQueryParameters = {
       pageSize: 10,
       pageIndex: 0,
     };
-
-    this.getAllStampIndents();
   }
 
   initializeForm(): void {
@@ -75,7 +72,7 @@ export class IndentCaptureComponent implements OnInit {
     });
   }
 
-  getAllStampIndents() {
+  getAllStampIndents($event: any) {
     this.isLoading = true
     this.stampIndentService
       .getAllStampIndents(this.tableQueryParameters)
@@ -125,7 +122,7 @@ export class IndentCaptureComponent implements OnInit {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message);
           this.stampIndentForm.reset();
-          this.getAllStampIndents();
+          // this.getAllStampIndents();
           this.indentList = []
         } else {
           this.toastService.showAlert(response.message, response.apiResponseStatus);
@@ -213,5 +210,9 @@ export class IndentCaptureComponent implements OnInit {
     console.log(item);
     this.indentList = this.indentList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
     
+  }
+
+  search($event: any) {
+    this.getAllStampIndents($event);
   }
 }

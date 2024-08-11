@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EcFormComponent } from './ec-form.component';
+import { FromToDateComponent } from './from-to-date.component';
 
-describe('EcFormComponent', () => {
-  let component: EcFormComponent;
-  let fixture: ComponentFixture<EcFormComponent>;
+describe('FromToDateComponent', () => {
+  let component: FromToDateComponent;
+  let fixture: ComponentFixture<FromToDateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EcFormComponent ]
+      declarations: [ FromToDateComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EcFormComponent);
+    fixture = TestBed.createComponent(FromToDateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

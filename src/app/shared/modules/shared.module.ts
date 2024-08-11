@@ -6,8 +6,8 @@ import { NumberToWordsPipe } from 'src/app/core/pipe/number-to-words.pipe';
 @NgModule({
   declarations: [
     FirstLetterPipe,
-    NumberToWordsPipe,
-  ],
+    NumberToWordsPipe
+    ],
   imports: [
     CommonModule,
   ],

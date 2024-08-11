@@ -51,10 +51,9 @@ export class StampRequisitionComponent implements OnInit {
         }
       },
     ]
-    this.getAllStampRequisitions()
   }
 
-  getAllStampRequisitions() {
+  getAllStampRequisitions($event: any) {
     this.isLoading = true
     this.stampRequisitionService
       .getAllStampRequisitions(this.tableQueryParameters)
@@ -116,5 +115,9 @@ export class StampRequisitionComponent implements OnInit {
         this.toastService.showError(response.message)
       }
     })
+  }
+
+  search($event: any) {
+    this.getAllStampRequisitions($event)
   }
 }

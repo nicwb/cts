@@ -4,13 +4,14 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { formatDate } from 'src/utils/dateToString';
 
 @Component({
-  selector: 'app-ec-form',
-  templateUrl: './ec-form.component.html',
-  styleUrls: ['./ec-form.component.scss']
+  selector: 'app-from-to-date',
+  templateUrl: './from-to-date.component.html',
+  styleUrls: ['./from-to-date.component.scss']
 })
-export class EcFormComponent implements OnInit {
+export class FromToDateComponent implements OnInit {
 
   @Input() heading = ''
+  @Input() buttonLabel = ''
   @Output() newItemEvent = new EventEmitter<any>();
   commonForm: FormGroup = new FormGroup({})
   maxDateLimit: Date = new Date()

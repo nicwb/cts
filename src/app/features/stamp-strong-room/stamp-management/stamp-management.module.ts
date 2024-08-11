@@ -24,6 +24,7 @@ import { Tr7FormModule } from 'src/app/shared/modules/tr7-form/tr7-form.module';
 import { StampDeliveryComponent } from './stamp-delivery/stamp-delivery.component';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TableModule } from 'primeng/table';
+import { FromToDateModule } from 'src/app/shared/modules/from-to-date/from-to-date.module';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { TableModule } from 'primeng/table';
     StampCombinationDropdownModule,
     VendorDetailsDropdownModule,
     MhPrimeDynamicTableModule,
+    FromToDateModule,
     Tr7FormModule
   ]
 })

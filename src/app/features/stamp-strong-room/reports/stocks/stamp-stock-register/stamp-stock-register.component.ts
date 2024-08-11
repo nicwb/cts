@@ -15,7 +15,6 @@ export class StampStockRegisterComponent implements OnInit {
   data: any[] = []
   isLoading: boolean = false
   tableData!: DynamicTable<any>;
-  ec134Form: FormGroup = new FormGroup({})
   maxDateLimit: Date = new Date()
   constructor(
     private fb: FormBuilder,
@@ -23,13 +22,6 @@ export class StampStockRegisterComponent implements OnInit {
     private stampReportService: StampReportsService) { }
 
   ngOnInit(): void {
-    this.initiaiozeForm();
-  }
-  initiaiozeForm() {
-    this.ec134Form = this.fb.group({
-      fromDate: [null, Validators.required],
-      toDate: [null, Validators.required]
-    });
   }
 
   generateEC134($event: any) {

@@ -22,6 +22,7 @@ import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
+import { FromToDateModule } from 'src/app/shared/modules/from-to-date/from-to-date.module';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { TagModule } from 'primeng/tag';
     CalendarModule,
     ToastModule,
     TagModule,
+    FromToDateModule,
     ReactiveFormsModule,
     TreasuryDropdownModule,
     FormsModule,

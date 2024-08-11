@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EcFormComponent } from './ec-form.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FromToDateComponent } from './from-to-date.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 
 
 
 @NgModule({
-  declarations: [EcFormComponent],
+  declarations: [FromToDateComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     CalendarModule,
     FormsModule
   ],
-  exports: [EcFormComponent]
+  exports: [FromToDateComponent]
 })
-export class EcFormModule { }
+export class FromToDateModule { }

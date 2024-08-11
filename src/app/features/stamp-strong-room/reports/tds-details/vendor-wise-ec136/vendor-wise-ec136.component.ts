@@ -13,7 +13,6 @@ export class VendorWiseEC136Component implements OnInit {
 
   data: any[] = []
   maxDateLimit: Date = new Date()
-  ec136Form: FormGroup = new FormGroup({})
   isLoading: boolean = false
   tableData!: DynamicTable<any>;
   constructor(
@@ -22,13 +21,7 @@ export class VendorWiseEC136Component implements OnInit {
     private stampReportService: StampReportsService) { }
 
   ngOnInit(): void {
-    this.initiaiozeForm();
-  }
-  initiaiozeForm() {
-    this.ec136Form = this.fb.group({
-      fromDate: [null, Validators.required],
-      toDate: [null, Validators.required]
-    });
+    
   }
 
   generateEC136($event: any) {

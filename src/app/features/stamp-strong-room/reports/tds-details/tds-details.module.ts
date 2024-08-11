@@ -12,7 +12,7 @@ import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { TableModule } from 'primeng/table';
-import { EcFormModule } from '../shared/ec-form/ec-form.module';
+import { FromToDateModule } from 'src/app/shared/modules/from-to-date/from-to-date.module';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import { EcFormModule } from '../shared/ec-form/ec-form.module';
     MhPrimeDynamicTableModule,
     DynamicTableModule,
     CalendarModule,
-    EcFormModule,
+    FromToDateModule,
     TableModule,
     FormsModule,
   ],
