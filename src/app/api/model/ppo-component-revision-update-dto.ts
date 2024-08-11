@@ -12,12 +12,9 @@
 import { DateOnly } from './date-only';
 
 
-export interface PpoComponentRateEntryDTO { 
+export interface PpoComponentRevisionUpdateDTO { 
     dataSource?: { [key: string]: any; } | null;
-    ppoId: number;
-    breakupId: number;
     fromDate: DateOnly;
-    toDate?: DateOnly;
     amountPerMonth: number;
 }
 

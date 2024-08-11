@@ -12,13 +12,13 @@
 import { DateOnly } from './date-only';
 
 
-export interface PpoComponentRateResponseDTO { 
+export interface PpoComponentRevisionResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoId: number;
     breakupId: number;
     fromDate: DateOnly;
-    toDate?: DateOnly;
     amountPerMonth: number;
     id?: number;
+    toDate?: DateOnly;
 }
 

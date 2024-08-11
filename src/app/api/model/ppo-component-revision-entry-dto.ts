@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PpoComponentRateResponseDTO } from './ppo-component-rate-response-dto';
-import { ListHeader } from './list-header';
+import { DateOnly } from './date-only';
 
 
-export interface PpoComponentRateResponseDTOIEnumerableDynamicListResult { 
-    headers?: Array<ListHeader> | null;
-    data?: Array<PpoComponentRateResponseDTO> | null;
-    dataCount?: number;
+export interface PpoComponentRevisionEntryDTO { 
+    dataSource?: { [key: string]: any; } | null;
+    ppoId: number;
+    breakupId: number;
+    fromDate: DateOnly;
+    amountPerMonth: number;
 }
 

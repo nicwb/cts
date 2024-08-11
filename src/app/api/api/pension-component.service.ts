@@ -157,7 +157,7 @@ export class PensionComponentService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/bill-component`;
+        let localVarPath = `/api/v1/pension/component`;
         return this.httpClient.request<PensionBreakupResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -230,7 +230,7 @@ export class PensionComponentService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/bill-component`;
+        let localVarPath = `/api/v1/pension/component`;
         return this.httpClient.request<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

@@ -10,15 +10,15 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { PpoComponentRateResponseDTO } from './ppo-component-rate-response-dto';
+import { PpoComponentRevisionResponseDTO } from './ppo-component-revision-response-dto';
 
 
-export interface PpoComponentRateResponseDTOJsonAPIResponse { 
-    result?: PpoComponentRateResponseDTO;
+export interface PpoComponentRevisionResponseDTOJsonAPIResponse { 
+    result?: PpoComponentRevisionResponseDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace PpoComponentRateResponseDTOJsonAPIResponse {
+export namespace PpoComponentRevisionResponseDTOJsonAPIResponse {
 }
 
 

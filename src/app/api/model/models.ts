@@ -59,10 +59,10 @@ export * from './pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-ap
 export * from './pensioner-response-dto';
 export * from './pensioner-response-dtoapi-response';
 export * from './pensioner-response-dto-json-api-response';
-export * from './ppo-component-rate-entry-dto';
-export * from './ppo-component-rate-response-dto';
-export * from './ppo-component-rate-response-dtoi-enumerable-dynamic-list-result';
-export * from './ppo-component-rate-response-dtoi-enumerable-dynamic-list-result-json-api-response';
-export * from './ppo-component-rate-response-dto-json-api-response';
+export * from './ppo-component-revision-entry-dto';
+export * from './ppo-component-revision-response-dto';
+export * from './ppo-component-revision-response-dtoi-enumerable-json-api-response';
+export * from './ppo-component-revision-response-dto-json-api-response';
+export * from './ppo-component-revision-update-dto';
 export * from './ppo-payment-list-item-dto';
 export * from './sort-parameter';
