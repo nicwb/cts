@@ -177,13 +177,11 @@ export class NewStampRequisitionComponent implements OnInit {
   }
 
   deleteProduct(item: any) {
+      this.totalAmount -= item.grossAmount
+      this.totalDiscountAmount -= item.discountAmount
+      this.totalNetAmount -= item.netAmount
+      this.totalTaxAmount -= item.taxAmount
     this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
     this.isVendorSelect = this.stampList.length === 0
-    if (this.stampList.length === 0) {
-      this.totalAmount = 0
-      this.totalDiscountAmount = 0
-      this.totalNetAmount = 0
-      this.totalTaxAmount = 0
-    }
   }
 }
