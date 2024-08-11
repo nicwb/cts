@@ -55,6 +55,6 @@ export class StampDeliveryComponent implements OnInit {
   }
 
   handleButtonClick($event: any) {
-    this.requisitionDeliveredToVendor($event.rowData.vendorStampRequisitionId)
+    this.requisitionDeliveredToVendor($event.rowData.id)
   }
 }

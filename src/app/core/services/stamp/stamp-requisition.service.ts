@@ -27,7 +27,13 @@ export class StampRequisitionService {
         })
       );
   }
-
+  getStampRequisitionDetailsById(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
+    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionById?id=${id}`, queryParameters).pipe(
+      catchError((error) => {
+        throw this.toastService.showError(error.message);
+      })
+    );
+  }
   addNewStampRequisition(payload: AddVendorStampRequisition): Observable<IapiResponce> {
     return this.http.post<IapiResponce>('v1/StampRequisition/CreateStampRequisition', payload).pipe(
       catchError((error) => {

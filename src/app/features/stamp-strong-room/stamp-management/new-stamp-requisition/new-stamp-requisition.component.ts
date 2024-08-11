@@ -132,7 +132,7 @@ export class NewStampRequisitionComponent implements OnInit {
 
 
   addItems() {
-    if (this.quantity > 0) {
+    if (this.quantity > 0 && this.vendorId && this.combinationId) {
       let flag = false
       this.stampList.forEach((element) => {
         if (element.stampCombinationId === this.combinationId) {
@@ -172,7 +172,7 @@ export class NewStampRequisitionComponent implements OnInit {
       }
       this.isVendorSelect = this.stampList.length === 0
     } else {
-      this.toastService.showWarning("Quantity should be greater than zero.")
+      this.toastService.showWarning("Quantity should be greater than zero and vendor and combination must be selected")
     }
   }
 

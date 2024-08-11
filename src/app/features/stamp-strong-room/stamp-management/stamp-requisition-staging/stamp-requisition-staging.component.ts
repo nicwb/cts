@@ -386,6 +386,6 @@ export class StampRequisitionStagingComponent implements OnInit {
   }
   deleteProduct(stamp: StampRequisitions) {
     this.totalNetAmount -= stamp.netAmount
-    this.stamps = this.stamps.filter((val) => val.combinationId !== stamp.combinationId);
+    this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
   }
 }

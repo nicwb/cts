@@ -227,8 +227,6 @@ export class StampRequisitionApprovalComponent implements OnInit {
       sheet: params.sheet,
       label: params.label
     }).subscribe((response) => {
-      console.log(response);
-
       if (response.apiResponseStatus == 1) {
         this.challanAmount = response.result.challanAmount
         this.taxAmount = response.result.taxAmount
@@ -283,9 +281,13 @@ export class StampRequisitionApprovalComponent implements OnInit {
   childCalculations(grossAmount: number, stamp: StampRequisitions) {
     if (grossAmount && stamp.stampCategoryId && stamp) {
       this.discountDetailsService
-        .getDiscount(this.vendorTypeId, stamp.stampCategoryId, grossAmount)
-        .subscribe((response) => {
-          if (response.apiResponseStatus == 1) {
+      .getDiscount(this.vendorTypeId, stamp.stampCategoryId, grossAmount)
+      .subscribe((response) => {
+        if (response.apiResponseStatus == 1) {
+          console.log(this.vendorTypeId, stamp.stampCategoryId, grossAmount);
+          
+          console.log(response);
+          
             stamp.discountAmount = response.result;
             stamp.taxAmount = stamp.discountAmount * 0.1;
             this.totalNetAmount -= stamp.netAmount
@@ -415,6 +417,6 @@ export class StampRequisitionApprovalComponent implements OnInit {
   }
   deleteProduct(stamp: StampRequisitions) {
     this.totalNetAmount -= stamp.netAmount
-    this.stamps = this.stamps.filter((val) => val.combinationId !== stamp.combinationId);
+    this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
   }
 }

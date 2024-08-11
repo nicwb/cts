@@ -268,7 +268,7 @@ interface VendorStampRequisitionData {
 
 export interface StampRequisitions {
     id: number;               
-    combinationId: number;    
+    stampCombinationId: number;    
     availableQuantity: number;
     denomination: number;     
     grossAmount: number;      
