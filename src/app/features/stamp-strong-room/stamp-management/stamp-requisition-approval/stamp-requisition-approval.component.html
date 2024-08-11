@@ -4,42 +4,6 @@
             [imgSrc]="'assets/layout/images/icons/requisition-approval.png'">
         </app-common-header>
     </div>
-    <!-- <div class="col-12">
-        <div class="grid">
-            <div class="col-12 lg:col-6 p-3">
-                <div class="transition-colors transition-duration-500 p-3 border-round border-2 cursor-pointer"
-                    [ngClass]="{
-                    'hover:shadow-2 surface-card border-transparent hover:bg-primary-100 hover:border-primary':listType!== 'new',
-                    'bg-primary-100 border-primary': listType === 'forwarded'
-                  }" (click)="changeDynamicTable('forwarded')">
-                    <div class="flex align-items-center justify-content-between">
-                        <div>
-                            <p class="mt-1 mb-0 text-600 text-xl">Forwarded To TO</p>
-                        </div>
-                        <div>
-                            <img src="assets/layout/images/icons/forwarded-to-TO.png" height="60">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-6 p-3">
-                <div class="transition-colors transition-duration-500 p-3 border-round border-2 cursor-pointer"
-                    [ngClass]="{
-                    'hover:shadow-2 surface-card border-transparent hover:bg-primary-100 hover:border-primary':listType!=='approvedByClerk',
-                    'bg-primary-100 border-primary': listType === 'waitingPaymentVerification'
-                  }" (click)="changeDynamicTable('waitingPaymentVerification')">
-                    <div class="flex align-items-center justify-content-between">
-                        <div>
-                            <p class="mt-1 mb-0 text-600 text-xl">Waiting For Payment Verification</p>
-                        </div>
-                        <div>
-                            <img src="assets/layout/images/icons/payment-verification.png" height="60">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="col-12">
         <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
             [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [isLoading]="false"
@@ -83,8 +47,7 @@
         <div class="flex gap-2 align-items-end w-full">
             <div class="p-0 flex-1">
                 <label for="Category" class="block mb-1 text font-medium text-900">Combination</label>
-                <app-stamp-combination-dropdown
-                    (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
+                <app-stamp-combination-dropdown-for-requisitions (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown-for-requisitions>
             </div>
             <div class="flex-1">
                 <label for="availableQuantity" class="block mb-1 text font-medium text-900">Available Quantity</label>

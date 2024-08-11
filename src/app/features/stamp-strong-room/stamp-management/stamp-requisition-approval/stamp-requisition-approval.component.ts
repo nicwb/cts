@@ -8,7 +8,7 @@ import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-det
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
+import { StampCombinationDropdownForRequisitionsComponent } from 'src/app/shared/modules/stamp-combination-dropdown-for-requisitions/stamp-combination-dropdown-for-requisitions.component';
 
 @Component({
   selector: 'app-stamp-requisition-approval',
@@ -16,7 +16,7 @@ import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-
   styleUrls: ['./stamp-requisition-approval.component.scss']
 })
 export class StampRequisitionApprovalComponent implements OnInit {
-  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+  @ViewChild(StampCombinationDropdownForRequisitionsComponent) stampComp: StampCombinationDropdownForRequisitionsComponent | undefined;
   category: string = "";
   listType: string = 'forwarded';
   discountAmount: number = 0;
@@ -46,6 +46,8 @@ export class StampRequisitionApprovalComponent implements OnInit {
   stampCategoryId: number = 0;
   vendorTypeId: number = 0;
   vendorStampRequisitionId: number = 0
+  presentCategory: string = ""
+  presentDenomination: number = 0
   reqDate: Date = new Date();
   clonedStamps: { [s: string]: StampRequisitions } = {};
   stamps: any[] = [];
@@ -165,6 +167,9 @@ export class StampRequisitionApprovalComponent implements OnInit {
         this.totalNetAmount = $event.rowData.netAmount;
         this.vendorStampRequisitionId = $event.rowData.id
         this.stamps = $event.rowData.childData;
+        this.presentCategory = $event.rowData.childData[0].stampCategory
+        this.presentDenomination = $event.rowData.childData[0].denomination
+        this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
         this.vendorLicence = $event.rowData.licenseNo;
         this.vendorName = $event.rowData.vendorName;
         this.vendorTypeId = $event.rowData.vendorTypeId;
@@ -418,5 +423,6 @@ export class StampRequisitionApprovalComponent implements OnInit {
   deleteProduct(stamp: StampRequisitions) {
     this.totalNetAmount -= stamp.netAmount
     this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
+    this.stampComp?.reAssign()
   }
 }

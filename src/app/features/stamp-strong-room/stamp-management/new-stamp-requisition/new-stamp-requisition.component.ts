@@ -4,7 +4,7 @@ import { AddVendorStampRequisition } from 'src/app/core/models/stamp';
 import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
+import { StampCombinationDropdownForRequisitionsComponent } from 'src/app/shared/modules/stamp-combination-dropdown-for-requisitions/stamp-combination-dropdown-for-requisitions.component';
 import { VendorDetailsDropdownComponent } from 'src/app/shared/modules/vendor-details-dropdown/vendor-details-dropdown.component';
 
 @Component({
@@ -13,7 +13,7 @@ import { VendorDetailsDropdownComponent } from 'src/app/shared/modules/vendor-de
   styleUrls: ['./new-stamp-requisition.component.scss']
 })
 export class NewStampRequisitionComponent implements OnInit {
-  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+  @ViewChild(StampCombinationDropdownForRequisitionsComponent) stampComp: StampCombinationDropdownForRequisitionsComponent | undefined;
   @ViewChild(VendorDetailsDropdownComponent) vendorComp: VendorDetailsDropdownComponent | undefined;
   minDateLimit: Date = new Date()
   vendorTypeId: number = 0
@@ -156,11 +156,14 @@ export class NewStampRequisitionComponent implements OnInit {
           netAmount: this.netAmount,
 
         }
+
         this.totalAmount += this.amount
         this.totalDiscountAmount += this.discountAmount
         this.totalTaxAmount += this.taxAmount
         this.totalNetAmount += this.netAmount
         this.stampList.push(obj)
+        this.stampComp?.removeCategory(this.category, this.denomination)
+        this.stampComp?.reset();
         this.category = ""
         this.denomination = 0
         this.quantity = 0
@@ -168,7 +171,6 @@ export class NewStampRequisitionComponent implements OnInit {
         this.taxAmount = 0
         this.discountAmount = 0
         this.netAmount = 0
-        this.stampComp?.reset();
       }
       this.isVendorSelect = this.stampList.length === 0
     } else {
@@ -183,5 +185,6 @@ export class NewStampRequisitionComponent implements OnInit {
       this.totalTaxAmount -= item.taxAmount
     this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
     this.isVendorSelect = this.stampList.length === 0
+    this.stampComp?.reAssign()
   }
 }

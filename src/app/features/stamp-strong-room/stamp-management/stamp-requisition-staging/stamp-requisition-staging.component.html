@@ -84,8 +84,7 @@
         <div class="flex gap-2 align-items-end w-full">
             <div class="p-0 flex-1">
                 <label for="Category" class="block mb-1 text font-medium text-900">Combination</label>
-                <app-stamp-combination-dropdown
-                    (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown>
+                <app-stamp-combination-dropdown-for-requisitions (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown-for-requisitions>
             </div>
             <div class="flex-1">
                 <label for="availableQuantity" class="block mb-1 text font-medium text-900">Available Quantity</label>
