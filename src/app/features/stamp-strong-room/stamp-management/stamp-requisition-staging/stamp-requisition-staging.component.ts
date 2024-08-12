@@ -153,6 +153,9 @@ export class StampRequisitionStagingComponent implements OnInit {
         this.vendorStampRequisitionId = $event.rowData.id
         this.stamps = $event.rowData.childData;
         this.presentCategory = $event.rowData.childData[0].stampCategory
+        $event.rowData.childData.forEach((element : any) => {
+          
+        });
         this.presentDenomination = $event.rowData.childData[0].denomination
         this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
         this.vendorLicence = $event.rowData.licenseNo;

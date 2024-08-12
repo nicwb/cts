@@ -58,7 +58,7 @@ export class StampCombinationDropdownForRequisitionsComponent implements OnInit 
   }
 
   removeCategory(category: string, denomination: number) {
-      if (category) {
+      if (category && denomination) {
         this.CombinationTypeList = this.CombinationTypeList.filter((item) => !item.combination.includes(`Category: ${category} | Denomination: ${denomination}`) && item.combination.includes(category))
       }
   }

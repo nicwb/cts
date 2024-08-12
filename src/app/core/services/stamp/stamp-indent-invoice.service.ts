@@ -14,11 +14,12 @@ export class StampIndentInvoiceService {
 
   // Stamp Indent
   getAllStampIndents(
-    queryParameters: DynamicTableQueryParameters
+    queryParameters: DynamicTableQueryParameters,
+    dates: any
   ): Observable<IapiResponce<GetStampIndents>> {
     return this.http
       .patch<IapiResponce<GetStampIndents>>(
-        'v1/Stamp/StampIndentList',
+        `v1/Stamp/StampIndentList?startDate=${dates.fromDate}&endDate=${dates.toDate}`,
         queryParameters
       )
       .pipe(

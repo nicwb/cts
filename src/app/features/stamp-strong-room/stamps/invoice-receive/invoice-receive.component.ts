@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
-import { Status } from 'src/app/core/enum/stampIndentStatusEnum';
 import { AddStampInvoice, GetStampIndents } from 'src/app/core/models/stamp';
-import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
-import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
+import { StampIndentInvoiceService } from 'src/app/core/services/stamp/stamp-indent-invoice.service';
 
 @Component({
   selector: 'app-invoice-receive',
@@ -19,8 +17,7 @@ export class InvoiceReceiveComponent implements OnInit {
   tableData!: DynamicTable<GetStampIndents>;
   stampIndentReceivePayload!: AddStampInvoice
   constructor(
-    private stampIndentService: StampIndentService,
-    private stampInvoiceService: StampInvoiceService,
+    private stampIndentInvoiceService: StampIndentInvoiceService,
     private toastService: ToastService,) { }
 
   ngOnInit(): void {
@@ -41,7 +38,7 @@ export class InvoiceReceiveComponent implements OnInit {
   }
 
   getAllStampIndents() {
-    this.stampIndentService
+    this.stampIndentInvoiceService
       .getAllStampIndentsProcessed(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -74,7 +71,7 @@ export class InvoiceReceiveComponent implements OnInit {
       stampIndentData: indents
     }
     console.log(this.stampIndentReceivePayload);
-    this.stampIndentService.receiveIndent(this.stampIndentReceivePayload).subscribe((response) => {
+    this.stampIndentInvoiceService.receiveIndent(this.stampIndentReceivePayload).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         this.toastService.showSuccess(
           response.message,

@@ -2,14 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampInvoice, GetStampIndents, GetStampInvoices, Indent } from 'src/app/core/models/stamp';
-import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
-import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
 import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
 import { MessageService } from 'primeng/api';
+import { StampIndentInvoiceService } from 'src/app/core/services/stamp/stamp-indent-invoice.service';
 
 @Component({
   selector: 'app-invoice-capture',
@@ -57,8 +56,7 @@ export class InvoiceCaptureComponent implements OnInit {
   loading: boolean = false
   clonedIndents: { [s: string]: Indent } = {};
   constructor(
-    private stampInvoiceService: StampInvoiceService,
-    private stampIndentService: StampIndentService,
+    private stampIndentInvoiceService: StampIndentInvoiceService,
     private stampWalletService: StampWalletService,
     private authTokenService: AuthTokenService,
     private messageService: MessageService,
@@ -112,7 +110,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   getAllStampInvoices() {
-    this.stampInvoiceService.getAllStampInvoice(this.tableQueryParameters).subscribe((response) => {
+    this.stampIndentInvoiceService.getAllStampInvoice(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         response.result.data.map((item: any) => {
           item.createdAt = convertDate(item.createdAt);
@@ -152,7 +150,7 @@ export class InvoiceCaptureComponent implements OnInit {
         };
         console.log(this.stampInvoiceEntryPayload);
 
-        this.stampInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
+        this.stampIndentInvoiceService.addNewStampInvoice(this.stampInvoiceEntryPayload).subscribe((response) => {
           if (response.apiResponseStatus == 1) {
             this.toastService.showAlert(response.message, 1);
             this.displayModifyModal = false;
@@ -173,7 +171,7 @@ export class InvoiceCaptureComponent implements OnInit {
   }
 
   rejectIndent(id: number) {
-    this.stampIndentService.rejectIndentByIndentId(id).subscribe((response) => {
+    this.stampIndentInvoiceService.rejectIndentByIndentId(id).subscribe((response) => {
       if (response.apiResponseStatus === 1) {
         this.toastService.showSuccess(response.message);
         this.changeDynamicTable('indent')
@@ -185,7 +183,7 @@ export class InvoiceCaptureComponent implements OnInit {
 
   getAllStampIndents() {
     this.isLoading=true
-    this.stampIndentService.getAllStampIndentsProcessing(this.tableQueryParameters).subscribe((response) => {
+    this.stampIndentInvoiceService.getAllStampIndentsProcessing(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1 || response.apiResponseStatus === 3) {
         response.result.data.map((item: any) => {
           item.createdAt = convertDate(item.createdAt);
@@ -215,7 +213,7 @@ export class InvoiceCaptureComponent implements OnInit {
       pageSize: 10,
       pageIndex: 0,
     };
-    this.stampIndentService.getStampIndentDetails(id, this.tableQueryParameters).subscribe((response) => {
+    this.stampIndentInvoiceService.getStampIndentDetails(id, this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1) {
         console.log(response);
         response.result.data.map((item: any) => {

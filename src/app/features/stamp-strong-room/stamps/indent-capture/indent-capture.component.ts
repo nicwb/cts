@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampIndent, GetStampIndents, IndentItems } from 'src/app/core/models/stamp';
 import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
-import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
+import { StampIndentInvoiceService } from 'src/app/core/services/stamp/stamp-indent-invoice.service';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
@@ -47,7 +47,7 @@ export class IndentCaptureComponent implements OnInit {
   stampIndentPayload!: AddStampIndent
 
   constructor(
-    private stampIndentService: StampIndentService,
+    private stampIndentInvoiceService: StampIndentInvoiceService,
     private toastService: ToastService,
     private stampWalletService: StampWalletService,
     private fb: FormBuilder,
@@ -74,8 +74,8 @@ export class IndentCaptureComponent implements OnInit {
 
   getAllStampIndents($event: any) {
     this.isLoading = true
-    this.stampIndentService
-      .getAllStampIndents(this.tableQueryParameters)
+    this.stampIndentInvoiceService
+      .getAllStampIndents(this.tableQueryParameters, $event)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           console.log(response);
@@ -118,7 +118,7 @@ export class IndentCaptureComponent implements OnInit {
       };
       console.log(this.stampIndentPayload);
 
-      this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
+      this.stampIndentInvoiceService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message);
           this.stampIndentForm.reset();
