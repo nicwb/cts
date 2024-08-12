@@ -10,11 +10,10 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { DateOnly } from './date-only';
 
 
 export interface DateOnlyJsonAPIResponse { 
-    result?: DateOnly;
+    result?: string;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }

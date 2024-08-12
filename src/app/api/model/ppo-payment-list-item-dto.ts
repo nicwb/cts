@@ -9,13 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface PpoPaymentListItemDTO { 
     dataSource?: { [key: string]: any; } | null;
-    fromDate?: DateOnly;
-    toDate?: DateOnly;
+    fromDate?: string;
+    toDate?: string;
     basicPensionAmount?: number;
     breakupId?: number;
     componentName?: string | null;

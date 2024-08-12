@@ -9,15 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface ManualPpoReceiptResponseDTO { 
     ppoNo?: string | null;
     pensionerName?: string | null;
-    dateOfCommencement?: DateOnly;
+    dateOfCommencement?: string;
     mobileNumber?: string | null;
-    receiptDate?: DateOnly;
+    receiptDate?: string;
     psaCode?: string;
     ppoType?: string;
     id?: number;

@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 import { PensionBreakupResponseDTO } from './pension-breakup-response-dto';
 
 
@@ -18,7 +17,7 @@ export interface ComponentRateResponseDTO {
     categoryId?: number;
     breakupId?: number;
     breakup?: PensionBreakupResponseDTO;
-    effectiveFromDate: DateOnly;
+    effectiveFromDate: string;
     rateAmount?: number;
     rateType?: string;
     id?: number;

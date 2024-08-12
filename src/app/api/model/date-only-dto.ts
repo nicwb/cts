@@ -9,10 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface DateOnlyDTO { 
-    dateOnly?: DateOnly;
+    dateOnly?: string;
 }
 

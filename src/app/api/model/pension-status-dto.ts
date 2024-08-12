@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface PensionStatusDTO { 
     dataSource?: { [key: string]: any; } | null;
     statusFlag: number;
-    statusWef: DateOnly;
+    statusWef: string;
 }
 
