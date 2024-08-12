@@ -50,6 +50,7 @@ export class SubCategoryComponent implements OnInit {
     type: SelectItem[] = [];
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
+    refresh_b = false;
 
     constructor(
         private datePipe: DatePipe,
@@ -67,7 +68,7 @@ export class SubCategoryComponent implements OnInit {
 
 
         this.tableQueryParameters = {
-            pageSize: 10000,
+            pageSize: 10,
             pageIndex: 0,
         };
 
@@ -88,19 +89,77 @@ export class SubCategoryComponent implements OnInit {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex,
+            pageIndex: event.pageIndex/10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
         console.log(this.tableQueryParameters.pageSize);
+        this.getData();
+
 
     }
 
     handsearchKeyChange(event: string): void {
-        console.log('Search key changed:', event);
-        this.tableQueryParameters.filterParameters = [
-            { field: 'searchKey', value: event },
-        ];
+        if (event == '') {
+            this.toastService.showError(`Search can not be empty`);
+            return;
+        }
+        let flag = true;
+        const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        const eve_len = event.length;
+        for (let i = 0; i < eve_len; i++) {
+            if (!numArr.includes(parseInt(event[i]))) {
+                flag = false;
+                break;
+            }
+        }
+        if (!flag) {
+            this.toastService.showError(`Search can only contain Category ID`);
+            return;
+        } else {
+            this.findById(parseInt(event));
+        }
+    }
+
+    findById(id: any) {
+
+        const data = this.tableQueryParameters;
+        this.isTableDataLoading = true;
+        this.SubCategoryDetalisService.get_all_Sub_details(
+            data
+        ).subscribe(
+            (response: any) => {
+                let flag = false;
+                let data= response.result;
+                let value = response.result.data;
+                console.log(value);
+                let len_val = value.length;
+                for (let i = 0; i < len_val; i++) {
+                    if (value[i].id == id) {
+                        data.data = [value[i]];
+                        data.dataCount = 1;
+                        this.refresh_b = true;
+                        flag = true;
+                        this.tableData=data;
+                    }
+                }
+                if (flag == false) {
+                    this.toastService.showError('No Pension Category ID found');
+                }
+
+                console.log(this.tableData);
+                this.isTableDataLoading = false;
+            },
+            (error) => {
+                this.isTableDataLoading = false;
+                console.error('API Error:', error);
+                this.toastService.showAlert(
+                    'An error occurred while fetching data',
+                    0
+                );
+            }
+        );
+
     }
 
     initializeForm(): void {
@@ -183,10 +242,8 @@ export class SubCategoryComponent implements OnInit {
             (response: any) => {
 
                 this.tableData = response.result;
-                // this.tableData = sd;
-
-                this.isTableDataLoading = false;
                 console.log(this.tableData);
+                this.isTableDataLoading = false;
             },
             (error) => {
                 this.isTableDataLoading = false;
@@ -199,15 +256,9 @@ export class SubCategoryComponent implements OnInit {
         );
     }
 
-    onRowEditInit(data: SubCategoryDetalis) {
-        this.selectedRowData = { ...data };
-        this.SubForm.patchValue(this.selectedRowData);
-        this.displayInsertModal = true;
-    }
-
-    onRowEditCancel() {
-        this.selectedRowData = null;
-        this.resetForm();
+    fun_refresh() {
+        this.refresh_b = false;
+        this.getData();
     }
 
     emitSubCategory(): void {

@@ -25,14 +25,15 @@ export class AppMenuComponent implements OnInit {
             {
                 label: 'Master',
                 items: [
-                    { 
+                    {
                         label: 'Pension', icon: 'pi pi-fw pi-box',
-                        items: [ 
-                            { label: 'Primary', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Sub Category', icon: 'pi pi-fw pi-bookmark' },
+                        items: [
+                            { label: 'Pension Category', icon: 'pi pi-fw pi-bookmark' , routerLink:['/master/app-pension/app-pension-category'] },
+                            { label: 'Primary', icon: 'pi pi-fw pi-bookmark' , routerLink:['/master/app-pension/app-primary'] },
+                            { label: 'Sub Category', icon: 'pi pi-fw pi-bookmark', routerLink: ['/master/app-pension/app-sub-category'] },
 
                      ]
-                        
+
                      },
                      { label: 'Component', icon: 'pi pi-fw pi-box' },
                      { label: 'Component Rate', icon: 'pi pi-fw pi-box' },
@@ -69,7 +70,7 @@ export class AppMenuComponent implements OnInit {
                                     { label: 'First Pension', icon: 'pi pi-fw pi-bookmark',
                                         items: [
                                             { label: 'General', icon: 'pi pi-fw pi-bookmark',routerLink: ['/pension/modules/pension-process/pension-bill']  },
-                                           
+
                                         ]
                                      },
                                     { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark' },
@@ -106,12 +107,12 @@ export class AppMenuComponent implements OnInit {
                             },
                             {
                                 label: 'Send to Epradan', icon: 'pi pi-fw pi-bookmark',
-                                
+
                             },
                             {
-                                
+
                                 label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
-                                
+
                             },
                         ]
                     },
@@ -140,7 +141,7 @@ export class AppMenuComponent implements OnInit {
                                     { label: ' Transferred PPOs Register-EC-116', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
-                            { label: 'Pension Master-EC-117', icon: 'pi pi-fw pi-bookmark' },  
+                            { label: 'Pension Master-EC-117', icon: 'pi pi-fw pi-bookmark' },
                             { label: 'Pensioner Bank Details-EC-118', icon: 'pi pi-fw pi-bookmark' },
                             { label: 'Suspended PPO-EC-119', icon: 'pi pi-fw pi-bookmark' },
                             { label: 'Pensioner Master-EC-120', icon: 'pi pi-fw pi-bookmark' },
@@ -148,8 +149,8 @@ export class AppMenuComponent implements OnInit {
                             { label: 'Converted Family Pension-EC-122', icon: 'pi pi-fw pi-bookmark' },
                             { label: 'Pension Component Rate-EC-123', icon: 'pi pi-fw pi-bookmark' },
                             { label: 'PPO Master-EC-124', icon: 'pi pi-fw pi-bookmark' },
-                                                  
-                            
+
+
                         ]
                     },
                     {
@@ -159,20 +160,20 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Pensioner Details', icon: 'pi pi-fw pi-bookmark',
                                 items: [
                                     { label: 'Breakup Details', icon: 'pi pi-fw pi-bookmark' },
-                                   
+
                                 ]
                             },
-                            
+
                         ]
                     },
-                    {                             
+                    {
                         label: 'Festival Master', icon: 'pi pi-fw pi-box',
-                        
+
                     },
                     {
-                                
+
                         label: 'Festival Details', icon: 'pi pi-fw pi-box',
-                        
+
                     },
                 ]
             },
