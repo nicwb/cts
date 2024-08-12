@@ -1,59 +1,113 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Pension Component Details'" [imgSrc]="'assets/layout/images/icons/indent-entry.png'">
-            <button pButton pRipple (click)="showInsertDialog()" type="button" icon="pi pi-plus" label="New Entry"
-                class="p-button-rounded p-button-raised"></button>
+        <app-common-header
+            [headerName]="'Pension Component Details'"
+            [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
+        >
+            <button
+                pButton
+                pRipple
+                (click)="showInsertDialog()"
+                type="button"
+                icon="pi pi-plus"
+                label="New Entry"
+                class="p-button-rounded p-button-raised"
+            ></button>
+            <button
+                pButton
+                pRipple
+                (click)="refresh_table()"
+                type="button"
+                *ngIf="refresh_val"
+                icon="pi pi-refresh"
+                label="Refresh"
+                class="p-button-rounded p-button-raised"
+            ></button>
         </app-common-header>
     </div>
     <div class="col-12">
-      <mh-prime-dynamic-table
-      size="small"
-      [data]="tableData"
-      [numberRowsShown]="30"
-      [rowsPerPageOptions]="[10, 30, 50]"
-      
-      [showTopMenubar]="true"
-      [isLoading]="isTableDataLoading"
-      [actionButtons]="tableActionButton"
-      [childActionButtons]="tableChildActionButton"
-      (rowSelect)="handleRowSelection($event)"
-      (queryParameterChange)="handQueryParameterChange($event)"
-      (searchKeyChange)="handsearchKeyChange($event)"
-    ></mh-prime-dynamic-table>
+        <mh-prime-dynamic-table
+            size="small"
+            [data]="tableData"
+            [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10, 30, 50]"
+            [showTopMenubar]="true"
+            [isLoading]="isTableDataLoading"
+            [actionButtons]="tableActionButton"
+            [childActionButtons]="tableChildActionButton"
+            (rowSelect)="handleRowSelection($event)"
+            (queryParameterChange)="handQueryParameterChange($event)"
+            (searchKeyChange)="handsearchKeyChange($event)"
+        ></mh-prime-dynamic-table>
     </div>
-  </div>
-  
-<p-dialog header="Pension Components Details" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '45vw'}"
-    [baseZIndex]="10000">
+</div>
+
+<p-dialog
+    header="Pension Components Details"
+    [(visible)]="displayInsertModal"
+    [modal]="true"
+    [style]="{ width: '45vw' }"
+    [baseZIndex]="10000"
+>
     <form [formGroup]="ComponentForm" class="flex flex-column gap-4 mt-3">
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="description" class="block mb-1 text-color text-lg">Description:</label>
-                <input type="text" pinputtext="" formControlName="ComponentName" placeholder="Description " id="description"
-                    class="p-inputtext p-component p-element w-full">
+                <label for="description" class="block mb-1 text-color text-lg"
+                    >Description:</label
+                >
+                <input
+                    type="text"
+                    pinputtext=""
+                    formControlName="ComponentName"
+                    placeholder="Description "
+                    id="description"
+                    class="p-inputtext p-component p-element w-full"
+                />
             </div>
             <div class="flex-auto">
-                <label for="payment" class="block mb-1 text-color text-lg">Component Type:</label>
-                <input type="text" formControlName="ComponentType" placeholder="Payment or Deduction" (change)="check()" class="p-inputtext p-component p-element w-full">
-                    
+                <label for="payment" class="block mb-1 text-color text-lg"
+                    >Component Type:</label
+                >
+                <input
+                    type="text"
+                    formControlName="ComponentType"
+                    placeholder="Payment or Deduction"
+                    (change)="check()"
+                    class="p-inputtext p-component p-element w-full"
+                />
             </div>
         </div>
 
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="" class="block mb-1 text-color text-lg">Relief Allowed:</label>
-                <p-dropdown [options]="allowed" formControlName="ReliefFlag"  placeholder="Select Yes or No" [showClear]="true" class=" p-component p-element w-full"></p-dropdown>
+                <label for="" class="block mb-1 text-color text-lg"
+                    >Relief Allowed:</label
+                >
+                <p-dropdown
+                    [options]="allowed"
+                    formControlName="ReliefFlag"
+                    placeholder="Select Yes or No"
+                    [showClear]="true"
+                    class="p-component p-element w-full"
+                ></p-dropdown>
             </div>
-            
         </div>
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
-      <button *ngIf="!selectedRow" pButton label="Submit" (click)="addComponentDetails()" 
-              class="p-element p-ripple p-button-rounded p-button p-component" 
-              [disabled]="!ComponentForm.valid"></button>
-      
-      <button pButton label="Cancel" (click)="cancelComponent()" 
-              class="p-element p-ripple p-button-rounded p-button p-component"></button>
-  </div>
-</p-dialog>
+        <button
+            *ngIf="!selectedRow"
+            pButton
+            label="Submit"
+            (click)="addComponentDetails()"
+            class="p-element p-ripple p-button-rounded p-button p-component"
+            [disabled]="!ComponentForm.valid"
+        ></button>
 
+        <button
+            pButton
+            label="Cancel"
+            (click)="cancelComponent()"
+            class="p-element p-ripple p-button-rounded p-button p-component"
+        ></button>
+    </div>
+</p-dialog>
