@@ -69,7 +69,7 @@ export class PensionCategoryComponent implements OnInit {
         this.initializeForm();
 
         this.tableQueryParameters = {
-            pageSize: 10000,
+            pageSize: 10,
             pageIndex: 0,
         };
         this.getData();
@@ -92,11 +92,12 @@ export class PensionCategoryComponent implements OnInit {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex,
+            pageIndex: event.pageIndex/10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
         console.log(this.tableQueryParameters.pageSize);
+        this.getData();
     }
     // searching without get api
     handsearchKeyChange(event: string): void {

@@ -68,7 +68,7 @@ export class PrimaryComponent {
 
 
         this.tableQueryParameters = {
-            pageSize: 10000,
+            pageSize: 10,
             pageIndex: 0,
         };
         // this.tableData = sd;
@@ -89,11 +89,12 @@ export class PrimaryComponent {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex,
+            pageIndex: event.pageIndex/10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
-        console.log(this.tableQueryParameters.pageSize);
+        console.log(this.tableQueryParameters);
+        this.getData();
 
     }
 
@@ -206,6 +207,7 @@ export class PrimaryComponent {
 
     getData() {
         const data = this.tableQueryParameters;
+        console.log(this.tableQueryParameters);
         this.isTableDataLoading = true;
         this.PrimaryCategoryDetailsService.get_all_primary_details(
             data
