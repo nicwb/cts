@@ -14,11 +14,12 @@ export class StampRequisitionService {
   constructor(private http: HttpClient, private toastService: ToastService) { }
 
   getAllStampRequisitions(
-    queryParameters: DynamicTableQueryParameters
+    queryParameters: DynamicTableQueryParameters,
+    dates: any
   ): Observable<IapiResponce<GetVendorStampRequisition>> {
     return this.http
       .patch<IapiResponce<GetVendorStampRequisition>>(
-        'v1/StampRequisition/GetAllStampRequisitionList',
+        `v1/StampRequisition/GetAllStampRequisitionList?startDate=${dates.fromDate}&endDate=${dates.toDate}`,
         queryParameters
       )
       .pipe(

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { StampCombinationService } from 'src/app/core/services/stamp/stamp-combination.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -14,7 +14,8 @@ export class StampCombinationDropdownComponent implements OnInit {
   data: any[] = [];
   @Output() StampCombinationSelected = new EventEmitter<any>();
 
-  constructor(private toastService: ToastService, private stampCombinationService: StampCombinationService) { }
+  constructor(private toastService: ToastService, private stampMasterService: StampMasterService,
+  ) { }
   ngOnInit(): void {
     this.getAllStampCombination()
   }
@@ -24,7 +25,7 @@ export class StampCombinationDropdownComponent implements OnInit {
     return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Denomination: ${item.denomination}` }
   }
   getAllStampCombination() {
-    this.stampCombinationService
+    this.stampMasterService
       .getAllStampCombinations()
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {

@@ -5,13 +5,10 @@
                 class="p-button-rounded p-button-raised"(click)="showInsertDialog()" ></button></app-common-header>
     </div>
     <div class="col-12">
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)"
-        [numberRowsShown]="10" [rowsPerPageOptions]="[10,30,50]"
-        [actionButtons]="tableActionButton" 
-        [headers]="tableData!.headers" [data]="tableData.data"
-        [dataCount]="tableData.dataCount"
-        >
-    </app-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"  [isLoading]="isLoading" [showTopMenubar]="true"
+            [data]="tableData">
+        </mh-prime-dynamic-table>
     </div>
 </div>
 

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { VendorService } from 'src/app/core/services/stamp/vendor.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { AddStampVendors, GetStampVendors } from 'src/app/core/models/stamp';
 import { DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { formatDate } from 'src/utils/dateToString';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 
 @Component({
   selector: 'app-vendor',
@@ -24,10 +24,11 @@ export class VendorComponent implements OnInit {
   vendorPhotoFile!: File;
   vendorPanPhotoFile!: File;
   vendorLicencePhotoFile!: File;
+  isLoading: boolean = false
 
   constructor(
     private fb: FormBuilder,
-    private VendorService: VendorService,
+    private stampMasterService:StampMasterService,
     private toastService: ToastService,
   ) { }
 
@@ -66,7 +67,8 @@ export class VendorComponent implements OnInit {
   }
 
   getAllStampVendors() {
-    this.VendorService.getStampVendorList(this.tableQueryParameters).subscribe((response) => {
+    this.isLoading = true;
+    this.stampMasterService.getStampVendorList(this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         response.result.data.map((item: any) => {
           item.isActive = item.isActive ? "Yes" : "No";
@@ -81,10 +83,11 @@ export class VendorComponent implements OnInit {
         this.toastService.showAlert(response.message, response.apiResponseStatus);
       }
     });
+    this.isLoading = false;
   }
 
   handleButtonClick($event: any) {
-    this.VendorService.deleteStampVendor($event.rowData.stampVendorId).subscribe((response) => {
+    this.stampMasterService.deleteStampVendor($event.rowData.stampVendorId).subscribe((response) => {
       response.apiResponseStatus == 1 ? this.getAllStampVendors() : this.toastService.showAlert(response.message, response.apiResponseStatus);
     });
   }
@@ -128,7 +131,7 @@ export class VendorComponent implements OnInit {
       formData.append('vendorPanPhoto', this.vendorPanPhotoFile);
       formData.append('vendorLicencePhoto', this.vendorLicencePhotoFile);
       
-      this.VendorService.addNewStampVendor(formData).subscribe((response) => {
+      this.stampMasterService.addNewStampVendor(formData).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showAlert('Vendor details added successfully', 1);
           this.displayInsertModal = false;

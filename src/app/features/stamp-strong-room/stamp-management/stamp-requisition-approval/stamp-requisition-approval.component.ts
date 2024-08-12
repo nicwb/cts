@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subject, debounceTime } from 'rxjs';
 import { StampRequisitionStatusEnum } from 'src/app/core/enum/stampRequisitionEnum';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
-import { ApprovedByClerk, ApprovedByTO, StampRequisitions } from 'src/app/core/models/stamp';
+import { ApprovedByTO, StampRequisitions } from 'src/app/core/models/stamp';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -58,7 +58,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
     private toastService: ToastService,
     private stampWalletService: StampWalletService,
     private authService: AuthService,
-    private discountDetailsService: DiscountDetailsService
+    private stampMasterService: StampMasterService
   ) { }
 
   ngOnInit(): void {
@@ -130,7 +130,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
   }
 
   getDiscount() {
-    this.discountDetailsService
+    this.stampMasterService
       .getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -285,7 +285,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
 
   childCalculations(grossAmount: number, stamp: StampRequisitions) {
     if (grossAmount && stamp.stampCategoryId && stamp) {
-      this.discountDetailsService
+      this.stampMasterService
       .getDiscount(this.vendorTypeId, stamp.stampCategoryId, grossAmount)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {

@@ -4,7 +4,7 @@ import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'm
 import { AddStampCombination, GetStampCombinations } from 'src/app/core/models/stamp';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
-import { StampCombinationService } from 'src/app/core/services/stamp/stamp-combination.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 @Component({
   selector: 'app-combination',
   templateUrl: './combination.component.html',
@@ -22,9 +22,10 @@ export class CombinationComponent implements OnInit {
   // combinationEntryForm!: FormGroup
   combinationEntryPayload!: AddStampCombination
   modal: boolean = false
+  isLoading: boolean = false
 
   constructor(
-    private stampCombinationService: StampCombinationService,
+    private stampMasterService: StampMasterService,
     private toastService: ToastService,
     private fb: FormBuilder
   ) { }
@@ -54,7 +55,8 @@ export class CombinationComponent implements OnInit {
 
 
   getAllStampCombination() {
-    this.stampCombinationService
+    this.isLoading = true;
+    this.stampMasterService
       .getStampCombinationList(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -70,10 +72,11 @@ export class CombinationComponent implements OnInit {
           );
         }
       });
+      this.isLoading = false
   }
 
   handleButtonClick($event: any) {
-    this.stampCombinationService.deleteStampCombination($event.rowData.stampCategoryId)
+    this.stampMasterService.deleteStampCombination($event.rowData.stampCategoryId)
       .subscribe((response) => {
         response.apiResponseStatus == 1 ? this.getAllStampCombination() : this.toastService.showAlert(
           response.message,
@@ -96,7 +99,7 @@ export class CombinationComponent implements OnInit {
       };
       console.log(this.combinationEntryPayload);
 
-      this.stampCombinationService.addNewStampCombination(this.combinationEntryPayload).subscribe((response) => {
+      this.stampMasterService.addNewStampCombination(this.combinationEntryPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message);
           this.modal = false;

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { VendorService } from 'src/app/core/services/stamp/vendor.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class VendorDetailsDropdownComponent implements OnInit {
   data: any[] = [];
   @Output() VendorDetailsSelected = new EventEmitter<any>();
 
-  constructor(private toastService: ToastService, private vendorDetailsService: VendorService) { }
+  constructor(private toastService: ToastService, private stampMasterService: StampMasterService,
+  ) { }
 
 
   ngOnInit(): void {
@@ -25,7 +26,7 @@ export class VendorDetailsDropdownComponent implements OnInit {
   }
 
   getAllVendors() {
-    this.vendorDetailsService
+    this.stampMasterService
       .getStampVendorDetails()
       .subscribe((response) => {        
         if (response.apiResponseStatus == 1) {

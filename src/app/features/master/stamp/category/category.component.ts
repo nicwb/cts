@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { CategoryService } from 'src/app/core/services/stamp/category.service';
 import { convertDate } from 'src/utils/dateConversion';
-import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { AddStampCategory, GetStampCategories } from 'src/app/core/models/stamp';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 
 @Component({
   selector: 'app-category',
@@ -19,9 +19,10 @@ export class CategoryComponent implements OnInit {
   tableData!: DynamicTable<GetStampCategories>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   categoryEntryPayload!: AddStampCategory
+  isLoading: boolean = false
 
   constructor(
-    private categoryService: CategoryService,
+    private stampMasterService: StampMasterService,
     private toastService: ToastService,
     private fb: FormBuilder
   ) { }
@@ -63,7 +64,8 @@ export class CategoryComponent implements OnInit {
   }
 
   getAllStampCategories() {
-    this.categoryService
+     this.isLoading = true
+    this.stampMasterService
       .getStampLabelCategories(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -79,10 +81,11 @@ export class CategoryComponent implements OnInit {
           );
         }
       });
+      this.isLoading = false
   }
 
   handleButtonClick($event: any) {
-    this.categoryService.deleteStampCategory($event.rowData.stampCategoryId)
+    this.stampMasterService.deleteStampCategory($event.rowData.stampCategoryId)
       .subscribe((response) => {
         response.apiResponseStatus == 1 ? this.getAllStampCategories() : this.toastService.showAlert(
           response.message,
@@ -104,7 +107,7 @@ export class CategoryComponent implements OnInit {
       };
       console.log(this.categoryEntryPayload);
 
-      this.categoryService.addNewStampCategory(this.categoryEntryPayload).subscribe((response) => {
+      this.stampMasterService.addNewStampCategory(this.categoryEntryPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showAlert(response.message, 1);
           this.displayInsertModal = false;

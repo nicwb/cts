@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { AddStampType, GetStampTypes } from 'src/app/core/models/stamp';
-import { TypeService } from 'src/app/core/services/stamp/type.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { greaterThanZeroValidator } from 'src/utils/greaterThanZeroValidator';
@@ -20,9 +20,11 @@ export class TypeComponent implements OnInit {
   tableData!: DynamicTable<GetStampTypes>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   typeEntryPayload!: AddStampType
+  isLoading: boolean = false
   constructor(
     private fb: FormBuilder,
-    private TypeService: TypeService,
+    // private TypeService: TypeService,
+    private stampMasterService:StampMasterService,
     private toastService: ToastService,
   ) { }
 
@@ -57,7 +59,8 @@ export class TypeComponent implements OnInit {
 
 
   getAllStampTypes() {
-    this.TypeService
+    this.isLoading = true;
+    this.stampMasterService
       .getStampTypeList(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -73,10 +76,11 @@ export class TypeComponent implements OnInit {
           );
         }
       });
+      this.isLoading = false
   }
 
   handleButtonClick($event: any) {
-    this.TypeService.deleteStampType($event.rowData.denominationId)
+    this.stampMasterService.deleteStampType($event.rowData.denominationId)
       .subscribe((response) => {
         response.apiResponseStatus == 1 ? this.getAllStampTypes() : this.toastService.showAlert(
           response.message,
@@ -97,7 +101,7 @@ export class TypeComponent implements OnInit {
       };
       console.log(this.typeEntryPayload);
 
-      this.TypeService.addNewStampType(this.typeEntryPayload).subscribe((response) => {
+      this.stampMasterService.addNewStampType(this.typeEntryPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showAlert('Stamp Type added successfully', 1);
           this.displayInsertModal = false;

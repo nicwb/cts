@@ -56,7 +56,7 @@ export class StampRequisitionComponent implements OnInit {
   getAllStampRequisitions($event: any) {
     this.isLoading = true
     this.stampRequisitionService
-      .getAllStampRequisitions(this.tableQueryParameters)
+      .getAllStampRequisitions(this.tableQueryParameters, $event)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.tableData = response.result;

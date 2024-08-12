@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { debounceTime, Subject } from 'rxjs';
 import { AddVendorStampRequisition } from 'src/app/core/models/stamp';
-import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { StampCombinationDropdownForRequisitionsComponent } from 'src/app/shared/modules/stamp-combination-dropdown-for-requisitions/stamp-combination-dropdown-for-requisitions.component';
@@ -40,7 +40,7 @@ export class NewStampRequisitionComponent implements OnInit {
   private quantitySubject = new Subject<number>();
   constructor(
     private stampRequisitionService: StampRequisitionService,
-    private discountDetailsService: DiscountDetailsService,
+    private stampMasterService: StampMasterService,
     private toastService: ToastService) { }
 
   @Output() VendorDetailsSelected = new EventEmitter<any>();
@@ -101,7 +101,7 @@ export class NewStampRequisitionComponent implements OnInit {
     })
   }
   getDiscount() {
-    this.discountDetailsService.getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount).subscribe((response) => {
+    this.stampMasterService.getDiscount(this.vendorTypeId, this.stampCategoryId, this.amount).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         this.discountAmount = response.result
         this.taxAmount = this.discountAmount * 0.1
