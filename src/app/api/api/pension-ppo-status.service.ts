@@ -97,93 +97,20 @@ export class PensionPPOStatusService {
     }
 
     /**
-     * @param pensionStatusEntryDTO 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public ppoStatusFlagCreate(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusEntryDTOAPIResponse>;
-    public ppoStatusFlagCreate(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusEntryDTOAPIResponse>>;
-    public ppoStatusFlagCreate(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusEntryDTOAPIResponse>>;
-    public ppoStatusFlagCreate(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/ppo/status`;
-        return this.httpClient.request<PensionStatusEntryDTOAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: pensionStatusEntryDTO,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param ppoId 
      * @param statusFlag 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public ppoStatusFlagDelete(ppoId: number, statusFlag: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusDTOAPIResponse>;
-    public ppoStatusFlagDelete(ppoId: number, statusFlag: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusDTOAPIResponse>>;
-    public ppoStatusFlagDelete(ppoId: number, statusFlag: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusDTOAPIResponse>>;
-    public ppoStatusFlagDelete(ppoId: number, statusFlag: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public clearPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusDTOAPIResponse>;
+    public clearPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusDTOAPIResponse>>;
+    public clearPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusDTOAPIResponse>>;
+    public clearPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
-            throw new Error('Required parameter ppoId was null or undefined when calling ppoStatusFlagDelete.');
+            throw new Error('Required parameter ppoId was null or undefined when calling clearPpoStatusFlagByPpoId.');
         }
         if (statusFlag === null || statusFlag === undefined) {
-            throw new Error('Required parameter statusFlag was null or undefined when calling ppoStatusFlagDelete.');
+            throw new Error('Required parameter statusFlag was null or undefined when calling clearPpoStatusFlagByPpoId.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -243,15 +170,15 @@ export class PensionPPOStatusService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public ppoStatusFlagRead(ppoId: number, statusFlag: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusDTOAPIResponse>;
-    public ppoStatusFlagRead(ppoId: number, statusFlag: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusDTOAPIResponse>>;
-    public ppoStatusFlagRead(ppoId: number, statusFlag: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusDTOAPIResponse>>;
-    public ppoStatusFlagRead(ppoId: number, statusFlag: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusDTOAPIResponse>;
+    public getPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusDTOAPIResponse>>;
+    public getPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusDTOAPIResponse>>;
+    public getPpoStatusFlagByPpoId(ppoId: number, statusFlag: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
-            throw new Error('Required parameter ppoId was null or undefined when calling ppoStatusFlagRead.');
+            throw new Error('Required parameter ppoId was null or undefined when calling getPpoStatusFlagByPpoId.');
         }
         if (statusFlag === null || statusFlag === undefined) {
-            throw new Error('Required parameter statusFlag was null or undefined when calling ppoStatusFlagRead.');
+            throw new Error('Required parameter statusFlag was null or undefined when calling getPpoStatusFlagByPpoId.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -296,6 +223,79 @@ export class PensionPPOStatusService {
         return this.httpClient.request<PensionStatusDTOAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param pensionStatusEntryDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public setPpoStatusFlag(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionStatusEntryDTOAPIResponse>;
+    public setPpoStatusFlag(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionStatusEntryDTOAPIResponse>>;
+    public setPpoStatusFlag(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionStatusEntryDTOAPIResponse>>;
+    public setPpoStatusFlag(pensionStatusEntryDTO?: PensionStatusEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/status`;
+        return this.httpClient.request<PensionStatusEntryDTOAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: pensionStatusEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
