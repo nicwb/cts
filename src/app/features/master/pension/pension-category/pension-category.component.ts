@@ -223,7 +223,7 @@ export class PensionCategoryComponent implements OnInit {
                 let len_val = value.length;
                 for (let i = 0; i < len_val; i++) {
                     this.primary_id_select.push({
-                        label: value[i].id,
+                        label: value[i].hoaId,
                         value: value[i].id,
                     });
                 }
@@ -252,7 +252,7 @@ export class PensionCategoryComponent implements OnInit {
                 let len_val = value.length;
                 for (let i = 0; i < len_val; i++) {
                     this.sub_id_select.push({
-                        label: value[i].id,
+                        label: value[i].subCategoryName,
                         value: value[i].id,
                     });
                 }
