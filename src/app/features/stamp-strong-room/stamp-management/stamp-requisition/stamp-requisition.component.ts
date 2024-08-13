@@ -4,7 +4,6 @@ import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'm
 import { GetVendorStampRequisition } from 'src/app/core/models/stamp';
 import { StampRequisitionService } from 'src/app/core/services/stamp/stamp-requisition.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { convertDate } from 'src/utils/dateConversion';
 
 @Component({
   selector: 'app-stamp-requisition',
@@ -32,6 +31,15 @@ export class StampRequisitionComponent implements OnInit {
       pageIndex: 0,
     };
     this.tableActionButton = [
+    {
+      buttonIdentifier: 'details',
+      class: 'p-button-success p-button-sm',
+      icon: 'pi pi-print',
+      lable: 'Details',
+      renderButton: (rowData) => {
+        return rowData.status !== StampRequisitionStatusEnum.ForwardedToStampCleck || rowData.status !== StampRequisitionStatusEnum.RejectedByStampClerk || rowData.status !== StampRequisitionStatusEnum.RejectedByTreasuryOfficer
+      }
+    },
       {
         buttonIdentifier: 'print',
         class: 'p-button-info p-button-sm',
@@ -39,15 +47,6 @@ export class StampRequisitionComponent implements OnInit {
         lable: 'Print',
         renderButton: (rowData) => {
           return rowData.status == StampRequisitionStatusEnum.WaitingForPayment
-        }
-      },
-      {
-        buttonIdentifier: 'details',
-        class: 'p-button-info p-button-sm',
-        icon: 'pi pi-print',
-        lable: 'Details',
-        renderButton: (rowData) => {
-          return rowData.status == StampRequisitionStatusEnum.DeliveredToVendor
         }
       },
     ]
@@ -76,6 +75,11 @@ export class StampRequisitionComponent implements OnInit {
         break;
       case 'details':
         this.displayDetailsModal = true
+        if ($event.rowData.status === StampRequisitionStatusEnum.ForwardedToTreasuryOfficer) {
+
+        } else if ($event.rowData.status === StampRequisitionStatusEnum.WaitingForPayment || $event.rowData.status === StampRequisitionStatusEnum.WaitingForDelivery || $event.rowData.status === StampRequisitionStatusEnum.DeliveredToVendor ) {
+
+        }
         this.getRequisitionDetailsById($event.rowData.id)
         break;
     }

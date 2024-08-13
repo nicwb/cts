@@ -3,9 +3,7 @@
         <app-common-header [headerName]="'Stamp Requisition History'" [imgSrc]="'assets/layout/images/icons/stamp-requisition-history.png'">
         </app-common-header>
     </div>
-    <div class="flex justify-content-center align-items-center w-full">
-        <app-from-to-date (newItemEvent)="search($event)" [buttonLabel]="'Search'" [heading]="'Search Requisitions'"></app-from-to-date>
-    </div>
+    <app-from-to-date class="mx-auto" (newItemEvent)="search($event)" [buttonLabel]="'Search'" [heading]="'Search Requisitions'"></app-from-to-date>
     <div class="col-12">
         <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
             [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"  [isLoading]="isLoading" [showTopMenubar]="true"

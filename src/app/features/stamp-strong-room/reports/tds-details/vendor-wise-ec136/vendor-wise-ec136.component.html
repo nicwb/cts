@@ -7,7 +7,7 @@
 </div>
 <section class="w-full h-full">
     <app-from-to-date (newItemEvent)="generateEC136($event)" [buttonLabel]="'Generate'" [heading]="'Vendor Wise'"></app-from-to-date>
-    <div class="col-12 my-8">
+    <div class="col-12">
         <p-table [value]="data" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
             [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
             <ng-template pTemplate="header">
