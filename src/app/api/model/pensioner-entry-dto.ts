@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface PensionerEntryDTO { 
@@ -20,15 +19,15 @@ export interface PensionerEntryDTO {
     categoryId?: number;
     pensionerName?: string | null;
     gender?: string | null;
-    dateOfBirth?: DateOnly;
+    dateOfBirth?: string;
     mobileNumber?: string | null;
     emailId?: string | null;
     pensionerAddress?: string | null;
     identificationMark?: string | null;
     panNo?: string | null;
     aadhaarNo?: string | null;
-    dateOfRetirement?: DateOnly;
-    dateOfCommencement?: DateOnly;
+    dateOfRetirement?: string;
+    dateOfCommencement?: string;
     basicPensionAmount?: number;
     commutedPensionAmount?: number;
     enhancePensionAmount?: number;

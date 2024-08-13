@@ -49,12 +49,13 @@ export class ComponentComponent {
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
     payment: SelectItem = { value: '' };
-    Payment_Deduction:SelectItem[] = [];
+    Payment_Deduction: SelectItem[] = [];
     relief_allowed: SelectItem = { value: '' };
     allowed: SelectItem[] = [];
-    connection:string = '';
-    Payment:boolean = false;
-    Deduction:boolean = false;
+    connection: string = '';
+    Payment: boolean = false;
+    Deduction: boolean = false;
+    refresh_val = false;
     constructor(
         private datePipe: DatePipe,
         private toastService: ToastService,
@@ -62,7 +63,6 @@ export class ComponentComponent {
         private fb: FormBuilder,
         private cd: ChangeDetectorRef
     ) {}
-
 
     @Output() ComponentSelected = new EventEmitter<any>();
 
@@ -72,26 +72,25 @@ export class ComponentComponent {
         this.allowed = [
             { label: 'Y', value: true },
             { label: 'N', value: false },
-          ];
+        ];
         this.Payment_Deduction = [
             { label: 'P', value: 'Payment' },
             { label: 'D', value: 'Deduction' },
-          ];
+        ];
 
         this.tableQueryParameters = {
-            pageSize: 30,
+            pageSize: 10,
             pageIndex: 0,
         };
-        
+
         this.getData();
     }
 
-    check(){
-        if(this.connection=='P'){
-            this.Payment=true;
-        }
-        else if(this.connection=='D'){
-            this.Deduction=true;
+    check() {
+        if (this.connection == 'P') {
+            this.Payment = true;
+        } else if (this.connection == 'D') {
+            this.Deduction = true;
         }
     }
 
@@ -99,8 +98,6 @@ export class ComponentComponent {
         this.displayInsertModal = true;
         this.ComponentForm.reset();
     }
-
-   
 
     handleRowSelection($event: any) {
         console.log('Row selected:', $event);
@@ -110,28 +107,76 @@ export class ComponentComponent {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex,
+            pageIndex: event.pageIndex/10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
         console.log(this.tableQueryParameters.pageSize);
-
-        // this.get_all_component_details(this.tableQueryParameters);
+        this.getData();
     }
 
     handsearchKeyChange(event: string): void {
-        console.log('Search key changed:', event);
-        this.tableQueryParameters.filterParameters = [
-            { field: 'searchKey', value: event },
-        ];
-        // this.get_all_component_details_forSearch(this.tableQueryParameters, event);
+        if (event == '') {
+            this.toastService.showError('Please fill the search field');
+            return;
+        }
+        
+        const num_aray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        const eve_len = event.length;
+        for (let i = 0; i < eve_len; i++) {
+            if (!num_aray.includes(parseInt(event[i]))) {
+                this.toastService.showError(
+                    'You can only search by bill component id'
+                );
+                return;
+            }
+            this.FindByComponentId(parseInt(event));
+        }
     }
-
+    FindByComponentId(ComponentId: number) {
+        const data = this.tableQueryParameters;
+        this.isTableDataLoading = true;
+        this.ComponentService.get_all_component_details(data).subscribe(
+            (response: any) => {
+                let touch = false;
+                let data = response.result;
+                let object = response.result.data;
+                console.log(object);
+                const obj_length = object.length;
+                for(let i = 0; i <obj_length; i++) {
+                    if(object[i].id == ComponentId) {
+                        data.data = [object[i]];
+                        this.refresh_val =  true;
+                        touch=true;
+                        this.tableData = data;
+                        break;
+                    }
+                }
+                if(touch == false) {
+                    this.toastService.showError('Component id not found');
+                }
+                this.isTableDataLoading = false;
+                
+            },
+            (error) => {
+                this.isTableDataLoading = false;
+                console.error('API Error:', error);
+                this.toastService.showAlert(
+                    'An error occurred while fetching data',
+                    0
+                );
+            }
+        )
+    }
+    refresh_table(){
+        this.refresh_val=false;
+        this.getData();
+    }
     initializeForm(): void {
         this.ComponentForm = this.fb.group({
-            ComponentName: ['',[Validators.required]],
-            ComponentType: ['',[Validators.required,Validators.pattern(/^['P','D']/)]],
-            ReliefFlag: [null,[Validators.required,]]
+            ComponentName: ['', [Validators.required]],
+            ComponentType: ['',[Validators.required, Validators.pattern(/^['P','D']/)]],
+            ReliefFlag: [null, [Validators.required]],
         });
     }
 
@@ -148,40 +193,30 @@ export class ComponentComponent {
 
     // Add Component Detalis
     addComponentDetails() {
-        console.log("addComponentDetails")
+        console.log('addComponentDetails');
         if (this.ComponentForm.valid) {
             const formData = this.ComponentForm.value;
-            this.ComponentService
-                .add_new_component_details(formData)
-                .subscribe(
-                    (response) => {
-                        if (response.apiResponseStatus === 1) {
-                            // Assuming 1 means success
-                            console.log(
-                                'Form submitted successfully:',
-                                response
-                            );
-                            console.log(response.result);
-                            
-                            this.displayInsertModal = false; // Close the dialog
-                            this.toastService.showSuccess(
-                                'Component Details added successfully'
-                            );
-                        }
-                        this.getData();
-                        // else {
-                        //     this.handleErrorResponse(response);
-                        // }
-                        
+            this.ComponentService.add_new_component_details(formData).subscribe(
+                (response) => {
+                    if (response.apiResponseStatus === 1) {
+                        // Assuming 1 means success
+                        console.log('Form submitted successfully:', response);
+                        console.log(response.result);
 
-                    },
-                    (error) => {
-                        console.error('Error submitting form:', error);
-                        this.handleErrorResponse(error.error);
+                        this.displayInsertModal = false; // Close the dialog
+                        this.toastService.showSuccess(
+                            'Component Details added successfully'
+                        );
                     }
-                );
-        } 
-        else {
+                    this.getData();
+    
+                },
+                (error) => {
+                    console.error('Error submitting form:', error);
+                    this.handleErrorResponse(error.error);
+                }
+            );
+        } else {
             console.log('Form is not valid. Cannot submit.');
             this.toastService.showError(
                 'Please fill all required fields correctly.'
@@ -196,9 +231,7 @@ export class ComponentComponent {
                 'duplicate key value violates unique constraint'
             )
         ) {
-            this.toastService.showError(
-                ' already exists.'
-            );
+            this.toastService.showError(' already exists.');
             this.ComponentForm.get('PCID')?.setErrors({ duplicate: true });
         } else {
             this.toastService.showError(
@@ -212,48 +245,25 @@ export class ComponentComponent {
         this.ComponentForm.reset();
     }
 
-    // Get Component Details
-    get_all_component_details (bill_component_id: string) {
-        console.log('Fetching Component By Id...');
-        this.ComponentService
-            .GetAllComponentDetails(bill_component_id)
-            .subscribe((response) => {
-                console.log('API Response:', response);
-                if (response.apiResponseStatus === 1) {
-                    this.tableData = response.result;
-                } else {
-                    this.toastService.showAlert(
-                        response.message,
-                        response.apiResponseStatus
-                    );
-                }
-            });
-    }
-
-    
-
     getData() {
-        const data = this.tableQueryParameters
+        const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.ComponentService
-            .get_all_component_details(data)
-            .subscribe(
-                (response: any) => {
-                    this.tableData = response.result;
-                    this.isTableDataLoading = false;
-                    console.log(response.result);
-                },
-                (error) => {
-                    this.isTableDataLoading = false;
-                    console.error('API Error:', error);
-                    this.toastService.showAlert(
-                        'An error occurred while fetching data',
-                        0
-                    );
-                }
-            );
+        this.ComponentService.get_all_component_details(data).subscribe(
+            (response: any) => {
+                this.tableData = response.result;
+                this.isTableDataLoading = false;
+                console.log(response.result);
+            },
+            (error) => {
+                this.isTableDataLoading = false;
+                console.error('API Error:', error);
+                this.toastService.showAlert(
+                    'An error occurred while fetching data',
+                    0
+                );
+            }
+        );
     }
-
 
     onRowEditInit(data: Component_interface) {
         this.selectedRowData = { ...data };

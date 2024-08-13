@@ -10,15 +10,15 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { PpoComponentRateResponseDTOIEnumerableDynamicListResult } from './ppo-component-rate-response-dtoi-enumerable-dynamic-list-result';
+import { BranchDeatilsDTO } from './branch-deatils-dto';
 
 
-export interface PpoComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse { 
-    result?: PpoComponentRateResponseDTOIEnumerableDynamicListResult;
+export interface BranchDeatilsDTOAPIResponse { 
+    result?: BranchDeatilsDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace PpoComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse {
+export namespace BranchDeatilsDTOAPIResponse {
 }
 
 

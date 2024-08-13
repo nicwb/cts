@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface ListAllPpoReceiptsResponseDTO { 
@@ -17,6 +16,6 @@ export interface ListAllPpoReceiptsResponseDTO {
     treasuryReceiptNo?: string | null;
     ppoNo?: string | null;
     pensionerName?: string | null;
-    receiptDate?: DateOnly;
+    receiptDate?: string;
 }
 

@@ -16,7 +16,7 @@ export interface PensionerBankAcDTO {
     accountHolderName?: string | null;
     bankAcNo?: string | null;
     ifscCode?: string | null;
-    bankName?: string | null;
-    branchName?: string | null;
+    bankCode: number;
+    branchCode: number;
 }
 

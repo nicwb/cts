@@ -49,6 +49,8 @@ export class PrimaryComponent {
     type: SelectItem[] = [];
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
+    refresh_b = false;
+
 
     constructor(
         private datePipe: DatePipe,
@@ -66,103 +68,9 @@ export class PrimaryComponent {
 
 
         this.tableQueryParameters = {
-            pageSize: 10000,
+            pageSize: 10,
             pageIndex: 0,
         };
-        const sd = {
-            data: [
-                {
-                    id: 1,
-                    hoaId: '2071 - 01 - 101 - 00 - 005 - V - 04 - 00',
-                    primaryCategoryName: 'College( Government) Pension',
-                    dataSource: null,
-                },
-                {
-                    id: 4,
-                    hoaId: '2071 - 01 - 109 - 00 - 001 - V - 04 - 00',
-                    primaryCategoryName: 'Education Pension',
-                    dataSource: null,
-                },
-                {
-                    id: 43,
-                    hoaId: '2071 - 01 - 101 - 00 - 005 - V - 04 - 00',
-                    primaryCategoryName: 'State Pension',
-                    dataSource: null,
-                },
-                {
-                    id: 2,
-                    hoaId: '2071 - 01 - 109 - 00 - 001 - V - 04 - 00',
-                    primaryCategoryName: 'Defence Pension',
-                    dataSource: null,
-                },
-                {
-                    id: 13,
-                    hoaId: '2071 - 01 - 101 - 00 - 005 - V - 04 - 00',
-                    primaryCategoryName: 'sasasasas',
-                    dataSource: null,
-                },
-                {
-                    id: 14,
-                    hoaId: '2071 - 01 - 101 - 00 - 005 - V - 04 - 00',
-                    primaryCategoryName: 'afghjkhkljfvc',
-                    dataSource: null,
-                },
-                {
-                    id: 15,
-                    hoaId: '2071 - 01 - 101 - 00 - 005 - V - 04 - 00',
-                    primaryCategoryName: 'sumit',
-                    dataSource: null,
-                },
-                {
-                    id: 28,
-                    hoaId: '2071 - 01 - 109 - 00 - 001 - V - 04 - 12',
-                    primaryCategoryName: 'shruti',
-                    dataSource: null,
-                },
-
-                {
-                    id: 29,
-                    hoaId: '2071 - 01 - 109 - 00 - 001 - V - 04 - 60',
-                    primaryCategoryName: 'amit',
-                    dataSource: null,
-                },
-            ],
-            dataCount: 8,
-            headers: [
-                {
-                    name: 'Primary Category ID',
-                    dataType: 'text',
-                    fieldName: 'id',
-                    filterField: 'id',
-                    filterEnums: null,
-                    isFilterable: true,
-                    isSortable: true,
-                    objectTypeValueField: null,
-                },
-                {
-                    name: 'Head of Account',
-                    dataType: 'text',
-                    fieldName: 'hoaId',
-                    filterField: 'hoaId',
-                    filterEnums: null,
-                    isFilterable: true,
-                    isSortable: true,
-                    objectTypeValueField: null,
-                },
-                {
-                    name: 'Primary Category Name',
-                    dataType: 'text',
-                    fieldName: 'primaryCategoryName',
-                    filterField: 'primaryCategoryName',
-                    filterEnums: null,
-                    isFilterable: true,
-                    isSortable: true,
-
-                    objectTypeValueField: null,
-                },
-            ],
-        };
-
         // this.tableData = sd;
         this.getData();
     }
@@ -181,19 +89,36 @@ export class PrimaryComponent {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex,
+            pageIndex: event.pageIndex/10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
-        console.log(this.tableQueryParameters.pageSize);
+        console.log(this.tableQueryParameters);
+        this.getData();
 
     }
 
     handsearchKeyChange(event: string): void {
         console.log('Search key changed:', event);
-        this.tableQueryParameters.filterParameters = [
-            { field: 'searchKey', value: event },
-        ];
+        if (event == '') {
+            this.toastService.showError(`Search can not be empty`);
+            return;
+        }
+        let flag = true;
+        const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        const eve_len = event.length;
+        for (let i = 0; i < eve_len; i++) {
+            if (!numArr.includes(parseInt(event[i]))) {
+                flag = false;
+                break;
+            }
+        }
+        if (!flag) {
+            this.toastService.showError(`Search can only contain Category ID`);
+            return;
+        } else {
+            this.findById(parseInt(event));
+        }
     }
 
     initializeForm(): void {
@@ -282,15 +207,13 @@ export class PrimaryComponent {
 
     getData() {
         const data = this.tableQueryParameters;
+        console.log(this.tableQueryParameters);
         this.isTableDataLoading = true;
         this.PrimaryCategoryDetailsService.get_all_primary_details(
             data
         ).subscribe(
             (response: any) => {
-
                 this.tableData = response.result;
-                // this.tableData = sd;
-
                 this.isTableDataLoading = false;
                 console.log(this.tableData);
             },
@@ -303,6 +226,50 @@ export class PrimaryComponent {
                 );
             }
         );
+    }
+    findById(id: any) {
+        const data = this.tableQueryParameters;
+        this.isTableDataLoading = true;
+        this.PrimaryCategoryDetailsService.get_all_primary_details(
+            data
+        ).subscribe(
+            (response: any) => {
+                let flag = false;
+                let data= response.result;
+                let value = response.result.data;
+                console.log(value);
+                let len_val = value.length;
+                for (let i = 0; i < len_val; i++) {
+                    if (value[i].id == id) {
+                        data.data = [value[i]];
+                        data.dataCount = 1;
+                        this.refresh_b = true;
+                        flag = true;
+                        this.tableData=data;
+                    }
+                }
+                if (flag == false) {
+                    this.toastService.showError('No Pension Category ID found');
+                }
+
+                console.log(this.tableData);
+                this.isTableDataLoading = false;
+            },
+            (error) => {
+                this.isTableDataLoading = false;
+                console.error('API Error:', error);
+                this.toastService.showAlert(
+                    'An error occurred while fetching data',
+                    0
+                );
+            }
+        );
+
+    }
+
+    fun_refresh() {
+        this.refresh_b = false;
+        this.getData();
     }
 
 

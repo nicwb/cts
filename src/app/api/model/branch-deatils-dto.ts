@@ -11,15 +11,10 @@
  */
 
 
-export interface ManualPpoReceiptResponseDTO { 
-    ppoNo?: string | null;
-    pensionerName?: string | null;
-    dateOfCommencement?: string;
-    mobileNumber?: string | null;
-    receiptDate?: string;
-    psaCode?: string;
-    ppoType?: string;
-    id?: number;
-    treasuryReceiptNo?: string | null;
+export interface BranchDeatilsDTO { 
+    bankName?: string | null;
+    mircCode?: string | null;
+    branchName?: string | null;
+    branchAddress?: string | null;
 }
 

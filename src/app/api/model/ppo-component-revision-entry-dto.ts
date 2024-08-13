@@ -11,15 +11,11 @@
  */
 
 
-export interface ManualPpoReceiptResponseDTO { 
-    ppoNo?: string | null;
-    pensionerName?: string | null;
-    dateOfCommencement?: string;
-    mobileNumber?: string | null;
-    receiptDate?: string;
-    psaCode?: string;
-    ppoType?: string;
-    id?: number;
-    treasuryReceiptNo?: string | null;
+export interface PpoComponentRevisionEntryDTO { 
+    dataSource?: { [key: string]: any; } | null;
+    ppoId: number;
+    breakupId: number;
+    fromDate: string;
+    amountPerMonth: number;
 }
 

@@ -103,10 +103,10 @@ export class PensionComponentRateService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public pensionComponentRateCreate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ComponentRateResponseDTOJsonAPIResponse>;
-    public pensionComponentRateCreate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ComponentRateResponseDTOJsonAPIResponse>>;
-    public pensionComponentRateCreate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ComponentRateResponseDTOJsonAPIResponse>>;
-    public pensionComponentRateCreate(componentRateEntryDTO?: ComponentRateEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createComponentRate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ComponentRateResponseDTOJsonAPIResponse>;
+    public createComponentRate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ComponentRateResponseDTOJsonAPIResponse>>;
+    public createComponentRate(componentRateEntryDTO?: ComponentRateEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ComponentRateResponseDTOJsonAPIResponse>>;
+    public createComponentRate(componentRateEntryDTO?: ComponentRateEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -176,10 +176,10 @@ export class PensionComponentRateService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public pensionComponentRateList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
-    public pensionComponentRateList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public pensionComponentRateList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public pensionComponentRateList(dynamicListQueryParameters?: DynamicListQueryParameters, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getAllComponentRates(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    public getAllComponentRates(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllComponentRates(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllComponentRates(dynamicListQueryParameters?: DynamicListQueryParameters, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 

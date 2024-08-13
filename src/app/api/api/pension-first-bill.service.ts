@@ -99,10 +99,10 @@ export class PensionFirstBillService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public ppoFirstBillGenerate(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InitiateFirstPensionBillResponseDTOJsonAPIResponse>;
-    public ppoFirstBillGenerate(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
-    public ppoFirstBillGenerate(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
-    public ppoFirstBillGenerate(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InitiateFirstPensionBillResponseDTOJsonAPIResponse>;
+    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
+    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
+    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 

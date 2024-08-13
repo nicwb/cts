@@ -9,16 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
-export interface PpoComponentRateResponseDTO { 
+export interface PpoComponentRevisionResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoId: number;
     breakupId: number;
-    fromDate: DateOnly;
-    toDate?: DateOnly;
+    fromDate: string;
     amountPerMonth: number;
     id?: number;
+    toDate?: string;
 }
 

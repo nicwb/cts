@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
-export interface PpoComponentRateEntryDTO { 
-    dataSource?: { [key: string]: any; } | null;
-    ppoId: number;
-    breakupId: number;
-    fromDate: DateOnly;
-    toDate?: DateOnly;
-    amountPerMonth: number;
+export interface DropdownDTO { 
+    name?: string | null;
+    code?: number;
 }
 

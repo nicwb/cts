@@ -103,10 +103,10 @@ export class PensionComponentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public pensionComponentCreate(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionBreakupResponseDTOJsonAPIResponse>;
-    public pensionComponentCreate(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionBreakupResponseDTOJsonAPIResponse>>;
-    public pensionComponentCreate(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionBreakupResponseDTOJsonAPIResponse>>;
-    public pensionComponentCreate(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createComponent(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionBreakupResponseDTOJsonAPIResponse>;
+    public createComponent(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionBreakupResponseDTOJsonAPIResponse>>;
+    public createComponent(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionBreakupResponseDTOJsonAPIResponse>>;
+    public createComponent(pensionBreakupEntryDTO?: PensionBreakupEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -157,7 +157,7 @@ export class PensionComponentService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/bill-component`;
+        let localVarPath = `/api/v1/pension/component`;
         return this.httpClient.request<PensionBreakupResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -176,10 +176,10 @@ export class PensionComponentService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public pensionComponentList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
-    public pensionComponentList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public pensionComponentList(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public pensionComponentList(dynamicListQueryParameters?: DynamicListQueryParameters, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getAllComponents(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    public getAllComponents(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllComponents(dynamicListQueryParameters?: DynamicListQueryParameters, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllComponents(dynamicListQueryParameters?: DynamicListQueryParameters, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -230,7 +230,7 @@ export class PensionComponentService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/bill-component`;
+        let localVarPath = `/api/v1/pension/component`;
         return this.httpClient.request<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>('patch', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

@@ -10,14 +10,15 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
+import { PpoComponentRevisionResponseDTO } from './ppo-component-revision-response-dto';
 
 
-export interface DateOnlyJsonAPIResponse { 
-    result?: string;
+export interface PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse { 
+    result?: Array<PpoComponentRevisionResponseDTO> | null;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace DateOnlyJsonAPIResponse {
+export namespace PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse {
 }
 
 

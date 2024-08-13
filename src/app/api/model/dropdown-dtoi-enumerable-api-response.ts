@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PpoComponentRateResponseDTO } from './ppo-component-rate-response-dto';
-import { ListHeader } from './list-header';
+import { DropdownDTO } from './dropdown-dto';
+import { APIResponseStatus } from './api-response-status';
 
 
-export interface PpoComponentRateResponseDTOIEnumerableDynamicListResult { 
-    headers?: Array<ListHeader> | null;
-    data?: Array<PpoComponentRateResponseDTO> | null;
-    dataCount?: number;
+export interface DropdownDTOIEnumerableAPIResponse { 
+    result?: Array<DropdownDTO> | null;
+    apiResponseStatus?: APIResponseStatus;
+    message?: string | null;
 }
+export namespace DropdownDTOIEnumerableAPIResponse {
+}
+
 

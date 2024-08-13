@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { PensionerBankAcDTO } from './pensioner-bank-ac-dto';
-import { DateOnly } from './date-only';
 import { PpoPaymentListItemDTO } from './ppo-payment-list-item-dto';
 import { PensionerListItemDTO } from './pensioner-list-item-dto';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
@@ -22,12 +21,12 @@ export interface InitiateFirstPensionBillResponseDTO {
     bankAccount: PensionerBankAcDTO;
     pensionCategory: PensionCategoryResponseDTO;
     pensionerPayments: Array<PpoPaymentListItemDTO>;
-    billGeneratedUptoDate: DateOnly;
+    billGeneratedUptoDate: string;
     billId?: number;
-    billDate?: DateOnly;
+    billDate?: string;
     treasuryVoucherNo?: string | null;
     treasuryVoucherId?: number;
-    treasuryVoucherDate?: DateOnly;
+    treasuryVoucherDate?: string;
     grossAmount?: number;
     netAmount?: number;
 }

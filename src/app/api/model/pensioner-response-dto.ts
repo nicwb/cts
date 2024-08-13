@@ -11,7 +11,6 @@
  */
 import { ManualPpoReceiptResponseDTO } from './manual-ppo-receipt-response-dto';
 import { PensionerBankAcDTO } from './pensioner-bank-ac-dto';
-import { DateOnly } from './date-only';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 
@@ -23,15 +22,15 @@ export interface PensionerResponseDTO {
     categoryId?: number;
     pensionerName?: string | null;
     gender?: string | null;
-    dateOfBirth?: DateOnly;
+    dateOfBirth?: string;
     mobileNumber?: string | null;
     emailId?: string | null;
     pensionerAddress?: string | null;
     identificationMark?: string | null;
     panNo?: string | null;
     aadhaarNo?: string | null;
-    dateOfRetirement?: DateOnly;
-    dateOfCommencement?: DateOnly;
+    dateOfRetirement?: string;
+    dateOfCommencement?: string;
     basicPensionAmount?: number;
     commutedPensionAmount?: number;
     enhancePensionAmount?: number;

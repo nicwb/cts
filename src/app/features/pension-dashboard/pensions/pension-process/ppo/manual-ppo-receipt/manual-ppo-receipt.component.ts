@@ -10,7 +10,6 @@ import { SelectItem } from 'primeng/api';
 import { PensionManualPPOReceiptService, ManualPpoReceiptEntryDTO, ManualPpoReceiptResponseDTO, DateOnly } from 'src/app/api';
 import { error } from 'console';
 
-
 interface expandedRows {
   [key: string]: boolean;
 }
@@ -219,15 +218,18 @@ export class ManualPpoReceiptComponent implements OnInit {
         (response: any) => {
           console.log('API Responsef for update:', response);
           this.isTableDataLoading = false;
-          if (response && response.apiResponseStatus === 1) {
+          if (response && response.apiResponseStatus === 1 && response.result!==null) {
             const updatedData = [response.result].map((item: any) => ({
               ...item,
               receiptDate: convertDate(item.receiptDate)
             }));
             this.tableData = { headers: this.tableData.headers, data: updatedData, dataCount: updatedData.length };
           } else {
-            this.toastService.showAlert(response?.message || 'An error occurred', response?.apiResponseStatus || 0);
+            this.toastService.showError(response?.result || 'An error occurred');
+            console.error("Error: ", response?.message || 'An error occurred', response?.apiResponseStatus || 0);
           }
+          
+          this.toastService.showAlert(response?.message || 'An error occurred', response?.apiResponseStatus || 0);
           this.cd.detectChanges();
         },
         (error) => {
@@ -265,6 +267,7 @@ export class ManualPpoReceiptComponent implements OnInit {
     this.isTableDataLoading = true;
     this.pensionManualPpoReceiptService.getAllPpoReceipts(this.tableQueryParameters).subscribe(
       (response: any) => {
+        console.log('API Response:', response);
         this.tableData = response.result;
         this.isTableDataLoading = false;
       },
@@ -358,6 +361,7 @@ private convertToDate(dateOnly: any): Date | null {
     this.pensionManualPpoReceiptService.updatePpoReceiptByTreasuryReceiptNo(this.selectedRow.treasuryReceiptNo, updateDto).subscribe(
       response => {
         console.log('Update successful:', response);
+        this.toastService.showSuccess('PPO Receipt updated successfully');
         this.getAllManualPpoReceipt(this.tableQueryParameters);  // Refresh table data
         this.resetForm();  // Reset form fields
         this.displayInsertModal = false;  // Close the dialog

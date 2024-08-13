@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DateOnly } from './date-only';
 
 
 export interface InitiateFirstPensionBillDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoId: number;
-    toDate?: DateOnly;
+    toDate?: string;
 }
 
