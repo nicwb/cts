@@ -1,34 +1,36 @@
 <div class="w-11 mx-auto flex align-items-center justify-content-center">
     <div class="surface-card px-6 py-5 shadow-2 border-round p-fluid">
-        <h3>{{heading}}</h3>
-        <form [formGroup]="commonForm" class="grid formgrid p-fluid">
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="fromDate" class="font-medium text-900">From Date</label>
-                <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate"
-                    placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-                <div
-                    *ngIf="commonForm.controls['fromDate'].errors && (commonForm.controls['fromDate'].dirty || commonForm.controls['fromDate'].touched)">
-                    <small class="p-error" *ngIf="commonForm.controls['fromDate'].errors['required']">From Date is
-                        required.</small>
+        <h3 class="mb-1">{{heading}}</h3>
+        <div class="flex gap-4 p-2 align-items-end w-full">
+            <form [formGroup]="commonForm" class="flex gap-4 align-items-center" style="width: 80%;">
+                <div class="flex-1">
+                    <label for="fromDate" class="block font-medium mb-1 text-900">From Date</label>
+                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate"
+                        placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
+                    <div
+                        *ngIf="commonForm.controls['fromDate'].errors && (commonForm.controls['fromDate'].dirty || commonForm.controls['fromDate'].touched)">
+                        <small class="p-error" *ngIf="commonForm.controls['fromDate'].errors['required']">From Date is
+                            required.</small>
+                    </div>
                 </div>
-            </div>
-            <div class="field mb-4 col-12 md:col-6">
-                <label for="toDate" class="font-medium text-900">To Date</label>
-                <p-calendar [maxDate]="maxDateLimit" class="p-component p-element w-full p-calendar"
-                    formControlName="toDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true"
-                    inputId="icon"></p-calendar>
-                <div
-                    *ngIf="commonForm.controls['toDate'].errors && (commonForm.controls['toDate'].dirty || commonForm.controls['toDate'].touched)">
-                    <small class="p-error" *ngIf="commonForm.controls['toDate'].errors['required']">To Date is
-                        required.</small>
+                <div class="flex-1">
+                    <label for="toDate" class="block font-medium mb-1 text-900">To Date</label>
+                    <p-calendar [maxDate]="maxDateLimit" class="p-component p-element w-full p-calendar"
+                        formControlName="toDate" placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true"
+                        inputId="icon"></p-calendar>
+                    <div
+                        *ngIf="commonForm.controls['toDate'].errors && (commonForm.controls['toDate'].dirty || commonForm.controls['toDate'].touched)">
+                        <small class="p-error" *ngIf="commonForm.controls['toDate'].errors['required']">To Date is
+                            required.</small>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <div class="w-full flex justify-content-end align-items-center">
-            <button pbutton="" pripple="" icon="pi pi-file" (click)="generate()"
+            </form>
+            <button pbutton="" pripple="" style="width: 20%;"  icon="pi pi-file" (click)="generate()"
                 class="p-element p-ripple w-auto p-button p-component">
                 <span class="p-button-label">{{buttonLabel}}</span>
             </button>
+            <!-- <div class="w-full flex align-items-center">
+            </div> -->
         </div>
     </div>
 </div>
