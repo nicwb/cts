@@ -22,7 +22,7 @@ export class StampCombinationDropdownForRequisitionsComponent implements OnInit 
   }
 
   formatResultItem(item: any): any {
-    return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Denomination: ${item.denomination}` };
+    return { combination: `${item.stampCombinationId} | Category: ${item.stampCategory1} | Denomination: ${item.denomination} ` };
   }
 
   getAllStampCombination() {
@@ -57,11 +57,26 @@ export class StampCombinationDropdownForRequisitionsComponent implements OnInit 
     this.selectedCombinationType = null;
   }
 
-  removeCategory(category: string, denomination: number) {
-      if (category && denomination) {
-        this.CombinationTypeList = this.CombinationTypeList.filter((item) => !item.combination.includes(`Category: ${category} | Denomination: ${denomination}`) && item.combination.includes(category))
-      }
+  // removeCategory(category: string, denomination: number[]) {
+  //     if (category && denomination) {
+  //       this.CombinationTypeList = this.CombinationTypeList.filter((item) => !item.combination.includes(`Category: ${category} | Denomination: ${denomination} `) && item.combination.includes(category))
+  //     }
+  // }
+
+
+
+  removeCategory(category: string, denomination: number[]) {
+    this.CombinationTypeList = [...this.clonedCombinationTypeList]
+    if (category && denomination) {
+      this.CombinationTypeList = this.CombinationTypeList.filter((item) => {
+        const categoryMatch = item.combination.includes(category);
+        const denominationMatch = denomination.every((denom) => !item.combination.includes(`Denomination: ${denom} `));
+        return (categoryMatch && denominationMatch);
+      });
+    }
   }
+  
+
 
   reAssign() {
     this.CombinationTypeList = [...this.clonedCombinationTypeList];

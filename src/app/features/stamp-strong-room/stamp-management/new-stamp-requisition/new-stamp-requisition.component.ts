@@ -36,6 +36,8 @@ export class NewStampRequisitionComponent implements OnInit {
   totalNetAmount: number = 0
   labelPerSheet: number = 0
   stampList: any[] = []
+  presentCategory: string = ""
+  presentDenomination: number[] = []
   isVendorSelect: boolean = this.stampList.length === 0
   private quantitySubject = new Subject<number>();
   constructor(
@@ -162,7 +164,9 @@ export class NewStampRequisitionComponent implements OnInit {
         this.totalTaxAmount += this.taxAmount
         this.totalNetAmount += this.netAmount
         this.stampList.push(obj)
-        this.stampComp?.removeCategory(this.category, this.denomination)
+        this.presentCategory = this.category
+        this.presentDenomination.push(this.denomination)
+        this.stampComp?.removeCategory(this.category, this.presentDenomination)
         this.stampComp?.reset();
         this.category = ""
         this.denomination = 0
@@ -179,12 +183,18 @@ export class NewStampRequisitionComponent implements OnInit {
   }
 
   deleteProduct(item: any) {
-      this.totalAmount -= item.grossAmount
-      this.totalDiscountAmount -= item.discountAmount
-      this.totalNetAmount -= item.netAmount
-      this.totalTaxAmount -= item.taxAmount
+    this.totalAmount -= item.grossAmount
+    this.totalDiscountAmount -= item.discountAmount
+    this.totalNetAmount -= item.netAmount
+    this.totalTaxAmount -= item.taxAmount
     this.stampList = this.stampList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
     this.isVendorSelect = this.stampList.length === 0
-    this.stampComp?.reAssign()
+    this.presentDenomination = this.presentDenomination.filter(e => e != item.denomination)
+    if (this.stampList.length == 0) {
+      this.presentCategory = ""
+      this.stampComp?.reAssign()
+    } else {
+      this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
+    }
   }
 }

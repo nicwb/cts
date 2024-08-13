@@ -51,7 +51,7 @@ export class StampRequisitionStagingComponent implements OnInit {
   clonedStamps: { [s: string]: StampRequisitions } = {};
   stamps: any[] = [];
   presentCategory: string = ""
-  presentDenomination: number = 0
+  presentDenomination: number[] = []
   private quantitySubject = new Subject<number>();
   private childQuantitySubject = new Subject<any>();
   constructor(
@@ -154,9 +154,9 @@ export class StampRequisitionStagingComponent implements OnInit {
         this.stamps = $event.rowData.childData;
         this.presentCategory = $event.rowData.childData[0].stampCategory
         $event.rowData.childData.forEach((element : any) => {
-          
+          this.presentDenomination.push(element.denomination)
         });
-        this.presentDenomination = $event.rowData.childData[0].denomination
+        // this.presentDenomination = $event.rowData.childData[0].denomination
         this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
         this.vendorLicence = $event.rowData.licenseNo;
         this.vendorName = $event.rowData.vendorName;
@@ -314,6 +314,9 @@ export class StampRequisitionStagingComponent implements OnInit {
   
         this.stamps.push(obj)
         this.totalNetAmount += this.netAmount
+        this.presentDenomination.push(this.denomination)
+        this.stampComp?.removeCategory(this.category, this.presentDenomination)
+        this.stampComp?.reset();
         this.quantity = 0
         this.category = ""
         this.denomination = 0
@@ -322,7 +325,6 @@ export class StampRequisitionStagingComponent implements OnInit {
         this.discountAmount = 0
         this.taxAmount = 0
         this.netAmount = 0
-        this.stampComp?.reset();
       }
     } else {
       this.toastService.showWarning("Quantity should be greater than 0 and less than available quantity.")
@@ -396,6 +398,11 @@ export class StampRequisitionStagingComponent implements OnInit {
   deleteProduct(stamp: StampRequisitions) {
     this.totalNetAmount -= stamp.netAmount
     this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
-    this.stampComp?.reAssign()
+    if (this.stamps.length == 0) {
+      this.presentCategory = ""
+      this.stampComp?.reAssign()
+    } else {
+      this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
+    }
   }
 }

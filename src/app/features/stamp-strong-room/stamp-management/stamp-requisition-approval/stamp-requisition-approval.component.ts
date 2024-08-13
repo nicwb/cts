@@ -47,7 +47,7 @@ export class StampRequisitionApprovalComponent implements OnInit {
   vendorTypeId: number = 0;
   vendorStampRequisitionId: number = 0
   presentCategory: string = ""
-  presentDenomination: number = 0
+  presentDenomination: number[] = []
   reqDate: Date = new Date();
   clonedStamps: { [s: string]: StampRequisitions } = {};
   stamps: any[] = [];
@@ -167,7 +167,10 @@ export class StampRequisitionApprovalComponent implements OnInit {
         this.totalNetAmount = $event.rowData.netAmount;
         this.vendorStampRequisitionId = $event.rowData.id
         this.stamps = $event.rowData.childData;
-        this.presentCategory = $event.rowData.childData[0].stampCategory
+        $event.rowData.childData.forEach((element : any) => {
+          this.presentDenomination.push(element.denomination)
+        });
+        // this.presentCategory = $event.rowData.childData[0].stampCategory
         this.presentDenomination = $event.rowData.childData[0].denomination
         this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
         this.vendorLicence = $event.rowData.licenseNo;
@@ -423,6 +426,11 @@ export class StampRequisitionApprovalComponent implements OnInit {
   deleteProduct(stamp: StampRequisitions) {
     this.totalNetAmount -= stamp.netAmount
     this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
-    this.stampComp?.reAssign()
+    if (this.stamps.length == 0) {
+      this.presentCategory = ""
+      this.stampComp?.reAssign()
+    } else {
+      this.stampComp?.removeCategory(this.presentCategory, this.presentDenomination)
+    }
   }
 }
