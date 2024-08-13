@@ -28,8 +28,15 @@ export class StampRequisitionService {
         })
       );
   }
-  getStampRequisitionDetailsById(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
-    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionById?id=${id}`, queryParameters).pipe(
+  getStampRequisitionDetailsByIdAfterClerkModification(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
+    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionByIdAfterClerkModification?id=${id}`, queryParameters).pipe(
+      catchError((error) => {
+        throw this.toastService.showError(error.message);
+      })
+    );
+  }
+  getStampRequisitionDetailsByIdAfterTOModification(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
+    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionByIdAfterTOModification?id=${id}`, queryParameters).pipe(
       catchError((error) => {
         throw this.toastService.showError(error.message);
       })

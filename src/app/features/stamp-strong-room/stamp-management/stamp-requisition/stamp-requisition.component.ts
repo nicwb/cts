@@ -36,8 +36,8 @@ export class StampRequisitionComponent implements OnInit {
       class: 'p-button-success p-button-sm',
       icon: 'pi pi-print',
       lable: 'Details',
-      renderButton: (rowData) => {
-        return rowData.status !== StampRequisitionStatusEnum.ForwardedToStampCleck || rowData.status !== StampRequisitionStatusEnum.RejectedByStampClerk || rowData.status !== StampRequisitionStatusEnum.RejectedByTreasuryOfficer
+      renderButton: (rowData) => {        
+        return (rowData.status === StampRequisitionStatusEnum.WaitingForPayment || rowData.status === StampRequisitionStatusEnum.WaitingForDelivery || rowData.status === StampRequisitionStatusEnum.DeliveredToVendor || rowData.status === StampRequisitionStatusEnum.ForwardedToTreasuryOfficer )
       }
     },
       {
@@ -76,21 +76,36 @@ export class StampRequisitionComponent implements OnInit {
       case 'details':
         this.displayDetailsModal = true
         if ($event.rowData.status === StampRequisitionStatusEnum.ForwardedToTreasuryOfficer) {
-
+          this.getRequisitionDetailsByIdAfterClerkModification($event.rowData.id)
         } else if ($event.rowData.status === StampRequisitionStatusEnum.WaitingForPayment || $event.rowData.status === StampRequisitionStatusEnum.WaitingForDelivery || $event.rowData.status === StampRequisitionStatusEnum.DeliveredToVendor ) {
-
+          this.getRequisitionDetailsByIdAfterTOModification($event.rowData.id)
         }
-        this.getRequisitionDetailsById($event.rowData.id)
         break;
     }
   }
-  getRequisitionDetailsById(id: number) {
+  getRequisitionDetailsByIdAfterClerkModification(id: number) {
     this.detailsTableLoading = true
     this.tableQueryParameters = {
       pageSize: 10,
       pageIndex: 0,
     };
-    this.stampRequisitionService.getStampRequisitionDetailsById(id, this.tableQueryParameters).subscribe((response) => {
+    this.stampRequisitionService.getStampRequisitionDetailsByIdAfterClerkModification(id, this.tableQueryParameters).subscribe((response) => {
+      if (response.apiResponseStatus === 1) {
+        this.detailTableData = response.result
+      } else {
+        this.toastService.showError(response.message);
+      }
+    })
+    this.detailsTableLoading = false
+  }
+
+  getRequisitionDetailsByIdAfterTOModification(id: number) {
+    this.detailsTableLoading = true
+    this.tableQueryParameters = {
+      pageSize: 10,
+      pageIndex: 0,
+    };
+    this.stampRequisitionService.getStampRequisitionDetailsByIdAfterTOModification(id, this.tableQueryParameters).subscribe((response) => {
       if (response.apiResponseStatus === 1) {
         this.detailTableData = response.result
       } else {

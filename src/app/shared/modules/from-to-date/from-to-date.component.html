@@ -5,7 +5,7 @@
             <form [formGroup]="commonForm" class="flex gap-4 align-items-center" style="width: 80%;">
                 <div class="flex-1">
                     <label for="fromDate" class="block font-medium mb-1 text-900">From Date</label>
-                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="fromDate"
+                    <p-calendar [maxDate]="maxDateLimit" class="p-component p-element w-full p-calendar" formControlName="fromDate"
                         placeholder="mm/dd/yyyy" appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
                     <div
                         *ngIf="commonForm.controls['fromDate'].errors && (commonForm.controls['fromDate'].dirty || commonForm.controls['fromDate'].touched)">
