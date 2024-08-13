@@ -309,11 +309,12 @@ export class StampRequisitionStagingComponent implements OnInit {
           netAmount: this.netAmount,
           labelPerSheet: this.labelPerSheet,
           stampCategoryId: this.stampCategoryId,
-          combinationId: this.combinationId
+          stampCombinationId: this.combinationId
         }
   
         this.stamps.push(obj)
         this.totalNetAmount += this.netAmount
+        this.presentCategory = this.category
         this.presentDenomination.push(this.denomination)
         this.stampComp?.removeCategory(this.category, this.presentDenomination)
         this.stampComp?.reset();
@@ -396,8 +397,10 @@ export class StampRequisitionStagingComponent implements OnInit {
     this.clonedStamps[stamp.id as number] = { ...stamp };
   }
   deleteProduct(stamp: StampRequisitions) {
+    debugger
     this.totalNetAmount -= stamp.netAmount
     this.stamps = this.stamps.filter((val) => val.stampCombinationId !== stamp.stampCombinationId);
+    this.presentDenomination = this.presentDenomination.filter((item)=> item !== stamp.denomination)
     if (this.stamps.length == 0) {
       this.presentCategory = ""
       this.stampComp?.reAssign()
