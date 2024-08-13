@@ -109,13 +109,21 @@ export interface GetStampCombinations {
 
 
 export interface GetStampIndents {
-  stampIndentId: number;
+  id: number;
   memoNumber: string;
-  memoDate: string;
+  memoDate: Date;
   remarks: string;
-  raisedByTreasuryCode: string;
   raisedToTreasuryCode: string;
-  stmapCategory: string;
+  raisedByTreasuryCode: string;
+  createdAt: string;
+  status: string;
+  childData: ChildData[];
+}
+
+export interface ChildData {
+  id: number;
+  combinationId: number;
+  stampCategory: string;
   description: string;
   denomination: number;
   labelPerSheet: number;
@@ -123,20 +131,39 @@ export interface GetStampIndents {
   label: number;
   quantity: number;
   amount: number;
-  status: string;
-  createdAt: string;
+  isInvoiced: boolean;
+}
+
+export interface IndentItems {
+  stampCombinationId: number;
+  sheet: number;
+  label: number;
+  quantity: number; 
+  amount: number; 
 }
 
 export interface AddStampIndent {
   memoNumber: string;
   memoDate: string;
   remarks: string;
-  stampCombinationId: number;
   raisedToTreasuryCode: string
-  sheet: number;
-  label: number;
-  quantity: number;
+  stampIndentData: IndentItems[]
+}
+
+export interface Indent {
+  id: number;
   amount: number;
+  availableLabel: number;
+  availableSheet: number;
+  combinationId: number;
+  denomination: number;
+  description: string;
+  isInvoiced: boolean;
+  label: number;
+  labelPerSheet: number;
+  quantity: number;
+  sheet: number;
+  stampCategory: string;
 }
 
 export interface GetStampInvoices {
@@ -145,12 +172,9 @@ export interface GetStampInvoices {
   memoDate: string;
   remarks: string;
   raisedToTreasuryCode: string;
-  stmapCategory: string;
+  stampCategory: string;
   description: string;
   denomination: number;
-  // labelPerSheet: number;
-  // indentedSheet: number;
-  // indentedLabel: number;
   sheet: number;
   label: number;
   quantity: number;
@@ -159,17 +183,19 @@ export interface GetStampInvoices {
   stampInvoiceId: number;
   invoiceNumber: string;
   invoiceDate: string;
-  // createdBy: number;
 }
 
 export interface AddStampInvoice {
-  stampIndentId: number;
+  indentId: number;
+  stampIndentData: StampIndentData[];
+}
+
+export interface StampIndentData {
+  stampCombinationId: number;
   sheet: number;
   label: number;
-  invoiceNumber: string;
-  invoiceDate: string;
-  amount: number;
   quantity: number;
+  amount: number;
 }
 
 export interface StampWalletGet {
@@ -195,31 +221,63 @@ export interface AddStampCombination {
 
 // =============Vendor Requisition==================
 export interface GetVendorStampRequisition {
-  vendorStampRequisitionId: number;
-  vendorId: number;
-  vendorName: string;
-  vendorType: string;
-  licenseNo: string;
-  amount: number;
-  quantity: number;
-  status: string;
-  requisitionDate: string;
-  raisedToTreasury: string;
-  sheet: number;
-  label: number;
+  id: number;
   requisitionNo: string;
+  requisitionDate: string;
+  vendorName: string;
+  licenseNo: string;
+  grossAmount: number;
+  discountAmount: number;
+  taxAmount: number;
+  netAmount: number;
+  status: string;
+  childData: StampChildData[];
 }
 
+interface StampChildData {
+  id: number;
+  stampCategory: string;
+  denomination: number;
+  quantity: number;
+  grossAmount: number;
+  netAmount: number;
+  taxAmount: number;
+  discountAmount: number;
+  stampCombinationId: number;
+  stampCategoryId: number;
+}
 
 export interface AddVendorStampRequisition {
   vendorId: number;
-  sheet: number;
-  label: number;
-  combinationId: number;
-  requisitionDate: string;
-  requisitionNo: string;
-  challanAmount: number;
-  raisedToTreasury: string;
+  totalGrossAmount: number;
+  totalNetAmount: number;
+  totalTaxAmount: number;
+  totalDiscountAmount: number;
+  childData: VendorStampRequisitionData[];
+}
+
+interface VendorStampRequisitionData {
+  stampCombinationId: number;
+  quantity: number;
+  labelPerSheet: number;
+  grossAmount: number;
+  netAmount: number;
+  taxAmount: number;
+  discountAmount: number;
+}
+
+export interface StampRequisitions {
+    id: number;               
+    stampCombinationId: number;    
+    availableQuantity: number;
+    denomination: number;     
+    grossAmount: number;      
+    discountAmount: number;   
+    taxAmount: number;        
+    netAmount: number;        
+    quantity: number;         
+    stampCategory: string; 
+    stampCategoryId: number;
 }
 
 export interface PrintData {
@@ -234,17 +292,17 @@ export interface PrintData {
 
 export interface ApprovedByClerk {
   vendorStampRequisitionId: number,
-  sheetByClerk: number,
-  labelByClerk: number
+  childData: VendorStampRequisitionData[];
 }
 
 export interface ApprovedByTO {
-  vendorStampRequisitionId: number,
-  sheetByTo: number,
-  labelByTo: number,
-  discountedAmount: number,
-  taxAmount: number,
-  challanAmount: number,
+  vendorStampRequisitionId: number;
+  totalGrossAmount: number;
+  totalDiscountAmount: number;
+  totalTaxAmount: number;
+  totalNetAmount: number;
+  requisitionNo: string;
+  childData: VendorStampRequisitionData[];
 }
 
 export interface calcAmountDetails {

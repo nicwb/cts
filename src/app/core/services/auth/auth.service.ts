@@ -9,7 +9,7 @@ import { NgxPermissionsService } from 'ngx-permissions';
 })
 export class AuthService {
 
-  constructor(private router:Router,private authTokenService:AuthTokenService,private ngxPermissionsService:NgxPermissionsService) { }
+  constructor(private router:Router, private authTokenService:AuthTokenService,private ngxPermissionsService:NgxPermissionsService) { }
   userLogout(){
     this.clearAll();
     window.self.close(); 
@@ -34,8 +34,7 @@ export class AuthService {
           Scope: decodedToken.Levels[0].Scope
         }
       };
-    }
-  
+    }  
     return userDetails;
   }
   isLoggedin() {

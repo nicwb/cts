@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LabelService } from './label.service';
+import { StampMasterService } from './stamp-master.service';
 
-describe('LabelService', () => {
-  let service: LabelService;
+describe('StampMasterService', () => {
+  let service: StampMasterService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LabelService);
+    service = TestBed.inject(StampMasterService);
   });
 
   it('should be created', () => {

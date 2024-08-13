@@ -1,1 +1,51 @@
-<p>vendor-details-wise-ec137 works!</p>
+<div class="grid">
+    <div class="col-12">
+        <app-common-header [SubHeaderName]="'EC-137'" [headerName]="'Vendor Details Wise'" [imgSrc]="'assets/layout/images/icons/vendor-wise-ec136.png'">
+        </app-common-header>
+    </div>
+</div>
+<section class="w-full h-full">
+    <app-from-to-date (newItemEvent)="generateEC137($event)" [buttonLabel]="'Generate'" [heading]="'Vendor Details Wise'"></app-from-to-date>
+    <div class="col-12">
+        <p-table [value]="data" [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll"
+            [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]">
+            <ng-template pTemplate="header">
+                <tr>
+                  <th style="min-width: 12rem">Vendor ID</th>
+                  <th style="min-width: 12rem">Vendor Name</th>
+                  <th style="min-width: 12rem">Address</th>
+                  <th style="min-width: 12rem">Stamp Category</th>
+                  <th style="min-width: 12rem">Denomination</th>
+                  <th style="min-width: 12rem">Gross</th>
+                  <th style="min-width: 12rem">Discount</th>
+                  <th style="min-width: 12rem">Tax</th>
+                  <th style="min-width: 12rem">Net Amt.</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-data>
+                <tr class="p-selectable-row">
+                  <td style="min-width: 12rem">{{ data.vendorId }}</td>
+                  <td style="min-width: 12rem">{{ data.vendorName }}</td>
+                  <td style="min-width: 12rem">{{ data.address }}</td>
+                  <td style="min-width: 12rem">{{ data.stampCategory }}</td>
+                  <td style="min-width: 12rem">{{ data.denomination }}</td>
+                  <td style="min-width: 12rem">{{ data.gross }}</td>
+                  <td style="min-width: 12rem">{{ data.discount }}</td>
+                  <td style="min-width: 12rem">{{ data.tax }}</td>
+                  <td style="min-width: 12rem">{{ data.net }}</td>
+                </tr>
+              </ng-template>
+              
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="9">No Data Available</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="loadingbody">
+                <tr>
+                    <td colspan="12">Loading Employee Accounts. Please wait.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</section>

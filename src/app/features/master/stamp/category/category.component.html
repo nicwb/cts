@@ -1,42 +1,51 @@
 <div class="grid">
-    <div class="col-12">
-        <app-common-header [headerName]="'Category Entry'" [imgSrc]="'assets/layout/images/icons/category-entry.png'">
-            <button pButton pRipple type="button" icon="pi pi-plus" (click)="showInsertDialog()" label="New Entry"
-                class="p-button-rounded p-button-raised"></button></app-common-header>
-    </div>
-    <div class="col-12">
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
-    </div>
+  <div class="col-12">
+    <app-common-header [headerName]="'Category Entry'" [imgSrc]="'assets/layout/images/icons/category-entry.png'">
+      <button pButton pRipple type="button" icon="pi pi-plus" (click)="showInsertDialog()" label="New Entry"
+        class="p-button-rounded p-button-raised"></button></app-common-header>
+  </div>
+  <div class="col-12">
+    <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"  [isLoading]="isLoading" [showTopMenubar]="true"
+            [data]="tableData">
+        </mh-prime-dynamic-table> 
+  </div>
 </div>
 
 
-<p-dialog header="Category Entry" [(visible)]="displayInsertModal" [modal]="true" [style]="{'width': 'fit-content'}" [baseZIndex]="10000">
-    <form [formGroup]="categoryEntryForm" class="flex flex-column gap-4 mt-3">
-      <div class="flex gap-2 align-items-baseline">
-        <div class="flex-1">
-          <label for="description" class="block mb-1 font-medium text-900">Description</label>
-          <input formControlName="description" type="text" pInputText placeholder="Eg: Special Adhesive" class="p-inputtext p-component p-element w-full">
-          <div *ngIf="categoryEntryForm.controls['description'].errors && (categoryEntryForm.controls['description'].dirty || categoryEntryForm.controls['description'].touched)">
-            <small class="p-error" *ngIf="categoryEntryForm.controls['description'].errors['required']">Description is required.</small>
-            <small class="p-error" *ngIf="categoryEntryForm.controls['description'].errors['maxlength']">Description cannot exceed 10 characters.</small>
-          </div>
-        </div>
-        <div class="flex-1">
-          <label for="stampCategory1" class="block mb-1 font-medium text-900">Stamp Category (2 char)<sup>*</sup></label>
-          <input formControlName="stampCategory1" type="text" pInputText placeholder="Eg: EC" class="p-inputtext p-component p-element w-full">
-          <div *ngIf="categoryEntryForm.controls['stampCategory1'].errors && (categoryEntryForm.controls['stampCategory1'].dirty || categoryEntryForm.controls['stampCategory1'].touched)">
-            <small class="p-error" *ngIf="categoryEntryForm.controls['stampCategory1'].errors['required']">Stamp Category is required.</small>
-            <small class="p-error" *ngIf="categoryEntryForm.controls['stampCategory1'].errors['exactLength']">Stamp Category must be exactly 2 characters.</small>
-          </div>
+<p-dialog header="Category Entry" [(visible)]="displayInsertModal" [modal]="true" [style]="{'width': 'fit-content'}"
+  [baseZIndex]="10000">
+  <form [formGroup]="categoryEntryForm" class="flex flex-column gap-4 mt-3">
+    <div class="flex gap-2 align-items-baseline">
+      <div class="flex-1">
+        <label for="description" class="block mb-1 font-medium text-900">Description</label>
+        <input formControlName="description" type="text" pInputText placeholder="Eg: Special Adhesive"
+          class="p-inputtext p-component p-element w-full">
+        <div
+          *ngIf="categoryEntryForm.controls['description'].errors && (categoryEntryForm.controls['description'].dirty || categoryEntryForm.controls['description'].touched)">
+          <small class="p-error" *ngIf="categoryEntryForm.controls['description'].errors['required']">Description is
+            required.</small>
+          <small class="p-error" *ngIf="categoryEntryForm.controls['description'].errors['maxlength']">Description
+            cannot exceed 10 characters.</small>
         </div>
       </div>
-      <div class="flex gap-2 justify-content-end pt-3">
-        <button pButton pRipple label="Submit" (click)="addCategory()" class="p-element p-ripple p-button-rounded p-button p-component">
-        </button>
+      <div class="flex-1">
+        <label for="stampCategory1" class="block mb-1 font-medium text-900">Stamp Category (2 char)<sup>*</sup></label>
+        <input formControlName="stampCategory1" type="text" pInputText placeholder="Eg: EC"
+          class="p-inputtext p-component p-element w-full">
+        <div
+          *ngIf="categoryEntryForm.controls['stampCategory1'].errors && (categoryEntryForm.controls['stampCategory1'].dirty || categoryEntryForm.controls['stampCategory1'].touched)">
+          <small class="p-error" *ngIf="categoryEntryForm.controls['stampCategory1'].errors['required']">Stamp Category
+            is required.</small>
+          <small class="p-error" *ngIf="categoryEntryForm.controls['stampCategory1'].errors['exactLength']">Stamp
+            Category must be exactly 2 characters.</small>
+        </div>
       </div>
-    </form>
-  </p-dialog>
-  
+    </div>
+    <div class="flex gap-2 justify-content-end pt-3">
+      <button pButton pRipple label="Submit" (click)="addCategory()"
+        class="p-element p-ripple p-button-rounded p-button p-component">
+      </button>
+    </div>
+  </form>
+</p-dialog>

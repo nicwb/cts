@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { LabelService } from 'src/app/core/services/stamp/label.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddStampLabel, GetStampLabels } from 'src/app/core/models/stamp';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 
 @Component({
   selector: 'app-label',
@@ -19,9 +19,10 @@ export class LabelComponent implements OnInit {
   tableData!: DynamicTable<GetStampLabels>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   labelEntryPayload!: AddStampLabel
+  isLoading: boolean = false
   constructor(
     private fb: FormBuilder,
-    private LabelService: LabelService,
+    private stampMasterService: StampMasterService,
     private toastService: ToastService,
   ) { }
 
@@ -57,7 +58,8 @@ export class LabelComponent implements OnInit {
   }
 
   getAllStampLabels() {
-    this.LabelService
+    this.isLoading = true
+    this.stampMasterService
       .getStampLabelList(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -73,10 +75,11 @@ export class LabelComponent implements OnInit {
           );
         }
       });
+      this.isLoading = false
   }
 
   handleButtonClick($event: any) {
-    this.LabelService.deleteStampLabel($event.rowData.labelId)
+    this.stampMasterService.deleteStampLabel($event.rowData.labelId)
       .subscribe((response) => {
         response.apiResponseStatus == 1 ? this.getAllStampLabels() : this.toastService.showAlert(
           response.message,
@@ -96,7 +99,7 @@ export class LabelComponent implements OnInit {
       };
       console.log(this.labelEntryPayload);
 
-      this.LabelService.addNewStampLabel(this.labelEntryPayload).subscribe((response) => {
+      this.stampMasterService.addNewStampLabel(this.labelEntryPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showAlert('Stamp Label added successfully', 1);
           this.displayInsertModal = false;

@@ -16,6 +16,7 @@ export class Tr7FormComponent implements OnInit {
   amountInWord?: string;
   vendorName?: string;
   vendorAddress?: string;
+  reqNo?: string;
 
   constructor() { }
 
@@ -29,6 +30,7 @@ export class Tr7FormComponent implements OnInit {
       this.vendorName = this.data.vendorName;
       this.vendorAddress = this.data.vendorAddress;
       this.treasuryName = this.data.treasuryName;
+      this.reqNo = this.data.reqNo
     }
   }
 

@@ -1,13 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { AddStampIndent, GetStampIndents } from 'src/app/core/models/stamp';
-import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
+import { AddStampIndent, GetStampIndents, IndentItems } from 'src/app/core/models/stamp';
+import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
+import { StampIndentInvoiceService } from 'src/app/core/services/stamp/stamp-indent-invoice.service';
+import { StampWalletService } from 'src/app/core/services/stamp/stamp-wallet.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { Status } from 'src/app/core/enum/stampIndentStatusEnum';
+import { StampCombinationDropdownComponent } from 'src/app/shared/modules/stamp-combination-dropdown/stamp-combination-dropdown.component';
 import { convertDate } from 'src/utils/dateConversion';
-import { error } from 'console';
-
 
 @Component({
   selector: 'app-indent-capture',
@@ -16,57 +16,70 @@ import { error } from 'console';
 })
 export class IndentCaptureComponent implements OnInit {
 
+  @ViewChild(StampCombinationDropdownComponent) stampComp: StampCombinationDropdownComponent | undefined;
+  indentList: IndentItems[] = []
+  category: string = ""
+  denom: number = 0
+  noOfSheetsInStock: number = 0
+  noOfLabelsInStock: number = 0
+  minDate: Date = new Date()
   loading: boolean = false
+  isLoading: boolean = false
   labelPerSheet: number = 0
   denomination: number = 0
   description: string = ""
   sheet: number = 0
   label: number = 0
-  raisedToTreasuryCode!: string
+  sheetNegative: boolean = false
+  sheetEmpty: boolean = false
+  labelNegative: boolean = false
+  labelEmpty: boolean = false
+  raisedToTreasuryCode: string = 'CAA'
   quantity: number = (this.labelPerSheet * this.sheet) + this.label
   amount: number = this.quantity * this.denomination
   stamCombinationId!: number
   displayInsertModal: boolean = false;
   stampIndentForm!: FormGroup
+  common!: FormGroup
   tableActionButton: ActionButtonConfig[] = [];
   tableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   stampIndentPayload!: AddStampIndent
+
   constructor(
-    private stampIndentService: StampIndentService,
+    private stampIndentInvoiceService: StampIndentInvoiceService,
     private toastService: ToastService,
-    private fb: FormBuilder
+    private stampWalletService: StampWalletService,
+    private fb: FormBuilder,
+    private authTokenService: AuthTokenService
   ) { }
 
   @Output() StampCombinationSelected = new EventEmitter<any>();
 
   ngOnInit(): void {
     this.initializeForm()
-
     this.tableQueryParameters = {
       pageSize: 10,
       pageIndex: 0,
     };
-
-    this.getAllStampIndents();
   }
-
 
   initializeForm(): void {
     this.stampIndentForm = this.fb.group({
       memoNo: ['', Validators.required],
-      memoDate: ['', [Validators.required]],
-      noOfSheets: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Validates integer
-      noOfLabels: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Validates integer
+      memoDate: ['', Validators.required],
       remarks: ['', [Validators.required, Validators.maxLength(20)]]
     });
   }
 
-  getAllStampIndents() {
-    this.stampIndentService
-      .getAllStampIndents(this.tableQueryParameters)
+  getAllStampIndents($event: any) {
+    this.isLoading = true
+    this.stampIndentInvoiceService
+      .getAllStampIndents(this.tableQueryParameters, $event)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
+          console.log(response);
+          
           response.result.data.map((item: any) => {
             item.createdAt = convertDate(item.createdAt);
             item.memoDate = convertDate(item.memoDate);
@@ -78,6 +91,7 @@ export class IndentCaptureComponent implements OnInit {
             response.apiResponseStatus
           );
         }
+        this.isLoading = false
       });
   }
 
@@ -85,29 +99,31 @@ export class IndentCaptureComponent implements OnInit {
     this.displayInsertModal = true;
   }
 
-
   addStampIndent() {
     this.loading = true
-    if (this.stampIndentForm.valid) {
+    if (this.stampIndentForm.valid && this.indentList.length > 0) {
+      const destructuredItems = this.indentList.map(({ stampCombinationId, sheet, label, quantity, amount }) => ({
+        stampCombinationId,
+        sheet,
+        label,
+        quantity,
+        amount
+      })); 
       this.stampIndentPayload = {
-        stampCombinationId: this.stamCombinationId,
-        amount: this.amount,
-        label: this.label,
-        sheet: this.sheet,
         memoDate: this.stampIndentForm.value.memoDate,
         memoNumber: this.stampIndentForm.value.memoNo,
-        quantity: this.quantity,
         remarks: this.stampIndentForm.value.remarks,
-        raisedToTreasuryCode: this.raisedToTreasuryCode
+        raisedToTreasuryCode: this.raisedToTreasuryCode,
+        stampIndentData: destructuredItems
       };
       console.log(this.stampIndentPayload);
 
-      this.stampIndentService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
+      this.stampIndentInvoiceService.addNewStampIndent(this.stampIndentPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message);
-          // this.stampIndentForm.reset()
-          // this.displayInsertModal = false;
-          this.getAllStampIndents();
+          this.stampIndentForm.reset();
+          // this.getAllStampIndents();
+          this.indentList = []
         } else {
           this.toastService.showAlert(response.message, response.apiResponseStatus);
         }
@@ -119,17 +135,8 @@ export class IndentCaptureComponent implements OnInit {
   }
 
   handleButtonClick($event: any) {
-    console.log($event.rowData.stampIndentId);
-
-    this.stampIndentService.getStampIndentDetails($event.rowData.stampIndentId)
-      .subscribe((response) => {
-        response.apiResponseStatus == 1 ? this.getAllStampIndents() : this.toastService.showAlert(
-          response.message,
-          response.apiResponseStatus
-        );
-      });
+    this.tableQueryParameters = $event
   }
-
 
   calcAmountQuantity() {
     this.quantity = (this.labelPerSheet * this.sheet) + this.label
@@ -155,6 +162,57 @@ export class IndentCaptureComponent implements OnInit {
     this.description = $event.description
     this.denomination = $event.denomination
     this.labelPerSheet = $event.noLabelPerSheet
+    this.getBalance({ treasuryCode: this.authTokenService.getDecodeToken().Levels[0].Scope[0], combinationId: this.stamCombinationId })
+  }
+  addItems() {
+    if (((this.sheet + this.label) > 0) && this.sheet >= 0 && this.label >= 0) {
+      const obj = {
+        stampCombinationId: this.stamCombinationId,
+        description: this.description,
+        denomination: this.denomination,
+        labelPerSheet: this.labelPerSheet,
+        sheet: this.sheet,
+        label: this.label,
+        quantity: this.quantity,
+        amount: this.amount,
+      }
+      this.indentList.push(obj)
+      this.stamCombinationId = 0
+      this.description = ""
+      this.denomination =
+      this.labelPerSheet = 0
+      this.sheet = 0
+      this.label = 0
+      this.quantity = 0
+      this.amount = 0
+      this.category = ""
+      this.denom = 0
+      this.noOfSheetsInStock = 0
+      this.noOfLabelsInStock = 0
+      this.stampComp?.reset();
+    } else {
+      this.toastService.showWarning("No. of sheets or labels should be greater than zero.")
+    }
+  }
+  getBalance(params: any) {
+    this.stampWalletService.getStampWalletBalanceByTreasuryCodeAndCombinationId({ treasuryCode: params.treasuryCode, combinationId: params.combinationId }).subscribe((response) => {
+      if (response.apiResponseStatus == 1) {
+        this.denom = response.result.denomination
+        this.noOfSheetsInStock = response.result.sheetLedgerBalance
+        this.noOfLabelsInStock = response.result.labelLedgerBalance
+        this.category = response.result.category
+      } else {
+        this.toastService.showError(response.message)
+      }
+    })
+  }
+  deleteProduct(item: any) {
+    console.log(item);
+    this.indentList = this.indentList.filter((val) => val.stampCombinationId !== item.stampCombinationId)
+    
   }
 
+  search($event: any) {
+    this.getAllStampIndents($event);
+  }
 }

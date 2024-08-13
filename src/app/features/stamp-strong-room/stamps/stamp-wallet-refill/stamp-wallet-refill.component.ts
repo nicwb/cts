@@ -39,6 +39,9 @@ export class StampWalletRefillComponent implements OnInit {
 
   onTreasurySelected($event: any) {
     this.treasuryCode = $event;
+    if (this.combinationId && this.treasuryCode) {
+      this.getStampWalletBalance()
+    }
   }
 
   createOrUpdateWallet() {
@@ -79,6 +82,10 @@ export class StampWalletRefillComponent implements OnInit {
 
   onStampCombinationSelected($event: any) {
     this.combinationId = $event.stampCombinationId
+    if (this.combinationId && this.treasuryCode) {
+      this.getStampWalletBalance()
+    }
+
   }
 
   checkBalance() {

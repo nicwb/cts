@@ -7,7 +7,7 @@ import { NumberToWordsPipe } from 'src/app/core/pipe/number-to-words.pipe';
   declarations: [
     FirstLetterPipe,
     NumberToWordsPipe,
-  ],
+    ],
   imports: [
     CommonModule,
   ],

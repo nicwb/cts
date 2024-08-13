@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 export class TreasuryDropdownComponent implements OnInit {
 
   treasuryList: any[] = [];
-  selectedTreasuryCode:any;
+  selectedTreasuryCode: any;
   @Output() treasurySelected = new EventEmitter<string>();
 
   constructor(private masterService: MasterService, private toastService: ToastService,) { }
@@ -19,7 +19,7 @@ export class TreasuryDropdownComponent implements OnInit {
     this.masterService.getTreasuries().subscribe((response) => {
       if (response.apiResponseStatus == 1) {
         this.treasuryList = response.result
-        // console.log(this.treasuryList);
+        this.selectedTreasuryCode = {name: 'KOLKATA COLLECTORATE', code: 'CAA'}
       } else {
         this.toastService.showError(response.message);
       }

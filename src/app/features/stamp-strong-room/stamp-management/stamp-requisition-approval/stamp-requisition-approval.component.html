@@ -1,120 +1,168 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Requisition Approval'" [imgSrc]="'assets/layout/images/icons/requisition-approval.png'">
+        <app-common-header [headerName]="'Requisition Approval'"
+            [imgSrc]="'assets/layout/images/icons/requisition-approval.png'">
         </app-common-header>
     </div>
-    <!-- <div class="col-12">
-        <div class="grid">
-            <div class="col-12 lg:col-6 p-3">
-                <div class="transition-colors transition-duration-500 p-3 border-round border-2 cursor-pointer"
-                    [ngClass]="{
-                    'hover:shadow-2 surface-card border-transparent hover:bg-primary-100 hover:border-primary':listType!== 'new',
-                    'bg-primary-100 border-primary': listType === 'forwarded'
-                  }" (click)="changeDynamicTable('forwarded')">
-                    <div class="flex align-items-center justify-content-between">
-                        <div>
-                            <p class="mt-1 mb-0 text-600 text-xl">Forwarded To TO</p>
-                        </div>
-                        <div>
-                            <img src="assets/layout/images/icons/forwarded-to-TO.png" height="60">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-6 p-3">
-                <div class="transition-colors transition-duration-500 p-3 border-round border-2 cursor-pointer"
-                    [ngClass]="{
-                    'hover:shadow-2 surface-card border-transparent hover:bg-primary-100 hover:border-primary':listType!=='approvedByClerk',
-                    'bg-primary-100 border-primary': listType === 'waitingPaymentVerification'
-                  }" (click)="changeDynamicTable('waitingPaymentVerification')">
-                    <div class="flex align-items-center justify-content-between">
-                        <div>
-                            <p class="mt-1 mb-0 text-600 text-xl">Waiting For Payment Verification</p>
-                        </div>
-                        <div>
-                            <img src="assets/layout/images/icons/payment-verification.png" height="60">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="col-12">
-        <!-- Skeleton -->
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton" [isLoading]="false"
+            [showTopMenubar]="true" [data]="tableData">
+        </mh-prime-dynamic-table>
     </div>
 </div>
 
-<p-dialog header="Modify Requisition" [(visible)]="modal" [modal]="false" [style]="{'width': '35rem'}" [baseZIndex]="10000">
-    <hr class="mb-2" />
-    <div class="w-full border-rounded p-2 flex flex-column gap-2 align-items-start">
-        <h5 class="text-red-500 p-0">Current Balance</h5>
-        <div class="flex gap-4 md:flex-row align-items-center flex-column justify-content-between w-full">
-            <div class="flex flex-column align-items-start gap-2 w-full">
-                <label class="block mb-1 text-gray-500 font-medium" for="category">Category</label>
-                <input pinputtext="" disabled type="text" [value]="category" class="pl-1 w-full border-rounded py-1">
+
+<p-dialog header="Modify Requisition" [(visible)]="modal" [modal]="false"
+    [style]="{width: 'fit-content', 'max-width': '95%'}" [baseZIndex]="10000" [draggable]="false">
+    <div class="flex flex-column gap-3">
+        <div class="flex gap-2 xl:flex-row flex-column py-2">
+            <div class="" style="flex-basis: 20%;">
+                <label for="reqNo" class="block mb-1 font-medium text-900">Requisition No:</label>
+                <input type="text" [value]="reqNo" disabled
+                    class="p-inputtext p-component p-element w-full text-gray-900 font-bold">
             </div>
-            <div class="flex flex-column align-items-start gap-2 w-full">
-                <label class="block mb-1 text-gray-500 font-medium" for="denom">Denomination</label>
-                <input pinputtext="" disabled type="text" [value]="denom" class="pl-1 w-full border-rounded py-1">
+            <div class="flex-1">
+                <label for="reqDate" class="block mb-1 font-medium text-900">Requisition Date</label>
+                <input type="text" [value]="reqDate" disabled
+                    class="p-inputtext p-component p-element w-full text-gray-900 font-bold">
+            </div>
+            <div class="flex-1">
+                <label for="vendorName" class="block mb-1 font-medium text-900">Vendor Name</label>
+                <input type="text" [value]="vendorName" disabled
+                    class="p-inputtext p-component p-element w-full text-gray-900 font-bold" />
+            </div>
+            <div class="flex-1">
+                <label for="vendorLicence" class="block mb-1 font-medium text-900">Licence No</label>
+                <input type="text" [value]="vendorLicence" disabled
+                    class="p-inputtext p-component p-element w-full text-gray-900 font-bold" />
+            </div>
+            <div class="flex-1">
+                <label for="netAmount" class="block mb-1 font-medium text-900">Net Amount</label>
+                <input type="text" [value]="totalNetAmount" disabled
+                    class="p-inputtext p-component p-element w-full text-gray-900 font-bold" />
             </div>
         </div>
-        <div class="flex gap-4 md:flex-row align-items-center flex-column justify-content-between w-full">
-            <div class="flex flex-column align-items-start gap-2 w-full">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfSheets">No of sheets</label>
-                <input pinputtext="" disabled type="text" [value]="noOfSheets" class="pl-1 w-full border-rounded py-1">
+        <hr />
+        <div class="flex gap-2 align-items-end w-full">
+            <div class="p-0 flex-1">
+                <label for="Category" class="block mb-1 text font-medium text-900">Combination</label>
+                <app-stamp-combination-dropdown-for-requisitions (StampCombinationSelected)="onStampCombinationSelected($event)"></app-stamp-combination-dropdown-for-requisitions>
             </div>
-            <div class="flex flex-column align-items-start gap-2 w-full">
-                <label class="block mb-1 text-gray-500 font-medium" for="noOfLabels">No of labels</label>
-                <input pinputtext="" disabled type="text" [value]="noOfLabels" class="pl-1 w-full border-rounded py-1">
+            <div class="flex-1">
+                <label for="availableQuantity" class="block mb-1 text font-medium text-900">Available Quantity</label>
+                <input type="text" pinputtext="" readonly disabled [value]="availableQuantity"
+                    class="p-inputtext p-component p-element w-full text-green-500">
             </div>
+            <div class="flex-1">
+                <label for="Category" class="block mb-1 text font-medium text-900">Category</label>
+                <input type="text" pinputtext="" readonly disabled [value]="category"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="denomination" class="block mb-1 text font-medium text-900">Denomination (Rs.)</label>
+                <input type="number" pinputtext="" readonly disabled [value]="denomination"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="quantity" class="block mb-1 text font-medium text-900">Quantity<sup
+                        class="text-red-500 text-xl font-bold">*</sup></label>
+                <input pinputtext="" placeholder="Eg: 10" type="number" [(ngModel)]="quantity"
+                    (ngModelChange)="onQuantityChange($event)" [value]="quantity"
+                    [ngClass]="{'text-red-500 ng-invalid ng-dirty': (quantity < 0 || quantity > availableQuantity)}"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="grossAmount" class="block mb-1 text font-medium text-900">Gross Amount (Rs.)</label>
+                <input type="text" pinputtext="" readonly disabled [value]="amount"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="discount" class="block mb-1 text font-medium text-900">Discount</label>
+                <input pinputtext="" [value]="discountAmount" disabled class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="tax" class="block mb-1 text font-medium text-900">Tax</label>
+                <input type="text" pinputtext="" readonly disabled [value]="taxAmount"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+            <div class="flex-1">
+                <label for="netAmount" class="block mb-1 text font-medium text-900">Net Amount (Rs.)</label>
+                <input type="text" pinputtext="" readonly disabled [value]="netAmount"
+                    class="p-inputtext p-component p-element w-full">
+            </div>
+        </div>
+        <div class="flex justify-content-start mb-3">
+            <p-button label="Add New" (click)="addItems()" class="rounded">
+            </p-button>
         </div>
     </div>
-    <hr class="mb-4" />
-    <form [formGroup]="approveByTOForm" class="grid formgrid p-fluid">
-        <div class="field mb-4 col-12 md:col-6">
-            <label for="sheet" class="font-medium text-900">Sheet</label>
-            <input formControlName="sheet" type="text" pinputtext="" [(ngModel)]="sheet" (ngModelChange)="sheetSelected($event)" class="p-inputtext p-component p-element">
-            <div *ngIf="approveByTOForm.controls['sheet'].errors && (approveByTOForm.controls['sheet'].dirty || approveByTOForm.controls['sheet'].touched)">
-                <small class="p-error" *ngIf="approveByTOForm.controls['sheet'].errors['required']">No of Sheets is required.</small>
-                <small class="p-error" *ngIf="approveByTOForm.controls['sheet'].errors['min']">Minimun no of sheets is 1.</small>
-            </div>
-        </div>
-        <div class="field mb-4 col-12 md:col-6">
-            <label for="label" class="font-medium text-900">Label</label>
-            <input type="text" formControlName="label" pinputtext="" [(ngModel)]="label" (ngModelChange)="labelSelected($event)" class="p-inputtext p-component p-element">
-            <div *ngIf="approveByTOForm.controls['label'].errors && (approveByTOForm.controls['label'].dirty || approveByTOForm.controls['label'].touched)">
-                <small class="p-error" *ngIf="approveByTOForm.controls['label'].errors['required']">No of labels is required.</small>
-                <small class="p-error" *ngIf="approveByTOForm.controls['label'].errors['min']">Minimun no of labels is 1.</small>
-            </div>
-        </div>
-        <div class="field mb-4 col-6 md:col-6">
-            <label for="quantity" class="font-medium text-900">Quantity</label>
-            <input id="quantity" type="text" [value]="quantity" pinputtext="" readonly disabled class="p-inputtext p-component p-element">
-        </div>
-        <div class="field mb-4 col-6 md:col-6">
-            <label for="amount" class="font-medium text-900">Amount</label>
-            <input id="amount" type="text" pinputtext="" [value]="amount" readonly disabled class="p-inputtext p-component p-element">
-        </div>
-        <div class="field mb-4 col-12 md:col-6">
-            <label for="discountAmount" class="font-medium text-900">Discount Amount</label>
-            <input id="discountAmount" type="text" pinputtext="" [value]="discountAmount" readonly disabled class="p-inputtext p-component p-element">
-        </div>
-        <div class="field mb-4 col-6 md:col-6">
-            <label for="taxAmount" class="font-medium text-900">Tax Amount</label>
-            <input id="taxAmount" type="text" pinputtext="" [value]="taxAmount" readonly disabled class="p-inputtext p-component p-element">
-        </div>
-        <div class="field mb-4 col-6 md:col-12">
-            <label for="challanAmount" class="font-medium text-900">Challan Amount</label>
-            <input id="challanAmount" type="text" pinputtext="" [value]="challanAmount" readonly disabled class="p-inputtext p-component p-element">
-        </div>
-      </form>
-    <div class="w-full flex justify-content-end align-items-center">
-        <button pbutton="" pripple="" icon="pi pi-file" (click)="approveByTO()" class="p-element p-ripple w-auto p-button p-component">
-            <span class="p-button-label">Approve Requisition</span>
-        </button>
+    <div class="card">
+        <p-table [value]="stamps" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem', 'width': '100%'}"
+            [rowHover]="true" styleClass="p-datatable-gridlines" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="min-width: 10rem">Stamp Category</th>
+                    <th style="min-width: 10rem">Denomination</th>
+                    <th style="min-width: 10rem">Available Quantity</th>
+                    <th style="min-width: 10rem">Given Quantity</th>
+                    <th style="min-width: 10rem">Gross Amount (Rs.)</th>
+                    <th style="min-width: 10rem">Discount Amount</th>
+                    <th style="min-width: 10rem">Tax Amount</th>
+                    <th style="min-width: 10rem">Net Amount (Rs.)</th>
+                    <th style="min-width: 10rem">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-stamp let-editing="editing" let-ri="rowIndex">
+                <tr [pEditableRow]="stamp" class="font-medium text-gray-900">
+                    <td>{{stamp.stampCategory}}</td>
+                    <td>{{stamp.denomination | currency: 'INR'}}</td>
+                    <td>{{stamp.availableQuantity}}</td>
+                    <td>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input
+                                    [ngClass]="{'text-red-500 ng-invalid ng-dirty': (stamp.quantity == null || stamp.quantity < 0 || stamp.quantity > stamp.availableQuantity)}"
+                                    class="p-inputtext p-component w-10rem p-element" pInputText type="number"
+                                    [(ngModel)]="stamp.quantity" (ngModelChange)="childQuantityChange($event, stamp)" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <p
+                                    [ngClass]="{'text-red-500': (stamp.quantity== null || stamp.quantity < 0 || stamp.quantity> stamp.availableQuantity)}">
+                                    {{(stamp.quantity && stamp.quantity >= 0) && stamp.quantity}}</p>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>{{stamp.grossAmount | currency: 'INR'}}</td>
+                    <td>{{stamp.discountAmount | currency: 'INR'}}</td>
+                    <td>{{stamp.taxAmount | currency: 'INR'}}</td>
+                    <td>{{stamp.netAmount | currency: 'INR'}}</td>
+                    <td>
+                        <div class="flex align-items-center justify-content-center gap-2">
+                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(stamp)" class="p-button-rounded p-button-text">
+                            </button>
+                            <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash" severity="danger"
+                                (click)="deleteProduct(stamp)" class="p-button-rounded p-button-text text-red-400">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                                (click)="onRowEditSave(stamp, ri)"
+                                class="p-button-rounded p-button-text p-button-success mr-2">
+                            </button>
+                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                                (click)="onRowEditCancel(stamp, ri)"
+                                class="p-button-rounded p-button-text p-button-danger">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="flex gap-2 xl:flex-row flex-column justify-content-end pt-3">
+        <p-button [loading]="loading" label="Approve" (click)="modifyRequisition()" iconPos="right" class="p-0 rounded"
+            icon="pi pi-arrow-right">
+        </p-button>
+
     </div>
 </p-dialog>

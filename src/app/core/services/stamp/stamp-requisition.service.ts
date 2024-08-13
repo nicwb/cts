@@ -14,11 +14,12 @@ export class StampRequisitionService {
   constructor(private http: HttpClient, private toastService: ToastService) { }
 
   getAllStampRequisitions(
-    queryParameters: DynamicTableQueryParameters
+    queryParameters: DynamicTableQueryParameters,
+    dates: any
   ): Observable<IapiResponce<GetVendorStampRequisition>> {
     return this.http
       .patch<IapiResponce<GetVendorStampRequisition>>(
-        'v1/StampRequisition/GetAllStampRequisitionList',
+        `v1/StampRequisition/GetAllStampRequisitionList?startDate=${dates.fromDate}&endDate=${dates.toDate}`,
         queryParameters
       )
       .pipe(
@@ -27,7 +28,20 @@ export class StampRequisitionService {
         })
       );
   }
-
+  getStampRequisitionDetailsByIdAfterClerkModification(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
+    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionByIdAfterClerkModification?id=${id}`, queryParameters).pipe(
+      catchError((error) => {
+        throw this.toastService.showError(error.message);
+      })
+    );
+  }
+  getStampRequisitionDetailsByIdAfterTOModification(id: number, queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<GetVendorStampRequisition>> {
+    return this.http.patch<IapiResponce<GetVendorStampRequisition>>(`v1/StampRequisition/GetStampRequisitionByIdAfterTOModification?id=${id}`, queryParameters).pipe(
+      catchError((error) => {
+        throw this.toastService.showError(error.message);
+      })
+    );
+  }
   addNewStampRequisition(payload: AddVendorStampRequisition): Observable<IapiResponce> {
     return this.http.post<IapiResponce>('v1/StampRequisition/CreateStampRequisition', payload).pipe(
       catchError((error) => {

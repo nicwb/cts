@@ -3,11 +3,23 @@
         <app-common-header [headerName]="'Stamp Requisition History'" [imgSrc]="'assets/layout/images/icons/stamp-requisition-history.png'">
         </app-common-header>
     </div>
+    <app-from-to-date class="mx-auto" (newItemEvent)="search($event)" [buttonLabel]="'Search'" [heading]="'Search Requisitions'"></app-from-to-date>
     <div class="col-12">
-        <!-- Skeleton -->
-        <app-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"
-            [headers]="tableData!.headers" [data]="tableData.data" [dataCount]="tableData.dataCount">
-        </app-dynamic-table>
+        <mh-prime-dynamic-table (actionButtonClicked)="handleButtonClick($event)" [numberRowsShown]="10"
+            [rowsPerPageOptions]="[10,30,50]" [actionButtons]="tableActionButton"  [isLoading]="isLoading" [showTopMenubar]="true"
+            [data]="tableData">
+        </mh-prime-dynamic-table>
     </div>
 </div>
+
+<p-dialog [(visible)]="printModal" [modal]="false" [style]="{width: '60vw'}"
+[baseZIndex]="10000" [draggable]="false">
+    <app-tr7-form *ngIf="printModal" [data]="printData"></app-tr7-form>
+</p-dialog>
+<p-dialog header="Requisition Details" [(visible)]="displayDetailsModal" [modal]="true" [style]="{width: 'max-content'}"
+    [baseZIndex]="10000" [draggable]="false">
+    <hr class="mb-4" />
+<mh-prime-dynamic-table 
+    [data]="detailTableData" [disableFiltering]="true" [isLoading]="detailsTableLoading" [disableSorting]="true" [showPaginator]="false">
+</mh-prime-dynamic-table>
+</p-dialog>

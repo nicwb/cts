@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { VendorService } from 'src/app/core/services/stamp/vendor.service';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class VendorDetailsDropdownComponent implements OnInit {
   data: any[] = [];
   @Output() VendorDetailsSelected = new EventEmitter<any>();
 
-  constructor(private toastService: ToastService, private vendorDetailsService: VendorService) { }
+  constructor(private toastService: ToastService, private stampMasterService: StampMasterService,
+  ) { }
 
 
   ngOnInit(): void {
@@ -21,18 +22,16 @@ export class VendorDetailsDropdownComponent implements OnInit {
   }
 
   formatResultItem(item: any): any {
-    return { vendorDetails: `${item.stampVendorId} | Vendor Name: ${item.vendorName} | Vendor Type: ${item.vendorType} | Treasury: ${item.vendorTreasury} | Licence: ${item.licenseNo} | Pan: ${item.panNumber} | Phone: ${item.phoneNumber}` }
+    return { vendorDetails: `${item.stampVendorId} | Name: ${item.vendorName} | Type: ${item.vendorType}` }
   }
 
   getAllVendors() {
-
-    this.vendorDetailsService
+    this.stampMasterService
       .getStampVendorDetails()
       .subscribe((response) => {        
         if (response.apiResponseStatus == 1) {
           this.data = response.result;
           response.result.map((item: any) => {
-
             this.VendorDetailsList.push(this.formatResultItem(item))
 
           });
@@ -55,5 +54,9 @@ export class VendorDetailsDropdownComponent implements OnInit {
       return item.stampVendorId == this.extractFirstNumber(this.selectedVendorDetail.vendorDetails)
     })    
     this.VendorDetailsSelected.emit(val[0]);
+  }
+
+  reset() {
+    this.selectedVendorDetail = null
   }
 }

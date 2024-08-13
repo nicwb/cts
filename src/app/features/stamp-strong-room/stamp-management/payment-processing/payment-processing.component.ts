@@ -13,12 +13,12 @@ export class PaymentProcessingComponent implements OnInit {
 
   registerGRNModal: boolean = false
   printModal: boolean = false
+  printData: any
   vendorStampRequisitionId: number = 0
   GRNNo: number = 0
   tableActionButton: ActionButtonConfig[] = [];
   tableData!: DynamicTable<GetVendorStampRequisition>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
-  printData: any
   constructor(private stampRequisitionService: StampRequisitionService,
     private toastService: ToastService) { }
 
@@ -35,7 +35,7 @@ export class PaymentProcessingComponent implements OnInit {
         lable: 'Print',
       },
       {
-        buttonIdentifier: 'edit',
+        buttonIdentifier: 'grn',
         class: 'p-button-warning p-button-sm',
         icon: 'pi pi-file-edit',
         lable: 'Register GRN',
@@ -47,11 +47,11 @@ export class PaymentProcessingComponent implements OnInit {
   handleButtonClick($event: any) {
     switch ($event.buttonIdentifier) {
       case 'print':
-        this.getDataForPrint($event.rowData.vendorStampRequisitionId)
+        this.getDataForPrint($event.rowData.id, $event.rowData.requisitionNo)
         break;
-      case 'edit':
+      case 'grn':
         this.registerGRNModal = true
-        this.vendorStampRequisitionId = $event.rowData.vendorStampRequisitionId
+        this.vendorStampRequisitionId = $event.rowData.id
         break;
     }
   }
@@ -69,6 +69,7 @@ export class PaymentProcessingComponent implements OnInit {
 
   registerGRNNo() {
     if (this.GRNNo && this.vendorStampRequisitionId) {
+      console.log({ vendorStampRequisitionId: this.vendorStampRequisitionId, GRNNo: Number(this.GRNNo) });
       this.stampRequisitionService.registerGRNNo({ vendorStampRequisitionId: this.vendorStampRequisitionId, GRNNo: this.GRNNo }).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showSuccess(response.message)
@@ -86,10 +87,12 @@ export class PaymentProcessingComponent implements OnInit {
   GRNNoSelected($event: any) {
     this.GRNNo = $event
   }
-  getDataForPrint(id: number) {
+  getDataForPrint(id: number, reqNo: string) {
     this.stampRequisitionService.printtr7(id).subscribe((response) => {
+      console.log(id);
       if (response.apiResponseStatus == 1) {
         this.printData = {
+          reqNo: reqNo,
           raisedToTreasury: response.result.raisedToTreasury,
           hoa: response.result.hoa,
           detailHead: response.result.detailHead,

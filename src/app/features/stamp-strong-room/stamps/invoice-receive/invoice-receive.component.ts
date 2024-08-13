@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
-import { Status } from 'src/app/core/enum/stampIndentStatusEnum';
-import { GetStampIndents } from 'src/app/core/models/stamp';
-import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.service';
+import { AddStampInvoice, GetStampIndents } from 'src/app/core/models/stamp';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
-import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.service';
+import { StampIndentInvoiceService } from 'src/app/core/services/stamp/stamp-indent-invoice.service';
 
 @Component({
   selector: 'app-invoice-receive',
@@ -15,11 +13,11 @@ import { StampInvoiceService } from 'src/app/core/services/stamp/stamp-invoice.s
 export class InvoiceReceiveComponent implements OnInit {
 
   tableActionButton: ActionButtonConfig<GetStampIndents>[] = [];
-  tableData!: DynamicTable<GetStampIndents>;
   tableQueryParameters!: DynamicTableQueryParameters | any;
+  tableData!: DynamicTable<GetStampIndents>;
+  stampIndentReceivePayload!: AddStampInvoice
   constructor(
-    private stampIndentService: StampIndentService,
-    private stampInvoiceService: StampInvoiceService,
+    private stampIndentInvoiceService: StampIndentInvoiceService,
     private toastService: ToastService,) { }
 
   ngOnInit(): void {
@@ -34,39 +32,16 @@ export class InvoiceReceiveComponent implements OnInit {
         class: 'p-button-info p-button-sm',
         icon: 'pi pi-inbox',
         lable: 'Receive',
-        // renderButton: (rowData) => {
-        //   return (rowData.status === Status[24] || rowData.status === Status[27]);
-        // }
-      },
-      // {
-      //   buttonIdentifier: 'rejected',
-      //   class: 'p-button-danger p-button-sm',
-      //   icon: 'pi pi-times',
-      //   lable: 'Rejected',
-      //   renderButton: (rowData) => {          
-      //     return (rowData.status === Status[13] || rowData.status === Status[16]);
-      //   }
-      // },
-      {
-        buttonIdentifier: 'Recieved',
-        class: 'p-button-success p-button-sm',
-        icon: 'pi pi-check',
-        lable: 'Recieved',
-        renderButton: (rowData) => {
-          return (rowData.status === Status[14]);
-        }
       },
     ];
     this.getAllStampIndents()
   }
 
   getAllStampIndents() {
-    this.stampIndentService
+    this.stampIndentInvoiceService
       .getAllStampIndentsProcessed(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
-          console.log(response);
-
           response.result.data.map((item: any) => {
             item.createdAt = convertDate(item.createdAt);
             item.memoDate = convertDate(item.memoDate);
@@ -81,9 +56,23 @@ export class InvoiceReceiveComponent implements OnInit {
       });
   }
   handleButtonClick($event: any) {
-    this.stampIndentService.receiveIndent({indentId: $event.rowData.stampIndentId, sheet: $event.rowData.sheet, label: $event.rowData.label}).subscribe((response) => {
+    let indents = $event.rowData.childData
+    indents = indents.map((element: any, index: number) => {
+      return {
+        stampCombinationId:element.combinationId,
+        sheet:element.sheet,
+        label:element.label,
+        quantity:element.quantity,
+        amount:element.amount
+      }
+    })
+    this.stampIndentReceivePayload = {
+      indentId: $event.rowData.id,
+      stampIndentData: indents
+    }
+    console.log(this.stampIndentReceivePayload);
+    this.stampIndentInvoiceService.receiveIndent(this.stampIndentReceivePayload).subscribe((response) => {
       if (response.apiResponseStatus == 1) {
-
         this.toastService.showSuccess(
           response.message,
         );

@@ -24,6 +24,7 @@ import { VendorTypeDropdownModule } from 'src/app/shared/modules/vendor-type-dro
 import { StampDenominationDropdownModule } from 'src/app/shared/modules/stamp-denomination-dropdown/stamp-denomination-dropdown.module';
 import { StampLabelDropdownModule } from 'src/app/shared/modules/stamp-label-dropdown/stamp-label-dropdown.module';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown
     DropdownModule,
     CommonHeaderModule,
     DynamicTableModule,
+    MhPrimeDynamicTableModule,
     ReactiveFormsModule,
     FormsModule,
     StampCategoryTypeDropdownModule,

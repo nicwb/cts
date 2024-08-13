@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'src/app/core/models/dynamic-table';
+import { ActionButtonConfig, DynamicTable, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { GetStampDiscountDetails, AddStampDiscountDetails } from 'src/app/core/models/stamp';
+import { StampMasterService } from 'src/app/core/services/stamp/stamp-master.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { DiscountDetailsService } from 'src/app/core/services/stamp/discount-details.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { greaterThanZeroValidator } from 'src/utils/greaterThanZeroValidator';
 
@@ -28,10 +28,11 @@ export class DiscountDetailsComponent implements OnInit {
   amount: number = 0;
   discount: string = '0';
   discountDetailsEntryPayload!: AddStampDiscountDetails;
+  isLoading: boolean = false
 
   constructor(
     private fb: FormBuilder,
-    private DiscountDetailsService: DiscountDetailsService,
+    private stampMasterService: StampMasterService,
     private toastService: ToastService,
   ) { }
 
@@ -98,7 +99,8 @@ export class DiscountDetailsComponent implements OnInit {
   }
 
   getAllStampDiscountDetails() {
-    this.DiscountDetailsService
+    this.isLoading = true
+    this.stampMasterService
       .getStampDiscountDetailsList(this.tableQueryParameters)
       .subscribe((response) => {
         if (response.apiResponseStatus == 1) {
@@ -114,6 +116,7 @@ export class DiscountDetailsComponent implements OnInit {
           );
         }
       });
+      this.isLoading = false
   }
 
   showCalculateDialog() {
@@ -127,7 +130,7 @@ export class DiscountDetailsComponent implements OnInit {
   handleButtonClick($event: any) {
     console.log($event);
     
-    this.DiscountDetailsService.deleteStampDiscountDetail($event.rowData.discountId)
+    this.stampMasterService.deleteStampDiscountDetail($event.rowData.discountId)
       .subscribe((response) => {
         response.apiResponseStatus == 1 ? this.getAllStampDiscountDetails() : this.toastService.showAlert(
           response.message,
@@ -171,7 +174,7 @@ export class DiscountDetailsComponent implements OnInit {
       };
       console.log(this.discountDetailsEntryPayload);
 
-      this.DiscountDetailsService.addNewStampDiscountDetail(this.discountDetailsEntryPayload).subscribe((response) => {
+      this.stampMasterService.addNewStampDiscountDetail(this.discountDetailsEntryPayload).subscribe((response) => {
         if (response.apiResponseStatus == 1) {
           this.toastService.showAlert('Discount details added successfully', 1);
           this.displayInsertModal = false;
