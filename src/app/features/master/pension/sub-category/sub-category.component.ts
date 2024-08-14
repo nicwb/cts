@@ -73,6 +73,7 @@ export class SubCategoryComponent implements OnInit {
         };
 
         this.getData();
+        // this.showVAL();
     }
 
     showInsertDialog() {
