@@ -20,6 +20,8 @@ import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { PrimaryCategoryDetails } from 'src/app/core/models/primary-category-details';
 import { PrimaryCategoryDetailsService } from 'src/app/core/services/primaryCategoryDetails/primary-category-details.service';
+import { PensionCategoryMasterService } from 'src/app/api';
+import { firstValueFrom } from 'rxjs';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -51,13 +53,13 @@ export class PrimaryComponent {
     rowData: any;
     refresh_b = false;
 
-
     constructor(
         private datePipe: DatePipe,
         private toastService: ToastService,
         private PrimaryCategoryDetailsService: PrimaryCategoryDetailsService,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private service: PensionCategoryMasterService
     ) {}
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
@@ -65,7 +67,6 @@ export class PrimaryComponent {
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
         this.initializeForm();
-
 
         this.tableQueryParameters = {
             pageSize: 10,
@@ -80,7 +81,6 @@ export class PrimaryComponent {
         this.primaryForm.reset();
     }
 
-
     handleRowSelection($event: any) {
         console.log('Row selected:', $event);
     }
@@ -89,13 +89,12 @@ export class PrimaryComponent {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex/10,
+            pageIndex: event.pageIndex / 10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
         console.log(this.tableQueryParameters);
         this.getData();
-
     }
 
     handsearchKeyChange(event: string): void {
@@ -148,31 +147,25 @@ export class PrimaryComponent {
     }
 
     // Add Manual PPO Receipt
-    add_primary_category() {
+    async add_primary_category() {
         if (this.primaryForm.valid) {
             const formData = this.primaryForm.value;
-            this.PrimaryCategoryDetailsService.add_new_primary_details(
-                formData
-            ).subscribe(
-                (response) => {
-                    if (response.apiResponseStatus === 1) {
-                        // Assuming 1 means success
-                        console.log('Form submitted successfully:', response);
-
-                        this.displayInsertModal = false; // Close the dialog
-                        this.toastService.showSuccess(
-                            'Primary Category Details added successfully'
-                        );
-                    } else {
-                        this.handleErrorResponse(response);
-                    }
-                    this.getData();
-                },
-                (error) => {
-                    console.error('Error submitting form:', error);
-                    this.handleErrorResponse(error.error);
-                }
+            let response = await firstValueFrom(
+                this.service.createPrimaryCategory(formData)
             );
+
+            if (response.apiResponseStatus === 1) {
+                // Assuming 1 means success
+                console.log('Form submitted successfully:', response);
+
+                this.displayInsertModal = false; // Close the dialog
+                this.toastService.showSuccess(
+                    'Primary Category Details added successfully'
+                );
+            } else {
+                this.handleErrorResponse(response);
+            }
+            this.getData();
         } else {
             console.log('Form is not valid. Cannot submit.');
             this.toastService.showError(
@@ -204,74 +197,63 @@ export class PrimaryComponent {
         this.primaryForm.reset();
     }
 
-
-    getData() {
+    async getData() {
         const data = this.tableQueryParameters;
-        console.log(this.tableQueryParameters);
         this.isTableDataLoading = true;
-        this.PrimaryCategoryDetailsService.get_all_primary_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                this.tableData = response.result;
-                this.isTableDataLoading = false;
-                console.log(this.tableData);
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+        const response = await firstValueFrom(
+            this.service.getAllPrimaryCategories(data)
         );
+
+        this.tableData = response.result;
+        this.isTableDataLoading = false;
+        console.log(this.tableData);
     }
-    findById(id: any) {
-        const data = this.tableQueryParameters;
+    async findById(id: any) {
+        let payload = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.PrimaryCategoryDetailsService.get_all_primary_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                let flag = false;
-                let data= response.result;
-                let value = response.result.data;
-                console.log(value);
-                let len_val = value.length;
+        let response = await firstValueFrom(
+            this.service.getAllPrimaryCategories(payload)
+        );
+
+        if (response.apiResponseStatus === 1) {
+            let value = response.result?.data;
+            let flag = false;
+            let Data = response.result?.data;
+            let DataCount = response.result?.dataCount;
+            console.log(response.result);
+
+            if (value) {
+                const len_val = value.length;
                 for (let i = 0; i < len_val; i++) {
                     if (value[i].id == id) {
-                        data.data = [value[i]];
-                        data.dataCount = 1;
+                        Data = [value[i]];
+                        DataCount = 1;
                         this.refresh_b = true;
                         flag = true;
-                        this.tableData=data;
+                        break;
                     }
                 }
-                if (flag == false) {
-                    this.toastService.showError('No Pension Category ID found');
-                }
-
-                console.log(this.tableData);
-                this.isTableDataLoading = false;
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
             }
-        );
 
+            if (!flag) {
+                this.toastService.showError('No Pension Category ID found');
+                return;
+            }
+
+            this.tableData = {
+                data: Data,
+                dataCount: DataCount,
+                headers: response.result?.headers,
+            };
+        }
+
+        this.isTableDataLoading = false;
     }
 
     fun_refresh() {
         this.refresh_b = false;
         this.getData();
     }
-
 
     onRowEditCancel() {
         this.selectedRowData = null;

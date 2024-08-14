@@ -1,6 +1,15 @@
+import { Payload } from './../../../../core/models/search-query';
 import { FormData } from 'src/app/core/models/indentFormData';
 import { SubCategoryComponent } from './../sub-category/sub-category.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+    PensionCategoryMasterService,
+    PensionCategoryResponseDTOJsonAPIResponse,
+    PensionCategoryEntryDTO,
+    PensionCategoryListDTO,
+    PensionCategoryListDTOIEnumerableDynamicListResult,
+    PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse,
+} from 'src/app/api';
 import {
     Component,
     OnInit,
@@ -22,6 +31,7 @@ import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { PensionCategoryDetails } from 'src/app/core/models/pension-category-details';
 import { PensionCategoryDetailsService } from 'src/app/core/services/pensionCategoryDetails/pension-category-details.service';
+import { firstValueFrom, Observable } from 'rxjs';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -53,13 +63,17 @@ export class PensionCategoryComponent implements OnInit {
     sub_id_select: SelectItem[] = [];
     rowData: any;
     refresh_b = false;
+    getData$!: Observable<PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    postData!: Observable<PensionCategoryEntryDTO>;
+    postData$!: Observable<PensionCategoryResponseDTOJsonAPIResponse>;
 
     constructor(
         private datePipe: DatePipe,
         private toastService: ToastService,
         private PensionCategoryDetailsService: PensionCategoryDetailsService,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private service: PensionCategoryMasterService
     ) {}
 
     @Output() PensionCategorySelected = new EventEmitter<any>();
@@ -92,7 +106,7 @@ export class PensionCategoryComponent implements OnInit {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex/10,
+            pageIndex: event.pageIndex / 10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
@@ -137,33 +151,21 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
     // Add pension category
-    add_Pension_category() {
+    async add_Pension_category() {
         if (this.PensionForm.valid) {
             const formData = this.PensionForm.value;
-            this.PensionCategoryDetailsService.add_new_Pension_details(
-                formData
-            ).subscribe(
-                (response) => {
-                    if (response) {
-                        console.log(response);
-                        // Assuming 1 means success
-                        this.displayInsertModal = false; // Close the dialog
-                        this.checkIfAlreadyExsist(formData);
-                    } else {
-                        this.handleErrorResponse(response);
-                    }
-                    this.getData();
-                },
-                (error) => {
-                    console.error('Error submitting form:', error);
-                    this.handleErrorResponse(error.error);
-                }
+            let response = await firstValueFrom(
+                this.service.createCategory(formData)
             );
-        } else {
-            console.log('Form is not valid. Cannot submit.');
-            this.toastService.showError(
-                'Please fill all required fields correctly.'
-            );
+            if (response) {
+                console.log(response);
+                // Assuming 1 means success
+                this.displayInsertModal = false; // Close the dialog
+                this.checkIfAlreadyExsist(formData);
+            } else {
+                this.handleErrorResponse(response);
+            }
+            this.getData();
         }
     }
     private handleErrorResponse(response: any) {
@@ -188,84 +190,62 @@ export class PensionCategoryComponent implements OnInit {
         this.PensionForm.reset();
     }
 
-    getData() {
+    async getData() {
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.PensionCategoryDetailsService.get_all_Pension_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                this.tableData = response.result;
-                this.isTableDataLoading = false;
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+        let response = await firstValueFrom(
+            this.service.getAllCategories(data)
         );
+
+        this.tableData = response.result;
+        this.isTableDataLoading = false;
     }
 
     //get id from  primary
-    get_id_from_primary_category() {
-        const data = this.tableQueryParameters;
-        this.PensionCategoryDetailsService.get_all_primary_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                this.isTableDataLoading = false;
-                let value = response.result.data;
-                value = [...value];
-
-                let len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    this.primary_id_select.push({
-                        label: value[i].hoaId,
-                        value: value[i].id,
-                    });
-                }
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+    async get_id_from_primary_category() {
+        let data = this.tableQueryParameters;
+        data.pageSize = 9999999;
+        let response = await firstValueFrom(
+            this.service.getAllPrimaryCategories(data)
         );
+        this.isTableDataLoading = false;
+
+        if (response.result && response.result.data) {
+            let value = response.result.data;
+            let len_val = value.length;
+
+            for (let i = 0; i < len_val; i++) {
+                this.primary_id_select.push({
+                    label: value[i].hoaId,
+                    value: value[i].id,
+                });
+            }
+        } else {
+            console.error('Invalid response from API');
+        }
     }
     //get id from  sub
-    get_id_from_sub_category() {
-        const data = this.tableQueryParameters;
-        this.PensionCategoryDetailsService.get_all_Sub_details(data).subscribe(
-            (response: any) => {
-                this.isTableDataLoading = false;
-                let value = response.result.data;
-                value = [...value];
-
-                let primary_id = this.tableData;
-
-                let len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    this.sub_id_select.push({
-                        label: value[i].subCategoryName,
-                        value: value[i].id,
-                    });
-                }
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+    async get_id_from_sub_category() {
+        let data = this.tableQueryParameters;
+        data.pageSize = 9999999;
+        let response = await firstValueFrom(
+            this.service.getAllSubCategories(data)
         );
+        this.isTableDataLoading = false;
+
+        if (response.result && response.result.data) {
+            let value = response.result.data;
+            let len_val = value.length;
+
+            for (let i = 0; i < len_val; i++) {
+                this.sub_id_select.push({
+                    label: value[i].subCategoryName,
+                    value: value[i].id,
+                });
+            }
+        } else {
+            console.error('Invalid response from API');
+        }
     }
 
     checkIfAlreadyExsist(parms: any) {
@@ -293,47 +273,47 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
 
-    findById(id: any) {
-
-        const data = this.tableQueryParameters;
+    async findById(id: any) {
+        let payload = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.PensionCategoryDetailsService.get_all_Pension_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                let flag = false;
-                let data= response.result;
-                let value = response.result.data;
-                console.log(value);
-                let len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    if (value[i].id == id) {
-                        data.data = [value[i]];
-                        data.dataCount = 1;
-                        this.refresh_b = true;
-                        flag = true;
-                        this.tableData=data;
-                    }
-                }
-                if (flag == false) {
-                    this.toastService.showError('No Pension Category ID found');
-                }
-
-                console.log(this.tableData);
-                this.isTableDataLoading = false;
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+        let response = await firstValueFrom(
+            this.service.getAllCategories(payload)
         );
 
-    }
+        if (response.apiResponseStatus === 1) {
+            let value = response.result?.data;
+            let flag = false;
+            let Data = response.result?.data;
+            let DataCount = response.result?.dataCount;
+            console.log(response.result);
 
+            if (value) {
+                const len_val = value.length;
+                for (let i = 0; i < len_val; i++) {
+                    if (value[i].id == id) {
+                        Data = [value[i]];
+                        DataCount = 1;
+                        this.refresh_b = true;
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!flag) {
+                this.toastService.showError('No Pension Category ID found');
+                return;
+            }
+
+            this.tableData = {
+                data: Data,
+                dataCount: DataCount,
+                headers: response.result?.headers,
+            };
+        }
+
+        this.isTableDataLoading = false;
+    }
     fun_refresh() {
         this.refresh_b = false;
         this.getData();

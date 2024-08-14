@@ -44,11 +44,18 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { PensionProcessRoutingModule } from './pension-process-routing.module';
 import { PensionProcessComponent } from './pension-process.component';
+import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';
 
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
+import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
-    PensionProcessComponent
+    PensionProcessComponent,
+    ArrearPensionComponent
   ],
   imports: [
     CommonModule,

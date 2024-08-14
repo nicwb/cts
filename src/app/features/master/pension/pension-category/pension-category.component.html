@@ -47,13 +47,13 @@
     header="Pension Category Details"
     [(visible)]="displayInsertModal"
     [modal]="true"
-    [style]="{ width: '30vw' ,height: '40vh'}"
+    [style]="{ width: '35vw' ,height: '40vh'}"
     [baseZIndex]="10000"
 
 >
     <form [formGroup]="PensionForm" class="flex flex-column gap-4 mt-3 overflow-visible">
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto w-full">
+        <div class="flex gap-4 xl:flex-row flex-column">
+            <div class="flex-auto ">
                 <label
                     for="pensionerName"
                     class="flex-auto block mb-1 text-color text-lg"
@@ -67,7 +67,7 @@
                 ></p-dropdown>
             </div>
 
-            <div class="flex-auto "
+            <div class="flex-auto w-full "
             >
                 <label class="block mb-1 text-color text-lg"
                     >Sub Category Id:</label
