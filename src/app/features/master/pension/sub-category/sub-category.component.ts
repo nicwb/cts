@@ -20,18 +20,20 @@ import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { SubCategoryDetalis } from 'src/app/core/models/sub-category-detalis';
 import { SubCategoryDetailsService } from 'src/app/core/services/subCategoryDetails/sub-category-details.service';
+import { firstValueFrom } from 'rxjs';
+import { PensionCategoryMasterService } from 'src/app/api';
+import { Console } from 'console';
 
 interface expandedRows {
     [key: string]: boolean;
 }
 
 @Component({
-  selector: 'app-sub-category',
-  templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.scss']
+    selector: 'app-sub-category',
+    templateUrl: './sub-category.component.html',
+    styleUrls: ['./sub-category.component.scss'],
 })
 export class SubCategoryComponent implements OnInit {
-
     expandedRows: expandedRows = {};
     displayInsertModal: boolean = false;
     SubForm!: FormGroup;
@@ -57,7 +59,8 @@ export class SubCategoryComponent implements OnInit {
         private toastService: ToastService,
         private SubCategoryDetalisService: SubCategoryDetailsService,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private service: PensionCategoryMasterService
     ) {}
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
@@ -65,7 +68,6 @@ export class SubCategoryComponent implements OnInit {
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
         this.initializeForm();
-
 
         this.tableQueryParameters = {
             pageSize: 10,
@@ -81,7 +83,6 @@ export class SubCategoryComponent implements OnInit {
         this.SubForm.reset();
     }
 
-
     handleRowSelection($event: any) {
         console.log('Row selected:', $event);
     }
@@ -90,15 +91,25 @@ export class SubCategoryComponent implements OnInit {
         console.log('Query parameter changed:', event);
         this.tableQueryParameters = {
             pageSize: event.pageSize,
-            pageIndex: event.pageIndex/10,
+            pageIndex: event.pageIndex / 10,
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
-        console.log(this.tableQueryParameters.pageSize);
         this.getData();
-
-
     }
+
+    // async showVAL(){
+    //     let data = this.tableQueryParameters;
+    //     data.pageSize=9999999;
+    //     const x = await firstValueFrom(this.service.getAllSubCategories(data))
+    //     console.log(x);
+    // }
+    // async postVAL(){
+    //     const formData = this.SubForm.value;
+    //     const resp=await firstValueFrom(this.service.createSubCategory(formData));
+    //     console.log(resp);
+    //     this.getData();
+    // }
 
     handsearchKeyChange(event: string): void {
         if (event == '') {
@@ -122,47 +133,48 @@ export class SubCategoryComponent implements OnInit {
         }
     }
 
-    findById(id: any) {
-
-        const data = this.tableQueryParameters;
+    async findById(id: any) {
+        let payload = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.SubCategoryDetalisService.get_all_Sub_details(
-            data
-        ).subscribe(
-            (response: any) => {
-                let flag = false;
-                let data= response.result;
-                let value = response.result.data;
-                console.log(value);
-                let len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    if (value[i].id == id) {
-                        data.data = [value[i]];
-                        data.dataCount = 1;
-                        this.refresh_b = true;
-                        flag = true;
-                        this.tableData=data;
-                    }
-                }
-                if (flag == false) {
-                    this.toastService.showError('No Pension Category ID found');
-                }
-
-                console.log(this.tableData);
-                this.isTableDataLoading = false;
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+        let response = await firstValueFrom(
+            this.service.getAllSubCategories(payload)
         );
 
-    }
+        if (response.apiResponseStatus === 1) {
+            let value = response.result?.data;
+            let flag = false;
+            let Data = response.result?.data;
+            let DataCount=response.result?.dataCount;
+            console.log(response.result);
 
+            if (value) {
+                const len_val = value.length;
+                for (let i = 0; i < len_val; i++) {
+                    if (value[i].id == id) {
+                        Data = [value[i]];
+                        DataCount = 1;
+                        this.refresh_b = true;
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!flag) {
+                this.toastService.showError('No Pension Category ID found');
+                return;
+            }
+
+            this.tableData = {
+                data: Data,
+                dataCount: DataCount,
+                headers:response.result?.headers
+            };
+
+        }
+
+        this.isTableDataLoading = false;
+    }
     initializeForm(): void {
         this.SubForm = this.fb.group({
             SubCategoryName: ['', Validators.required],
@@ -181,33 +193,23 @@ export class SubCategoryComponent implements OnInit {
     }
 
     // Add Manual PPO Receipt
-    add_Sub_category() {
+    async add_Sub_category() {
         if (this.SubForm.valid) {
             const formData = this.SubForm.value;
-            this.SubCategoryDetalisService.add_new_Sub_details(
-                formData
-            ).subscribe(
-                (response) => {
-                    if (response.apiResponseStatus === 1) {
-                        console.log('Form submitted successfully:', response);
-                        this.displayInsertModal = false; // Close the dialog
-                        this.toastService.showSuccess(
-                            'Sub Category Details added successfully'
-                        );
-                    } else {
-                        this.handleErrorResponse(response);
-                    }
-                    this.getData();
-                },
-                (error) => {
-                    console.error('Error submitting form:', error);
-                    this.handleErrorResponse(error.error);
-                }
+            const response = await firstValueFrom(
+                this.service.createSubCategory(formData)
             );
-        } else {
-            this.toastService.showError(
-                'Please fill all required fields correctly.'
-            );
+
+            if (response.apiResponseStatus === 1) {
+                console.log('Form submitted successfully:', response);
+                this.displayInsertModal = false; // Close the dialog
+                this.toastService.showSuccess(
+                    'Sub Category Details added successfully'
+                );
+            } else {
+                this.handleErrorResponse(response);
+            }
+            this.getData();
         }
     }
 
@@ -218,9 +220,7 @@ export class SubCategoryComponent implements OnInit {
                 'duplicate key value violates unique constraint'
             )
         ) {
-            this.toastService.showError(
-                'This already exsists.'
-            );
+            this.toastService.showError('This already exsists.');
             this.SubForm.get('PCID')?.setErrors({ duplicate: true });
         } else {
             this.toastService.showError(
@@ -234,27 +234,16 @@ export class SubCategoryComponent implements OnInit {
         this.SubForm.reset();
     }
 
-    getData() {
+    async getData() {
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        this.SubCategoryDetalisService.get_all_Sub_details(
-            data
-        ).subscribe(
-            (response: any) => {
-
-                this.tableData = response.result;
-                console.log(this.tableData);
-                this.isTableDataLoading = false;
-            },
-            (error) => {
-                this.isTableDataLoading = false;
-                console.error('API Error:', error);
-                this.toastService.showAlert(
-                    'An error occurred while fetching data',
-                    0
-                );
-            }
+        const response = await firstValueFrom(
+            this.service.getAllSubCategories(data)
         );
+        if (response.apiResponseStatus === 1) {
+            this.tableData = response.result;
+            this.isTableDataLoading = false;
+        }
     }
 
     fun_refresh() {

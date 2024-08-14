@@ -1,0 +1,166 @@
+<div class="container">
+    <form>
+        <h3
+            class="text-4xl font-bold text-gray-900 leading-tight mb-1 border-t-1 border-b-1 border-purple-600 py-0 ml-6"
+        >
+            Arrear Pension Bill
+        </h3>
+        <div class="card">
+            <h5 class="mb-0">PPO ID Details:</h5>
+            <hr class="border-b-0 h-10 border-dashed mt-0" />
+            <div class=" col-12">
+                <div class="flex">
+                <label for="PpoId" class="col-12 md:col-1"> PPO ID: </label>
+                <input
+                    class="col-12 md:col-4"
+                    id="PpoId"
+                    type="text"
+                    pInputText
+                    placeholder="PPO ID"
+                />
+
+                <button
+                    pButton
+                    type="button"
+                    icon="pi pi-search"
+                    class="w-1/2"
+                ></button>
+
+                <label for="PpoId" class="col-12 md:col-1 ml-4">
+                    Period To:
+                </label>
+
+                <input
+                    class="col-12 md:col-4"
+                    pInputText
+                    id="periodTo"
+                    type="date"
+                />
+
+                <!-- <div class="flex flex-col mt-1 align-items-center justify-content-center"> -->
+                <div class="flex flex-wrap gap-2">
+                    <button type="submit" pButton pRipple>Generate</button>
+                </div>
+                </div>
+                <br>
+                <div class="p-fluid p-formgrid grid md:col-12">
+                        <div class="col-12 md:col-12 pb-1">
+                            <h5>Pension Details</h5>
+                            <hr class="border-b-2 h-10 border-dashed">
+                        </div>
+
+                        <div class="field col-12 md:col-4 mb-0 py-0">
+                            <label htmlFor="ppoNo">PPO NO</label>
+                            <input pInputText id="ppoNo" type="text"  [attr.disabled]="true"
+                                class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('ppoNo')?.errors &&
+                                    pensionForm.get('ppoNo')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('ppoNo')?.errors?.['required']" class="p-error">
+                                    Please enter PPO No
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0">
+                            <label htmlFor="pensionerName">Pensioner Name</label>
+                            <input pInputText id="pensionerName" type="text"
+                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('pensionerName')?.errors &&
+                                    pensionForm.get('pensionerName')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('pensionerName')?.errors?.['required']" class="p-error">
+                                    Please enter pensioner name
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0">
+                            <label htmlFor="periodFrom">Period From</label>
+                            <input pInputText id="periodFrom" type="date"
+                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('periodFrom')?.errors &&
+                                    pensionForm.get('periodFrom')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('periodFrom')?.errors?.['required']" class="p-error">
+                                    Please enter period from
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                            <label htmlFor="periodTo">Period To</label>
+                            <input pInputText id="periodTo" type="date"
+                                [attr.disabled]="true" class="bg-cyan-200"
+                                [ngStyle]="{'border-color' : 'black'}" />
+
+                            <!-- <div *ngIf="
+                                    pensionForm.get('periodTo')?.errors &&
+                                    pensionForm.get('periodTo')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('periodTo')?.errors?.['required']" class="p-error">
+                                    Please enter period to
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                            <label htmlFor="bankName">Bank Name</label>
+                            <input pInputText id="bankName" type="text"
+                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('bankName')?.errors &&
+                                    pensionForm.get('bankName')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('bankName')?.errors?.['required']" class="p-error">
+                                    Please enter bank name
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                            <label htmlFor="accountNo">Account NO</label>
+                            <input pInputText id="accountNo" type="number" class="remove-arrow"
+                             [attr.disabled]="true" class="bg-cyan-200"
+                                [ngStyle]="{'border-color' : 'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('accountNo')?.errors &&
+                                    pensionForm.get('accountNo')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('accountNo')?.errors?.['required']" class="p-error">
+                                    Please enter account no
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                            <label htmlFor="billDate">Bill Date</label>
+                            <input pInputText id="billDate" type="date" formControlName="billDate"
+                                [attr.disabled]="true" class="bg-cyan-200"
+                                [ngStyle]="{'border-color' : 'black', 'font-color':'black'}" />
+                            <!-- <div *ngIf="
+                                    pensionForm.get('billDate')?.errors &&
+                                    pensionForm.get('billDate')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('billDate')?.errors?.['required']" class="p-error">
+                                    Please enter bill date
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                            <label htmlFor="paymentMode">Payment Mode</label>
+                            <p-dropdown optionLabel="name"
+                                ></p-dropdown>
+                            <!-- <div *ngIf="
+                                    pensionForm.get('paymentMode')?.errors &&
+                                    pensionForm.get('paymentMode')?.touched
+                                ">
+                                <div *ngIf="pensionForm.get('paymentMode')?.errors?.['required']" class="p-error">
+                                    Please enter payment mode
+                                </div>
+                            </div> -->
+                        </div>
+
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </form>
+</div>
