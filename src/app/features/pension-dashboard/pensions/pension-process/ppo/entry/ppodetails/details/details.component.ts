@@ -5,12 +5,12 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { SharedDataService  } from '../shared-data.service';
 import { Validators } from '@angular/forms';
 import { PpoDetailsService } from 'src/app/core/services/ppoDetails/ppo-details.service';
-import { SearchPopupComponent, SearchPopupConfig } from 'src/app/core/search-popup/search-popup.component';
+import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
 
-import { PensionManualPPOReceiptService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from 'src/app/api';
+import { PensionManualPPOReceiptService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, PensionCategoryMasterService } from 'src/app/api';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -29,14 +29,17 @@ export class DetailsComponent implements OnInit {
   private ppoID: String | undefined;
 
   allManualPPOReceipt$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+  catDescription$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
 
   constructor(
     private fb: FormBuilder, 
     private toastService: ToastService,
-    private sd: SharedDataService,
+    private sd: SharedDataService, 
     private service: PpoDetailsService,
     private dialogService: DialogService,
     private PensionManualPPOReceiptService:PensionManualPPOReceiptService,
+    private ppoCategoryService: PensionCategoryMasterService,
+
   ) { 
     this.ininalizer();
     this.religionOptions = [
@@ -238,21 +241,18 @@ export class DetailsComponent implements OnInit {
       }
     };
 
-    const config: SearchPopupConfig = {
-      payload: payload,
-      apiUrl: 'v1/pension/category' // mark popup api url
-    };
-
+    this.catDescription$ = this.ppoCategoryService.getAllCategories(payload);
+    
 
     this.ref = this.dialogService.open(SearchPopupComponent, {
-      data: config,
+      data: this.catDescription$,
       header: 'Search record',
       width: '60%'
     });
 
     this.ref.onClose.subscribe((record: any) => {
       if (record) {
-        // console.log(record)
+        // console.log(record) // :debug
         this.ppoFormDetails.controls['categoryDescription'].setValue(record.categoryName);
         this.ppoFormDetails.controls['categoryIdShow'].setValue(record.primaryCategoryId);
         this.ppoFormDetails.controls['subCatDesc'].setValue(record.subCategoryId);
