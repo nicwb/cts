@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { SearchPopupService } from './search-popup.service';
 import { ToastService } from '../services/toast.service';
+import { firstValueFrom, Observable, tap } from 'rxjs';
+import { ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, ObjectJsonAPIResponse } from 'src/app/api';
+
+import { IapiResponce } from '../models/iapi-responce';
 export interface SearchPopupConfig {
   payload: any;
   apiUrl: string; // API URL parameter
@@ -19,6 +23,8 @@ export class SearchPopupComponent implements OnInit {
   searchTerm: string = '';
   noresult:string = '';
 
+  service$?:Observable<ObjectJsonAPIResponse>;
+
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
@@ -31,8 +37,9 @@ export class SearchPopupComponent implements OnInit {
   }
 
   popUpfunction(): void {
-    const { payload, apiUrl } = this.config.data as SearchPopupConfig;
-    this.search.getRecords(apiUrl, payload).subscribe(
+    this.service$ = this.config.data;
+
+    this.service$?.subscribe(
       (response) => {
         if (response && response.result) {
           const { headers, data } = response.result;
@@ -46,11 +53,9 @@ export class SearchPopupComponent implements OnInit {
           console.error('Invalid API response structure', response);
         }
       },
-      (error: any) => {
-        this.tostservice.showError('Error fetching records');
-        // console.error('Error fetching records', error);
-      }
-    );
+    )
+
+
   }
   selectRecord(record: any): void {
     this.ref.close(record);

@@ -16,7 +16,9 @@ import { SharedDataService } from './shared-data.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Payload } from 'src/app/core/models/search-query';
 import { SearchPopupComponent, SearchPopupConfig } from 'src/app/core/search-popup/search-popup.component';
-  
+
+import { PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse, PensionPPODetailsService } from 'src/app/api';
+import { Observable } from 'rxjs';
 
 
 interface expandedRows {
@@ -29,6 +31,7 @@ interface expandedRows {
   styleUrls: ['./ppodetails.component.scss'],
   providers: [MessageService, ConfirmationService, DialogService],
 })
+
 export class PpodetailsComponent implements OnInit{
   currentStepIndex: number = 0;
   steps: any[];
@@ -36,10 +39,13 @@ export class PpodetailsComponent implements OnInit{
   ppoID?:string;
   ref: DynamicDialogRef | undefined;
 
+  allPPOs$?:Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
+
   constructor(
     private toastService: ToastService,
     private sd: SharedDataService,
     private dialogService: DialogService,
+    private ppoDetialsService: PensionPPODetailsService,
   ){
     this.steps = [
             { label: 'PPO Details' },
@@ -97,13 +103,10 @@ export class PpodetailsComponent implements OnInit{
         }
       };
       
-      const config: SearchPopupConfig = {
-        payload: payload,
-        apiUrl: 'v1/ppo/details' // mark popup api url
-      };
+      this.allPPOs$ = this.ppoDetialsService.getAllPensioners(payload);
 
       this.ref = this.dialogService.open(SearchPopupComponent, {
-        data: config,
+        data: this.allPPOs$,
         header: 'Search record',
         width: '60%'
       });

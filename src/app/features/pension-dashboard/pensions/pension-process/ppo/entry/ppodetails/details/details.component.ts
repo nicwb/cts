@@ -10,6 +10,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
 
+import { PensionManualPPOReceiptService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from 'src/app/api';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -26,12 +28,15 @@ export class DetailsComponent implements OnInit {
   ManualEntrySearchForm: FormGroup = new FormGroup({});
   private ppoID: String | undefined;
 
+  allManualPPOReceipt$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+
   constructor(
     private fb: FormBuilder, 
     private toastService: ToastService,
     private sd: SharedDataService,
     private service: PpoDetailsService,
     private dialogService: DialogService,
+    private PensionManualPPOReceiptService:PensionManualPPOReceiptService,
   ) { 
     this.ininalizer();
     this.religionOptions = [
@@ -114,7 +119,7 @@ export class DetailsComponent implements OnInit {
     return null;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.ppoFormDetails.statusChanges.subscribe(status => {
       if (status === 'VALID') {
         this.sd.setFormValid(true);
@@ -179,6 +184,7 @@ export class DetailsComponent implements OnInit {
 
   // manual PPO entry search
   MEDetailsSearch(): void{
+    
     let payload:Payload = {
       "pageSize":10,
       "pageIndex":0,
@@ -188,6 +194,7 @@ export class DetailsComponent implements OnInit {
         "order":""
       }
     };
+    
     // add filter parameter based on input value  // TreasuryReceiptNo
     if (this.ManualEntrySearchForm.valid) {
       const id = this.ManualEntrySearchForm.value
@@ -199,19 +206,18 @@ export class DetailsComponent implements OnInit {
       }];
     }
 
-    const config: SearchPopupConfig = {
-      payload: payload,
-      apiUrl: 'v1/manual-ppo/receipts' // mark popup api url
-    };
 
+
+    this.allManualPPOReceipt$ = this.PensionManualPPOReceiptService.getAllPpoReceipts(payload);
     this.ref = this.dialogService.open(SearchPopupComponent, {
-      data: config,
+      data: this.allManualPPOReceipt$,
       header: 'Search record',
       width: '60%'
     });
 
     this.ref.onClose.subscribe((record: any) => {
       if (record) {
+        console.log(record) // degug
         this.ppoFormDetails.controls['receiptId'].setValue(record.id);
         this.ppoFormDetails.controls['pensionerName'].setValue(record.pensionerName);
         this.ppoFormDetails.controls['ppoNo'].setValue(record.ppoNo);
