@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -11,7 +11,7 @@ import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
 
 import { PensionManualPPOReceiptService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, PensionCategoryMasterService } from 'src/app/api';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
   providers: [MessageService, ConfirmationService, DialogService],
 })
 
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
   religionOptions: SelectItem[];
   subDivOptions: SelectItem[];
   ppoFormDetails: FormGroup = new FormGroup({});
@@ -122,8 +122,10 @@ export class DetailsComponent implements OnInit {
     return null;
   }
 
-  ngOnInit(): void {    
-    this.ppoFormDetails.statusChanges.subscribe(status => {
+  statusChangeSubscription!: Subscription;
+
+  ngOnInit() {    
+    this.statusChangeSubscription = this.ppoFormDetails.statusChanges.subscribe(status => {
       if (status === 'VALID') {
         this.sd.setFormValid(true);
         this.sd.setObject(this);
@@ -133,6 +135,9 @@ export class DetailsComponent implements OnInit {
         this.sd.setObject(this);
       }
     });
+  }
+  ngOnDestroy(){
+    this.statusChangeSubscription.unsubscribe();
   }
 
   // this function do date object to string
@@ -218,15 +223,22 @@ export class DetailsComponent implements OnInit {
       width: '60%'
     });
 
-    this.ref.onClose.subscribe((record: any) => {
-      if (record) {
-        console.log(record) // degug
-        this.ppoFormDetails.controls['receiptId'].setValue(record.id);
-        this.ppoFormDetails.controls['pensionerName'].setValue(record.pensionerName);
-        this.ppoFormDetails.controls['ppoNo'].setValue(record.ppoNo);
-        this.ManualEntrySearchForm.controls["eppoid"].setValue(record.treasuryReceiptNo);
-      }
-    });
+    firstValueFrom(
+      this.ref.onClose.pipe(
+        tap(
+          record => {
+            if (record) 
+            {
+              console.log(record) // degug
+              this.ppoFormDetails.controls['receiptId'].setValue(record.id);
+              this.ppoFormDetails.controls['pensionerName'].setValue(record.pensionerName);
+              this.ppoFormDetails.controls['ppoNo'].setValue(record.ppoNo);
+              this.ManualEntrySearchForm.controls["eppoid"].setValue(record.treasuryReceiptNo);
+            }
+          }
+        )
+      )
+    );
   }
 
   // fetch CatDescription
@@ -250,14 +262,18 @@ export class DetailsComponent implements OnInit {
       width: '60%'
     });
 
-    this.ref.onClose.subscribe((record: any) => {
-      if (record) {
-        // console.log(record) // :debug
-        this.ppoFormDetails.controls['categoryDescription'].setValue(record.categoryName);
-        this.ppoFormDetails.controls['categoryIdShow'].setValue(record.primaryCategoryId);
-        this.ppoFormDetails.controls['subCatDesc'].setValue(record.subCategoryId);
-        this.ppoFormDetails.controls['categoryId'].setValue(record.id);
-      }
-    });
+    firstValueFrom(
+      this.ref.onClose.pipe(
+        tap(record => {
+          if (record) {
+            // console.log(record) // :debug
+            this.ppoFormDetails.controls['categoryDescription'].setValue(record.categoryName);
+            this.ppoFormDetails.controls['categoryIdShow'].setValue(record.primaryCategoryId);
+            this.ppoFormDetails.controls['subCatDesc'].setValue(record.subCategoryId);
+            this.ppoFormDetails.controls['categoryId'].setValue(record.id);
+          }
+        })
+      )
+    );
   }
 }
