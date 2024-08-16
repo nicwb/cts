@@ -16,14 +16,15 @@ export interface SearchPopupConfig {
   selector: 'app-search-popup',
   templateUrl: './search-popup.component.html',
 })
+
 export class SearchPopupComponent implements OnInit {
   records: any[] = [];
   cols: any[] = [];
   filteredRecords: any[] = [];
   searchTerm: string = '';
   noresult:string = '';
-
   service$:Observable<ObjectJsonAPIResponse>;
+
 
   constructor(
     public ref: DynamicDialogRef,
@@ -35,7 +36,6 @@ export class SearchPopupComponent implements OnInit {
   ngOnInit(): void {
     this.popUpfunction();
   }
-
   async popUpfunction() {
     await firstValueFrom(this.service$.pipe(
       tap(response => {
