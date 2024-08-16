@@ -4,23 +4,35 @@ import { SharedDataService } from '../shared-data.service';
 import { PPOBankAccountCreateService } from 'src/app/core/services/PPOBankAccountCreate/ppobank-account-create.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { CreatePensonarBankDTO } from 'src/app/core/models/ppoentry-inf';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { BankService, BranchDeatilsDTOAPIResponse, DropdownDTOIEnumerableAPIResponse } from 'src/app/api';
+import { firstValueFrom, Observable } from 'rxjs';
+import { FirstLetterPipe } from 'src/app/core/pipe/first-letter.pipe';
+
 @Component({
   selector: 'app-bank-details',
   templateUrl: './bank-details.component.html',
   styleUrls: ['./bank-details.component.scss']
 })
+
 export class BankDetailsComponent implements OnInit {
   BankDetailsForm: FormGroup = new FormGroup({});
   private ppoID?:string;
+  ref: DynamicDialogRef | undefined
 
+  banks$ : Observable<DropdownDTOIEnumerableAPIResponse> | undefined;
+  bankIFC$ : Observable<BranchDeatilsDTOAPIResponse> | undefined;
+  
   constructor(
     private fb: FormBuilder,
     private sd: SharedDataService,
     private service: PPOBankAccountCreateService,
     private toastService: ToastService,
+    private dialogService: DialogService,
+    private BankService: BankService,
   ) { 
     this.ininalizer();
-    
+    this.banks$ = this.BankService.getAllBanks();
   }
   ininalizer(){
     this.BankDetailsForm= this.fb.group({
@@ -30,9 +42,16 @@ export class BankDetailsComponent implements OnInit {
       accountHolderName:[''],
       IFSCCode:[''],
     });
+
+
   }
   ngOnInit(): void {
-
+    this.banks$?.subscribe(
+      res=>{
+        console.log(res);
+      }
+    );
+      
     this.BankDetailsForm.statusChanges.subscribe(status => {
       if (status === 'VALID') {
         this.sd.setFormValid(true);
@@ -74,5 +93,10 @@ export class BankDetailsComponent implements OnInit {
     return false;
   }
 
+
+  // execute for fetching all banks name
+  searchBank() {
+    
+  }
 }
  
