@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { ToastService } from '../services/toast.service';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 import { ObjectJsonAPIResponse } from 'src/app/api';
 
 
@@ -23,22 +23,22 @@ export class SearchPopupComponent implements OnInit {
   searchTerm: string = '';
   noresult:string = '';
 
-  service$?:Observable<ObjectJsonAPIResponse>;
+  service$:Observable<ObjectJsonAPIResponse>;
 
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-  ) {}
+  ) {
+    this.service$ = config.data;
+  }
 
   ngOnInit(): void {
     this.popUpfunction();
   }
 
-  popUpfunction(): void {
-    this.service$ = this.config.data;
-
-    this.service$?.subscribe(
-      (response) => {
+  async popUpfunction() {
+    await firstValueFrom(this.service$.pipe(
+      tap(response => {
         if (response && response.result) {
           const { headers, data } = response.result;
           this.records = data;
@@ -50,10 +50,8 @@ export class SearchPopupComponent implements OnInit {
         } else {
           console.error('Invalid API response structure', response);
         }
-      },
-    )
-
-
+      })
+    ));
   }
   selectRecord(record: any): void {
     this.ref.close(record);
