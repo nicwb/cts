@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SharedDataService  } from '../shared-data.service';
@@ -75,8 +75,8 @@ export class DetailsComponent implements OnInit {
       commutedPensionAmount: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
       reducedPensionAmount: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
       mobileNumber: [null, [Validators.pattern(/^[6-9]\d{9}$/)]], // null
-      aadhaarNo: [null], // null
-      panNo: [null], // null
+      aadhaarNo: [null, [Validators.required, this.aadhaarValidator]], // null
+      panNo: [null,[Validators.required, this.panValidator]], // null
       gender: ['M', [Validators.pattern('^[MFO]$')]], // null
       dateOfBirth: [null, [Validators.required]],
       religion:['H',[Validators.required, Validators.pattern('^[HMO]$')]], 
@@ -96,6 +96,22 @@ export class DetailsComponent implements OnInit {
 
 
     });
+  }
+
+  panValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/; // PAN format: 5 letters, 4 digits, 1 letter
+    if (control.value && !PAN_REGEX.test(control.value)) {
+      return { invalidPan: true };
+    }
+    return null;
+  }
+
+  aadhaarValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const AADHAAR_REGEX = /^\d{12}$/; // AADHAAR is a 12-digit number
+    if (control.value && !AADHAAR_REGEX.test(control.value)) {
+      return { invalidAadhaar: true };
+    }
+    return null;
   }
 
   ngOnInit(): void {

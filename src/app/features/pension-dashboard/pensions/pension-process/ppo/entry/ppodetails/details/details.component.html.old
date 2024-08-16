@@ -1,0 +1,200 @@
+    <div class="col-12 md:col-12" style="background-color: red;">
+        <!-- Search PPO D -->
+
+        <div class="formgroup-inline" style="width: 100%;">
+            <form [formGroup]="ManualEntrySearchForm" (ngSubmit)="MEDetailsSearch();" style="width: 100%; display: flex; justify-content: right;">
+                <span class="p-float-label">
+                    <input id="float-input" type="text" pInputText formControlName="eppoid" (click)="MEDetailsSearch();">
+                    <label for="float-input">e-PPO Application No/TRID</label>
+                </span>
+            </form>
+        </div>
+
+
+        <form [formGroup]="ppoFormDetails">
+            <p-fieldset legend="PPO Details" class="line-height-3 m-0">
+                <div class="formgroup-inline">
+                    <span class="p-float-label m-3" style="width: 50%;">
+                        <input id="float-input" type="text" pInputText formControlName="ppoNo">
+                        <label for="float-input">PPO No.</label>
+                    </span>
+
+                    <!-- <label for="ppoNo" class="col-12 mb-2 md:col-2 md:mb-0">PPO No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="ppoNo" />
+                    </div> -->
+
+                    <span class="p-float-label m-3" style="width: 50%;">
+                        <input id="float-input" type="text" pInputText formControlName="pensionerName">
+                        <label for="float-input">Pensioner Name</label>
+                    </span>
+
+                    <!-- <label for="pensionerName" class="col-12 mb-2 md:col-2 md:mb-0">Pensioner Name:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="pensionerName" />
+                    </div> -->
+                </div>
+                <div class="formgroup-inline">
+                    <label for="type" class="col-12 mb-2 md:col-2 md:mb-0">Type:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-dropdown dataKey="Pension"
+                            [options]="[
+                            {label: 'Pension', value: 'P'}, 
+                            {label: 'Bank', value: 'F'},
+                            {label: 'CPF', value: 'C'}]"
+                            formControlName="ppoType"></p-dropdown>
+                    </div>
+                    <label for="subType" class="col-12 mb-2 md:col-2 md:mb-0">Sub Type:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-dropdown dataKey="Employed"
+                            [options]="[
+                            { label: 'Employed', value: 'E' },
+                            { label: 'Widow Daughter', value: 'L' },
+                            { label: 'Unmarried Daughter', value: 'U' },
+                            { label: 'Divorced Daughter', value: 'V' },
+                            { label: 'Minor Son', value: 'N' },
+                            { label: 'Minor Daughter', value: 'R' },
+                            { label: 'Handicapped Son', value: 'P' },
+                            { label: 'Handicapped Daughter', value: 'G' },
+                            { label: 'Dependent Father', value: 'J' },
+                            { label: 'Dependent Mother', value: 'K' },
+                            { label: 'Husband', value: 'H' },
+                            { label: 'Wife', value: 'W' }]"
+                            formControlName="ppoSubType"></p-dropdown>
+                    </div>
+                </div>
+                <div class="formgroup-inline">
+                    <label for="categoryDescription" class="col-12 mb-2 md:col-2 md:mb-0">Cat Description</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="categoryDescription" (click)="fetchCatDescription()"/>
+                    </div>
+                    <label for="catSubCatid" class="col-12 mb-2 md:col-2 md:mb-0">Cat-SubCatID:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="categoryIdShow" />
+                    </div>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="subCatDesc" />
+                    </div>
+                    <label for="dateOfRetirement" class="col-12 mb-2 md:col-2 md:mb-0">Retirement Date:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-calendar formControlName="dateOfRetirement" dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
+                    </div>
+                </div>
+                <div class="formgroup-inline">
+                    <label for="dateOfCommencement" class="col-12 mb-2 md:col-2 md:mb-0">Commencement Date:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0" style="width: 300px;">
+                        <p-calendar formControlName="dateOfCommencement"  dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
+                    </div>
+                </div>
+                <div class="formgroup-inline">
+                    <label for="basicPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0">Basic:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="basicPensionAmount" />
+                    </div>
+                    <label for="commutedPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0">Commuted Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="commutedPensionAmount" />
+                    </div>
+                    <label for="effectiveDate" class="col-12 mb-2 md:col-2 md:mb-0">Effective Date:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-calendar formControlName="effectiveDate"  dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
+                    </div>
+                    <label for="reducedPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0">Reduced Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="reducedPensionAmount" />
+                    </div>
+                </div>
+                <div class="formgroup-inline">
+                    <label for="religion" class="col-12 mb-2 md:col-2 md:mb-0">Religion:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-dropdown [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
+                    </div>
+
+                    <div>
+                        <label for="type" class="col-12 mb-2 md:col-2 md:mb-0">Gender:</label>
+                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                            <p-dropdown
+                                [options]="[
+                                {label: 'Male', value: 'M'}, 
+                                {label: 'Female', value: 'F'},
+                                {label: 'Other', value: 'O'}]"
+                                formControlName="gender"></p-dropdown>
+                        </div>
+                    </div>
+
+                    <label for="mobileNumber" class="col-12 mb-2 md:col-2 md:mb-0">Mobile No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="mobileNumber" />
+                    </div>
+
+                    <label for="emailId" class="col-12 mb-2 md:col-2 md:mb-0">Email:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="emailId" />
+                    </div>
+
+                    <label for="dateOfBirth" class="col-12 mb-2 md:col-2 md:mb-0">Birth date:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-calendar formControlName="dateOfBirth" dateFormat="yy-mm-dd" [showIcon]="true"></p-calendar>
+                    </div>
+
+
+                    <label for="aadharNo" class="col-12 mb-2 md:col-2 md:mb-0">Aadhar No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="aadhaarNo" />
+                    </div>
+                    <label for="panNo" class="col-12 mb-2 md:col-2 md:mb-0">PAN No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="panNo" />
+                    </div>
+                </div>
+
+                <div class="formgroup-inline">
+                    <label for="pensionerAddress" class="col-12 mb-2 md:col-2 md:mb-0">Address:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="pensionerAddress" />
+                    </div>
+                   
+                    <label for="remarks" class="col-12 mb-2 md:col-2 md:mb-0">IdentificationMark:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <input pInputText formControlName="identificationMark" />
+                    </div>
+                   
+                </div>
+                <!-- <div class="formgroup-inline">
+                    <label for="doublePension" class="col-12 mb-2 md:col-2 md:mb-0">Double Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-checkbox formControlName="doublePension"></p-checkbox>
+                    </div>
+                    <label for="employedPensioner" class="col-12 mb-2 md:col-2 md:mb-0">Employed Pensioner:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-radioButton value="yes" formControlName="employedPensioner"></p-radioButton>
+                        <p-radioButton value="no" formControlName="employedPensioner"></p-radioButton>
+                    </div>
+                    <label for="reEmployed" class="col-12 mb-2 md:col-2 md:mb-0">Re-Employed:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-radioButton value="yes" formControlName="reEmployed"></p-radioButton>
+                        <p-radioButton value="no" formControlName="reEmployed"></p-radioButton>
+                    </div>
+                </div>
+                <div class="formgroup-inline">
+                    <label for="adhocPension" class="col-12 mb-2 md:col-2 md:mb-0">Adhoc Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-checkbox formControlName="adhocPension"></p-checkbox>
+                    </div>
+                    <label for="provisionalPension" class="col-12 mb-2 md:col-2 md:mb-0">Provisional Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-checkbox formControlName="provisionalPension"></p-checkbox>
+                    </div>
+                    <label for="interimAllowance" class="col-12 mb-2 md:col-2 md:mb-0">Interim Allowance:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-checkbox formControlName="interimAllowance"></p-checkbox>
+                    </div>
+                    <label for="sharedPension" class="col-12 mb-2 md:col-2 md:mb-0">Shared Pension:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                        <p-checkbox formControlName="sharedPension"></p-checkbox>
+                    </div>
+                </div> -->
+            </p-fieldset>
+        </form>
+        
+    </div>

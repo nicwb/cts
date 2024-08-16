@@ -1,39 +1,76 @@
+<style>
+    .h-45px{
+        height: 45px;
+    }
+
+    .h-full{
+        height: 100%;
+    }
+    .h-50{
+        height: 50%;
+    }
+    .w-100{
+        width: 100%!important;
+    }
+    .w-50{
+        width: 50%;
+    }
+    .mb-2{
+        margin-bottom: 2px;
+    }
+</style>
+
 <form [formGroup]="BankDetailsForm" >
     <p-fieldset legend="Bank Details" class="line-height-3 m-0">
-        <div class="p-fluid">
-            <div class="formgroup-inline">
+        <div class="p-formgrid grid">
+
+            <div class="col-12 md:col-6">
                 <label for="payMode" class="col-12 mb-2 md:col-2 md:mb-0">Pay Mode:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 ">
-                    <p-dropdown
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
+                    <p-dropdown [style]="{width: '100%', height: '45px'}"
                         [options]="[{label: 'Treasury', value: 'treasury'}, {label: 'Bank', value: 'bank'}]"
                         formControlName="payMode"></p-dropdown>
                 </div>
+            </div>
+
+            <div class="col-12 md:col-6">
                 <label for="bankBranchName" class="col-12 mb-2 md:col-2 md:mb-0">Bank-Branch
                     Name:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                    <input id="bankBranchName" type="text" pInputText
-                        formControlName="bankBranchName" placeholder="Bank-Branch Name" />
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px" (click)="searchBank();">
+                    <p-dropdown  *ngIf="(banks$| async)  as bankResponce"
+                        class="h-45px w-100" id="bankBranchName"
+                        [options]="[bankResponce.result]" 
+                        formControlName="bankBranchName"
+                        optionLabel="Bank-Branch Name" 
+                        placeholder="Bank-Branch Name"></p-dropdown>
+                    <!-- <input type="text" pInputText
+                        formControlName="bankBranchName" placeholder="Bank-Branch Name" /> -->
                 </div>
             </div>
-            <div class="formgroup-inline">
+
+            <div class="col-12 md:col-6">
                 <label for="accountNo" class="col-12 mb-2 md:col-2 md:mb-0">Account
                     No:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                    <input id="accountNo" type="text" pInputText formControlName="accountNo"
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
+                    <input class="h-45px w-100" id="accountNo" type="text" pInputText formControlName="accountNo"
                         placeholder="Account No" />
                 </div>
+            </div>
+
+            <div class="col-12 md:col-6">
                 <label for="accountHolderName" class="col-12 mb-2 md:col-2 md:mb-0">Account
                     Holder:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                    <input id="accountHolderName" type="text" pInputText
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
+                    <input class="w-100 h-45px" id="accountHolderName" type="text" pInputText
                         formControlName="accountHolderName" placeholder="Account Holder" />
                 </div>
             </div>
-            <div class="formgroup-inline">
+
+            <div class="col-12 md:col-6">
                 <label for="ifscCode" class="col-12 mb-2 md:col-2 md:mb-0">IFSC
                     Code:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                    <input id="ifscCode" type="text" pInputText formControlName="IFSCCode"
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
+                    <input id="ifscCode" class="w-100 h-45px" type="text" pInputText formControlName="IFSCCode"
                         placeholder="IFSC Code" />
                 </div>
             </div>
