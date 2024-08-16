@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { SearchPopupService } from './search-popup.service';
 import { ToastService } from '../services/toast.service';
 import { Observable } from 'rxjs';
-import { ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, ObjectJsonAPIResponse } from 'src/app/api';
+import { ObjectJsonAPIResponse } from 'src/app/api';
 
 
 //  remove when it final may component import it
