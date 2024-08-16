@@ -83,9 +83,9 @@ test.describe('Manual PPO Receipt Component', () => {
   test('should fill out the form and submit successfully', async ({ page }) => {
     await page.click('button:has-text("New Manual PPO Entry")');
     
-    await page.fill('input[formControlName="ppoNo"]', 'PPO777777');
+    await page.fill('input[formControlName="ppoNo"]', 'PPO111154');
     await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
-    await page.fill('input[formControlName="mobileNumber"]', '9898985474');
+    await page.fill('input[formControlName="mobileNumber"]', '9323232323');
     
     await page.click('p-calendar[formControlName="dateOfCommencement"] input');
     await page.click('.p-datepicker-today');
@@ -106,13 +106,44 @@ test.describe('Manual PPO Receipt Component', () => {
     await expect(successMessage).toBeVisible();
   });
 
+  test('should display error for invalid date of commencement', async ({ page }) => {
+    await page.waitForSelector('tbody.p-element.p-datatable-tbody', { state: 'attached', timeout: 10000 });
+    await page.click('td.ng-star-inserted button:has-text("Edit")'); 
+    
+    await page.click('p-calendar[formControlName="dateOfCommencement"] input');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const day = tomorrow.getDate();
+    await page.click(`.p-datepicker-calendar td:has-text("${day}")`);
+
+    await page.click('button:has-text("Update")');
+    const errorMessage = page.locator('text= An error occurred while submitting the form.');
+    await expect(errorMessage).toBeVisible();
+  });
+
+  test('should display error for invalid receipt date', async ({ page }) => {
+    await page.waitForSelector('tbody.p-element.p-datatable-tbody', { state: 'attached', timeout: 10000 });
+    await page.click('td.ng-star-inserted button:has-text("Edit")'); 
+    
+    await page.click('p-calendar[formControlName="receiptDate"] input');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const day = tomorrow.getDate();
+    await page.click(`.p-datepicker-calendar td:has-text("${day}")`);
+
+    await page.click('button:has-text("Update")');
+    const errorMessage = page.locator('text= An error occurred while submitting the form.');
+    await expect(errorMessage).toBeVisible();
+  });
+
+
   test('should display error for duplicate PPO number', async ({ page }) => {
     test.setTimeout(60000); // Increase timeout for this test
   
     await page.click('button:has-text("New Manual PPO Entry")');
     await page.waitForTimeout(1000);
   
-    await page.fill('input[formControlName="ppoNo"]', 'PPO333331');
+    await page.fill('input[formControlName="ppoNo"]', 'PPO111154');
     await page.fill('input[formControlName="pensionerName"]', 'John Pal');
     await page.fill('input[formControlName="mobileNumber"]', '9876541210');
   
@@ -155,7 +186,7 @@ test.describe('Manual PPO Receipt Component', () => {
     await expect(searchInput).toBeVisible();
 
     // Enter a search term
-    const searchTerm = 'DAA2024000003'; // Example search term that is likely to return no results
+    const searchTerm = 'DAA2024000021'; // Example search term that is likely to return no results
     await searchInput.fill(searchTerm);
 
     // Click the search icon button
@@ -214,13 +245,13 @@ test('should load the table with data', async ({ page }) => {
     await page.click('td.ng-star-inserted button:has-text("Edit")'); 
     
     // Update some fields
-    await page.fill('input[formControlName="pensionerName"]', 'Jane Doe');
+    await page.fill('input[formControlName="pensionerName"]', 'Raj Roy');
     
     // Submit the form
     await page.click('button:has-text("Update")');
     
     // Assert that the success message is displayed
-    const successMessage = page.locator('text=PPO Receipt updated successfully');
+    const successMessage = page.locator('text=PPO Receipt added successfully');
     await expect(successMessage).toBeVisible();
   });
 
