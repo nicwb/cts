@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { SearchPopupService } from './search-popup.service';
 import { ToastService } from '../services/toast.service';
-import { firstValueFrom, Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, ObjectJsonAPIResponse } from 'src/app/api';
 
-import { IapiResponce } from '../models/iapi-responce';
 
-// 
+//  remove when it final may component import it
 export interface SearchPopupConfig {
   payload: any;
   apiUrl: string; // API URL parameter
@@ -30,8 +29,6 @@ export class SearchPopupComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private search: SearchPopupService,
-    private tostservice: ToastService
   ) {}
 
   ngOnInit(): void {
