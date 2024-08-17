@@ -22,6 +22,10 @@ import { Observable }                                        from 'rxjs';
 import { InitiateFirstPensionBillDTO } from '../model/initiate-first-pension-bill-dto';
 // @ts-ignore
 import { InitiateFirstPensionBillResponseDTOJsonAPIResponse } from '../model/initiate-first-pension-bill-response-dto-json-api-response';
+// @ts-ignore
+import { PpoBillEntryDTO } from '../model/ppo-bill-entry-dto';
+// @ts-ignore
+import { PpoBillResponseDTOJsonAPIResponse } from '../model/ppo-bill-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -99,10 +103,10 @@ export class PensionFirstBillService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InitiateFirstPensionBillResponseDTOJsonAPIResponse>;
-    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
-    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
-    public generateFirstBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public generateFirstPensionBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<InitiateFirstPensionBillResponseDTOJsonAPIResponse>;
+    public generateFirstPensionBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
+    public generateFirstPensionBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<InitiateFirstPensionBillResponseDTOJsonAPIResponse>>;
+    public generateFirstPensionBill(initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -153,11 +157,84 @@ export class PensionFirstBillService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/pension-bill`;
+        let localVarPath = `/api/v1/ppo/first-bill-generate`;
         return this.httpClient.request<InitiateFirstPensionBillResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: initiateFirstPensionBillDTO,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param ppoBillEntryDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public saveFirstPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoBillResponseDTOJsonAPIResponse>;
+    public saveFirstPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoBillResponseDTOJsonAPIResponse>>;
+    public saveFirstPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoBillResponseDTOJsonAPIResponse>>;
+    public saveFirstPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/first-bill-save`;
+        return this.httpClient.request<PpoBillResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: ppoBillEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

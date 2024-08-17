@@ -19,7 +19,7 @@ export interface PpoPaymentListItemDTO {
     breakupId?: number;
     componentName?: string | null;
     componentType?: string;
-    breakupAmount?: number;
+    amountPerMonth?: number;
     rateId?: number;
     rateType?: string;
     rateAmount?: number;

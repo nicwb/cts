@@ -19,11 +19,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { PensionerBankAcDTO } from '../model/pensioner-bank-ac-dto';
+import { PensionerBankAcEntryDTO } from '../model/pensioner-bank-ac-entry-dto';
 // @ts-ignore
-import { PensionerBankAcDTOAPIResponse } from '../model/pensioner-bank-ac-dtoapi-response';
-// @ts-ignore
-import { PensionerBankAcDTOJsonAPIResponse } from '../model/pensioner-bank-ac-dto-json-api-response';
+import { PensionerBankAcResponseDTOJsonAPIResponse } from '../model/pensioner-bank-ac-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -98,14 +96,14 @@ export class PensionBankAccountsService {
 
     /**
      * @param ppoId 
-     * @param pensionerBankAcDTO 
+     * @param pensionerBankAcEntryDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createBankAccount(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcDTOJsonAPIResponse>;
-    public createBankAccount(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcDTOJsonAPIResponse>>;
-    public createBankAccount(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcDTOJsonAPIResponse>>;
-    public createBankAccount(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createBankAccount(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcResponseDTOJsonAPIResponse>;
+    public createBankAccount(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcResponseDTOJsonAPIResponse>>;
+    public createBankAccount(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcResponseDTOJsonAPIResponse>>;
+    public createBankAccount(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling createBankAccount.');
         }
@@ -160,10 +158,10 @@ export class PensionBankAccountsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/bank-accounts`;
-        return this.httpClient.request<PensionerBankAcDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerBankAcResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: pensionerBankAcDTO,
+                body: pensionerBankAcEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -178,9 +176,9 @@ export class PensionBankAccountsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBankAccountByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcDTOAPIResponse>;
-    public getBankAccountByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcDTOAPIResponse>>;
-    public getBankAccountByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcDTOAPIResponse>>;
+    public getBankAccountByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcResponseDTOJsonAPIResponse>;
+    public getBankAccountByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcResponseDTOJsonAPIResponse>>;
+    public getBankAccountByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcResponseDTOJsonAPIResponse>>;
     public getBankAccountByPpoId(ppoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling getBankAccountByPpoId.');
@@ -225,7 +223,7 @@ export class PensionBankAccountsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/bank-accounts`;
-        return this.httpClient.request<PensionerBankAcDTOAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerBankAcResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -239,14 +237,14 @@ export class PensionBankAccountsService {
 
     /**
      * @param ppoId 
-     * @param pensionerBankAcDTO 
+     * @param pensionerBankAcEntryDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcDTOAPIResponse>;
-    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcDTOAPIResponse>>;
-    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcDTOAPIResponse>>;
-    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcDTO?: PensionerBankAcDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerBankAcResponseDTOJsonAPIResponse>;
+    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerBankAcResponseDTOJsonAPIResponse>>;
+    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerBankAcResponseDTOJsonAPIResponse>>;
+    public updateBankAccountByPpoId(ppoId: number, pensionerBankAcEntryDTO?: PensionerBankAcEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling updateBankAccountByPpoId.');
         }
@@ -301,10 +299,10 @@ export class PensionBankAccountsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/bank-accounts`;
-        return this.httpClient.request<PensionerBankAcDTOAPIResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerBankAcResponseDTOJsonAPIResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: pensionerBankAcDTO,
+                body: pensionerBankAcEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

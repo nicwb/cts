@@ -9,12 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { APIResponseStatus } from './api-response-status';
+import { PpoBillResponseDTO } from './ppo-bill-response-dto';
 
 
-export interface PpoComponentRevisionEntryDTO { 
-    dataSource?: { [key: string]: any; } | null;
-    rateId: number;
-    fromDate: string;
-    amountPerMonth: number;
+export interface PpoBillResponseDTOJsonAPIResponse { 
+    result?: PpoBillResponseDTO;
+    apiResponseStatus?: APIResponseStatus;
+    message?: string | null;
 }
+export namespace PpoBillResponseDTOJsonAPIResponse {
+}
+
 

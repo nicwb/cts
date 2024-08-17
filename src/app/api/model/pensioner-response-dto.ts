@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import { ManualPpoReceiptResponseDTO } from './manual-ppo-receipt-response-dto';
-import { PensionerBankAcDTO } from './pensioner-bank-ac-dto';
+import { PensionerBankAcResponseDTO } from './pensioner-bank-ac-response-dto';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 
@@ -40,6 +40,6 @@ export interface PensionerResponseDTO {
     ppoId?: number;
     category?: PensionCategoryResponseDTO;
     receipt?: ManualPpoReceiptResponseDTO;
-    bankAccounts?: Array<PensionerBankAcDTO> | null;
+    bankAccounts?: Array<PensionerBankAcResponseDTO> | null;
 }
 
