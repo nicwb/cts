@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PensionerBankAcDTO } from './pensioner-bank-ac-dto';
+import { PensionerBankAcResponseDTO } from './pensioner-bank-ac-response-dto';
 import { PpoPaymentListItemDTO } from './ppo-payment-list-item-dto';
 import { PensionerListItemDTO } from './pensioner-list-item-dto';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
@@ -18,7 +18,7 @@ import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 export interface InitiateFirstPensionBillResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     pensioner: PensionerListItemDTO;
-    bankAccount: PensionerBankAcDTO;
+    bankAccount: PensionerBankAcResponseDTO;
     pensionCategory: PensionCategoryResponseDTO;
     pensionerPayments: Array<PpoPaymentListItemDTO>;
     billGeneratedUptoDate: string;
