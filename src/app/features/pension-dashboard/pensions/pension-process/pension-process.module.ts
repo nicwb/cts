@@ -44,11 +44,14 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { PensionProcessRoutingModule } from './pension-process-routing.module';
 import { PensionProcessComponent } from './pension-process.component';
+import { PensionerDetailsComponent } from './pensioner-details/pensioner-details.component';
+import { BillPrintComponent } from './bill-print/bill-print.component';
+// import { BillPrintComponent } from './bill-print/bill-print.component';
 
 
 @NgModule({
   declarations: [
-    PensionProcessComponent
+    PensionProcessComponent, PensionerDetailsComponent, BillPrintComponent
   ],
   imports: [
     CommonModule,
