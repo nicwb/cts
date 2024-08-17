@@ -47,29 +47,12 @@ export class AppMenuComponent implements OnInit {
                 label: 'Pension',
                 items: [
                     {
-                        label: 'Pension Process', icon: 'pi pi-fw pi-box',
+                        label: 'Pension Process', icon: 'assets/layout/images/icons/pension-process.png',
                         items: [
                             {
-                                label: 'PPO', icon: 'pi pi-fw pi-bookmark',
+                                label: 'PPO', icon: 'assets/layout/images/icons/vendor-entry.png',
                                 items: [
-                                    { label: 'Entry', icon: 'pi pi-fw pi-bookmark',routerLink: ['/pension/modules/pension-process/ppo/entry/ppodetails'] },
-                                    { label: 'Manual PPO Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/manualPpoReceipt'] },
-                                    { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark' , routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
-                                    { label: 'Life Certificate', icon: 'pi pi-fw pi-bookmark' , routerLink: ['/pension/modules/pension-process/ppo/life-certificate'] },
-                                ]
-                            },
-                            {
-                                label: 'Pension Details', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Pension Bill', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'First Pension', icon: 'pi pi-fw pi-bookmark',
+                                    { label: 'Entry', icon: 'assets/layout/images/icons/pension-entry.png',
                                         items: [
                                             { label: 'General', icon: 'pi pi-fw pi-bookmark',routerLink: ['/pension/modules/pension-process/pension-bill']  },
 
@@ -119,7 +102,7 @@ export class AppMenuComponent implements OnInit {
                         ]
                     },
                     {
-                        label: 'Reports', icon: 'pi pi-fw pi-box',
+                        label: 'Pension Report', icon: 'assets/layout/images/icons/work-in-progress.png',
                         items: [
                             {
                                 label: 'PPO Details', icon: 'pi pi-fw pi-bookmark',

@@ -7,7 +7,8 @@
     "build": "node --max_old_space_size=14336 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /cts/ --aot --build-optimizer",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e:dev": "playwright test --ui"
   },
   "private": true,
   "dependencies": {
@@ -47,6 +48,7 @@
     "@angular-eslint/template-parser": "14.1.2",
     "@angular/cli": "^14.2.13",
     "@angular/compiler-cli": "~14.0.0",
+    "@playwright/test": "^1.46.0",
     "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
