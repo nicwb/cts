@@ -41,73 +41,73 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
-import { PensionProcessRoutingModule } from './pension-process-routing.module';
-import { PensionProcessComponent } from './pension-process.component';
-import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';
-import { PensionerDetailsComponent } from './pensioner-details/pensioner-details.component';
-import { BillPrintComponent } from './bill-print/bill-print.component';
-// import { BillPrintComponent } from './bill-print/bill-print.component';
+import { RegularPensionComponent } from './regular-pension/regular-pension.component';
+import { RouterModule, Routes } from '@angular/router';
+import { BillPrintComponent } from './bill-print.component';
+import { FirstPensionComponent } from './first-pension/first-pension.component';
 
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+const routes: Routes = [
+
+
+  {path: '', component: BillPrintComponent},
+  {path: 'regular-pension', component: RegularPensionComponent},
+  { path: 'first-pension', component: FirstPensionComponent }
+
+];
+
+
 
 @NgModule({
   declarations: [
-    PensionProcessComponent,
-    ArrearPensionComponent,
-    PensionerDetailsComponent,
-    BillPrintComponent
+    RegularPensionComponent,
+    FirstPensionComponent
   ],
   imports: [
     CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    DynamicTableModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    TreasuryDropdownModule,
     FormsModule,
-    PensionProcessRoutingModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    AccordionModule,
     AutoCompleteModule,
+    CalendarModule,
+    CascadeSelectModule,
+    CheckboxModule,
+    ChipModule,
     ChipsModule,
+    ColorPickerModule,
+    DialogModule,
+    DividerModule,
+    DropdownModule,
+    FieldsetModule,
     InputMaskModule,
     InputNumberModule,
-    CascadeSelectModule,
-    MultiSelectModule,
-    InputTextareaModule,
+    InputSwitchModule,
     InputTextModule,
-    RatingModule,
-    ChipModule,
+    InputTextareaModule,
     KnobModule,
     ListboxModule,
-    SelectButtonModule,
-    CheckboxModule,
-    InputSwitchModule,
-    RadioButtonModule,
-    ColorPickerModule,
-    ToggleButtonModule,
-    SliderModule,
-    RippleModule,
-    SplitButtonModule,
-    AccordionModule,
-    TabViewModule,
-    FieldsetModule,
     MenuModule,
-    DividerModule,
-    SplitterModule,
+    MultiSelectModule,
     PanelModule,
-    ToastModule,
     ProgressBarModule,
+    RadioButtonModule,
+    RatingModule,
+    RippleModule,
+    SelectButtonModule,
+    SliderModule,
+    SplitButtonModule,
+    SplitterModule,
     TableModule,
-    CalendarModule,
-    FormsModule
+    TabViewModule,
+    ToastModule,
+    ToggleButtonModule,
+    CommonHeaderModule,
+    DynamicTableModule,
+    OptionCardModule,
+    MhPrimeDynamicTableModule,
+    RouterModule.forChild(routes),
   ]
 })
-export class PensionProcessModule { }
+export class BillPrintModule { }

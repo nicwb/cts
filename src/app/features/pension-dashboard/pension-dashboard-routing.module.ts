@@ -64,10 +64,23 @@ const routes: Routes = [
     loadChildren: () => import('./pensions/pension-reports/manual-ppo-register/manual-ppo-register.module').then(m => m.ManualPpoRegisterModule),
    },
    {
+    path: 'modules/pension-process/bill-print',
+    loadChildren: () => import('./pensions/pension-process/bill-print/bill-print.module').then(m => m.BillPrintModule)
+   },
+   {
+    path: 'modules/pension-process/bill-print/regular-pension',
+    loadChildren: () => import('./pensions/pension-process/bill-print/regular-pension/regular-pension.module').then(m => m.RegularPensionModule),
+   },
+   {
+    path: 'modules/pension-process/bill-print/first-pension',
+    loadChildren: () => import('./pensions/pension-process/bill-print/first-pension/first-pension.module').then(m => m.FirstPensionModule),
+   },
+   {
     path : 'master/pension/component-rate',
     loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
 
    }
+  
   
   
 ];

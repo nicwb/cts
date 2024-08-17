@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <div class="flex flex-column gap-4 mt-4">
+                    <div class="my-4 px-4">
+                        <form [formGroup]="BillPrintForm">
+                            <div class="formgroup-inline">
+                                <label for="month" class="col-12 mb-2 md:col-2 md:mb-0">Month:</label>
+                                <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
+                                    <p-dropdown [options]="months" formControlName="months" placeholder="Select a Month" [showClear]="true"></p-dropdown>
+                                </div>
+                                <label for="year" class="col-12 mb-2 md:col-2 md:mb-0">Year:</label>
+                                <div class="field col-12 mb-2 lg:col-4 lg:mb-0" style="width: 300px;">
+                                    <p-calendar formControlName="year"
+                                        view="year"
+                                        dateFormat="yy"
+                                        [showIcon]="true"
+                                        (onSelect)="onYearSelect($event)"></p-calendar>
+                                </div>
+                            </div>
+                            <div class="col-12 md:col-12">
+                                <p-fieldset legend="Select" class="line-height-3 m-0">
+                                    <div class="formgroup-inline">
+                                        <div class="field-radiobutton mb-3">
+                                            <p-radioButton name="choices" value="all"
+                                                formControlName="choices" label="All Bank/ All Category"></p-radioButton>
+                                        </div>
+                                        <div class="field-radiobutton mb-3">
+                                            <p-radioButton name="choices" value="allBankSpecificCategory"
+                                                formControlName="choices" label="All Bank/Specific Category"></p-radioButton>
+                                        </div>
+                                        <div class="field-radiobutton mb-3">
+                                            <p-radioButton name="choices" value="specificBackAllCategory"
+                                                formControlName="choices" label="Specific Bank/All Category"></p-radioButton>
+                                        </div>
+                                        <div class="field-radiobutton mb-3">
+                                            <p-radioButton name="choices" value="specificBankSpecificCategory"
+                                                formControlName="choices" label="Specific Bank/Specific Category"></p-radioButton>
+                                        </div>
+                                    </div>
+                                </p-fieldset>
+                                <div *ngIf="showBankInput()">
+                                    <label for="bank" class="col-12 md:col-2">
+                                        Select the specific Bank:
+                                    </label>
+                                    <input
+                                        class="col-12 md:col-6"
+                                        id="bank"
+                                        type="text"
+                                        pInputText
+                                        formControlName="bank"
+                                        placeholder="Bank"
+                                    />
+                                </div>
+                                
+                                <div *ngIf="showCategoryInput()">
+                                    <label for="category" class="col-12 md:col-2">
+                                        Select the specific Category:
+                                    </label>
+                                    <input
+                                        class="col-12 md:col-6"
+                                        id="category"
+                                        type="text"
+                                        pInputText
+                                        formControlName="category"
+                                        placeholder="Category"
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-1 align-items-center justify-content-center">
+                    <div class="flex flex-wrap gap-2">
+                      <button pButton pRipple (click)="onGenerate(BillPrintForm.value.choices)" type="generateReport" class="p-button-raised p-button-info" [disabled]="!BillPrintForm.valid"> Generate Report</button>
+                      <button pButton pRipple (click)="onRefresh()" type="refresh" class="p-button-raised p-button-info"> Refresh</button>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
