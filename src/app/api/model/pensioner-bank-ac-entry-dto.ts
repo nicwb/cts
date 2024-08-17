@@ -11,10 +11,12 @@
  */
 
 
-export interface PpoComponentRevisionEntryDTO { 
+export interface PensionerBankAcEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    rateId: number;
-    fromDate: string;
-    amountPerMonth: number;
+    accountHolderName?: string | null;
+    bankAcNo?: string | null;
+    ifscCode?: string | null;
+    bankCode: number;
+    branchCode: number;
 }
 

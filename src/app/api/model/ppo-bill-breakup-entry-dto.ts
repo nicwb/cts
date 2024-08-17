@@ -11,10 +11,12 @@
  */
 
 
-export interface PpoComponentRevisionEntryDTO { 
+export interface PpoBillBreakupEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    rateId: number;
-    fromDate: string;
-    amountPerMonth: number;
+    ppoId?: number;
+    revisionId?: number;
+    fromDate?: string;
+    toDate?: string;
+    breakupAmount?: number;
 }
 

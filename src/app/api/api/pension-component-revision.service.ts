@@ -25,6 +25,8 @@ import { PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse } from '../mo
 // @ts-ignore
 import { PpoComponentRevisionResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-response-dto-json-api-response';
 // @ts-ignore
+import { PpoComponentRevisionResponseDTOListJsonAPIResponse } from '../model/ppo-component-revision-response-dto-list-json-api-response';
+// @ts-ignore
 import { PpoComponentRevisionUpdateDTO } from '../model/ppo-component-revision-update-dto';
 
 // @ts-ignore
@@ -99,14 +101,18 @@ export class PensionComponentRevisionService {
     }
 
     /**
+     * @param ppoId 
      * @param ppoComponentRevisionEntryDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPpoComponentRevision(ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoComponentRevisionResponseDTOJsonAPIResponse>;
-    public createPpoComponentRevision(ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoComponentRevisionResponseDTOJsonAPIResponse>>;
-    public createPpoComponentRevision(ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoComponentRevisionResponseDTOJsonAPIResponse>>;
-    public createPpoComponentRevision(ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoComponentRevisionResponseDTOListJsonAPIResponse>;
+    public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoComponentRevisionResponseDTOListJsonAPIResponse>>;
+    public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoComponentRevisionResponseDTOListJsonAPIResponse>>;
+    public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (ppoId === null || ppoId === undefined) {
+            throw new Error('Required parameter ppoId was null or undefined when calling createPpoComponentRevisions.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -157,7 +163,84 @@ export class PensionComponentRevisionService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/component-revision`;
+        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/component-revisions`;
+        return this.httpClient.request<PpoComponentRevisionResponseDTOListJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: ppoComponentRevisionEntryDTO,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param ppoId 
+     * @param ppoComponentRevisionEntryDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public createSinglePpoComponentRevision(ppoId: number, ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoComponentRevisionResponseDTOJsonAPIResponse>;
+    public createSinglePpoComponentRevision(ppoId: number, ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoComponentRevisionResponseDTOJsonAPIResponse>>;
+    public createSinglePpoComponentRevision(ppoId: number, ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoComponentRevisionResponseDTOJsonAPIResponse>>;
+    public createSinglePpoComponentRevision(ppoId: number, ppoComponentRevisionEntryDTO?: PpoComponentRevisionEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (ppoId === null || ppoId === undefined) {
+            throw new Error('Required parameter ppoId was null or undefined when calling createSinglePpoComponentRevision.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/component-revision`;
         return this.httpClient.request<PpoComponentRevisionResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
