@@ -1,0 +1,30 @@
+<p-button label="{{name}}" icon="pi pi-search" (click)="showDialog()"></p-button>
+
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style" [responsive]="true">
+  
+  <span class="p-float-label mb-3">
+    <input id="float-input" type="text" pInputText [(ngModel)]="searchTerm" (ngModelChange)="searchRecords()" /> 
+    <label for="float-input">Search data</label>
+  </span>
+
+  <p-table [value]="data.data" selectionMode="single" [scrollable]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let col of cols">{{ col.header }}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-record>
+          <tr (click)="onRowSelect(record)">
+            <td *ngFor="let col of cols">{{ record[col.field] }}</td>
+          </tr>
+        </ng-template>      
+  </p-table>
+
+  <div *ngIf="onresult" style="text-align: center;" class="p-3"> 
+    {{onresult}} 
+  </div>
+
+  <p-footer>
+    <button pButton type="button" label="Close" (click)="closeDialog()"></button>
+  </p-footer>
+</p-dialog>

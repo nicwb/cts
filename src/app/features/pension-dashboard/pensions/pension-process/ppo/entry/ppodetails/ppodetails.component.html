@@ -7,8 +7,8 @@
                     <p-steps [model]="steps" [(activeIndex)]="currentStepIndex"></p-steps>
                     <div class="my-4 px-4">
 
-                            <div class="m-3" style="width: fit-content;" (click)="fetchPPOID();">
-                                <p-button *ngIf="!ppoID" label="Search" icon="pi pi-search" iconPos="right"></p-button>
+                            <div class="m-3" style="width: fit-content;">
+                                <app-search-popup name="Search PPOId" [service$]="allPPOs$" (return)="handleSelectedRow($event)"></app-search-popup>
                                 <h4 *ngIf="ppoID">PPOID-{{ppoID}}</h4>
                             </div>
                             <!-- PPO and OtherDetails -->
