@@ -8,7 +8,7 @@ name="Button Label"
 [data]="{headers: any, data: any}"
 title="Your Search Title"
 [style]="popupStyle"
-[return]="returnHandelFunction(event)"
+(return)="returnHandelFunction(event)"
 ></app-search-popup>
 ```
 :point_right: NOTE: give one between service$ or data and service are higher priority if service data given both. Other attributes are optional
