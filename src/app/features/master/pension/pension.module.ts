@@ -31,7 +31,19 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SliderModule } from 'primeng/slider';
 import { PensionCategoryComponent } from './pension-category/pension-category.component';
 import { SubCategoryComponent } from './sub-category/sub-category.component';
-
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { ChipModule } from "primeng/chip";
+import { InputMaskModule } from "primeng/inputmask";
+import { InputNumberModule } from "primeng/inputnumber";
+import { CascadeSelectModule } from "primeng/cascadeselect";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { KnobModule } from 'primeng/knob';
+import { ListboxModule } from 'primeng/listbox';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ColorPickerModule } from 'primeng/colorpicker';
 
 const routes: Routes = [
   {path: "",component:PensionComponent},
@@ -72,7 +84,21 @@ const routes: Routes = [
     MultiSelectModule,
     ProgressBarModule,
     SliderModule,
-    MhPrimeDynamicTableModule
+    MhPrimeDynamicTableModule,
+    AutoCompleteModule,
+    ChipModule,
+    InputMaskModule,
+    InputNumberModule,
+    CascadeSelectModule,
+    InputTextareaModule,
+    KnobModule,
+    ListboxModule,
+    SelectButtonModule,
+    CheckboxModule,
+    InputSwitchModule,
+    RadioButtonModule,
+    ColorPickerModule,
+
   ],
   exports: [PensionComponent],
   bootstrap: [PensionComponent]

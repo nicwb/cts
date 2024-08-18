@@ -15,14 +15,9 @@ import {
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
-import { convertDate } from 'src/utils/dateConversion';
-import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
-import { SubCategoryDetalis } from 'src/app/core/models/sub-category-detalis';
-import { SubCategoryDetailsService } from 'src/app/core/services/subCategoryDetails/sub-category-details.service';
 import { firstValueFrom } from 'rxjs';
 import { PensionCategoryMasterService } from 'src/app/api';
-import { Console } from 'console';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -41,25 +36,22 @@ export class SubCategoryComponent implements OnInit {
     tableActionButton: ActionButtonConfig[] = [];
     tableChildActionButton: ActionButtonConfig[] = [];
     tableData: any;
-    modalData: SubCategoryDetalis[] = [];
     count: number = 0;
     isTableDataLoading: boolean = false;
     treasuryReceiptId!: string;
-    manaualPpoPayload!: SubCategoryDetalis;
-    selectedRowData: SubCategoryDetalis | null = null;
     selectedRow: any;
     SubOption: SelectItem[] = [];
     type: SelectItem[] = [];
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
     refresh_b = false;
-
+    searching={
+        val:false,
+        data:null
+    };
     constructor(
-        private datePipe: DatePipe,
         private toastService: ToastService,
-        private SubCategoryDetalisService: SubCategoryDetailsService,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef,
         private service: PensionCategoryMasterService
     ) {}
 
@@ -75,7 +67,6 @@ export class SubCategoryComponent implements OnInit {
         };
 
         this.getData();
-        // this.showVAL();
     }
 
     showInsertDialog() {
@@ -89,91 +80,53 @@ export class SubCategoryComponent implements OnInit {
 
     handQueryParameterChange(event: any) {
         console.log('Query parameter changed:', event);
-        this.tableQueryParameters = {
-            pageSize: event.pageSize,
-            pageIndex: event.pageIndex / 10,
-            filterParameters: event.filterParameters || [],
-            sortParameters: event.sortParameters,
-        };
+        if(this.searching.val==true){
+            this.tableQueryParameters = {
+                pageSize: event.pageSize,
+                pageIndex: event.pageIndex / 10,
+                filterParameters: [{ field: "SubCategoryName", value: this.searching.data, operator: 'contains'}],
+                sortParameters: event.sortParameters,
+            };
+        }
+        else{this.tableQueryParameters = {
+                pageSize: event.pageSize,
+                pageIndex: event.pageIndex / 10,
+                filterParameters: event.filterParameters || [],
+                sortParameters: event.sortParameters,
+            };
+        }
+
         this.getData();
     }
 
-    // async showVAL(){
-    //     let data = this.tableQueryParameters;
-    //     data.pageSize=9999999;
-    //     const x = await firstValueFrom(this.service.getAllSubCategories(data))
-    //     console.log(x);
-    // }
-    // async postVAL(){
-    //     const formData = this.SubForm.value;
-    //     const resp=await firstValueFrom(this.service.createSubCategory(formData));
-    //     console.log(resp);
-    //     this.getData();
-    // }
 
     handsearchKeyChange(event: string): void {
-        if (event == '') {
+        if(event == ""){
             this.toastService.showError(`Search can not be empty`);
             return;
         }
-        let flag = true;
-        const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        const eve_len = event.length;
-        for (let i = 0; i < eve_len; i++) {
-            if (!numArr.includes(parseInt(event[i]))) {
-                flag = false;
-                break;
-            }
-        }
-        if (!flag) {
-            this.toastService.showError(`Search can only contain Category ID`);
-            return;
-        } else {
-            this.findById(parseInt(event));
-        }
+        this.findById(event);
     }
 
-    async findById(id: any) {
+    async findById(data: any) {
         let payload = this.tableQueryParameters;
+        payload.filterParameters = [{ field: "SubCategoryName", value: data, operator: 'contains'}];
+        payload.pageIndex=0;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllSubCategories(payload)
         );
-
-        if (response.apiResponseStatus === 1) {
-            let value = response.result?.data;
-            let flag = false;
-            let Data = response.result?.data;
-            let DataCount=response.result?.dataCount;
-            console.log(response.result);
-
-            if (value) {
-                const len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    if (value[i].id == id) {
-                        Data = [value[i]];
-                        DataCount = 1;
-                        this.refresh_b = true;
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!flag) {
-                this.toastService.showError('No Pension Category ID found');
-                return;
-            }
-
-            this.tableData = {
-                data: Data,
-                dataCount: DataCount,
-                headers:response.result?.headers
-            };
-
+        console.log(response);
+        if(response.result?.data?.length!=0){
+            this.tableData = response.result;
+            this.refresh_b = true;
+            this.searching.val=true;
+            this.searching.data=data;
+        }else{
+            this.toastService.showError('No Pension Category ID found');
         }
 
-        this.isTableDataLoading = false;
+          this.isTableDataLoading = false;
     }
     initializeForm(): void {
         this.SubForm = this.fb.group({
@@ -191,17 +144,15 @@ export class SubCategoryComponent implements OnInit {
             dt.filterGlobal(input.value, 'contains');
         }
     }
-
-    // Add Manual PPO Receipt
     async add_Sub_category() {
         if (this.SubForm.valid) {
             const formData = this.SubForm.value;
+
             const response = await firstValueFrom(
                 this.service.createSubCategory(formData)
             );
 
             if (response.apiResponseStatus === 1) {
-                console.log('Form submitted successfully:', response);
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
                     'Sub Category Details added successfully'
@@ -248,6 +199,12 @@ export class SubCategoryComponent implements OnInit {
 
     fun_refresh() {
         this.refresh_b = false;
+        this.tableQueryParameters = {
+            pageSize: 10,
+            pageIndex: 0,
+        };
+        this.searching.val=false;
+        this.searching.data=null;
         this.getData();
     }
 
