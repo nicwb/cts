@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { ConfirmationService, SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 
 
@@ -13,12 +13,9 @@ import { StampIndentService } from 'src/app/core/services/stamp/stamp-indent.ser
 import { ToastService } from 'src/app/core/services/toast.service';
 import { convertDate } from 'src/utils/dateConversion';
 import { SharedDataService } from './shared-data.service';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Payload } from 'src/app/core/models/search-query';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
 
-import { PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse, PensionPPODetailsService } from 'src/app/api';
 import { Observable } from 'rxjs';
+import { PensionPPODetailsService } from 'src/app/api';
 
 
 interface expandedRows {
@@ -29,7 +26,6 @@ interface expandedRows {
   selector: 'app-ppodetails',
   templateUrl: './ppodetails.component.html',
   styleUrls: ['./ppodetails.component.scss'],
-  providers: [MessageService, ConfirmationService, DialogService],
 })
 
 export class PpodetailsComponent implements OnInit{
@@ -37,14 +33,12 @@ export class PpodetailsComponent implements OnInit{
   steps: any[];
   isFormValid:boolean=false;
   ppoID?:string;
-  ref: DynamicDialogRef | undefined;
 
-  allPPOs$?:Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
+  allPPOs$?:Observable<any>;
 
   constructor(
     private toastService: ToastService,
     private sd: SharedDataService,
-    private dialogService: DialogService,
     private ppoDetialsService: PensionPPODetailsService,
   ){
     this.steps = [
@@ -53,6 +47,7 @@ export class PpodetailsComponent implements OnInit{
             { label: 'Sanction Details'},
             { label: 'Family Nominee'}
     ];
+
   }
   ngOnInit(): void {
     // add for detect changes in form valid or not
@@ -64,6 +59,17 @@ export class PpodetailsComponent implements OnInit{
       this.ppoID = status;
     });
 
+    let payload = {
+      "pageSize":10,
+      "pageIndex":0,
+      "filterParameters": [],
+      "sortParameters":{
+        "field":"",
+        "order":""
+      }
+    };
+
+    this.allPPOs$ = this.ppoDetialsService.getAllPensioners(payload);
   }
 
   next_move(){
@@ -90,32 +96,9 @@ export class PpodetailsComponent implements OnInit{
       this.currentStepIndex--;
     }
   }
-  // fetch ppoid if exists
-  fetchPPOID(): void {
-      console.log("Fetching ppoid")
-      let payload:Payload = {
-        "pageSize":10,
-        "pageIndex":0,
-        "filterParameters": [],
-        "sortParameters":{
-          "field":"",
-          "order":""
-        }
-      };
-      
-      this.allPPOs$ = this.ppoDetialsService.getAllPensioners(payload);
-
-      this.ref = this.dialogService.open(SearchPopupComponent, {
-        data: this.allPPOs$,
-        header: 'Search record',
-        width: '60%'
-      });
-
-      this.ref.onClose.subscribe((record: any) => {
-        if (record) {
-          this.sd.setPPOID(record.ppoId);
-          this.next();
-        }
-      });
-  }
+  handleSelectedRow(event: any){
+    console.log(event);
+    this.sd.setPPOID(event.ppoId);
+    // this.next();
+  } 
 }
