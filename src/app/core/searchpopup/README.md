@@ -2,16 +2,16 @@
 The Search Popup is designed to help users filter and search through tabular data dynamically. This component provides an inputs by attribute for searching and  the displayed data in the table based on the search query. Select the row for return the row data.
 ## ATTRIBUTE
 ```html
-<app-search-popup
+<app-search-popup 
 name="Button Label"
 [service$]="Observable<any>" 
 [data]="{headers: any, data: any}"
-title="Your Search Title" // optional
-[style]="popupStyle" // optional
+title="Your Search Title"
+[style]="popupStyle"
 [return]="returnHandelFunction(event)"
 ></app-search-popup>
 ```
-:point_right: NOTE: give one between service$ or data and service are higher priority if service data given both
+:point_right: NOTE: give one between service$ or data and service are higher priority if service data given both. Other attributes are optional
 
 ## HOW TO USE
 ### import requirement
