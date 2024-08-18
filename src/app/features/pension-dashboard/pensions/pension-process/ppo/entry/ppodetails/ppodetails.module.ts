@@ -26,8 +26,7 @@ import { DetailsComponent } from './details/details.component';
 import { BankDetailsComponent } from './bank-details/bank-details.component';
 import { SanctionModule } from './sanction/sanction.module';
 import { FamilyNomineeModule } from './family-nominee/family-nominee.module';
-
-
+import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 // md - 50
 // import { FloatLabe } ;
 
@@ -73,6 +72,7 @@ const routes: Routes = [
     PanelModule,
     FieldsetModule,
     FamilyNomineeModule,
+    SearchPopupTempModule,
     RouterModule.forChild(routes)
   ],
   providers: [],
