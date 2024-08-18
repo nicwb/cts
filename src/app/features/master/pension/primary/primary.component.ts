@@ -15,11 +15,7 @@ import {
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
-import { convertDate } from 'src/utils/dateConversion';
-import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
-import { PrimaryCategoryDetails } from 'src/app/core/models/primary-category-details';
-import { PrimaryCategoryDetailsService } from 'src/app/core/services/primaryCategoryDetails/primary-category-details.service';
 import { PensionCategoryMasterService } from 'src/app/api';
 import { firstValueFrom } from 'rxjs';
 
@@ -40,12 +36,9 @@ export class PrimaryComponent {
     tableActionButton: ActionButtonConfig[] = [];
     tableChildActionButton: ActionButtonConfig[] = [];
     tableData: any;
-    modalData: PrimaryCategoryDetails[] = [];
     count: number = 0;
     isTableDataLoading: boolean = false;
     treasuryReceiptId!: string;
-    manaualPpoPayload!: PrimaryCategoryDetails;
-    selectedRowData: PrimaryCategoryDetails | null = null;
     selectedRow: any;
     PrimaryOption: SelectItem[] = [];
     type: SelectItem[] = [];
@@ -54,11 +47,8 @@ export class PrimaryComponent {
     refresh_b = false;
 
     constructor(
-        private datePipe: DatePipe,
         private toastService: ToastService,
-        private PrimaryCategoryDetailsService: PrimaryCategoryDetailsService,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef,
         private service: PensionCategoryMasterService
     ) {}
 
@@ -93,31 +83,35 @@ export class PrimaryComponent {
             filterParameters: event.filterParameters || [],
             sortParameters: event.sortParameters,
         };
-        console.log(this.tableQueryParameters);
         this.getData();
     }
 
     handsearchKeyChange(event: string): void {
-        console.log('Search key changed:', event);
         if (event == '') {
             this.toastService.showError(`Search can not be empty`);
             return;
         }
-        let flag = true;
-        const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        const eve_len = event.length;
-        for (let i = 0; i < eve_len; i++) {
-            if (!numArr.includes(parseInt(event[i]))) {
-                flag = false;
-                break;
-            }
-        }
-        if (!flag) {
-            this.toastService.showError(`Search can only contain Category ID`);
-            return;
-        } else {
-            this.findById(parseInt(event));
-        }
+        this.findById(event);
+
+        // if (event == '') {
+        //     this.toastService.showError(`Search can not be empty`);
+        //     return;
+        // }
+        // let flag = true;
+        // const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+        // const eve_len = event.length;
+        // for (let i = 0; i < eve_len; i++) {
+        //     if (!numArr.includes(parseInt(event[i]))) {
+        //         flag = false;
+        //         break;
+        //     }
+        // }
+        // if (!flag) {
+        //     this.toastService.showError(`Search can only contain Category ID`);
+        //     return;
+        // } else {
+        //     this.findById(parseInt(event));
+        // }
     }
 
     initializeForm(): void {
@@ -146,7 +140,6 @@ export class PrimaryComponent {
         }
     }
 
-    // Add Manual PPO Receipt
     async add_primary_category() {
         if (this.primaryForm.valid) {
             const formData = this.primaryForm.value;
@@ -156,7 +149,6 @@ export class PrimaryComponent {
 
             if (response.apiResponseStatus === 1) {
                 // Assuming 1 means success
-                console.log('Form submitted successfully:', response);
 
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
@@ -167,7 +159,6 @@ export class PrimaryComponent {
             }
             this.getData();
         } else {
-            console.log('Form is not valid. Cannot submit.');
             this.toastService.showError(
                 'Please fill all required fields correctly.'
             );
@@ -182,7 +173,7 @@ export class PrimaryComponent {
             )
         ) {
             this.toastService.showError(
-                'This PPO number already exists. Please use a different PPO number.'
+                'This Primary number already exists. Please use a different PPO number.'
             );
             this.primaryForm.get('PCID')?.setErrors({ duplicate: true });
         } else {
@@ -206,59 +197,75 @@ export class PrimaryComponent {
 
         this.tableData = response.result;
         this.isTableDataLoading = false;
-        console.log(this.tableData);
     }
-    async findById(id: any) {
+    async findById(data: any) {
+
         let payload = this.tableQueryParameters;
+        payload.filterParameters = [{ field: "HoaId", value: data, operator: 'contains'}];
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllPrimaryCategories(payload)
         );
+        if(response.result?.data?.length!=0){
+            this.tableData = response.result;
+            this.refresh_b = true;
+        }else{
+            this.toastService.showError('No Pension Category ID found');
 
-        if (response.apiResponseStatus === 1) {
-            let value = response.result?.data;
-            let flag = false;
-            let Data = response.result?.data;
-            let DataCount = response.result?.dataCount;
-            console.log(response.result);
 
-            if (value) {
-                const len_val = value.length;
-                for (let i = 0; i < len_val; i++) {
-                    if (value[i].id == id) {
-                        Data = [value[i]];
-                        DataCount = 1;
-                        this.refresh_b = true;
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!flag) {
-                this.toastService.showError('No Pension Category ID found');
-                return;
-            }
-
-            this.tableData = {
-                data: Data,
-                dataCount: DataCount,
-                headers: response.result?.headers,
-            };
         }
+        // let payload = this.tableQueryParameters;
+        // payload.pageSize=9999999;
+        // this.isTableDataLoading = true;
+        // let response = await firstValueFrom(
+        //     this.service.getAllPrimaryCategories(payload)
+        // );
+
+        // if (response.apiResponseStatus === 1) {
+        //     let value = response.result?.data;
+        //     let flag = false;
+        //     let Data = response.result?.data;
+        //     let DataCount = response.result?.dataCount;
+        //     console.log(response.result);
+
+        //     if (value) {
+        //         const len_val = value.length;
+        //         for (let i = 0; i < len_val; i++) {
+        //             if (value[i].id == id) {
+        //                 Data = [value[i]];
+        //                 DataCount = 1;
+        //                 this.refresh_b = true;
+        //                 flag = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+
+        //     if (!flag) {
+        //         this.toastService.showError('No Pension Category ID found');
+        //         return;
+        //     }
+
+        //     this.tableData = {
+        //         data: Data,
+        //         dataCount: DataCount,
+        //         headers: response.result?.headers,
+        //     };
+        // }
 
         this.isTableDataLoading = false;
     }
 
     fun_refresh() {
         this.refresh_b = false;
+        this.tableQueryParameters = {
+            pageSize: 10,
+            pageIndex: 0,
+        };
         this.getData();
     }
 
-    onRowEditCancel() {
-        this.selectedRowData = null;
-        this.resetForm();
-    }
+
 
     emitPrimaryCategory(): void {
         this.Primary_Category_Details.emit(this.primaryForm.value);
