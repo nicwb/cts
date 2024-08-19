@@ -16,7 +16,7 @@ import { map, catchError } from 'rxjs/operators';
 })
 export class ComponentService {
 
-    apiUrl = "v1/pension/bill-component";
+    apiUrl = "v1/pension/component";
     //apiUrl = "v1/echo";
 
 
@@ -27,7 +27,7 @@ export class ComponentService {
     ): Observable<IapiResponce> {
       return this.http
         .patch<IapiResponce>(
-          'v1/pension/bill-component',
+          'v1/pension/component',
           queryParameters
         )
         .pipe(
@@ -39,7 +39,7 @@ export class ComponentService {
 
     //Get Component Details 
     GetAllComponentDetails(id: string): Observable<IapiResponce<Component_interface>> {
-      return this.http.get<IapiResponce<Component_interface>>('v1/pension/bill-component/' + id).pipe(
+      return this.http.get<IapiResponce<Component_interface>>('v1/pension/component/' + id).pipe(
         catchError((error) => {
           throw this.toastService.showError(error.message);
         })
@@ -48,7 +48,7 @@ export class ComponentService {
 
     //Add New Component Details
     add_new_component_details(dto: Component_interface): Observable<IapiResponce<Component_interface>> {
-      return this.http.post<IapiResponce<Component_interface>>('v1/pension/bill-component', dto).pipe(
+      return this.http.post<IapiResponce<Component_interface>>('v1/pension/component', dto).pipe(
         catchError((error) => {
           this.toastService.showError(error.message);
           throw error;
@@ -58,7 +58,7 @@ export class ComponentService {
 
     //Update Component Details
     updateComponentDetails(id: string, dto: Component_interface): Observable<IapiResponce> {
-      return this.http.put<IapiResponce>(`v1/pension/bill-component/${id}`, dto).pipe(
+      return this.http.put<IapiResponce>(`v1/pension/component/${id}`, dto).pipe(
         catchError((error) => {
           this.toastService.showError(error.message);
           return throwError(error);
