@@ -1,0 +1,89 @@
+<form [formGroup]="ComponentRateForm" (ngSubmit)="onRefresh()">
+    <div class="card">
+        <h5>Pension Component Rate Details</h5>
+        <p-fieldset legend="Component Details" class="line-height-3 m-0">
+            <div class="flex w-full items-center">
+                <div class="col-12 md:col-2">
+                    <div class="field-radiobutton">
+                        <p-radioButton
+                            value="currentRate"
+                            formControlName="rate"
+                        ></p-radioButton>
+                        <label>Current Rate</label>
+                    </div>
+                </div>
+
+                <div class="col-12 md:col-2">
+                    <div class="field-radiobutton">
+                        <p-radioButton
+                            value="allPensionRate"
+                            formControlName="rate"
+                        ></p-radioButton>
+                        <label>All Pension Rate</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="mx-4 flex w-full text-lg items-center flex-wrap">
+                    <label for="PC ID & Description"
+                        >Pension Category Id & Description
+                    </label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="pl-2 lg:ml-4"
+                        formControlName="pensionCategoryId"
+                    />
+                    <button
+                        type="button"
+                        pButton
+                        pRipple
+                        icon="pi pi-search"
+                        class="rounded-r-lg"
+                        (click)="searchOne()"
+                    ></button>
+                    <input
+                        type="text"
+                        pInputText
+                        class="pl-2 lg:ml-4"
+                        formControlName="description"
+                    />
+                    <p-button
+                        label="Search"
+                        icon="pi pi-search"
+                        iconPos="right"
+                        class="mx-8 mt-2"
+                        (click)="searchTwo()"
+                    ></p-button>
+                </div>
+            </div>
+            <div class="col-12">
+                <mh-prime-dynamic-table
+                size="small"
+                [data]="tabledata"
+                [numberRowsShown]="10"
+                [rowsPerPageOptions]="[10, 30, 50]"
+                rowSelectionMode = 'multiple'
+                [showTopMenubar]="true"
+                [isLoading]="isTableDataLoading"
+                (rowSelect)="handleRowSelection($event)"
+                (actionButtonClicked)="handleButtonClick($event)"
+                (queryParameterChange)="handQueryParameterChange($event)"
+                (searchKeyChange)="handsearchKeyChange($event)"
+              ></mh-prime-dynamic-table>
+              </div>
+        </p-fieldset>
+        <div class="w-full text-center mt-2">
+            <button
+                pButton
+                pRipple
+                type="refresh"
+                class="p-button-raised p-button-info"
+                [disabled]="!ComponentRateForm.valid"
+                (ngClick)="onRefresh()"
+            >
+                Refresh
+            </button>
+        </div>
+    </div>
+</form>

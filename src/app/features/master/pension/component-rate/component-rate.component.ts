@@ -1,92 +1,103 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import {
+    PensionComponentRateService,
+    ComponentRateEntryDTO,
+    ComponentRateResponseDTOJsonAPIResponse,
+    PensionBreakupResponseDTO,
+} from 'src/app/api';
+import { PensionCategoryMasterService } from 'src/app/api';
+import { PensionComponentService } from 'src/app/api';
+import { Observable } from 'rxjs';
 
-import { SearchPopupComponent, SearchPopupConfig } from 'src/app/core/search-popup/search-popup.component';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Payload } from 'src/app/core/models/search-query';
-import { reduce } from 'rxjs';
-import { reverse } from 'dns';
-
+interface City {
+    name: string;
+    code: string;
+}
 @Component({
-  selector: 'app-component-rate',
-  templateUrl: './component-rate.component.html',
-  styleUrls: ['./component-rate.component.scss']
+    selector: 'app-component-rate',
+    templateUrl: './component-rate.component.html',
+    styleUrls: ['./component-rate.component.scss'],
 })
 export class ComponentRateComponent implements OnInit {
-  // added
-  tabledata: any;
-  isTableDataLoading = false;
+    // added
+    tabledata: any;
+    isTableDataLoading = false;
+    cities: any[] = [];
 
-  ref: DynamicDialogRef | undefined;
-  ComponentRateForm = new FormGroup({
-    rate:  new FormControl('',Validators.required),
-    pensionCategoryId: new FormControl('',Validators.required),
-    description: new FormControl('', Validators.required),
-  });
+    allPensionCategory$?: Observable<any>;
+    pensionComponent$?: Observable<any>;
 
-  constructor(private dialogService: DialogService) { }
+    ComponentRateForm = new FormGroup({
+        // rate:  new FormControl('',Validators.required),
+        // pensionCategoryId: new FormControl('',Validators.required),
+        // description: new FormControl('', Validators.required),
 
-  ngOnInit(): void {
-    console.log('ngOnInit');
-  }
-
-  onRefresh(){
-    console.log(this.ComponentRateForm.value);
-  }
-
-  searchOne(): void {
-    console.log("Search One");
-    let payload:Payload={
-      "pageSize":10,
-      "pageIndex":0,
-      "filterParameters":[],
-      "sortParameters":{
-        "field":"",
-        "order":""
-      }
-    };
-    const config : SearchPopupConfig={
-      payload: payload,
-      apiUrl:'v1/pension/category',
-    };
-    this.ref = this.dialogService.open(SearchPopupComponent, {
-      data: config,
-      header: 'Search record',
-      width: '60%'
+        //new added
+        categoryId: new FormControl('', Validators.required),
+        breakupId: new FormControl('', Validators.required),
+        effectiveFromDate: new FormControl('', Validators.required),
+        rateType: new FormControl('A', Validators.required),
+        rateAmount: new FormControl('', Validators.required),
     });
-    this.ref.onClose.subscribe((record: any) => {
-    if (record) {
-      console.log(record);
-      this.ComponentRateForm.controls['pensionCategoryId'].setValue(record.primaryCategoryId);
-      this.ComponentRateForm.controls['description'].setValue(record.categoryName);
 
+    constructor(
       
+        private service: PensionComponentRateService,
+        private pensionCategoryMasterService: PensionCategoryMasterService,
+        private pensionComponentService: PensionComponentService
+    ) {}
+    ngOnInit(): void {
+        console.log('ngOnInit');
+        let payload = {
+            pageSize: 10,
+            pageIndex: 0,
+            filterParameters: [],
+            sortParameters: {
+                field: '',
+                order: '',
+            },
+        };
+        this.allPensionCategory$ =
+            this.pensionCategoryMasterService.getAllCategories(payload);
+        this.pensionComponent$ =
+            this.pensionComponentService.getAllComponents(payload);
     }
-    });
-  }
 
-  searchTwo(){
-    console.log("Search Two");
-  }
+    handleSelectedRowByPensionCategory(event: any) {
+        console.log(event);
+        // this.ComponentRateForm.controls['pensionCategoryId'].setValue(record.primaryCategoryId);
+        // this.ComponentRateForm.controls['description'].setValue(record.categoryName);
+        this.ComponentRateForm.controls['categoryId'].setValue(event.id);
+    }
+    handleSelectedRowByPensionComponent(event: any) {
+        console.log(event);
+        // this.ComponentRateForm.controls['pensionCategoryId'].setValue(record.primaryCategoryId);
+        // this.ComponentRateForm.controls['description'].setValue(record.categoryName);
+        this.ComponentRateForm.controls['breakupId'].setValue(event.id);
+    }
 
+    onSubmit() {
+        console.log(this.ComponentRateForm.value);
+    }
 
-  // adding dynamic table
-  handleRowSelection(event: any): void {
-    console.log('Selected rows:', event);
-  }
+    
 
-  handleButtonClick(event: any): void {
-    console.log('Action button clicked:', event);
-  }
+    // adding dynamic table
+    handleRowSelection(event: any): void {
+        console.log('Selected rows:', event);
+    }
 
-  handQueryParameterChange(event: any): void {
-    console.log('Query parameters changed:', event);
-  }
+    handleButtonClick(event: any): void {
+        console.log('Action button clicked:', event);
+    }
 
-  handsearchKeyChange(event: any): void {
-    console.log('Search key changed:', event);
-  }
+    handQueryParameterChange(event: any): void {
+        console.log('Query parameters changed:', event);
+    }
 
-
+    handsearchKeyChange(event: any): void {
+        console.log('Search key changed:', event);
+    }
 }
