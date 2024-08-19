@@ -8,10 +8,9 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
 import { FieldsetModule } from 'primeng/fieldset'; // Import FieldsetModule
 import { RouterModule, Routes } from '@angular/router';
-import { DialogModule } from 'primeng/dialog';
-import { DialogService } from 'primeng/dynamicdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
+import {CalendarModule} from 'primeng/calendar';
+import {DropdownModule} from 'primeng/dropdown';
+import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
 const routes: Routes = [
   {path: "",component: ComponentRateComponent}
@@ -20,18 +19,22 @@ const routes: Routes = [
 @NgModule({
   declarations: [ComponentRateComponent],
   imports: [
-    DialogModule,
+    
     CommonModule,
     ReactiveFormsModule, // Add ReactiveFormsModule here
     ButtonModule,
     RadioButtonModule,
     InputTextModule, // Add InputTextModule here
     FieldsetModule, // Add FieldsetModule here
-    MhPrimeDynamicTableModule, // Add MhPrimeDynamicTableComponent here
+    
+    CalendarModule,
+    DropdownModule,// Add MhPrimeDynamicTableComponent here
+    SearchPopupTempModule,
     RouterModule.forChild(routes),
+    
+    
 
   ],
-  providers: [DialogService, MessageService, ConfirmationService],
   exports:[ComponentRateComponent],
   bootstrap: [ComponentRateComponent]
 })
