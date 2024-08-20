@@ -9,32 +9,27 @@ import {
 } from 'src/app/api';
 import { PensionCategoryMasterService } from 'src/app/api';
 import { PensionComponentService } from 'src/app/api';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom, tap } from 'rxjs';
+import { formatDate } from '@angular/common';
+import { ToastService } from 'src/app/core/services/toast.service';
 
-interface City {
-    name: string;
-    code: string;
-}
 @Component({
     selector: 'app-component-rate',
     templateUrl: './component-rate.component.html',
     styleUrls: ['./component-rate.component.scss'],
 })
 export class ComponentRateComponent implements OnInit {
-    // added
-    tabledata: any;
-    isTableDataLoading = false;
-    cities: any[] = [];
-
     allPensionCategory$?: Observable<any>;
     pensionComponent$?: Observable<any>;
 
-    ComponentRateForm = new FormGroup({
-        // rate:  new FormControl('',Validators.required),
-        // pensionCategoryId: new FormControl('',Validators.required),
-        // description: new FormControl('', Validators.required),
+    getFormattedDate(date: Date | null): string {
+        if (date) {
+            return formatDate(date, 'yyyy-MM-dd', 'en-US');
+        }
+        return '';
+    }
 
-        //new added
+    ComponentRateForm = new FormGroup({
         categoryId: new FormControl('', Validators.required),
         breakupId: new FormControl('', Validators.required),
         effectiveFromDate: new FormControl('', Validators.required),
@@ -43,13 +38,13 @@ export class ComponentRateComponent implements OnInit {
     });
 
     constructor(
-      
         private service: PensionComponentRateService,
         private pensionCategoryMasterService: PensionCategoryMasterService,
-        private pensionComponentService: PensionComponentService
+        private pensionComponentService: PensionComponentService,
+        private PensionComponentRateService: PensionComponentRateService,
+        private toastService: ToastService,
     ) {}
     ngOnInit(): void {
-        console.log('ngOnInit');
         let payload = {
             pageSize: 10,
             pageIndex: 0,
@@ -66,38 +61,49 @@ export class ComponentRateComponent implements OnInit {
     }
 
     handleSelectedRowByPensionCategory(event: any) {
-        console.log(event);
-        // this.ComponentRateForm.controls['pensionCategoryId'].setValue(record.primaryCategoryId);
-        // this.ComponentRateForm.controls['description'].setValue(record.categoryName);
         this.ComponentRateForm.controls['categoryId'].setValue(event.id);
     }
     handleSelectedRowByPensionComponent(event: any) {
         console.log(event);
-        // this.ComponentRateForm.controls['pensionCategoryId'].setValue(record.primaryCategoryId);
-        // this.ComponentRateForm.controls['description'].setValue(record.categoryName);
+
         this.ComponentRateForm.controls['breakupId'].setValue(event.id);
     }
 
-    onSubmit() {
+    formatDate(): void {
+        const effectiveFromDate =
+            this.ComponentRateForm.get('effectiveFromDate')?.value;
+        if (effectiveFromDate) {
+            // Convert the string to a Date object
+            const dateObject = new Date(effectiveFromDate);
+            const formattedDate = this.getFormattedDate(dateObject);
+
+            this.ComponentRateForm.controls['effectiveFromDate'].setValue(
+                formattedDate
+            );
+        }
+    }
+
+    async onSubmit() {
+        this.formatDate();
         console.log(this.ComponentRateForm.value);
-    }
-
-    
-
-    // adding dynamic table
-    handleRowSelection(event: any): void {
-        console.log('Selected rows:', event);
-    }
-
-    handleButtonClick(event: any): void {
-        console.log('Action button clicked:', event);
-    }
-
-    handQueryParameterChange(event: any): void {
-        console.log('Query parameters changed:', event);
-    }
-
-    handsearchKeyChange(event: any): void {
-        console.log('Search key changed:', event);
+        if (this.ComponentRateForm.valid) {
+            await firstValueFrom(
+                this.PensionComponentRateService.createComponentRate(
+                    this.ComponentRateForm.value as ComponentRateEntryDTO
+                ).pipe(
+                    tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
+                        if (response.message) {
+                            if (response.apiResponseStatus === 1) {
+                                this.toastService.showSuccess(response.message);
+                            }
+                            else {
+                                this.toastService.showError(response.message);
+                            }
+                        }
+                      
+                    })
+                )
+            );
+        }
     }
 }

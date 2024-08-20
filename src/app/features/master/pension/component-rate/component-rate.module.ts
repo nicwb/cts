@@ -1,4 +1,3 @@
-//module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
@@ -8,34 +7,27 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputTextModule } from 'primeng/inputtext'; // Import InputTextModule
 import { FieldsetModule } from 'primeng/fieldset'; // Import FieldsetModule
 import { RouterModule, Routes } from '@angular/router';
-import {CalendarModule} from 'primeng/calendar';
-import {DropdownModule} from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
-const routes: Routes = [
-  {path: "",component: ComponentRateComponent}
-];
+const routes: Routes = [{ path: '', component: ComponentRateComponent }];
 
 @NgModule({
-  declarations: [ComponentRateComponent],
-  imports: [
-    
-    CommonModule,
-    ReactiveFormsModule, // Add ReactiveFormsModule here
-    ButtonModule,
-    RadioButtonModule,
-    InputTextModule, // Add InputTextModule here
-    FieldsetModule, // Add FieldsetModule here
-    
-    CalendarModule,
-    DropdownModule,// Add MhPrimeDynamicTableComponent here
-    SearchPopupTempModule,
-    RouterModule.forChild(routes),
-    
-    
-
-  ],
-  exports:[ComponentRateComponent],
-  bootstrap: [ComponentRateComponent]
+    declarations: [ComponentRateComponent],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule, // Add ReactiveFormsModule here
+        ButtonModule,
+        RadioButtonModule,
+        InputTextModule, // Add InputTextModule here
+        FieldsetModule, // Add FieldsetModule here
+        CalendarModule,
+        DropdownModule,
+        SearchPopupTempModule,
+        RouterModule.forChild(routes),
+    ],
+    exports: [ComponentRateComponent],
+    bootstrap: [ComponentRateComponent],
 })
-export class ComponentRateModule { }
+export class ComponentRateModule {}
