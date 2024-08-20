@@ -25,14 +25,7 @@
                                 type="text"
                                 formControlName="categoryId"
                             />
-                            <!-- <button
-                                type="button"
-                                pButton
-                                pRipple
-                                icon="pi pi-search"
-                                class="rounded-r-lg"
-                                (click)="searchOne()"
-                            ></button> -->
+
                             <app-search-popup
                                 name=""
                                 [service$]="allPensionCategory$"
@@ -55,14 +48,6 @@
                                 type="text"
                                 formControlName="breakupId"
                             />
-                            <!-- <button
-                                type="button"
-                                pButton
-                                pRipple
-                                icon="pi pi-search"
-                                class="rounded-r-lg"
-                                (click)="searchTwo()"
-                            ></button> -->
 
                             <app-search-popup
                                 name=""
@@ -77,7 +62,7 @@
                     <div class="field col-12 md:col-6">
                         <div class="">
                             <label htmlFor="date" class="text-lg">Date</label>
-                            <!-- <input pInputText id="city" type="date" placeholder="With Effect From" /> -->
+
                             <p-calendar
                                 formControlName="effectiveFromDate"
                             ></p-calendar>
