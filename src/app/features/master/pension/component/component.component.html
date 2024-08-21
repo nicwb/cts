@@ -58,7 +58,7 @@
                 <input
                     type="text"
                     pinputtext=""
-                    formControlName="ComponentName"
+                    formControlName="componentName"
                     placeholder="Description "
                     id="description"
                     class="p-inputtext p-component p-element w-full"
@@ -68,13 +68,13 @@
                 <label for="payment" class="block mb-1 text-color text-lg"
                     >Component Type:</label
                 >
-                <input
-                    type="text"
-                    formControlName="ComponentType"
-                    placeholder="Payment or Deduction"
-                    (change)="check()"
-                    class="p-inputtext p-component p-element w-full"
-                />
+                <p-dropdown
+                    [options]="Payment_Deduction"
+                    formControlName="componentType"
+                    placeholder="Select payment or deduction"
+                    [showClear]="true"
+                    class="p-component p-element w-full"
+                ></p-dropdown>
             </div>
         </div>
 
@@ -83,13 +83,7 @@
                 <label for="" class="block mb-1 text-color text-lg"
                     >Relief Allowed:</label
                 >
-                <p-dropdown
-                    [options]="allowed"
-                    formControlName="ReliefFlag"
-                    placeholder="Select Yes or No"
-                    [showClear]="true"
-                    class="p-component p-element w-full"
-                ></p-dropdown>
+                <p-toggleButton formControlName="reliefFlag" onLabel="Yes" offLabel="No" [style]="{'width': '10em'}"></p-toggleButton>
             </div>
         </div>
     </form>

@@ -37,7 +37,6 @@ export class ComponentComponent {
     tableData: any;
     count: number = 0;
     isTableDataLoading: boolean = false;
-    treasuryReceiptId!: string;
     selectedRow: any;
     PrimaryOption: SelectItem[] = [];
     type: SelectItem[] = [];
@@ -45,8 +44,6 @@ export class ComponentComponent {
     rowData: any;
     payment: SelectItem = { value: '' };
     Payment_Deduction: SelectItem[] = [];
-    relief_allowed: SelectItem = { value: '' };
-    allowed: SelectItem[] = [];
     connection: string = '';
     Payment: boolean = false;
     Deduction: boolean = false;
@@ -55,6 +52,7 @@ export class ComponentComponent {
         val:false,
         data:null
     };
+    
     constructor(
         private datePipe: DatePipe,
         private toastService: ToastService,
@@ -67,14 +65,9 @@ export class ComponentComponent {
 
     ngOnInit(): void {
         this.initializeForm();
-
-        this.allowed = [
-            { label: 'Y', value: true },
-            { label: 'N', value: false },
-        ];
         this.Payment_Deduction = [
-            { label: 'P', value: 'Payment' },
-            { label: 'D', value: 'Deduction' },
+            { value: 'P', label: 'Payment' },
+            { value: 'D', label: 'Deduction' },
         ];
 
         this.tableQueryParameters = {
@@ -85,13 +78,6 @@ export class ComponentComponent {
         this.getData();
     }
 
-    check() {
-        if (this.connection == 'P') {
-            this.Payment = true;
-        } else if (this.connection == 'D') {
-            this.Deduction = true;
-        }
-    }
 
     showInsertDialog() {
         this.displayInsertModal = true;
@@ -134,12 +120,12 @@ export class ComponentComponent {
         const payload = this.tableQueryParameters;
         payload.filterParameters = [{ field: "ComponentName", value: data, operator: 'contains'}];
         payload.pageIndex=0;
-        console.log(payload);
+        
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.Service.getAllComponents(payload)
         );
-        console.log(response);
+        
         if(response.result?.data?.length!=0){
             this.tableData = response.result;
             this.refresh_val = true;
@@ -164,12 +150,12 @@ export class ComponentComponent {
     }
     initializeForm(): void {
         this.ComponentForm = this.fb.group({
-            ComponentName: ['', [Validators.required]],
-            ComponentType: [
+            componentName: ['', [Validators.required]],
+            componentType: [
                 '',
-                [Validators.required, Validators.pattern(/^['P','D']/)],
+                [Validators.required],
             ],
-            ReliefFlag: [null, [Validators.required]],
+            reliefFlag: [null, [Validators.required]],
         });
     }
 
@@ -194,7 +180,6 @@ export class ComponentComponent {
             if (response.apiResponseStatus === 1) {
                 // Assuming 1 means success
                 console.log('Form submitted successfully:', response);
-                console.log(response.result);
                 this.getData();
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
@@ -240,7 +225,6 @@ export class ComponentComponent {
         const response = await firstValueFrom(
             this.Service.getAllComponents(data)
         );
-        console.log(response);
         if (response.apiResponseStatus != 1) {
             
             this.toastService.showAlert(
