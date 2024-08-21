@@ -83,27 +83,60 @@ export class ComponentRateComponent implements OnInit {
         }
     }
 
+    // async onSubmit() {
+    //     this.formatDate();
+    //     console.log(this.ComponentRateForm.value);
+    //     if (this.ComponentRateForm.valid) {
+    //         await firstValueFrom(
+    //             this.PensionComponentRateService.createComponentRate(
+    //                 this.ComponentRateForm.value as ComponentRateEntryDTO
+    //             ).pipe(
+    //                 tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
+    //                     if (response.message) {
+    //                         if (response.apiResponseStatus === 1) {
+    //                             this.toastService.showSuccess(response.message);
+    //                         }
+    //                         else {
+    //                             this.toastService.showError(response.message);
+    //                         }
+    //                     }
+                      
+    //                 })
+    //             )
+    //         );
+    //     }
+    // }
+
     async onSubmit() {
         this.formatDate();
-        console.log(this.ComponentRateForm.value);
+    
         if (this.ComponentRateForm.valid) {
+            // Convert the form values to the expected DTO format
+            const formValues = this.ComponentRateForm.value;
+            const componentRateEntryDTO: ComponentRateEntryDTO = {
+                categoryId: formValues.categoryId ? Number(formValues.categoryId) : 0, // Convert string to number
+                breakupId: formValues.breakupId ? Number(formValues.breakupId) : 0,     // Convert string to number
+                effectiveFromDate: formValues.effectiveFromDate || '',
+                rateType: formValues.rateType || '',
+                rateAmount: formValues.rateAmount ? Number(formValues.rateAmount) : 0,
+            };
+    
             await firstValueFrom(
                 this.PensionComponentRateService.createComponentRate(
-                    this.ComponentRateForm.value as ComponentRateEntryDTO
+                    componentRateEntryDTO
                 ).pipe(
                     tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
                         if (response.message) {
                             if (response.apiResponseStatus === 1) {
                                 this.toastService.showSuccess(response.message);
-                            }
-                            else {
+                            } else {
                                 this.toastService.showError(response.message);
                             }
                         }
-                      
                     })
                 )
             );
         }
     }
+    
 }
