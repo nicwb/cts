@@ -16,8 +16,8 @@ import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 export interface PensionCategoryResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    primaryCategoryId?: number;
-    subCategoryId?: number;
+    primaryCategoryId: number;
+    subCategoryId: number;
     id?: number;
     categoryName?: string | null;
     primaryCategory?: PensionPrimaryCategoryResponseDTO;

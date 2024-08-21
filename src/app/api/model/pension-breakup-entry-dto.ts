@@ -13,8 +13,8 @@
 
 export interface PensionBreakupEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    componentName?: string | null;
-    componentType?: string;
-    reliefFlag?: boolean;
+    componentName: string;
+    componentType: string;
+    reliefFlag: boolean;
 }
 

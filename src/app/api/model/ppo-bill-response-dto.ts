@@ -15,17 +15,17 @@ import { PensionerBankAcResponseDTO } from './pensioner-bank-ac-response-dto';
 
 export interface PpoBillResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    pensionerId?: number;
-    bankAccountId?: number;
-    ppoId?: number;
-    fromDate?: string;
-    toDate?: string;
-    billType?: string;
-    billDate?: string;
-    grossAmount?: number;
-    byTransferAmount?: number;
-    netAmount?: number;
-    breakups?: Array<PpoBillBreakupEntryDTO> | null;
+    pensionerId: number;
+    bankAccountId: number;
+    ppoId: number;
+    fromDate: string;
+    toDate: string;
+    billType: string;
+    billDate: string;
+    grossAmount: number;
+    byTransferAmount: number;
+    netAmount: number;
+    breakups: Array<PpoBillBreakupEntryDTO>;
     id?: number;
     bankAccount?: PensionerBankAcResponseDTO;
 }

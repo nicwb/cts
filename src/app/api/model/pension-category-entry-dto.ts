@@ -13,7 +13,7 @@
 
 export interface PensionCategoryEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    primaryCategoryId?: number;
-    subCategoryId?: number;
+    primaryCategoryId: number;
+    subCategoryId: number;
 }
 
