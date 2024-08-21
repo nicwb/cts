@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ManualPpoRegisterService } from 'src/app/core/services/manualPpoRegister/manual-ppo-register.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
-
 
 @Component({
   selector: 'app-manual-ppo-register',
@@ -14,26 +13,34 @@ import * as XLSX from 'xlsx';
 export class ManualPpoRegisterComponent implements OnInit {
   ManualPpoRegisterForm: FormGroup = new FormGroup({});
 
-  constructor(private fb: FormBuilder, private toastService: ToastService, private manualPpoRegisterService: ManualPpoRegisterService) {
-    
-   }
+  constructor(
+    private fb: FormBuilder,
+    private toastService: ToastService,
+    private manualPpoRegisterService: ManualPpoRegisterService
+  ) {}
 
-   
   ngOnInit(): void {
     this.ManualPpoRegisterForm = this.fb.group({
-      generation: [''],
+      generation: ['', Validators.required],
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required]
-      
-    });
+    }, { validators: this.dateRangeValidator });
   }
 
-  onRefresh(): void{
+  dateRangeValidator: ValidatorFn = (formGroup: AbstractControl): { [key: string]: any } | null => {
+    const fromDate = formGroup.get('fromDate')?.value;
+    const toDate = formGroup.get('toDate')?.value;
+    const generation = formGroup.get('generation')?.value;
+
+    return fromDate && toDate && generation ? null : { 'invalidForm': true };
+  };
+
+  onRefresh(): void {
     this.ManualPpoRegisterForm.reset();
   }
 
   onGenerate(generationType: string) {
-    console.log("The selected generation type is :" , generationType);
+    console.log("The selected generation type is :", generationType);
     if (generationType === 'pdf') {
       this.generatePDF();
     } else if (generationType === 'excel') {
@@ -116,7 +123,7 @@ export class ManualPpoRegisterComponent implements OnInit {
       "enhancePensionAmount": 10000,
       "reducedPensionAmount": 8000,
       "religion": "H"
-  };
+    };
     this.manualPpoRegisterService.generateManualPpoRegister(JSON.stringify(payload)).subscribe(
       (response) => {
         this.createExcel(response);
@@ -142,7 +149,4 @@ export class ManualPpoRegisterComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Manual PPO Register');
     XLSX.writeFile(wb, 'manual-ppo-register.xlsx');
   }
-
-
 }
-

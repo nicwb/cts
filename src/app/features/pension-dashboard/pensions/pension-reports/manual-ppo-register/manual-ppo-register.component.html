@@ -7,7 +7,7 @@
                         <form [formGroup]="ManualPpoRegisterForm">
                             <div class="formgroup-inline">
                                 <p-radioButton name="generation" value="pdf"
-                                    formControlName="generation" label="Download as PDF" ></p-radioButton>
+                                    formControlName="generation" label="Download as PDF"></p-radioButton>
                                 <p-radioButton name="generation" value="excel"
                                     formControlName="generation" label="Download as Excel"></p-radioButton>
                             </div>
@@ -16,15 +16,13 @@
                                     <div class="formgroup-inline">
                                         <label for="fromDate" class="col-12 mb-2 md:col-2 md:mb-0">From Date:</label>
                                         <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                                            <p-calendar formControlName="fromDate"
-                                                [showIcon]="true"></p-calendar>
+                                            <p-calendar formControlName="fromDate" [showIcon]="true"></p-calendar>
                                         </div>
 
                                         <label for="toDate"
                                             class="col-12 mb-2 md:col-2 md:mb-0">To Date:</label>
                                         <div class="field col-12 mb-2 lg:col-4 lg:mb-0" style="width: 300px;">
-                                            <p-calendar formControlName="toDate"
-                                                [showIcon]="true"></p-calendar>
+                                            <p-calendar formControlName="toDate" [showIcon]="true"></p-calendar>
                                         </div>
                                     </div>
                                 </p-fieldset>
@@ -34,8 +32,8 @@
                 </div>
                 <div class="flex flex-col mt-1 align-items-center justify-content-center">
                     <div class="flex flex-wrap gap-2">
-                      <button pButton pRipple (click)="onGenerate(ManualPpoRegisterForm.value.generation)" type="generateReport" class="p-button-raised p-button-info" [disabled]="!ManualPpoRegisterForm.valid"> Generate Report</button>
-                      <button pButton pRipple (click)="onRefresh()" type="refresh" class="p-button-raised p-button-info"> Refresh</button>
+                      <button pButton pRipple (click)="onGenerate(ManualPpoRegisterForm.value.generation)" type="button" class="p-button-raised p-button-info" [disabled]="ManualPpoRegisterForm.invalid || !ManualPpoRegisterForm.get('generation')?.value"> Generate Report</button>
+                      <button pButton pRipple (click)="onRefresh()" type="button" class="p-button-raised p-button-info"> Refresh</button>
                     </div>
                   </div>
             </div>

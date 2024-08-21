@@ -9,40 +9,40 @@ export class PdfGenerationService {
   constructor() { }
 
   generatePdf(reportData: any): void {
-    console.log("Report Data: ",reportData);
-    
-    
+    console.log("Report Data: ", reportData);
+    console.log("Bank Name Array: ", reportData.bankName);
+
       
     const doc = new jsPDF();
 
     const addHeader = (startY: number) => {
-      doc.setFontSize(15);
+      doc.setFontSize(13);
       doc.text('Government of West Bengal - Treasury', 65, startY);
-      doc.setFontSize(12);
-      doc.text(`${reportData.result.bankAccount.branchName} I`, 95, startY + 5);
+      doc.setFontSize(11);
+      doc.text(`${reportData.branchName} I`, 95, startY + 5);
       doc.setFontSize(10);
       doc.text('First Pension Bill', 85, startY + 10);
-      doc.text('For the Period of 01/04/2024 To 30/04/2024', 74, startY + 15);
+      doc.text(`For the Period of ${reportData.response.result.pensioner.dateOfCommencement} To ${reportData.response.result.billGeneratedUptoDate}`, 74, startY + 15);
 
       
       doc.line(10, startY + 20, 200, startY + 20);
 
       doc.setFontSize(8);
-      doc.text(`BILL NUMBER: 2277`, 10, startY + 30);
-      doc.text('VOUCHER NUMBER: 2071/109', 130, startY + 30);
-      doc.text(`BILL DATE: ${reportData.result.billGeneratedUptoDate}`, 10, startY + 35);
-      doc.text(`VOUCHER DATE: 08/08/2024`, 130, startY + 35);
-      doc.text(`PPO ID: ${reportData.result.pensioner.ppoId}`, 10, startY + 40);
-      doc.text(`PPO NUMBER: ${reportData.result.pensioner.ppoNo}`, 130, startY + 40);
-
-      doc.text(`BANK NAME: ${reportData.result.bankAccount.bankName}`, 10, startY + 45);
-      doc.text(`BANK ACCOUNT: ${reportData.result.bankAccount.bankAcNo}`, 130, startY + 45);
-      doc.text('BANK ADDRESS: KHEJURIA', 10, startY + 50);
-      doc.text(`COMMENCEMENT DATE: ${reportData.result.pensioner.dateOfCommencement}`, 130, startY + 50);
-      doc.text('ACCOUNT HEAD: 18-2071-01-109-001-04-V', 10, startY + 55);
-      doc.text('SANCTION ORDER NUMBER: L/P/00704/2024', 130, startY + 55);
-      doc.text(`PENSIONER NAME: ${reportData.result.pensioner.pensionerName} `, 10, startY+60);
-      doc.text('CATEGORY: EDUCATION PENSION', 130, startY+ 60);
+      doc.text(`BILL ID: ${reportData.response.result.billId}`, 10, startY + 30);
+      doc.text(`VOUCHER NUMBER: ${reportData.response.result.treasuryVoucherNo}`, 130, startY + 30);
+      doc.text(`BILL DATE: ${reportData.response.result.billGeneratedUptoDate}`, 10, startY + 35);
+      doc.text(`VOUCHER DATE: ${reportData.response.result.treasuryVoucherDate}`, 130, startY + 35);
+      doc.text(`PPO ID: ${reportData.response.result.pensioner.ppoId}`, 10, startY + 40);
+      doc.text(`PPO NUMBER: ${reportData.response.result.pensioner.ppoNo}`, 130, startY + 40);
+      const bankName = reportData.bankName && reportData.bankName[0] ? reportData.bankName[0].name : 'Unknown Bank Name';
+      doc.text(`BANK NAME: ${bankName}`, 10, startY + 45);
+      doc.text(`BANK ACCOUNT: ${reportData.response.result.bankAccount.bankAcNo}`, 130, startY + 45);
+      doc.text(`BANK ADDRESS: ${reportData.branchAddress.branchAddress}`, 10, startY + 50);
+      doc.text(`COMMENCEMENT DATE: ${reportData.response.result.pensioner.dateOfCommencement}`, 10, startY + 55);
+      doc.text(`ACCOUNT HEAD: ${reportData.response.result.pensionCategory.primaryCategory.hoaId}`, 130, startY + 55);
+      //doc.text('SANCTION ORDER NUMBER: L/P/00704/2024', 10, startY + 60);
+      doc.text(`PENSIONER NAME: ${reportData.response.result.pensioner.pensionerName} `, 130, startY+60);
+      doc.text(`CATEGORY: ${reportData.response.result.pensionCategory.categoryName} `, 10, startY+ 65);
     };
 
     const addTable = (startY: number, data: any[]) => {
@@ -73,7 +73,7 @@ export class PdfGenerationService {
 
     
     addHeader(10);
-    let finalY = addTable(80, reportData.result.pensionerPayments
+    let finalY = addTable(80, reportData.response.result.pensionerPayments
     );
 
     
@@ -90,7 +90,7 @@ export class PdfGenerationService {
     // doc.text(`BILL DATE: 07/08/2024`, 10, finalY + 25);
     // doc.text(`PPO ID: 27698`, 10, finalY + 30);
     // doc.text(`PPO NUMBER: PRI/S/MLD/K/00010/2024`, 150, finalY + 30);
-    doc.text('Pay Rs. ***790454( Seven Lakh Ninety Thousand Four Hundred and Fifty Four Only) as per beneficiary list encolsed though ECS', 10, finalY + 35);
+    //doc.text('Pay Rs. ***790454( Seven Lakh Ninety Thousand Four Hundred and Fifty Four Only) as per beneficiary list encolsed though ECS', 10, finalY + 35);
     doc.text('Date of Issue of Cheque.......',10, finalY + 50);
     doc.text('Cheque Number: ', 10, finalY + 55);
 
