@@ -13,10 +13,10 @@
 
 export interface PpoBillBreakupEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    ppoId?: number;
-    revisionId?: number;
-    fromDate?: string;
-    toDate?: string;
-    breakupAmount?: number;
+    ppoId: number;
+    revisionId: number;
+    fromDate: string;
+    toDate: string;
+    breakupAmount: number;
 }
 

@@ -12,13 +12,13 @@
 
 
 export interface ManualPpoReceiptResponseDTO { 
-    ppoNo?: string | null;
-    pensionerName?: string | null;
-    dateOfCommencement?: string;
+    ppoNo: string;
+    pensionerName: string;
+    dateOfCommencement: string;
     mobileNumber?: string | null;
-    receiptDate?: string;
-    psaCode?: string;
-    ppoType?: string;
+    receiptDate: string;
+    psaCode: string;
+    ppoType: string;
     id?: number;
     treasuryReceiptNo?: string | null;
 }

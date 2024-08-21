@@ -13,9 +13,9 @@
 
 export interface PensionBreakupResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    componentName?: string | null;
-    componentType?: string;
-    reliefFlag?: boolean;
+    componentName: string;
+    componentType: string;
+    reliefFlag: boolean;
     id?: number;
 }
 
