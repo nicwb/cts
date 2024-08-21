@@ -7,6 +7,7 @@ import { TableModule } from 'primeng/table';
 import { SearchPopupComponentTemp } from './ search-popup.component';
 import { FormsModule } from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
+
 @NgModule({
   declarations: [SearchPopupComponentTemp],
   imports: [
@@ -15,7 +16,8 @@ import {InputTextModule} from 'primeng/inputtext';
     DialogModule,
     TableModule,
     FormsModule,
-    InputTextModule
+    InputTextModule,
+    
   ],
   exports: [SearchPopupComponentTemp]
 })

@@ -1,13 +1,13 @@
-<p-button label="{{name}}" icon="pi pi-search" (click)="showDialog()"></p-button>
+<p-button label="{{name}}" icon="pi pi-search" (click)="showDialog()" [style]="buttonStyle"></p-button>
 
-<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style" [responsive]="true">
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style"  [responsive]="true">
   
   <span class="p-float-label mb-3">
     <input id="float-input" type="text" pInputText [(ngModel)]="searchTerm" (ngModelChange)="searchRecords()" /> 
     <label for="float-input">Search data</label>
   </span>
 
-  <p-table [value]="data.data" selectionMode="single" [scrollable]="true">
+  <p-table #searchPopupDIT [value]="data.data" selectionMode="single" [scrollable]="true" [loading]="isLoading" (onLazyLoad)="loadMore($event)" [totalRecords]="totalRecords">
         <ng-template pTemplate="header">
           <tr>
             <th *ngFor="let col of cols">{{ col.header }}</th>
