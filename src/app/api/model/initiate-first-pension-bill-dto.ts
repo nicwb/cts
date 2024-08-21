@@ -14,6 +14,6 @@
 export interface InitiateFirstPensionBillDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoId: number;
-    toDate?: string;
+    toDate: string;
 }
 

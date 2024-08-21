@@ -17,11 +17,11 @@ import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 export interface InitiateFirstPensionBillResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    pensioner: PensionerListItemDTO;
-    bankAccount: PensionerBankAcResponseDTO;
-    pensionCategory: PensionCategoryResponseDTO;
-    pensionerPayments: Array<PpoPaymentListItemDTO>;
-    billGeneratedUptoDate: string;
+    pensioner?: PensionerListItemDTO;
+    bankAccount?: PensionerBankAcResponseDTO;
+    pensionCategory?: PensionCategoryResponseDTO;
+    pensionerPayments?: Array<PpoPaymentListItemDTO> | null;
+    billGeneratedUptoDate?: string;
     billId?: number;
     billDate?: string;
     treasuryVoucherNo?: string | null;

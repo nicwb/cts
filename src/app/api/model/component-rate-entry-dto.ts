@@ -9,16 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PensionBreakupResponseDTO } from './pension-breakup-response-dto';
 
 
 export interface ComponentRateEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    categoryId?: number;
-    breakupId?: number;
-    breakup?: PensionBreakupResponseDTO;
+    categoryId: number;
+    breakupId: number;
     effectiveFromDate: string;
-    rateAmount?: number;
-    rateType?: string;
+    rateAmount: number;
+    rateType: string;
 }
 
