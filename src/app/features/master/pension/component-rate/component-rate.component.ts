@@ -85,18 +85,24 @@ export class ComponentRateComponent implements OnInit {
 
     async onSubmit() {
         this.formatDate();
-    
+
         if (this.ComponentRateForm.valid) {
             // Convert the form values to the expected DTO format
             const formValues = this.ComponentRateForm.value;
             const componentRateEntryDTO: ComponentRateEntryDTO = {
-                categoryId: formValues.categoryId ? Number(formValues.categoryId) : 0, // Convert string to number
-                breakupId: formValues.breakupId ? Number(formValues.breakupId) : 0,     // Convert string to number
+                categoryId: formValues.categoryId
+                    ? Number(formValues.categoryId)
+                    : 0, // Convert string to number
+                breakupId: formValues.breakupId
+                    ? Number(formValues.breakupId)
+                    : 0, // Convert string to number
                 effectiveFromDate: formValues.effectiveFromDate || '',
                 rateType: formValues.rateType || '',
-                rateAmount: formValues.rateAmount ? Number(formValues.rateAmount) : 0,
+                rateAmount: formValues.rateAmount
+                    ? Number(formValues.rateAmount)
+                    : 0,
             };
-    
+
             await firstValueFrom(
                 this.PensionComponentRateService.createComponentRate(
                     componentRateEntryDTO
@@ -114,5 +120,4 @@ export class ComponentRateComponent implements OnInit {
             );
         }
     }
-    
 }
