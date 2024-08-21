@@ -1,265 +1,258 @@
-<div class="container">
-    <form [formGroup]="pensionForm">
-        <!-- <div class="grid"> -->
-        <!-- <div class="col-12"> -->
-        <div class="card">
-            <div>
-                <h3
-                    class="text-4xl font-bold text-gray-900 leading-tight mb-2 border-t-4 border-b-4 border-purple-600 py-4 ml-6">
-                    First Pension Bill Generation
-                </h3>
-                <p class="text-lg text-gray-800 mb-4 ml-6">
-                    This section captures the First Pension Bill Generation details for a
-                    Pensioner. The information from here will be used for
-                    identifying the Pensioner.
-                </p>
+<form [formGroup]="pensionForm" class="mx-8">
+    <!-- <div class="grid"> -->
+    <!-- <div class="col-12"> -->
+    <div class="card">
+        <div>
+            <h3
+                class="text-4xl font-bold text-gray-900 leading-tight mb-2 border-t-4 border-b-4 border-purple-600 py-4 ml-6">
+                First Pension Bill Generation
+            </h3>
+            <p class="text-lg text-gray-800 mb-4 ml-6">
+                This section captures the First Pension Bill Generation details for a
+                Pensioner. The information from here will be used for
+                identifying the Pensioner.
+            </p>
+            <div class="col-12 md:col-12">
+                <div class="card mx-5 py-3">
+                    <h5>PPO ID Details:</h5>
+                    <hr class="border-b-2 h-10 border-dashed">
+                    <div class="grid col-12">
+                        <label for="PpoId" class="col-12 md:col-1">
+                            PPO ID:
+                        </label>
+                        <input class="col-12 md:col-4" id="PpoId" type="text" pInputText formControlName="ppoId"
+                            placeholder="PPO ID" [(ngModel)]="ppoId" />
 
-                <!-- <div class="flex flex-column gap-4 mt-6">
-                    <p-steps [model]="steps" [(activeIndex)]="currentStepIndex"></p-steps>
-                    <div class="my-4 px-4"> -->
-                <!-- Step 1: Pension Details -->
-                <!-- <div *ngIf="currentStepIndex === 0" class="flex flex-column gap-3"> -->
-                <div class="col-12 md:col-12">
-                    <div class="card mx-5 py-3">
-                        <h5 >PPO ID Details:</h5>
-                        <hr class="border-b-2 h-10 border-dashed">
-                        <div class="grid col-12">
-                            <label for="PpoId" class="col-12 md:col-1">
-                                PPO ID:
-                            </label>
-                            <input class="col-12 md:col-4" id="PpoId" type="text" pInputText formControlName="ppoId"
-                                placeholder="PPO ID" [(ngModel)]="ppoId" />
+                        <!-- <div *ngIf="ppoList$"> -->
+                            <!-- <h1>amit</h1> -->
+                            <app-search-popup name="" [service$]="ppoList$" class=""
+                                (return)="handleSelectedRow($event)" style="width: 10px;"></app-search-popup>
 
-                            <button pButton type="button" icon="pi pi-search" (click)=" openSearchPopup()"
-                                class="w-1/2"></button>
+                                <!-- <button pButton type="button" icon="pi pi-search"
+                                class="w-1/2"></button> -->
 
-                            <label for="PpoId" class="col-12 md:col-1 ml-4">
-                                Period To:
-                            </label>
+                        <!-- </div> -->
+                        <label for="PpoId" class="col-12 md:col-1 ml-4">
+                            Period To:
+                        </label>
 
-                            <input class="col-12 md:col-4" pInputText id="periodTo" type="date"
-                                formControlName="periodTo" [(ngModel)]="period" />
+                        <input class="col-12 md:col-4" pInputText id="periodTo" type="date" formControlName="periodTo"
+                            [(ngModel)]="period" />
 
-                            <!-- <div class="flex flex-col mt-1 align-items-center justify-content-center"> -->
-                            <div class="flex flex-wrap gap-2">
-                                <button type="submit" pButton pRipple (click)="getvalue()">Generate</button>
-                            </div>
-                            <!-- </div> -->
-
+                        <!-- <div class="flex flex-col mt-1 align-items-center justify-content-center"> -->
+                        <div class="flex flex-wrap gap-2">
+                            <button type="submit" pButton pRipple (click)="getvalue()" [disabled]="!isButtonEnabled">Generate</button>
                         </div>
+                        <!-- </div> -->
+
                     </div>
                 </div>
-                <!-- Step 2: Pensioner Details -->
-                <div class="flex justify-center card mx-6 my-2 py-1">
-                    <br />
+            </div>
+            <!-- Step 2: Pensioner Details -->
+            <div class="flex justify-center card mx-6 my-2 py-1" *ngIf="isDataLoaded">
+                <br />
 
-                    <div class="p-fluid p-formgrid grid md:col-12">
-                        <div class="col-12 md:col-12 pb-1">
-                            <h5>Pension Details</h5>
-                            <hr class="border-b-2 h-10 border-dashed">
-                        </div>
+                <div class="p-fluid p-formgrid grid md:col-12">
+                    <div class="col-12 md:col-12 pb-1">
+                        <h5>Pension Details</h5>
+                        <hr class="border-b-2 h-10 border-dashed">
+                    </div>
 
-                        <div class="field col-12 md:col-4 mb-0 py-0">
-                            <label htmlFor="ppoNo">PPO NO</label>
-                            <input pInputText id="ppoNo" type="text" formControlName="ppoNo" [attr.disabled]="true"
-                                class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                            <div *ngIf="
+                    <div class="field col-12 md:col-4 mb-0 py-0">
+                        <label htmlFor="ppoNo">PPO NO</label>
+                        <input pInputText id="ppoNo" type="text" formControlName="ppoNo" [attr.disabled]="true"
+                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('ppoNo')?.errors &&
                                     pensionForm.get('ppoNo')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('ppoNo')?.errors?.['required']" class="p-error">
-                                    Please enter PPO No
-                                </div>
+                            <div *ngIf="pensionForm.get('ppoNo')?.errors?.['required']" class="p-error">
+                                Please enter PPO No
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0">
-                            <label htmlFor="pensionerName">Pensioner Name</label>
-                            <input pInputText id="pensionerName" type="text" formControlName="pensionerName"
-                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                            <div *ngIf="
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0">
+                        <label htmlFor="pensionerName">Pensioner Name</label>
+                        <input pInputText id="pensionerName" type="text" formControlName="pensionerName"
+                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('pensionerName')?.errors &&
                                     pensionForm.get('pensionerName')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('pensionerName')?.errors?.['required']" class="p-error">
-                                    Please enter pensioner name
-                                </div>
+                            <div *ngIf="pensionForm.get('pensionerName')?.errors?.['required']" class="p-error">
+                                Please enter pensioner name
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0">
-                            <label htmlFor="periodFrom">Period From</label>
-                            <input pInputText id="periodFrom" formControlName="periodFrom" type="date"
-                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                            <div *ngIf="
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0">
+                        <label htmlFor="periodFrom">Period From</label>
+                        <input pInputText id="periodFrom" formControlName="periodFrom" type="date"
+                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('periodFrom')?.errors &&
                                     pensionForm.get('periodFrom')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('periodFrom')?.errors?.['required']" class="p-error">
-                                    Please enter period from
-                                </div>
+                            <div *ngIf="pensionForm.get('periodFrom')?.errors?.['required']" class="p-error">
+                                Please enter period from
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                            <label htmlFor="periodTo">Period To</label>
-                            <input pInputText id="periodTo" type="date" formControlName="periodTo"
-                                [attr.disabled]="true" [(ngModel)]="period" class="bg-cyan-200"
-                                [ngStyle]="{'border-color' : 'black'}" />
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                        <label htmlFor="periodTo">Period To</label>
+                        <input pInputText id="periodTo" type="date" formControlName="periodTo" [attr.disabled]="true"
+                            [(ngModel)]="period" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
 
-                            <div *ngIf="
+                        <div *ngIf="
                                     pensionForm.get('periodTo')?.errors &&
                                     pensionForm.get('periodTo')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('periodTo')?.errors?.['required']" class="p-error">
-                                    Please enter period to
-                                </div>
+                            <div *ngIf="pensionForm.get('periodTo')?.errors?.['required']" class="p-error">
+                                Please enter period to
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                            <label htmlFor="bankName">Bank Name</label>
-                            <input pInputText id="bankName" type="text" formControlName="bankName"
-                                [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                            <div *ngIf="
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                        <label htmlFor="bankName">Bank Name</label>
+                        <input pInputText id="bankName" type="text" formControlName="bankName" [attr.disabled]="true"
+                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('bankName')?.errors &&
                                     pensionForm.get('bankName')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('bankName')?.errors?.['required']" class="p-error">
-                                    Please enter bank name
-                                </div>
+                            <div *ngIf="pensionForm.get('bankName')?.errors?.['required']" class="p-error">
+                                Please enter bank name
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                            <label htmlFor="accountNo">Account NO</label>
-                            <input pInputText id="accountNo" type="number" class="remove-arrow"
-                                formControlName="accountNo" [attr.disabled]="true" class="bg-cyan-200"
-                                [ngStyle]="{'border-color' : 'black'}" />
-                            <div *ngIf="
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                        <label htmlFor="accountNo">Account NO</label>
+                        <input pInputText id="accountNo" type="number" class="remove-arrow" formControlName="accountNo"
+                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('accountNo')?.errors &&
                                     pensionForm.get('accountNo')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('accountNo')?.errors?.['required']" class="p-error">
-                                    Please enter account no
-                                </div>
+                            <div *ngIf="pensionForm.get('accountNo')?.errors?.['required']" class="p-error">
+                                Please enter account no
                             </div>
                         </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                            <label htmlFor="billDate">Bill Date</label>
-                            <input pInputText id="billDate" type="date" formControlName="billDate"
-                                [attr.disabled]="true" class="bg-cyan-200"
-                                [ngStyle]="{'border-color' : 'black', 'font-color':'black'}" />
-                            <div *ngIf="
+                    </div>
+                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
+                        <label htmlFor="billDate">Bill Date</label>
+                        <input pInputText id="billDate" type="date" formControlName="billDate" [attr.disabled]="true"
+                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black', 'font-color':'black'}" />
+                        <div *ngIf="
                                     pensionForm.get('billDate')?.errors &&
                                     pensionForm.get('billDate')?.touched
                                 ">
-                                <div *ngIf="pensionForm.get('billDate')?.errors?.['required']" class="p-error">
-                                    Please enter bill date
-                                </div>
-                            </div>
-                        </div>
-                        <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                            <label htmlFor="paymentMode">Payment Mode</label>
-                            <p-dropdown optionLabel="name" formControlName="paymentMode"
-                                [options]="dropdownItems"></p-dropdown>
-                            <div *ngIf="
-                                    pensionForm.get('paymentMode')?.errors &&
-                                    pensionForm.get('paymentMode')?.touched
-                                ">
-                                <div *ngIf="pensionForm.get('paymentMode')?.errors?.['required']" class="p-error">
-                                    Please enter payment mode
-                                </div>
+                            <div *ngIf="pensionForm.get('billDate')?.errors?.['required']" class="p-error">
+                                Please enter bill date
                             </div>
                         </div>
                     </div>
+
                 </div>
-                <!-- </div> -->
-
-                <!-- Step 2: Bill Details -->
-                <!-- <div *ngIf="currentStepIndex === 1" class="flex flex-column gap-3"> -->
-                    <div class="flex justify-center card mx-6 mt-2 mb-2 py-0"  *ngIf="isDataLoaded">
-                        <div class="col-12">
-                            <h5>Bill Details</h5>
-                            <hr class="border-b-2 h-10 border-dashed">
-                            <p-table class="justify-center" [value]="[pensioncategory]" dataKey="id" [responsive]="true" [scrollable]="true" scrollHeight="300px" *ngIf="pensioncategory">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                      <th pSortableColumn="id">Bill No<p-sortIcon field="id"></p-sortIcon></th>
-                                      <th pSortableColumn="categoryName">Description<p-sortIcon field="categoryName"></p-sortIcon></th>
-                                      <th pSortableColumn="hoaId">Account Head<p-sortIcon field="primaryCategory.hoaId"></p-sortIcon></th>
-                                      <th pSortableColumn="grossAmount">Gross Amount<p-sortIcon field="grossAmount"></p-sortIcon></th>
-                                      <th pSortableColumn="rateAmount">By Transfer<p-sortIcon field="rateAmount"></p-sortIcon></th>
-                                      <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon></th>
-                                      <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
-                                    </tr>
-                                  </ng-template>
-                                <ng-template pTemplate="body" let-category>
-                                  <tr>
-                                    <td></td>
-                                    <td>{{ category.categoryName }}</td>
-                                    <td>{{ category.primaryCategory.hoaId }}</td>
-                                    <td>{{ totalDueAmount }}</td>
-                                    <td>0</td>
-                                    <td>{{ totalDueAmount }}</td>
-                                    <td><input pInputText type="text" class="w-full" /></td>
-                                  </tr>
-                                </ng-template>
-                                <ng-template pTemplate="footer">
-                                    <tr>
-                                        <td colspan="6"></td>
-                                        <td>Total Component Amount: {{ totalDueAmount }}</td>
-                                        <td></td>
-                                    </tr>
-                                </ng-template>
-                              </p-table>
-
-                        </div>
-
-                    </div>
-                <!-- </div> -->
-
-                <!-- Step 3: Component Details -->
-                <!-- <div *ngIf="currentStepIndex === 2" class="flex flex-column gap-3"> -->
-                    <div class="flex justify-center card mx-6 mt-2 py-0"  *ngIf="isDataLoaded">
-                        <div class="col-12">
-                            <h5>  Classification Details
-                            </h5>
-                            <hr class="border-b-2 h-10 border-dashed">
-
-                            <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th pSortableColumn="breakupId">Description<p-sortIcon field="breakupId"></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="componentName">Account Head<p-sortIcon
-                                                field="componentName"></p-sortIcon></th>
-                                        <th pSortableColumn="fromDate">Amount<p-sortIcon field="fromDate"></p-sortIcon></th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-payment>
-
-                                </ng-template>
-                            </p-table>
-                        </div>
-
-                    </div>
             </div>
+            <!-- </div> -->
 
-            <div class="flex justify-center card mx-6 mt-2 py-0"  *ngIf="isDataLoaded">
+            <!-- Step 2: Bill Details -->
+            <!-- <div *ngIf="currentStepIndex === 1" class="flex flex-column gap-3"> -->
+            <div class="flex justify-center card mx-6 mt-2 mb-2 py-0" *ngIf="isDataLoaded">
                 <div class="col-12">
-                    <h5>Component Detail</h5>
+                    <h5>Bill Details</h5>
+                    <hr class="border-b-2 h-10 border-dashed">
+                    <p-table class="justify-center" [value]="[pensioncategory]" dataKey="id" [responsive]="true"
+                        [scrollable]="true" scrollHeight="300px" *ngIf="pensioncategory">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="id">Bill No<p-sortIcon field="id"></p-sortIcon></th>
+                                <th pSortableColumn="categoryName">Description<p-sortIcon
+                                        field="categoryName"></p-sortIcon></th>
+                                <th pSortableColumn="hoaId">Account Head<p-sortIcon
+                                        field="primaryCategory.hoaId"></p-sortIcon></th>
+                                <th pSortableColumn="grossAmount">Gross Amount<p-sortIcon
+                                        field="grossAmount"></p-sortIcon></th>
+                                <th pSortableColumn="rateAmount">By Transfer<p-sortIcon field="rateAmount"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-category>
+                            <tr>
+                                <td></td>
+                                <td>{{ category.categoryName }}</td>
+                                <td>{{ category.primaryCategory.hoaId }}</td>
+                                <td>{{ totalDueAmount }}</td>
+                                <td>0</td>
+                                <td>{{ totalDueAmount }}</td>
+                                <td><input pInputText type="text" class="w-full" /></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="6"></td>
+                                <td>Total Component Amount: {{ totalDueAmount }}</td>
+                                <td></td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                </div>
+
+            </div>
+            <!-- </div> -->
+
+            <!-- Step 3: Component Details -->
+            <!-- <div *ngIf="currentStepIndex === 2" class="flex flex-column gap-3"> -->
+            <!-- <div class="flex justify-center card mx-6 mt-2 py-0" *ngIf="isDataLoaded">
+                <div class="col-12">
+                    <h5> Classification Details
+                    </h5>
                     <hr class="border-b-2 h-10 border-dashed">
 
-                    <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true" [scrollable]="true" scrollHeight="300px">
+                    <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true">
                         <ng-template pTemplate="header">
-                          <tr>
+                            <tr>
+                                <th pSortableColumn="breakupId">Description<p-sortIcon field="breakupId"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="componentName">Account Head<p-sortIcon
+                                        field="componentName"></p-sortIcon></th>
+                                <th pSortableColumn="fromDate">Amount<p-sortIcon field="fromDate"></p-sortIcon></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-payment>
+
+                        </ng-template>
+                    </p-table>
+                </div>
+
+            </div>
+             -->
+        </div>
+
+        <div class="flex justify-center card mx-6 mt-2 py-0" *ngIf="isDataLoaded">
+            <div class="col-12">
+                <h5>Component Detail</h5>
+                <hr class="border-b-2 h-10 border-dashed">
+
+                <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true"
+                    [scrollable]="true" scrollHeight="600px">
+                    <ng-template pTemplate="header">
+                        <tr>
                             <th pSortableColumn="breakupId">Component Id<p-sortIcon field="breakupId"></p-sortIcon></th>
-                            <th pSortableColumn="componentName">Description<p-sortIcon field="componentName"></p-sortIcon></th>
+                            <th pSortableColumn="componentName">Description<p-sortIcon
+                                    field="componentName"></p-sortIcon></th>
                             <th pSortableColumn="fromDate">From Date<p-sortIcon field="fromDate"></p-sortIcon></th>
                             <th pSortableColumn="toDate">To Date<p-sortIcon field="toDate"></p-sortIcon></th>
                             <th pSortableColumn="rateAmount">Rate<p-sortIcon field="rateAmount"></p-sortIcon></th>
                             <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon></th>
                             <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
-                          </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-payment>
-                          <tr>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-payment>
+                        <tr>
                             <td>{{ payment.breakupId }}</td>
                             <td>{{ payment.componentName }}</td>
                             <td>{{ payment.fromDate }}</td>
@@ -267,25 +260,39 @@
                             <td>{{ payment.rateAmount }}</td>
                             <td>{{ payment.dueAmount }}</td>
                             <td><input pInputText type="text" class="w-full" /></td>
-                          </tr>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                          <tr>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
                             <td colspan="5"></td>
                             <td>Total Component Amount: {{ totalDueAmount }}</td>
                             <td></td>
-                          </tr>
-                        </ng-template>
-                      </p-table>
-
-                </div>
+                        </tr>
+                    </ng-template>
+                </p-table>
 
             </div>
-            <div class="flex flex-col mt-1 align-items-center justify-content-center">
-                <div class="flex flex-wrap gap-2">
-                    <button type="submit" pButton pRipple (click)="save()">Submit</button>
-                </div>
+
+        </div>
+        <div class="flex flex-col mt-1 align-items-center justify-content-center">
+            <div class="flex flex-wrap gap-2 mx-2">
+                <button 
+                type="submit" 
+                pButton 
+                pRipple 
+                (click)="save()" 
+                class="px-4" 
+                icon="pi pi-check" 
+                [disabled]="!isSaveEnable">
+                Save
+             </button> </div>
+            <div class="flex flex-wrap gap-2 mx-2">
+                <button type="submit" pButton pRipple (click)="refresh()" class="px-4"
+                    icon="pi pi-refresh">Refresh</button>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
+  
+  

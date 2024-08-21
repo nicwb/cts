@@ -11,15 +11,14 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { RatingModule } from 'primeng/rating';
 import { DialogModule } from 'primeng/dialog';
-import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { PensionBillComponent } from './pension-bill.component';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
     PensionBillComponent,
-    SearchPopupComponent
+
   ],
   imports: [
     CommonModule,
@@ -33,17 +32,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     ToastModule,
     RatingModule,
     TableModule,
-    DialogModule,
-    DynamicDialogModule
+    DialogModule,SearchPopupTempModule
+
   ],
-  exports: [
-    RouterModule,
-    SearchPopupComponent
-  ],
-  providers: [
-    MessageService,
-    ConfirmationService,
-    DialogService
-  ]
+  providers: [MessageService],
+  
+  exports: [RouterModule],
 })
 export class PensionBillModule { }
