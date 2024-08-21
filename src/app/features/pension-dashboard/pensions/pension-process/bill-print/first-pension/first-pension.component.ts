@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FirstPensionService } from 'src/app/core/services/first-pension/first-pension.service';
+import { PensionFirstBillService, InitiateFirstPensionBillDTO, BankService } from 'src/app/api'; 
 import { ToastService } from 'src/app/core/services/toast.service';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
+import { catchError, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
-import { ApiModule } from '../../../../../../api/api.module';
-import { InitiateFirstPensionBillDTO } from '../../../../../../api/model/initiateFirstPensionBillDTO';
-import { DateOnly } from 'src/app/api';
+import { FirstPensionService } from 'src/app/core/services/first-pension/first-pension.service';
+import { of } from 'rxjs';
 
 
 
@@ -20,19 +20,27 @@ import { DateOnly } from 'src/app/api';
   providers: [DatePipe]
 })
 export class FirstPensionComponent implements OnInit {
-  FirstPensionForm: FormGroup = new FormGroup({});
+  FirstPensionForm: FormGroup = this.fb.group({
+    generation: ['', Validators.required], 
+    ppoId: ['', Validators.required],
+    pensionerName: ['', Validators.required]
+  });
+  
   pensionData: any[] = [];
   isLoading: boolean = false;
   showDialog: boolean = false;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   selectedPension: any;
+  pdfData: any;
 
   constructor(
     private fb: FormBuilder, 
     private toastService: ToastService, 
-    private firstPensionService: FirstPensionService,
+    private pensionFirstBillService: PensionFirstBillService,
     private pdfGenerationService: PdfGenerationService,
-    private datePipe: DatePipe
+    private firstPensionService: FirstPensionService,
+    private datePipe: DatePipe,
+    private bankService: BankService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +57,7 @@ export class FirstPensionComponent implements OnInit {
 
   onSearch() {
     this.isLoading = true;
-    this.pensionData = []; // Clear existing data
+    this.pensionData = []; 
 
     this.firstPensionService.searchAll(this.tableQueryParameters).subscribe(
       (response) => {
@@ -65,6 +73,8 @@ export class FirstPensionComponent implements OnInit {
         this.toastService.showError('Error fetching search results');
       }
     );
+
+    //Search-pop-up
   }
 
   onRefresh(): void {
@@ -83,14 +93,25 @@ export class FirstPensionComponent implements OnInit {
   }
 
   onGenerate(generationType: string) {
+    if (!this.isFormValid()) {
+      this.toastService.showError('Please complete all required fields and select a report type.');
+      return;
+    }
     console.log("The selected generation type is :", generationType);
-    if (generationType === 'pdf') {
+    if (generationType === 'generalBill') {
       this.generatePDF();
-    } else if (generationType === 'excel') {
-      this.generateExcel();
+    } else if (generationType === 'classificationBill') {
+      console.log('Generating classification bill...');
+      
     }
   }
+  
 
+  isFormValid(): boolean {
+    return this.FirstPensionForm.valid && this.FirstPensionForm.get('generation')?.value;
+  }
+  
+  
   generatePDF() {
     const ppoId = this.FirstPensionForm.get('ppoId')?.value;
     if (!ppoId) {
@@ -100,21 +121,59 @@ export class FirstPensionComponent implements OnInit {
   
     const payload: InitiateFirstPensionBillDTO = {
       ppoId: ppoId,
-      toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd') as unknown as DateOnly 
+      toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')?.toString() ?? ''
     };
   
-    this.firstPensionService.generatePdf(payload).subscribe(
-      (response) => {
-        this.pdfGenerationService.generatePdf(response);
-      },
-      (error) => {
+    this.pensionFirstBillService.generateFirstPensionBill(payload).pipe(
+      switchMap(response => {
+        this.pdfData = {
+          response: response,
+          bankName: '',
+          branchName: '',
+          branchAddress: ''
+        };
+        console.log("PPO ID: ", ppoId);
+  
+        return this.bankService.getAllBanks().pipe(
+          switchMap(bankResponse => {
+            console.log('Bank name function:', bankResponse.result);
+            this.pdfData.bankName = bankResponse.result;
+  
+            return this.bankService.getBranchByBranchCode(this.pdfData.response.result.bankAccount.branchCode).pipe(
+              switchMap(branchResponse => {
+                  this.pdfData.branchAddress = branchResponse.result;
+                  this.pdfData.branchName = branchResponse.result?.branchName;
+                this.pdfGenerationService.generatePdf(this.pdfData);
+                console.log("Bank Name:", this.pdfData.bankName);
+                console.log("Branch Name:", this.pdfData.branchAddress);
+                
+                return of(null);
+              }),
+              catchError(branchError => {
+                console.error('Error fetching branch name:', branchError);
+                this.toastService.showError('Error fetching branch name');
+                this.pdfData.branchAddress = 'Branch not found';
+                return of(null); 
+              })
+            );
+          }),
+          catchError(bankError => {
+            console.error('Error fetching bank name:', bankError);
+            this.toastService.showError('Error fetching bank name');
+            return of(null);
+          })
+        );
+      }),
+      catchError(error => {
         console.error('Error generating PDF:', error);
         this.toastService.showError('Error generating PDF');
-      }
-    );
+        return of(null); // Handle errors and complete the stream
+      })
+    ).subscribe();
   }
   
 
+  
 
   openPdfInNewTab(pdfData: Blob) {
     const pdfUrl = URL.createObjectURL(pdfData);
@@ -134,41 +193,44 @@ export class FirstPensionComponent implements OnInit {
     doc.save('manual-ppo-register.pdf');
   }
 
-  generateExcel() {
-    const payload = {
-      "ppoId": 28,
-      "ppoNo": "PPO-129823",
-      "ppoType": "P",
-      "psaType": "A",
-      "ppoSubType": "N",
-      "ppoCategory": "C",
-      "ppoSubCategory": "D",
-      "pensionerName": "Jack Dowsel",
-      "dateOfBirth": "2024-07-31",
-      "gender": "M",
-      "mobileNumber": "9794262983",
-      "emailId": "string",
-      "pensionerAddress": "abc",
-      "identificationMark": "S",
-      "panNo": "PANNO8941F",
-      "aadhaarNo": "868770730351",
-      "dateOfRetirement": "2024-07-31",
-      "dateOfCommencement": "2024-07-31",
-      "basicPensionAmount": 10000,
-      "commutedPensionAmount": 2000,
-      "enhancePensionAmount": 10000,
-      "reducedPensionAmount": 8000,
-      "religion": "H"
-  };
-    this.firstPensionService.generatePdf(JSON.stringify(payload)).subscribe(
-      (response) => {
-        this.createExcel(response);
-      },
-      (error) => {
-        console.error('Error generating report:', error);
-      }
-    );
-  }
+  // generateExcel() {
+  //   const payload: PpoBillEntryDTO = {
+  //     pensionerId: 1,
+  //     bankAccountId: 1,
+  //     ppoId: 28,
+  //     fromDate: "2022-01-01",
+  //     toDate: "2022-01-31",
+  //     billType: "Monthly",
+  //     billDate: "2022-02-01",
+  //     grossAmount: 10000.0,
+  //     byTransferAmount: 500.0,
+  //     netAmount: 9500.0,
+  //     breakups: [
+  //       {
+  //         ppoId: 28,
+  //         revisionId: 1,
+  //         fromDate: "2022-01-01",
+  //         toDate: "2022-01-31",
+  //         breakupAmount: 500.0
+  //       },
+  //       {
+  //         ppoId: 28,
+  //         revisionId: 1,
+  //         fromDate: "2022-01-01",
+  //         toDate: "2022-01-31",
+  //         breakupAmount: 1500.0
+  //       }
+  //     ]
+  //   };
+  //   this.pensionFirstBillService.saveFirstPensionBill(payload).subscribe(
+  //     (response) => {
+  //       this.createExcel(response);
+  //     },
+  //     (error) => {
+  //       console.error('Error generating report:', error);
+  //     }
+  //   );
+  // }
 
   createExcel(data: any) {
     const formValues = this.FirstPensionForm.value;
