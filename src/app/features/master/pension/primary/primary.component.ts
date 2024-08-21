@@ -202,6 +202,7 @@ export class PrimaryComponent {
 
         let payload = this.tableQueryParameters;
         payload.filterParameters = [{ field: "HoaId", value: data, operator: 'contains'}];
+        payload.pageIndex=0;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllPrimaryCategories(payload)
@@ -214,44 +215,6 @@ export class PrimaryComponent {
 
 
         }
-        // let payload = this.tableQueryParameters;
-        // payload.pageSize=9999999;
-        // this.isTableDataLoading = true;
-        // let response = await firstValueFrom(
-        //     this.service.getAllPrimaryCategories(payload)
-        // );
-
-        // if (response.apiResponseStatus === 1) {
-        //     let value = response.result?.data;
-        //     let flag = false;
-        //     let Data = response.result?.data;
-        //     let DataCount = response.result?.dataCount;
-        //     console.log(response.result);
-
-        //     if (value) {
-        //         const len_val = value.length;
-        //         for (let i = 0; i < len_val; i++) {
-        //             if (value[i].id == id) {
-        //                 Data = [value[i]];
-        //                 DataCount = 1;
-        //                 this.refresh_b = true;
-        //                 flag = true;
-        //                 break;
-        //             }
-        //         }
-        //     }
-
-        //     if (!flag) {
-        //         this.toastService.showError('No Pension Category ID found');
-        //         return;
-        //     }
-
-        //     this.tableData = {
-        //         data: Data,
-        //         dataCount: DataCount,
-        //         headers: response.result?.headers,
-        //     };
-        // }
 
         this.isTableDataLoading = false;
     }

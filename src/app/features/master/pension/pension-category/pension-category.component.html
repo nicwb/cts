@@ -20,7 +20,7 @@
                 *ngIf="refresh_b"
                 type="button"
                 icon="pi pi-refresh"
-                label="Refresh"
+                label="Reset"
                 class="p-button-rounded p-button-raised"
             ></button>
         </app-common-header>
@@ -46,10 +46,10 @@
     header="Pension Category Details"
     [(visible)]="displayInsertModal"
     [modal]="true"
-    [style]="{ width: '35vw', height: '40vh' }"
+    [style]="{ width: '30vw', height: '45vh' }"
     [baseZIndex]="10000"
 >
-    <form [formGroup]="PensionForm" class="flex flex-column gap-4 mt-3">
+    <!-- <form [formGroup]="PensionForm" class="flex flex-column gap-4 mt-3"> -->
         <div class="flex gap-4 xl:flex-row flex-column">
             <div class="flex-auto w-full">
                 <label
@@ -57,7 +57,31 @@
                     class="flex-auto block mb-1 text-color text-lg"
                     >Primary Category Name:</label
                 >
-                <span class="p-input-icon-right w-full">
+                <p-dropdown
+                    [options]="primary_id_select"
+                    [(ngModel)]="primary_id"
+                    [filter]="true"
+                    filterBy="label"
+                    [showClear]="true"
+                    placeholder="Select a PrimaryCategoryName"
+                    class="w-full"
+                    (onFilter)="find_extra_primary_id($event)"
+
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div >
+                            <div>{{ primary_id }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-id pTemplate="item">
+                        <div >
+                            <div (click)="clicked_Primary(id.value, id.label)">
+                                {{ id.label }}
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <!-- <span class="p-input-icon-right w-full">
                     <input
                         type="text"
                         [(ngModel)]="primary_id"
@@ -65,13 +89,14 @@
                         placeholder="Eg: HoaID"
                         class="p-inputtext p-component p-element w-full"
                         id="hoaID"
+                        (click)="get_id_from_primary_category()"
                     />
                     <i
                         class="pi pi-search"
                         (click)="find_extra_primary_id()"
                     ></i>
                 </span>
-                <p-table [value]="primary_id_select">
+                <p-table [value]="primary_id_select" *ngIf="primary_table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>HoaID</th>
@@ -84,7 +109,7 @@
                             </td>
                         </tr>
                     </ng-template>
-                </p-table>
+                </p-table> -->
             </div>
             <div class="flex-auto w-full">
                 <label
@@ -92,7 +117,7 @@
                     class="flex-auto block mb-1 text-color text-lg"
                     >Sub Category Name:</label
                 >
-                <span class="p-input-icon-right w-full">
+                <!-- <span class="p-input-icon-right w-full">
                     <input
                         type="text"
                         [(ngModel)]="sub_id"
@@ -100,13 +125,14 @@
                         placeholder="Eg: SubCategoryName"
                         class="p-inputtext p-component p-element w-full"
                         id="subId"
+                        (click)="get_id_from_sub_category()"
                     />
                     <i
                         class="pi pi-search"
                         (click)="find_extra_sub_id()"
                     ></i>
                 </span>
-                <p-table [value]="sub_id_select">
+                <p-table [value]="sub_id_select" *ngIf="sub_table">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>SubCategoryName</th>
@@ -119,40 +145,35 @@
                             </td>
                         </tr>
                     </ng-template>
-                </p-table>
+                </p-table> -->
+                <p-dropdown
+                    #subFilterSearch
+                    [options]="sub_id_select"
+                    [(ngModel)]="sub_id"
+                    [filter]="true"
+                    filterBy="label"
+                    [showClear]="true"
+                    placeholder="Select a SubCategoryName"
+                    class="w-full"
+                    (onFilter)="find_extra_sub_id($event)"
+
+                >
+                    <ng-template pTemplate="selectedItem">
+                        <div >
+                            <div>{{ sub_id }}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-id pTemplate="item">
+                        <div >
+                            <div (click)="clicked_Sub(id.value, id.label)">
+                                {{ id.label }}
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
         </div>
-
-        <!-- <div class="flex gap-4 xl:flex-row flex-column">
-            <div class="flex-auto w-full">
-                <label
-                    for="pensionerName"
-                    class="flex-auto block mb-1 text-color text-lg"
-                    >Primary Category Id:</label
-                >
-                <p-listbox
-                    [options]="primary_id_select"
-                    [filter]="true"
-                    formControlName="PrimaryCategoryId"
-                    (change)="find_extra_primary_id()"
-                    id="hoaID"
-                ></p-listbox>
-            </div>
-
-            <div class="flex-auto w-full">
-                <label class="block mb-1 text-color text-lg"
-                    >Sub Category Id:</label
-                >
-                <p-listbox
-                    [options]="sub_id_select"
-                    formControlName="SubCategoryId"
-                    [filter]="true"
-                    (change)="find_extra_sub_id()"
-                    id="subName"
-                ></p-listbox>
-            </div>
-        </div> -->
-    </form>
+    <!-- </form> -->
     <div class="flex gap-2 justify-content-end pt-3">
         <button
             pButton

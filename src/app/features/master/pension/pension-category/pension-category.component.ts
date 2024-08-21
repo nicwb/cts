@@ -9,6 +9,9 @@ import {
     Output,
     EventEmitter,
     ChangeDetectorRef,
+    ElementRef,
+    AfterViewInit,
+    ViewChild,
 } from '@angular/core';
 import {
     FormBuilder,
@@ -28,7 +31,7 @@ import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { PensionCategoryDetails } from 'src/app/core/models/pension-category-details';
 import { PensionCategoryDetailsService } from 'src/app/core/services/pensionCategoryDetails/pension-category-details.service';
-import { firstValueFrom, Observable } from 'rxjs';
+import { Observable, filter, firstValueFrom } from 'rxjs';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -64,6 +67,9 @@ export class PensionCategoryComponent implements OnInit {
         val: false,
         data: null,
     };
+    primary_table = false;
+    sub_table = false;
+    @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
     constructor(
         // private datePipe: DatePipe,
@@ -80,9 +86,9 @@ export class PensionCategoryComponent implements OnInit {
             pageSize: 10,
             pageIndex: 0,
         };
-        this.getData();
         this.get_id_from_primary_category();
         this.get_id_from_sub_category();
+        this.getData();
     }
 
     showInsertDialog() {
@@ -161,60 +167,75 @@ export class PensionCategoryComponent implements OnInit {
             console.log(response);
         }
     }
-    async find_extra_primary_id() {
-        console.log('called primary');
-        const id = this.primary_id;
+    async find_extra_primary_id(filterValue: any) {
+        console.log(filterValue);
+        const id = filterValue.filter;
+        if (id == null) {
+            return;
+        }
         console.log(id);
         let data = {
             pageSize: 10000,
             pageIndex: 0,
-            filterParameters : [
-                { field: 'HoaId', value: id, operator: 'contains' },
-            ]
+            filterParameters: [
+                { field: 'PrimaryCategoryName', value: id, operator: 'contains' },
+            ],
         };
 
         let response = await firstValueFrom(
             this.service.getAllPrimaryCategories(data)
         );
         this.isTableDataLoading = false;
+
         if (response.result && response.result.data) {
             let value = response.result.data;
-            let len_val = value.length;
-            this.primary_id_select = [];
-            for (let i = 0; i < len_val; i++) {
-                this.primary_id_select.push({
-                    label: value[i].hoaId,
-                    value: value[i].id,
-                });
+            if (value.length != 0) {
+                let len_val = value.length;
+                this.primary_id_select = [];
+                for (let i = 0; i < len_val; i++) {
+                    this.primary_id_select.push({
+                        label: `${value[i].id}-${value[i].primaryCategoryName}`,
+                        value: value[i].id,
+                    });
+                }
+            } else {
+                this.toastService.showError('Could Not Found');
             }
         } else {
             console.error('Invalid response from API');
         }
     }
-    async find_extra_sub_id() {
-        console.log('called sub');
-        const id = this.sub_id;
+    async find_extra_sub_id(filterValue: any) {
+        const id = filterValue.filter;
+        if (id == null) {
+            return;
+        }
         console.log(id);
         let data = {
             pageSize: 10000,
             pageIndex: 0,
-            filterParameters : [
+            filterParameters: [
                 { field: 'SubCategoryName', value: id, operator: 'contains' },
-            ]
+            ],
         };
         let response = await firstValueFrom(
             this.service.getAllSubCategories(data)
         );
         this.isTableDataLoading = false;
+
         if (response.result && response.result.data) {
             let value = response.result.data;
-            let len_val = value.length;
-            this.sub_id_select = [];
-            for (let i = 0; i < len_val; i++) {
-                this.sub_id_select.push({
-                    label: value[i].subCategoryName,
-                    value: value[i].id,
-                });
+            if (value.length != 0) {
+                let len_val = value.length;
+                this.sub_id_select = [];
+                for (let i = 0; i < len_val; i++) {
+                    this.sub_id_select.push({
+                        label: `${value[i].id}-${value[i].subCategoryName}`,
+                        value: value[i].id,
+                    });
+                }
+            } else {
+                this.toastService.showError('Could Not Found');
             }
         } else {
             console.error('Invalid response from API');
@@ -222,6 +243,7 @@ export class PensionCategoryComponent implements OnInit {
     }
     clicked_Primary(id: any, lable: any) {
         this.primary_id = lable;
+        console.log(this.primary_id);
         let value_for_patch = {
             PrimaryCategoryId: id,
         };
@@ -229,6 +251,7 @@ export class PensionCategoryComponent implements OnInit {
     }
     clicked_Sub(id: any, label: any) {
         this.sub_id = label;
+        console.log(this.sub_id);
         let value_for_patch = {
             SubCategoryId: id,
         };
@@ -263,10 +286,10 @@ export class PensionCategoryComponent implements OnInit {
         let response = await firstValueFrom(
             this.service.getAllCategories(data)
         );
-        if(response.apiResponseStatus===1){
-        this.tableData = response.result;
-        this.isTableDataLoading = false;
-        }else{
+        if (response.apiResponseStatus === 1) {
+            this.tableData = response.result;
+            this.isTableDataLoading = false;
+        } else {
             this.toastService.showError("Can't get Data");
         }
     }
@@ -286,10 +309,11 @@ export class PensionCategoryComponent implements OnInit {
 
             for (let i = 0; i < len_val; i++) {
                 this.primary_id_select.push({
-                    label: value[i].hoaId,
+                    label:`${value[i].id}-${value[i].primaryCategoryName}`,
                     value: value[i].id,
                 });
             }
+            this.primary_table = true;
         } else {
             console.error('Invalid response from API');
         }
@@ -309,10 +333,11 @@ export class PensionCategoryComponent implements OnInit {
 
             for (let i = 0; i < len_val; i++) {
                 this.sub_id_select.push({
-                    label: value[i].subCategoryName,
+                    label: `${value[i].id}-${value[i].subCategoryName}`,
                     value: value[i].id,
                 });
             }
+            this.sub_table = true;
         } else {
             console.error('Invalid response from API');
         }
@@ -348,6 +373,7 @@ export class PensionCategoryComponent implements OnInit {
         payload.filterParameters = [
             { field: 'CategoryName', value: id, operator: 'contains' },
         ];
+        payload.pageIndex = 0;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllCategories(payload)
@@ -380,7 +406,5 @@ export class PensionCategoryComponent implements OnInit {
     cancelPensionCategory() {
         this.PensionForm.reset();
         this.displayInsertModal = false;
-        this.primary_id_select = [];
-        this.sub_id_select = [];
     }
 }
