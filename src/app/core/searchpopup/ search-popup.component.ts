@@ -1,7 +1,5 @@
-// search-popup.component.ts
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { firstValueFrom, Observable, observable, tap } from 'rxjs';
-import { ObjectJsonAPIResponse } from 'src/app/api';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-search-popup',
@@ -9,39 +7,43 @@ import { ObjectJsonAPIResponse } from 'src/app/api';
   styleUrls: []
 })
 export class SearchPopupComponentTemp {
-  @Input() service$?:Observable<any>; // Optional service
-  @Input() data: {headers: any, data: any} = {headers:[],data:[]}; // Optional data
-
+  @Input() service$?: Observable<any> | null | undefined; // Optional service
+  @Input() data: { headers: any, data: any } = { headers: [], data: [] }; // Optional data
   @Input() title: string = "Search"; // Optional data
-  @Input() name: string = "Search"; // Optional data
-
-  @Input() style: any = {width: 'fit-content'};
+  @Input() name: string = ""; // Optional data
+  @Input() style: any = { width: 'auto' }; // optional data
+  @Input() buttonStyle: any = [];
   @Output() return = new EventEmitter<any>(); // Emit selected row
-  
+  @Output() loads = new EventEmitter<any>();
+  @ViewChild('searchPopupDIT') table: ElementRef | undefined;
+
   display: boolean = false;
   records: any[] = [];
   cols: any[] = [];
   searchTerm?: string;
-  onresult:string = '';
+  onresult: string = '';
+  totalRecords = 0;
+  isLoading: boolean = false;
+
+  debugState?: boolean;
+  debug(msg: any) {
+    // this.debugState = true; // Set debugState to true to enable debug logging
+    if (this.debugState) {
+      console.log(msg);
+    }
+  }
+
 
   async showDialog() {
-    if (this.service$) {
-      await firstValueFrom(this.service$.pipe(
-        tap(response => {
-          if (response && response.result) {
-                this.data = response.result;
-          }
-          else {
-            console.error('Invalid API response structure', response);
-          }
-        })
-      ));
-    }
+    this.debug("Showing SearchDialog...");
+    this.isLoading = true;
+    await this.callService();
+    
 
     if (this.data) {
-      const {headers, data} = this.data;
+      const { headers, data } = this.data;
       this.records = this.data.data;
-      
+
       if (headers) {
         this.cols = this.data.headers.map((header: any) => ({
           field: header.fieldName,
@@ -53,8 +55,25 @@ export class SearchPopupComponentTemp {
     this.display = true;
   }
 
+  async callService(){
+    if (this.service$) {
+      await firstValueFrom(this.service$.pipe(
+        tap(response => {
+          this.debug(["serviceSearchPopUp", response]);
+          if (response && response.result) {
+            this.data = response.result;
+          } else {
+            this.debug(response);
+          }
+        })
+      ));
+      this.isLoading = false;
+    }
+  }
+
   closeDialog() {
     this.display = false;
+    this.debug('Closing SearchDialog');
   }
 
   onRowSelect(event: any) {
@@ -67,7 +86,7 @@ export class SearchPopupComponentTemp {
   searchRecords(): void {
     if (this.searchTerm) {
       const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-  
+
       this.data.data = this.records.filter(record =>
         Object.values(record).some(value => {
           if (typeof value === 'string' || typeof value === 'number') {
@@ -77,11 +96,9 @@ export class SearchPopupComponentTemp {
         })
       );
 
-      if (this.data.data.length === 0){
-
+      if (this.data.data.length === 0) {
         this.onresult = 'No records found';
-
-      }else{
+      } else {
         this.onresult = '';
       }
 
@@ -89,5 +106,9 @@ export class SearchPopupComponentTemp {
       this.data.data = [...this.records];
       this.onresult = '';
     }
+  }
+
+  loadMore(event: any) {
+    this.debug(this.totalRecords);
   }
 }

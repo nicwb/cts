@@ -6,9 +6,17 @@ The Search Popup is designed to help users filter and search through tabular dat
 name="Button Label"
 [service$]="Observable<any>" 
 [data]="{headers: any, data: any}"
+<<<<<<< HEAD
 title="Your Search Title"
 [style]="popupStyle"
 (return)="returnHandelFunction(event)"
+=======
+title="Your Search Title" // optional
+[style]="popupStyle" // optional
+[buttonStyle]="Style" // optional
+(return)="returnHandelFunction(event)"
+(loads)="loads($) // optional
+>>>>>>> f301f0f (Update SearchPopUp and ButtonStyle)
 ></app-search-popup>
 ```
 :point_right: NOTE: give one between service$ or data and service are higher priority if service data given both. Other attributes are optional
@@ -55,4 +63,9 @@ export YourAppComponent{
     }
 }
 
+```
+# What is new here
+:point_right: NOTE: Add ability to customize btn style by using
+```html 
+<app-search-popup [buttonStyle]="YourButtonStyle" ></app-search-popup>
 ```
