@@ -23,8 +23,20 @@ import { ToastService } from 'src/app/core/services/toast.service';
       :host ::ng-deep .p-menubar-root-list {
         flex-wrap: wrap;
       }
+      :host ::ng-deep .p-calendar .p-inputtext {
+  padding: 1.2rem;
+  padding-left: 0.50rem; /* Adjust left padding as needed */
+}
+      // .p-calendar .p-inputtext {
+      //   padding: 0.9rem; /* Equivalent to p-2 in Tailwind CSS */
+      // }
+
+      :host ::ng-deep app-search-popup span{
+      padding: 0.78rem;
+      }
     `,
   ],
+
 })
 export class PensionBillComponent implements OnInit {
   ppoId?: number;
@@ -74,6 +86,16 @@ export class PensionBillComponent implements OnInit {
     this.ppoList$ = this.ppoListService.getAllPensioners(payload);
   }
 
+  onDateSelect(event: Date) {
+    this.period = this.formatDate(event);
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
   ngOnInit(): void {
     this.pensionForm = this.fb.group({
       ppoId: ['', Validators.required],
@@ -89,6 +111,7 @@ export class PensionBillComponent implements OnInit {
     console.log('Form Valid:', this.pensionForm.valid);
 
     console.log('Form validity on init:', this.pensionForm.valid);
+    console.log('date :', this.period);
 
     this.pensionForm.valueChanges.subscribe(() => {
       this.updateStepValidity();
@@ -120,7 +143,7 @@ export class PensionBillComponent implements OnInit {
     if (this.ppoId && this.period) {
       try {
         const response = await firstValueFrom(this.service.generateFirstPensionBill(payload2));
-        this.hasGenerated = true; 
+        this.hasGenerated = true;
         console.log(response);
         if (response && response.result) {
           this.result = response.result;
@@ -157,10 +180,10 @@ export class PensionBillComponent implements OnInit {
   }
 
   async save() {
-    if(this.hasSaved){
+    if (this.hasSaved) {
       return;
     }
- 
+
     try {
       if (this.result) {
         this.hasSaved = false;
@@ -228,7 +251,7 @@ export class PensionBillComponent implements OnInit {
           ppoId: this.result.pensioner.ppoId,
           fromDate: payment.fromDate,
           toDate: payment.toDate,
-          breakupAmount: payment.dueAmount,
+          breakupAmount: this.result.pensionerPayments.dueAmount,
         };
       }),
     };

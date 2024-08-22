@@ -24,11 +24,11 @@
                             placeholder="PPO ID" [(ngModel)]="ppoId" />
 
                         <!-- <div *ngIf="ppoList$"> -->
-                            <!-- <h1>amit</h1> -->
-                            <app-search-popup name="" [service$]="ppoList$" class=""
-                                (return)="handleSelectedRow($event)" style="width: 10px;"></app-search-popup>
+                        <!-- <h1>amit</h1> -->
+                        <app-search-popup name="" [service$]="ppoList$" class="" (return)="handleSelectedRow($event)"
+                            ></app-search-popup>
 
-                                <!-- <button pButton type="button" icon="pi pi-search"
+                        <!-- <button pButton type="button" icon="pi pi-search"
                                 class="w-1/2"></button> -->
 
                         <!-- </div> -->
@@ -36,12 +36,24 @@
                             Period To:
                         </label>
 
-                        <input class="col-12 md:col-4" pInputText id="periodTo" type="date" formControlName="periodTo"
-                            [(ngModel)]="period" />
+                        <!-- <input class="col-12 md:col-4 p-2 border rounded-md" id="periodTo" type="date" formControlName="periodTo" [(ngModel)]="period" /> -->
+
+                        <!-- <p-calendar class="col-12 md:col-4" id="periodTo" formControlName="periodTo"
+                            [(ngModel)]="period" (onSelect)="onDateSelect($event)" dateFormat="yy-mm-dd"
+                            placeholder="Select a date"></p-calendar> -->
+
+                        <p-calendar
+                            class="col-12 md:col-4 p-0  md border border-gray-300 rounded-md  shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                            id="periodTo" formControlName="periodTo" [(ngModel)]="period"
+                            (onSelect)="onDateSelect($event)" dateFormat="yy-mm-dd" placeholder="Select a date">
+                        </p-calendar>
+
+
 
                         <!-- <div class="flex flex-col mt-1 align-items-center justify-content-center"> -->
-                        <div class="flex flex-wrap gap-2">
-                            <button type="submit" pButton pRipple (click)="getvalue()" [disabled]="!isButtonEnabled">Generate</button>
+                        <div class="flex flex-wrap">
+                            <button type="submit" pButton pRipple (click)="getvalue()"
+                                [disabled]="!isButtonEnabled" class="">Generate</button>
                         </div>
                         <!-- </div> -->
 
@@ -275,24 +287,22 @@
 
         </div>
         <div class="flex flex-col mt-1 align-items-center justify-content-center">
+            <!-- Save Button -->
             <div class="flex flex-wrap gap-2 mx-2">
-                <button 
-                type="submit" 
-                pButton 
-                pRipple 
-                (click)="save()" 
-                class="px-4" 
-                icon="pi pi-check" 
-                [disabled]="!isSaveEnable">
-                Save
-             </button> </div>
+                <button type="submit" pButton pRipple (click)="save()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                    [disabled]="!isSaveEnable">
+                    <i class="pi pi-check mr-2"></i> Save
+                </button>
+            </div>
+            <!-- Refresh Button -->
             <div class="flex flex-wrap gap-2 mx-2">
-                <button type="submit" pButton pRipple (click)="refresh()" class="px-4"
-                    icon="pi pi-refresh">Refresh</button>
+                <button type="button" pButton pRipple (click)="refresh()" class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <i class="pi pi-refresh mr-2"></i>Refresh
+                </button>
             </div>
         </div>
+        
+        
+
     </div>
 </form>
-
-  
-  

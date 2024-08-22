@@ -14,6 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { PensionBillComponent } from './pension-bill.component';
 import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 import { MessageService } from 'primeng/api';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { MessageService } from 'primeng/api';
     ToastModule,
     RatingModule,
     TableModule,
-    DialogModule,SearchPopupTempModule
+    DialogModule,SearchPopupTempModule,CalendarModule
 
   ],
   providers: [MessageService],
