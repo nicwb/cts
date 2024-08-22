@@ -3,7 +3,7 @@ import { firstValueFrom, Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-popup-table',
-  templateUrl: './search-popup.component.html',
+  templateUrl: './popup-table.html',
   styleUrls: []
 })
 export class popupTableComponent{

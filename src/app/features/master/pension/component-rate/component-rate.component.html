@@ -26,13 +26,13 @@
                                 formControlName="categoryId"
                             />
 
-                            <app-search-popup
+                            <app-popup-table
                                 name=""
                                 [service$]="allPensionCategory$"
                                 (return)="
                                     handleSelectedRowByPensionCategory($event)
                                 "
-                            ></app-search-popup>
+                            ></app-popup-table>
                         </div>
                     </div>
                     <div class="field col-12 md:col-6">
@@ -49,13 +49,13 @@
                                 formControlName="breakupId"
                             />
 
-                            <app-search-popup
+                            <app-popup-table
                                 name=""
                                 [service$]="pensionComponent$"
                                 (return)="
                                     handleSelectedRowByPensionComponent($event)
                                 "
-                            ></app-search-popup>
+                            ></app-popup-table>
                         </div>
                     </div>
 

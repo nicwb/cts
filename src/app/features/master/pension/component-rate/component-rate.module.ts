@@ -9,7 +9,7 @@ import { FieldsetModule } from 'primeng/fieldset'; // Import FieldsetModule
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
-import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
+import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
 
 const routes: Routes = [{ path: '', component: ComponentRateComponent }];
 
@@ -24,7 +24,7 @@ const routes: Routes = [{ path: '', component: ComponentRateComponent }];
         FieldsetModule, // Add FieldsetModule here
         CalendarModule,
         DropdownModule,
-        SearchPopupTempModule,
+        popupTableModule,
         RouterModule.forChild(routes),
     ],
     exports: [ComponentRateComponent],

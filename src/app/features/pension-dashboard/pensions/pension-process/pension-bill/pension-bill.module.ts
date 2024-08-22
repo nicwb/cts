@@ -12,9 +12,9 @@ import { ToastModule } from 'primeng/toast';
 import { RatingModule } from 'primeng/rating';
 import { DialogModule } from 'primeng/dialog';
 import { PensionBillComponent } from './pension-bill.component';
-import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
+import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +33,9 @@ import { CalendarModule } from 'primeng/calendar';
     ToastModule,
     RatingModule,
     TableModule,
-    DialogModule,SearchPopupTempModule,CalendarModule
+    DialogModule,
+    CalendarModule,
+    popupTableModule
 
   ],
   providers: [MessageService],
