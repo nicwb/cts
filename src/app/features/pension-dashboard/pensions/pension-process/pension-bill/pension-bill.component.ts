@@ -206,6 +206,8 @@ export class PensionBillComponent implements OnInit {
           if (this.revisionResults.apiResponseStatus === 1) {
             if (Array.isArray(this.revisionResults.result) && this.revisionResults.result.length > 1) {
               this.toastService.showWarning('Bill already exists.');
+              await this.saveFirstBill();
+
             } else {
               await this.saveFirstBill();
             }
@@ -251,7 +253,7 @@ export class PensionBillComponent implements OnInit {
           ppoId: this.result.pensioner.ppoId,
           fromDate: payment.fromDate,
           toDate: payment.toDate,
-          breakupAmount: this.result.pensionerPayments.dueAmount,
+          breakupAmount: this.result.pensionerPayments.netAmount,
         };
       }),
     };
