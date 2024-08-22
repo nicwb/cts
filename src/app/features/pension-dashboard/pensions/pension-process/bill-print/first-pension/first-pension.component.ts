@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { FirstPensionService } from 'src/app/core/services/first-pension/first-pension.service';
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, firstValueFrom, Observable, of } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -100,20 +100,18 @@ export class FirstPensionComponent implements OnInit {
     this.showDialog = false;
   }
 
-  onGenerate(generationType: string): Observable<any> {
+  onGenerate(generationType: string) {
     if (!this.isFormValid()) {
       this.toastService.showError('Please complete all required fields and select a report type.');
-      return EMPTY;
+      return;
     }
-    
+    console.log("The selected generation type is :", generationType);
     if (generationType === 'generalBill') {
-      return this.generatePDF();
+      this.generatePDF();
     } else if (generationType === 'classificationBill') {
       console.log('Generating classification bill...');
-      return EMPTY;
+      
     }
-    
-    return EMPTY;
   }
   
 
@@ -122,11 +120,11 @@ export class FirstPensionComponent implements OnInit {
   }
   
   
-  generatePDF(): Observable<any> {
+  generatePDF() {
     const ppoId = this.FirstPensionForm.get('ppoId')?.value;
     if (!ppoId) {
       this.toastService.showError('Please select a PPO ID first');
-      return EMPTY;
+      return;
     }
   
     const payload: InitiateFirstPensionBillDTO = {
@@ -134,36 +132,47 @@ export class FirstPensionComponent implements OnInit {
       toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')?.toString() ?? ''
     };
   
-    return this.pensionFirstBillService.generateFirstPensionBill(payload).pipe(
-      switchMap(response => {
-        this.pdfData = {
-          response: response,
-          bankName: '',
-          branchName: '',
-          branchAddress: ''
-        };
-        return this.bankService.getAllBanks().pipe(
-          switchMap(bankResponse => {
-            this.pdfData.bankName = bankResponse.result;
-            return this.bankService.getBranchByBranchCode(this.pdfData.response.result.bankAccount.branchCode);
-          }),
-          tap(branchResponse => {
-            this.pdfData.branchAddress = branchResponse.result;
-            this.pdfData.branchName = branchResponse.result?.branchName;
-            this.pdfGenerationService.generatePdf(this.pdfData);
-          }),
-          catchError(error => {
-            console.error('Error:', error);
-            this.toastService.showError('Error generating PDF');
-            return EMPTY;
-          })
-        );
-      })
-    );
+    firstValueFrom(this.pensionFirstBillService.generateFirstPensionBill(payload)).then(response => {
+      this.pdfData = {
+        response: response,
+        bankName: '',
+        branchName: '',
+        branchAddress: ''
+      };
+      const branchCode = response?.result?.bankAccount?.branchCode;
+  
+      if (!branchCode) {
+        console.warn('Branch code is missing, skipping branch details');
+        this.pdfGenerationService.generatePdf(this.pdfData);
+        return;
+      }
+  
+      firstValueFrom(this.bankService.getAllBanks()).then(bankResponse => {
+        console.log('Bank name function:', bankResponse.result);
+        this.pdfData.bankName = bankResponse.result;
+  
+        firstValueFrom(this.bankService.getBranchByBranchCode(branchCode)).then(branchResponse => {
+          this.pdfData.branchAddress = branchResponse.result;
+          this.pdfData.branchName = branchResponse.result?.branchName;
+          this.pdfGenerationService.generatePdf(this.pdfData);
+          console.log("Bank Name:", this.pdfData.bankName);
+          console.log("Branch Name:", this.pdfData.branchAddress);
+        }).catch(branchError => {
+          console.error('Error fetching branch name:', branchError);
+          this.toastService.showError('Error fetching branch name');
+          this.pdfData.branchAddress = 'Branch not found';
+          this.pdfGenerationService.generatePdf(this.pdfData);
+        });
+      }).catch(bankError => {
+        console.error('Error fetching bank name:', bankError);
+        this.toastService.showError('Error fetching bank name');
+        this.pdfGenerationService.generatePdf(this.pdfData);
+      });
+    }).catch(error => {
+      console.error('Error generating PDF:', error);
+      this.toastService.showError('Error generating PDF: ' + (error.message || 'Unknown error'));
+    });
   }
-  
-
-  
 
   openPdfInNewTab(pdfData: Blob) {
     const pdfUrl = URL.createObjectURL(pdfData);
@@ -183,74 +192,5 @@ export class FirstPensionComponent implements OnInit {
     doc.save('manual-ppo-register.pdf');
   }
 
-  // generateExcel() {
-  //   const payload: PpoBillEntryDTO = {
-  //     pensionerId: 1,
-  //     bankAccountId: 1,
-  //     ppoId: 28,
-  //     fromDate: "2022-01-01",
-  //     toDate: "2022-01-31",
-  //     billType: "Monthly",
-  //     billDate: "2022-02-01",
-  //     grossAmount: 10000.0,
-  //     byTransferAmount: 500.0,
-  //     netAmount: 9500.0,
-  //     breakups: [
-  //       {
-  //         ppoId: 28,
-  //         revisionId: 1,
-  //         fromDate: "2022-01-01",
-  //         toDate: "2022-01-31",
-  //         breakupAmount: 500.0
-  //       },
-  //       {
-  //         ppoId: 28,
-  //         revisionId: 1,
-  //         fromDate: "2022-01-01",
-  //         toDate: "2022-01-31",
-  //         breakupAmount: 1500.0
-  //       }
-  //     ]
-  //   };
-  //   this.pensionFirstBillService.saveFirstPensionBill(payload).subscribe(
-  //     (response) => {
-  //       this.createExcel(response);
-  //     },
-  //     (error) => {
-  //       console.error('Error generating report:', error);
-  //     }
-  //   );
-  // }
 
-  createExcel(data: any) {
-    const formValues = this.FirstPensionForm.value;
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet([
-      {
-        "From Date": formValues.fromDate,
-        "To Date": formValues.toDate,
-        "PPO No": data.result.ppoNo,
-        "Pensioner Name": data.result.pensionerName
-      }
-    ]);
-    
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Manual PPO Register');
-    XLSX.writeFile(wb, 'manual-ppo-register.xlsx');
-  }
-
-  handleRowSelection(event: any) {
-    // Handle row selection
-  }
-
-  handleButtonClick(event: any) {
-    // Handle button click
-  }
-
-  handQueryParameterChange(event: any) {
-    // Handle query parameter change
-  }
-
-  handsearchKeyChange(event: any) {
-    // Handle search key change
-  }
 }

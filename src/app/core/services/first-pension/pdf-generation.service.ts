@@ -46,7 +46,7 @@ export class PdfGenerationService {
       doc.text(`BANK ADDRESS: ${reportData.branchAddress.branchAddress}`, 10, startY + 50);
       doc.text(`COMMENCEMENT DATE: ${reportData.response.result.pensioner.dateOfCommencement}`, 10, startY + 55);
       doc.text(`ACCOUNT HEAD: ${reportData.response.result.pensionCategory.primaryCategory.hoaId}`, 130, startY + 55);
-      //doc.text('SANCTION ORDER NUMBER: L/P/00704/2024', 10, startY + 60);
+      doc.text('SANCTION ORDER NUMBER: L/P/00704/2024', 10, startY + 60);
       doc.text(`PENSIONER NAME: ${reportData.response.result.pensioner.pensionerName} `, 130, startY+60);
       doc.text(`CATEGORY: ${reportData.response.result.pensionCategory.categoryName} `, 10, startY+ 65);
     };
