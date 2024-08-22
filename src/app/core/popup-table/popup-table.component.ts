@@ -2,11 +2,11 @@ import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@
 import { firstValueFrom, Observable, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-search-popup',
+  selector: 'app-popup-table',
   templateUrl: './search-popup.component.html',
   styleUrls: []
 })
-export class SearchPopupComponentTemp {
+export class popupTableComponent{
   @Input() service$?: Observable<any> | null | undefined; // Optional service
   @Input() data: { headers: any, data: any } = { headers: [], data: [] }; // Optional data
   @Input() title: string = "Search"; // Optional data
