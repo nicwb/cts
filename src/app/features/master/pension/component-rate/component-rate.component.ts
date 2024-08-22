@@ -23,7 +23,7 @@ export class ComponentRateComponent implements OnInit {
     pensionComponent$?: Observable<any>;
 
     ComponentRateForm: FormGroup = new FormGroup({});
-
+    amountPlaceHolder: String = '₹';
     constructor(
         private service: PensionComponentRateService,
         private pensionCategoryMasterService: PensionCategoryMasterService,
@@ -33,13 +33,13 @@ export class ComponentRateComponent implements OnInit {
         private formBuilder: FormBuilder
     ) {}
 
+    //formBuilder create
     initializeForm() {
         this.ComponentRateForm = this.formBuilder.group({
             categoryId: ['', Validators.required],
             categoryName: [''],
             breakupId: ['', Validators.required],
             componentName: [''],
-
             effectiveFromDate: ['', Validators.required],
             rateType: ['A', Validators.required],
             rateAmount: ['', Validators.required],
@@ -71,15 +71,16 @@ export class ComponentRateComponent implements OnInit {
         return '';
     }
 
+    //for first search button
     handleSelectedRowByPensionCategory(event: any) {
-        console.log(event);
         this.ComponentRateForm.controls['categoryId'].setValue(event.id);
         this.ComponentRateForm.controls['categoryName'].setValue(
             event.categoryName
         );
     }
+
+    //for second search button
     handleSelectedRowByPensionComponent(event: any) {
-        console.log(event);
         this.ComponentRateForm.controls['breakupId'].setValue(event.id);
         this.ComponentRateForm.controls['componentName'].setValue(
             event.componentName
@@ -100,9 +101,20 @@ export class ComponentRateComponent implements OnInit {
         }
     }
 
+    // remove that fild not required for server
     removeUnwantedAttributes(): void {
         this.ComponentRateForm.removeControl('categoryName');
         this.ComponentRateForm.removeControl('componentName');
+    }
+
+    //change amount placeholder according to selecte rate type
+    onSelectRtaeRateType($event: any): void {
+        const rateType = this.ComponentRateForm.get('rateType')?.value;
+        if (rateType === 'A') {
+            this.amountPlaceHolder = '₹';
+        } else if (rateType === 'P') {
+            this.amountPlaceHolder = '%';
+        }
     }
 
     async onSubmit() {
