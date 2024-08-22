@@ -47,6 +47,7 @@ import { RegularPensionComponent } from './regular-pension/regular-pension.compo
 import { RouterModule, Routes } from '@angular/router';
 import { BillPrintComponent } from './bill-print.component';
 import { FirstPensionComponent } from './first-pension/first-pension.component';
+import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
 const routes: Routes = [
 
@@ -107,6 +108,7 @@ const routes: Routes = [
     DynamicTableModule,
     OptionCardModule,
     MhPrimeDynamicTableModule,
+    SearchPopupTempModule,
     RouterModule.forChild(routes),
   ]
 })

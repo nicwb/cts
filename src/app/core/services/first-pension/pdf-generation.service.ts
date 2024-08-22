@@ -16,16 +16,22 @@ export class PdfGenerationService {
     const doc = new jsPDF();
 
     const addHeader = (startY: number) => {
-      doc.setFontSize(13);
-      doc.text('Government of West Bengal - Treasury', 65, startY);
-      doc.setFontSize(11);
-      doc.text(`${reportData.branchName} I`, 95, startY + 5);
-      doc.setFontSize(10);
-      doc.text('First Pension Bill', 85, startY + 10);
-      doc.text(`For the Period of ${reportData.response.result.pensioner.dateOfCommencement} To ${reportData.response.result.billGeneratedUptoDate}`, 74, startY + 15);
+      doc.setFontSize(14); 
+      doc.text('Government of West Bengal - Treasury', doc.internal.pageSize.getWidth() / 2, startY, { align: 'center' });
+
+      doc.setFontSize(12); 
+      doc.text(`${reportData.branchName} I`, doc.internal.pageSize.getWidth() / 2, startY + 8, { align: 'center' }); 
+
+      doc.setFontSize(11); 
+      doc.text('First Pension Bill', doc.internal.pageSize.getWidth() / 2, startY + 16, { align: 'center' });
+
+      doc.setFontSize(10); 
+      doc.text(`For the Period of ${reportData.response.result.pensioner.dateOfCommencement} To ${reportData.response.result.billGeneratedUptoDate}`, 
+      doc.internal.pageSize.getWidth() / 2, startY + 24, { align: 'center' }); 
+
 
       
-      doc.line(10, startY + 20, 200, startY + 20);
+      doc.line(10, startY + 27, 200, startY + 27);
 
       doc.setFontSize(8);
       doc.text(`BILL ID: ${reportData.response.result.billId}`, 10, startY + 30);

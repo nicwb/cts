@@ -83,7 +83,7 @@ test.describe('Manual PPO Receipt Component', () => {
   test('should fill out the form and submit successfully', async ({ page }) => {
     await page.click('button:has-text("New Manual PPO Entry")');
     
-    await page.fill('input[formControlName="ppoNo"]', 'PPO111154');
+    await page.fill('input[formControlName="ppoNo"]', 'PPO445426');
     await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
     await page.fill('input[formControlName="mobileNumber"]', '9323232323');
     
@@ -143,7 +143,7 @@ test.describe('Manual PPO Receipt Component', () => {
     await page.click('button:has-text("New Manual PPO Entry")');
     await page.waitForTimeout(1000);
   
-    await page.fill('input[formControlName="ppoNo"]', 'PPO111154');
+    await page.fill('input[formControlName="ppoNo"]', 'PPO445426');
     await page.fill('input[formControlName="pensionerName"]', 'John Pal');
     await page.fill('input[formControlName="mobileNumber"]', '9876541210');
   
@@ -186,7 +186,7 @@ test.describe('Manual PPO Receipt Component', () => {
     await expect(searchInput).toBeVisible();
 
     // Enter a search term
-    const searchTerm = 'DAA2024000021'; // Example search term that is likely to return no results
+    const searchTerm = 'DAA2024000001'; // Example search term that is likely to return no results
     await searchInput.fill(searchTerm);
 
     // Click the search icon button

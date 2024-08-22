@@ -24,13 +24,20 @@
                         formControlName="ppoId"
                         placeholder="PPO ID"
                       />
-                      <button
+                      <!-- <button
                         pButton
                         type="button"
                         icon="pi pi-search"
                         (click)="onSearch()"
                         class="col-12 md:col-2"
-                      ></button>
+                      ></button> -->
+                      <app-search-popup
+                                name=""
+                                [service$]="pensionComponent$"
+                                (return)="
+                                    handleSelectedRowByPensionComponent($event)
+                                "
+                      ></app-search-popup>
                       <input
                         class="col-12 md:col-4"
                         id="pensionerName"
@@ -58,7 +65,7 @@
   </div>
 </div>
 
-<p-dialog header="Pension Details" [(visible)]="showDialog" [style]="{width: '70vw'}" [modal]="true">
+<!-- <p-dialog header="Pension Details" [(visible)]="showDialog" [style]="{width: '70vw'}" [modal]="true">
   <p-table 
     [value]="pensionData" 
     [paginator]="true" 
@@ -92,5 +99,5 @@
         <td>{{pension.mobileNumber}}</td>
       </tr>
     </ng-template>
-  </p-table>
-</p-dialog>
+  </p-table> 
+</p-dialog> -->

@@ -4,6 +4,7 @@ import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
 
 
@@ -15,7 +16,8 @@ import { ButtonModule } from 'primeng/button';
     DynamicTableModule,
     MhPrimeDynamicTableModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    SearchPopupTempModule
   ]
 })
 export class FirstPensionModule { }

@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PensionFirstBillService, InitiateFirstPensionBillDTO, BankService } from 'src/app/api'; 
+import { PensionFirstBillService, InitiateFirstPensionBillDTO, BankService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from 'src/app/api'; 
 import { ToastService } from 'src/app/core/services/toast.service';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { FirstPensionService } from 'src/app/core/services/first-pension/first-pension.service';
-import { of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 
 
@@ -17,7 +20,7 @@ import { of } from 'rxjs';
   selector: 'app-first-pension',
   templateUrl: './first-pension.component.html',
   styleUrls: ['./first-pension.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe,MessageService, ConfirmationService, DialogService]
 })
 export class FirstPensionComponent implements OnInit {
   FirstPensionForm: FormGroup = this.fb.group({
@@ -25,13 +28,18 @@ export class FirstPensionComponent implements OnInit {
     ppoId: ['', Validators.required],
     pensionerName: ['', Validators.required]
   });
-  
+  ref: DynamicDialogRef | undefined;
   pensionData: any[] = [];
   isLoading: boolean = false;
   showDialog: boolean = false;
   tableQueryParameters!: DynamicTableQueryParameters | any;
   selectedPension: any;
   pdfData: any;
+  pensionerList$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+  generationResult$: Observable<any> | undefined;
+  pensionComponent$?: Observable<any>;
+  
+  
 
   constructor(
     private fb: FormBuilder, 
@@ -39,6 +47,8 @@ export class FirstPensionComponent implements OnInit {
     private pensionFirstBillService: PensionFirstBillService,
     private pdfGenerationService: PdfGenerationService,
     private firstPensionService: FirstPensionService,
+    private pensionPPODetailsService: PensionPPODetailsService,
+    private dialogService: DialogService,
     private datePipe: DatePipe,
     private bankService: BankService
   ) {}
@@ -53,29 +63,27 @@ export class FirstPensionComponent implements OnInit {
       pageSize: 50,
       pageIndex: 0,
     };
-  }
-
-  onSearch() {
-    this.isLoading = true;
-    this.pensionData = []; 
-
-    this.firstPensionService.searchAll(this.tableQueryParameters).subscribe(
-      (response) => {
-        console.log('Search results:', response);
-        
-        this.pensionData = response.result?.data || [];
-        this.isLoading = false;
-        this.showDialog = true;
+    let payload = {
+      pageSize: 10,
+      pageIndex: 0,
+      filterParameters: [],
+      sortParameters: {
+          field: '',
+          order: '',
       },
-      (error) => {
-        this.isLoading = false;
-        console.error('Error fetching search results:', error);
-        this.toastService.showError('Error fetching search results');
-      }
-    );
-
-    //Search-pop-up
+  };
+    this.pensionComponent$ =
+            this.pensionPPODetailsService.getAllPensioners(payload);
   }
+
+  handleSelectedRowByPensionComponent(event: any) {
+    console.log(event);
+
+    this.FirstPensionForm.controls['ppoId'].setValue(event.ppoId);
+    this.FirstPensionForm.controls['pensionerName'].setValue(event.pensionerName);
+}
+
+  
 
   onRefresh(): void {
     this.FirstPensionForm.reset();
@@ -92,18 +100,20 @@ export class FirstPensionComponent implements OnInit {
     this.showDialog = false;
   }
 
-  onGenerate(generationType: string) {
+  onGenerate(generationType: string): Observable<any> {
     if (!this.isFormValid()) {
       this.toastService.showError('Please complete all required fields and select a report type.');
-      return;
+      return EMPTY;
     }
-    console.log("The selected generation type is :", generationType);
+    
     if (generationType === 'generalBill') {
-      this.generatePDF();
+      return this.generatePDF();
     } else if (generationType === 'classificationBill') {
       console.log('Generating classification bill...');
-      
+      return EMPTY;
     }
+    
+    return EMPTY;
   }
   
 
@@ -112,11 +122,11 @@ export class FirstPensionComponent implements OnInit {
   }
   
   
-  generatePDF() {
+  generatePDF(): Observable<any> {
     const ppoId = this.FirstPensionForm.get('ppoId')?.value;
     if (!ppoId) {
       this.toastService.showError('Please select a PPO ID first');
-      return;
+      return EMPTY;
     }
   
     const payload: InitiateFirstPensionBillDTO = {
@@ -124,7 +134,7 @@ export class FirstPensionComponent implements OnInit {
       toDate: this.datePipe.transform(new Date(), 'yyyy-MM-dd')?.toString() ?? ''
     };
   
-    this.pensionFirstBillService.generateFirstPensionBill(payload).pipe(
+    return this.pensionFirstBillService.generateFirstPensionBill(payload).pipe(
       switchMap(response => {
         this.pdfData = {
           response: response,
@@ -132,44 +142,24 @@ export class FirstPensionComponent implements OnInit {
           branchName: '',
           branchAddress: ''
         };
-        console.log("PPO ID: ", ppoId);
-  
         return this.bankService.getAllBanks().pipe(
           switchMap(bankResponse => {
-            console.log('Bank name function:', bankResponse.result);
             this.pdfData.bankName = bankResponse.result;
-  
-            return this.bankService.getBranchByBranchCode(this.pdfData.response.result.bankAccount.branchCode).pipe(
-              switchMap(branchResponse => {
-                  this.pdfData.branchAddress = branchResponse.result;
-                  this.pdfData.branchName = branchResponse.result?.branchName;
-                this.pdfGenerationService.generatePdf(this.pdfData);
-                console.log("Bank Name:", this.pdfData.bankName);
-                console.log("Branch Name:", this.pdfData.branchAddress);
-                
-                return of(null);
-              }),
-              catchError(branchError => {
-                console.error('Error fetching branch name:', branchError);
-                this.toastService.showError('Error fetching branch name');
-                this.pdfData.branchAddress = 'Branch not found';
-                return of(null); 
-              })
-            );
+            return this.bankService.getBranchByBranchCode(this.pdfData.response.result.bankAccount.branchCode);
           }),
-          catchError(bankError => {
-            console.error('Error fetching bank name:', bankError);
-            this.toastService.showError('Error fetching bank name');
-            return of(null);
+          tap(branchResponse => {
+            this.pdfData.branchAddress = branchResponse.result;
+            this.pdfData.branchName = branchResponse.result?.branchName;
+            this.pdfGenerationService.generatePdf(this.pdfData);
+          }),
+          catchError(error => {
+            console.error('Error:', error);
+            this.toastService.showError('Error generating PDF');
+            return EMPTY;
           })
         );
-      }),
-      catchError(error => {
-        console.error('Error generating PDF:', error);
-        this.toastService.showError('Error generating PDF');
-        return of(null); // Handle errors and complete the stream
       })
-    ).subscribe();
+    );
   }
   
 
