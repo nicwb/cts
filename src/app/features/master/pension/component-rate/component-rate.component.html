@@ -24,6 +24,7 @@
                                 pInputText
                                 type="text"
                                 formControlName="categoryName"
+                                
                             />
 
                             <app-popup-table
@@ -70,7 +71,7 @@
                     </div>
                     <div class="field col-12 md:col-6">
                         <label class="text-lg">Rate Type P/A</label>
-                        <p-dropdown
+                        <p-dropdown (onChange)="onSelectRtaeRateType($event)"
                             [options]="[
                                 { label: 'A', value: 'A' },
                                 { label: 'P', value: 'P' }
@@ -84,6 +85,7 @@
                             pInputText
                             type="text"
                             formControlName="rateAmount"
+                            [placeholder]="amountPlaceHolder"
                         />
                     </div>
                 </div>
