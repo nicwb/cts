@@ -23,18 +23,17 @@
 <div class="col-12 md:col-12">
     <!-- Search PPO D -->
 
-    <div class="formgroup-inline" style="width: 100%;">
-        <form [formGroup]="ManualEntrySearchForm" (ngSubmit)="MEDetailsSearch();" style="width: 100%; display: flex; justify-content: right;">
-            <span class="p-float-label">
-                <input id="float-input" type="text" pInputText formControlName="eppoid" (click)="MEDetailsSearch();">
+    <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
+            <span class="p-float-label absolute" style="right: 29px;">
+                <input style="width: 80%;" id="float-input" type="text" pInputText [(ngModel)]="eppoid"  (ngModelChange)="MEDetailsSearch();">
                 <label for="float-input">e-PPO Application No/TRID</label>
+                <app-popup-table [service$]="allManualPPOReceipt$" (return)="handelManualEntrySelect($event);"></app-popup-table>
             </span>
-        </form>
     </div>
 
 
     <form [formGroup]="ppoFormDetails">
-        <p-fieldset legend="PPO Details" class="line-height-3 m-0">
+        <p-fieldset [legend]="legend" class="line-height-3 m-0">
         <div class="p-formgrid grid">
             <div class="col-12 md:col-6">
                 <span class="p-float-label m-3 h-45px">

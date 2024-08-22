@@ -1,47 +1,43 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SharedDataService  } from '../shared-data.service';
 import { Validators } from '@angular/forms';
-import { PpoDetailsService } from 'src/app/core/services/ppoDetails/ppo-details.service';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
-
-import { PensionManualPPOReceiptService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, PensionCategoryMasterService } from 'src/app/api';
+import { PensionManualPPOReceiptService, PensionPPODetailsService, PensionCategoryMasterService } from 'src/app/api';
 import { firstValueFrom, Observable, Subscription, tap } from 'rxjs';
+
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss'],
-  providers: [MessageService, ConfirmationService, DialogService],
 })
 
 export class DetailsComponent implements OnInit, OnDestroy {
   religionOptions: SelectItem[];
   subDivOptions: SelectItem[];
   ppoFormDetails: FormGroup = new FormGroup({});
-  ref: DynamicDialogRef | undefined;
   ManualEntrySearchForm: FormGroup = new FormGroup({});
-  private ppoID: String | undefined;
+  allManualPPOReceipt$?:Observable<any>;
+  catDescription$?:Observable<any>;
+  eppoid?:any;
+  @Input() ppoId?:string | undefined | null;
 
-  allManualPPOReceipt$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
-  catDescription$?:Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+  legend:string = 'PPO Details';
 
   constructor(
     private fb: FormBuilder, 
-    private toastService: ToastService,
     private sd: SharedDataService, 
-    private service: PpoDetailsService,
-    private dialogService: DialogService,
     private PensionManualPPOReceiptService:PensionManualPPOReceiptService,
     private ppoCategoryService: PensionCategoryMasterService,
-
+    private PensionPPODetailsService: PensionPPODetailsService,
+    private tostService: ToastService,
   ) { 
     this.ininalizer();
+    this.MEDetailsSearch();
     this.religionOptions = [
       { label: 'Hindu', value: 'H' },
       { label: 'Muslim', value: 'M' },
@@ -61,15 +57,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
       { label: 'Dependent Mother', value: 'K' },
       { label: 'Wife', value: 'W' },
     ];
+
+  }
+
+  ngOnChanges(): void {
+    this.legend="ID-"+this.ppoId;
+    this.fetchPpoDetails();
   }
 
   ininalizer(): void {;
-    // ManualEntrySearchForm Form builder
-    this.ManualEntrySearchForm = this.fb.group({
-      eppoid: [''],
-    });
-
-
     this.ppoFormDetails = this.fb.group({
       receiptId: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
       ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
@@ -139,6 +135,26 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.statusChangeSubscription.unsubscribe();
   }
+  async fetchPpoDetails(){
+    if (this.ppoId) {
+      await firstValueFrom(
+        this.PensionPPODetailsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
+          tap((res)=>{
+            if(res.apiResponseStatus == 1 && res.result){
+              this.ppoFormDetails.patchValue(res.result);
+            }
+            else{
+              if (res.message) {
+                this.tostService.showError(res.message);
+              }
+            }
+          }),
+        )
+      )
+    }
+  }
+
+
 
   // this function do date object to string
   getFormattedDate(date: Date | null): string {
@@ -170,21 +186,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.formateDate()
       this.removeNotrequiredField();
       console.log(this.ppoFormDetails.value)
-      this.service.CreatePPODetails(this.ppoFormDetails.value).subscribe(
-        (response) => {
-          console.log(response);
-          this.sd.setPPOID(response.result.ppoId);
-          this.toastService.showSuccess(response.message);
-          this.sd.object=undefined;
-          if (response.apiResponseStatus===1) {
-            return true;
-          }
-          return false;
-        },
-        (error) => {
-          this.toastService.showError('Failed to save data: '+error.message);
-        }
-      )
     }
     this.sd.object=undefined;
     return false;
@@ -203,42 +204,24 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
     };
     
-    // add filter parameter based on input value  // TreasuryReceiptNo
-    if (this.ManualEntrySearchForm.valid) {
-      const id = this.ManualEntrySearchForm.value
-      const keys = Object.keys(this.ManualEntrySearchForm.value);
+    if (this.eppoid) {
       payload.filterParameters = [{
         "field": "TreasuryReceiptNo",
-        "value": id[keys[0]],
+        "value": this.eppoid,
         "operator": "contains"
       }];
     }
 
-
-
     this.allManualPPOReceipt$ = this.PensionManualPPOReceiptService.getAllPpoReceipts(payload);
-    this.ref = this.dialogService.open(SearchPopupComponent, {
-      data: this.allManualPPOReceipt$,
-      header: 'Search record',
-      width: '60%'
-    });
+  }
 
-    firstValueFrom(
-      this.ref.onClose.pipe(
-        tap(
-          record => {
-            if (record) 
-            {
-              console.log(record) // degug
-              this.ppoFormDetails.controls['receiptId'].setValue(record.id);
-              this.ppoFormDetails.controls['pensionerName'].setValue(record.pensionerName);
-              this.ppoFormDetails.controls['ppoNo'].setValue(record.ppoNo);
-              this.ManualEntrySearchForm.controls["eppoid"].setValue(record.treasuryReceiptNo);
-            }
-          }
-        )
-      )
-    );
+  // handelManualEntrySelectRow
+  handelManualEntrySelect($event:any){
+    console.log($event)
+    this.ppoFormDetails.controls['receiptId'].setValue($event.id);
+    this.ppoFormDetails.controls['pensionerName'].setValue($event.pensionerName);
+    this.ppoFormDetails.controls['ppoNo'].setValue($event.ppoNo);
+    this.ManualEntrySearchForm.controls["eppoid"].setValue($event.treasuryReceiptNo);
   }
 
   // fetch CatDescription
@@ -252,28 +235,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         "order":""
       }
     };
-
     this.catDescription$ = this.ppoCategoryService.getAllCategories(payload);
-    
-
-    this.ref = this.dialogService.open(SearchPopupComponent, {
-      data: this.catDescription$,
-      header: 'Search record',
-      width: '60%'
-    });
-
-    firstValueFrom(
-      this.ref.onClose.pipe(
-        tap(record => {
-          if (record) {
-            // console.log(record) // :debug
-            this.ppoFormDetails.controls['categoryDescription'].setValue(record.categoryName);
-            this.ppoFormDetails.controls['categoryIdShow'].setValue(record.primaryCategoryId);
-            this.ppoFormDetails.controls['subCatDesc'].setValue(record.subCategoryId);
-            this.ppoFormDetails.controls['categoryId'].setValue(record.id);
-          }
-        })
-      )
-    );
   }
 }

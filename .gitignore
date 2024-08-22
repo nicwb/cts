@@ -43,9 +43,12 @@ layout.css
 src/assets/demo/styles/badges.css
 src/assets/layout/styles/theme/designer
 
+# Developer Supports
 *.http
 *.tmp
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+*.bkp
+*.bkp.html

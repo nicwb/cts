@@ -27,6 +27,7 @@ import { BankDetailsComponent } from './bank-details/bank-details.component';
 import { SanctionModule } from './sanction/sanction.module';
 import { FamilyNomineeModule } from './family-nominee/family-nominee.module';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { TableModule } from 'primeng/table';
 // md - 50
 // import { FloatLabe } ;
 
@@ -73,6 +74,7 @@ const routes: Routes = [
     FieldsetModule,
     FamilyNomineeModule,
     PopupTableModule,
+    TableModule,
     RouterModule.forChild(routes)
   ],
   providers: [],
