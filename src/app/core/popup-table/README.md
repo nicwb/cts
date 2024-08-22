@@ -58,7 +58,7 @@ export YourAppComponent{
 }
 
 ```
-# What is new here
+# What's new
 :point_right: NOTE: Add ability to customize btn style by using
 ```html 
 <app-popup-table [buttonStyle]="YourButtonStyle" ></app-popup-table>
