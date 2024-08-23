@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SharedDataService } from '../shared-data.service';
 import { PPOBankAccountCreateService } from 'src/app/core/services/PPOBankAccountCreate/ppobank-account-create.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { CreatePensonarBankDTO } from 'src/app/core/models/ppoentry-inf';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BankService, BranchDeatilsDTOAPIResponse, DropdownDTOIEnumerableAPIResponse } from 'src/app/api';
 import { firstValueFrom, Observable } from 'rxjs';
 import { FirstLetterPipe } from 'src/app/core/pipe/first-letter.pipe';
@@ -18,17 +15,14 @@ import { FirstLetterPipe } from 'src/app/core/pipe/first-letter.pipe';
 export class BankDetailsComponent implements OnInit {
   BankDetailsForm: FormGroup = new FormGroup({});
   private ppoID?:string;
-  ref: DynamicDialogRef | undefined
 
   banks$ : Observable<DropdownDTOIEnumerableAPIResponse> | undefined;
   bankIFC$ : Observable<BranchDeatilsDTOAPIResponse> | undefined;
   
   constructor(
     private fb: FormBuilder,
-    private sd: SharedDataService,
     private service: PPOBankAccountCreateService,
     private toastService: ToastService,
-    private dialogService: DialogService,
     private BankService: BankService,
   ) { 
     this.ininalizer();
@@ -52,21 +46,6 @@ export class BankDetailsComponent implements OnInit {
       }
     );
       
-    this.BankDetailsForm.statusChanges.subscribe(status => {
-      if (status === 'VALID') {
-        this.sd.setFormValid(true);
-        this.sd.setObject(this);
-      }
-      else {
-        // this.sd.setFormValid(false);
-        this.sd.setFormValid(true);
-        this.sd.setObject(this);
-      }
-    });
-
-    this.sd.ppoID$.subscribe(status => {
-      this.ppoID = status;
-    });
   }
 
   saveData():boolean {

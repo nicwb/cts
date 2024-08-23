@@ -52,7 +52,6 @@ import { BillPrintComponent } from './bill-print/bill-print.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({

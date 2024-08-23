@@ -85,7 +85,8 @@
             <div class="col-12 md:col-6">
                 <label  for="categoryDescription" class="col-12 mb-2 md:col-2 md:mb-0">Cat Description</label>
                 <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-45px">
-                    <input class="h-45px" pInputText formControlName="categoryDescription" (click)="fetchCatDescription()"/>
+                    <input class="h-45px" style="width: 80%;" pInputText formControlName="categoryDescription" (ngModelChange)="fetchCatDescription()"/>
+                    <app-popup-table [service$]="catDescription$" [buttonStyle]="sechButtonStyle" (return)="handelCategoryDescription($event)"></app-popup-table>
                 </div>
             </div>
             
@@ -205,6 +206,14 @@
                 </div>
             </div>
 
+        </div>
+        <div class="w-100" style="display: flex; justify-content: center;">
+            <p-button 
+                label="Save"
+                icon="pi pi-bookmark"
+                styleClass="p-button-raised" 
+                (click)="saveData()">
+              </p-button>
         </div>
         </p-fieldset>
     </form>

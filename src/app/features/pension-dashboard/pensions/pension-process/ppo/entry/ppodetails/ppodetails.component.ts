@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { SharedDataService } from './shared-data.service';
 import { firstValueFrom, Observable, tap, catchError, EMPTY } from 'rxjs';
 import { PensionPPODetailsService } from 'src/app/api';
 
@@ -31,7 +30,6 @@ export class PpodetailsComponent implements OnInit {
     { label: 'Family Nominee' },
   ];
   isFormValid = false;
-  ppoID?: string;
   allPPOs$?: Observable<any>;
   viewMode = true;
   ppoSearchField = '';
@@ -46,20 +44,14 @@ export class PpodetailsComponent implements OnInit {
 
   constructor(
     private toastService: ToastService,
-    private sd: SharedDataService,
     private ppoDetialsService: PensionPPODetailsService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.subscribeToDataChanges();
     this.loadPPOData();
   }
 
-  private subscribeToDataChanges(): void {
-    this.sd.isFormValid$.subscribe(status => this.isFormValid = status);
-    this.sd.ppoID$.subscribe(status => this.ppoID = status);
-  }
 
   private async loadPPOData(): Promise<void> {
     this.isLoading = true;
@@ -104,17 +96,10 @@ export class PpodetailsComponent implements OnInit {
     return EMPTY; // Use EMPTY to represent an observable that emits no items and immediately completes
   }
 
-  nextMove(): void {
-    if (this.ppoID) {
-      this.currentStepIndex++;
-    }
-  }
 
   next(): void {
-    if (this.sd.object?.saveData()) {
-      this.nextMove();
-    } else {
-      this.nextMove();
+    if (this.ppoId) {
+      this.currentStepIndex++;
     }
   }
 
@@ -127,12 +112,6 @@ export class PpodetailsComponent implements OnInit {
     }
   }
 
-  handleSelectedRow(event: any): void {
-    console.log('Selected row:', event);
-    this.sd.setPPOID(event.ppoId);
-    // Optionally, navigate to the next step
-    // this.next();
-  }
 
   viewChange(state: boolean): void {
     if (state) {
@@ -143,8 +122,11 @@ export class PpodetailsComponent implements OnInit {
   }
 
   newPPOEntry(): void {
-    console.log('Showing New PPO entry');
+    // go ppoEntymode
+      
+    this.ppoId = undefined;
     this.viewMode = false;
+    this.cdr.detectChanges();
   }
 
   search(): void {
@@ -177,5 +159,13 @@ export class PpodetailsComponent implements OnInit {
       this.cdr.detectChanges();
     }
     this.viewChange(false);
+  }
+
+  setPpoId(id:any){
+    if(id){
+      this.ppoId=id;
+      this.cdr.detectChanges();
+      this.next();
+    }
   }
 }

@@ -1,13 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { SharedDataService  } from '../shared-data.service';
 import { Validators } from '@angular/forms';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
 import { PensionManualPPOReceiptService, PensionPPODetailsService, PensionCategoryMasterService } from 'src/app/api';
-import { firstValueFrom, Observable, Subscription, tap } from 'rxjs';
+import { catchError, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 
 
 @Component({
@@ -16,7 +15,7 @@ import { firstValueFrom, Observable, Subscription, tap } from 'rxjs';
   styleUrls: ['./details.component.scss'],
 })
 
-export class DetailsComponent implements OnInit, OnDestroy {
+export class DetailsComponent implements OnInit {
   religionOptions: SelectItem[];
   subDivOptions: SelectItem[];
   ppoFormDetails: FormGroup = new FormGroup({});
@@ -24,20 +23,22 @@ export class DetailsComponent implements OnInit, OnDestroy {
   allManualPPOReceipt$?:Observable<any>;
   catDescription$?:Observable<any>;
   eppoid?:any;
+  categoryDescriptionFelid:string='';
   @Input() ppoId?:string | undefined | null;
-
+  @Output() return = new EventEmitter();
   legend:string = 'PPO Details';
+  sechButtonStyle={height: '267%'};
 
   constructor(
     private fb: FormBuilder, 
-    private sd: SharedDataService, 
     private PensionManualPPOReceiptService:PensionManualPPOReceiptService,
     private ppoCategoryService: PensionCategoryMasterService,
     private PensionPPODetailsService: PensionPPODetailsService,
     private tostService: ToastService,
-  ) { 
+  ) {
     this.ininalizer();
     this.MEDetailsSearch();
+    this.fetchCatDescription();
     this.religionOptions = [
       { label: 'Hindu', value: 'H' },
       { label: 'Muslim', value: 'M' },
@@ -57,15 +58,16 @@ export class DetailsComponent implements OnInit, OnDestroy {
       { label: 'Dependent Mother', value: 'K' },
       { label: 'Wife', value: 'W' },
     ];
-
   }
 
   ngOnChanges(): void {
-    this.legend="ID-"+this.ppoId;
-    this.fetchPpoDetails();
+    if (this.ppoId) {
+      this.legend="ID-"+this.ppoId;
+      this.fetchPpoDetails();
+    }
   }
 
-  ininalizer(): void {;
+  ininalizer(): void {
     this.ppoFormDetails = this.fb.group({
       receiptId: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
       ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
@@ -118,23 +120,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  statusChangeSubscription!: Subscription;
+  ngOnInit() {
+  }
 
-  ngOnInit() {    
-    this.statusChangeSubscription = this.ppoFormDetails.statusChanges.subscribe(status => {
-      if (status === 'VALID') {
-        this.sd.setFormValid(true);
-        this.sd.setObject(this);
-      }
-      else {
-        this.sd.setFormValid(false);
-        this.sd.setObject(this);
-      }
-    });
-  }
-  ngOnDestroy(){
-    this.statusChangeSubscription.unsubscribe();
-  }
+
+  
   async fetchPpoDetails(){
     if (this.ppoId) {
       await firstValueFrom(
@@ -153,9 +143,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       )
     }
   }
-
-
-
   // this function do date object to string
   getFormattedDate(date: Date | null): string {
     if (date) {
@@ -177,18 +164,63 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.ppoFormDetails.removeControl('categoryDescription'); 
     this.ppoFormDetails.removeControl('categoryIdShow');
     this.ppoFormDetails.removeControl('subCatDesc');
+    this.ppoFormDetails.removeControl('effectiveDate');
+    this.ppoFormDetails.removeControl('reducedPensionAmount');
   }
 
   // call this method for save database
-  saveData():boolean {
-    console.log('saveDat');
-    if (this.ppoFormDetails.valid) {
-      this.formateDate()
-      this.removeNotrequiredField();
-      console.log(this.ppoFormDetails.value)
+  async saveData() {
+    if (!this.ppoId) {
+      try{
+        this.formateDate()
+      }
+      catch(error){
+        console.error(error);
+      }
     }
-    this.sd.object=undefined;
-    return false;
+    this.removeNotrequiredField();
+    console.log(this.ppoFormDetails.value);
+    if (this.ppoFormDetails.valid) {
+      if (!this.ppoId){
+        await firstValueFrom(
+          this.PensionPPODetailsService.createPensioner(this.ppoFormDetails.value).pipe(
+            tap((res) => {
+              if (res.apiResponseStatus == 1) {
+                if (res.message) {
+                  this.tostService.showSuccess(res.message);
+                }
+                if (res.result?.ppoId) {
+                      this.ppoId = String(res.result.ppoId);
+                      this.return.emit(this.ppoId);
+                }
+              }
+            },
+            catchError((error) => {
+              this.tostService.showError('Error in saving data');
+              console.error(error);
+              return (error);
+            })
+        )));
+        return;
+      }
+      await firstValueFrom(
+        this.PensionPPODetailsService.updatePensionerByPpoId(Number(this.ppoId),this.ppoFormDetails.value).pipe(
+          tap((res) => {
+            if (res.apiResponseStatus == 1) {
+              if (res.message) {
+                this.tostService.showSuccess(res.message);
+              }
+            }
+          },
+          catchError((error) => {
+            this.tostService.showError('Error in saving data');
+            console.error(error);
+            return (error);
+          })
+      )));
+      return;
+    }
+    this.tostService.showError('Please fill all required fields');
   }
 
   // manual PPO entry search
@@ -217,11 +249,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   // handelManualEntrySelectRow
   handelManualEntrySelect($event:any){
-    console.log($event)
     this.ppoFormDetails.controls['receiptId'].setValue($event.id);
     this.ppoFormDetails.controls['pensionerName'].setValue($event.pensionerName);
     this.ppoFormDetails.controls['ppoNo'].setValue($event.ppoNo);
-    this.ManualEntrySearchForm.controls["eppoid"].setValue($event.treasuryReceiptNo);
+    this.eppoid = $event.treasuryReceiptNo;
   }
 
   // fetch CatDescription
@@ -235,6 +266,24 @@ export class DetailsComponent implements OnInit, OnDestroy {
         "order":""
       }
     };
+    const CatDescription = this.ppoFormDetails.get('categoryDescription')?.value;
+    if (CatDescription) {
+      payload.filterParameters = [{
+        "field": "primaryCategoryId",
+        "value": CatDescription,
+        "operator": "contains"
+      }];
+    }
     this.catDescription$ = this.ppoCategoryService.getAllCategories(payload);
+  }
+
+  // handelCategoryDescription
+  handelCategoryDescription($event:any){
+    if ($event) {
+      this.ppoFormDetails.controls['categoryDescription'].setValue($event.categoryName);
+      this.ppoFormDetails.controls['categoryIdShow'].setValue($event.primaryCategoryId);
+      this.ppoFormDetails.controls['subCatDesc'].setValue($event.subCategoryId);
+      this.ppoFormDetails.controls['categoryId'].setValue($event.id);
+    }
   }
 }

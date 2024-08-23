@@ -10,7 +10,7 @@
 
                 <!-- PPO and OtherDetails -->
                 <div *ngIf="currentStepIndex === 0" class="flex flex-column gap-3">
-                   <app-details [ppoId]="ppoId"></app-details>
+                   <app-details [ppoId]="ppoId" (return)="setPpoId($event);"></app-details>
                 </div>
 
 
@@ -29,7 +29,7 @@
                     <app-family-nominee></app-family-nominee>
                 </div>
         </div>
-            <div class="flex flex-col mt-1 align-items-center justify-content-center">
+            <div class="flex flex-col mt-1 align-items-center justify-content-center" style="column-gap: 10px;">
               <p-button 
                 label="Back" 
                 icon="pi pi-step-backward" 
@@ -39,17 +39,9 @@
               <p-button 
                 label="Next" 
                 *ngIf="currentStepIndex < 3" 
-                [disabled]="!isFormValid" 
+                [disabled]="!ppoId" 
                 icon="pi pi-step-forward"
                 styleClass="p-button-success" 
-                (click)="next()">
-              </p-button>
-              <p-button 
-                label="Submit" 
-                *ngIf="currentStepIndex === 3" 
-                [disabled]="!isFormValid" 
-                icon="pi pi-bookmark"
-                styleClass="p-button-raised" 
                 (click)="next()">
               </p-button>
             </div>
@@ -72,6 +64,7 @@
                 </div>
                 <div class="absolute right-0">
                   <button 
+                    label="Add New PPO" 
                     pButton 
                     pRipple 
                     icon="pi pi-plus" 
