@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
-import { PopupTableComponent } from './popup-table.component';
+import { SearchPopupComponentTemp } from './ search-popup.component';
 import { FormsModule } from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
-  declarations: [PopupTableComponent],
+  declarations: [SearchPopupComponentTemp],
   imports: [
     CommonModule,
     ButtonModule,
@@ -19,6 +19,6 @@ import {InputTextModule} from 'primeng/inputtext';
     InputTextModule,
     
   ],
-  exports: [PopupTableComponent]
+  exports: [SearchPopupComponentTemp]
 })
-export class PopupTableModule { }
+export class SearchPopupTempModule { }

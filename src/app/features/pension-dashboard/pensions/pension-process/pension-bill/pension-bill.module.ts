@@ -14,7 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { PensionBillComponent } from './pension-bill.component';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
-import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
     TableModule,
     DialogModule,
     CalendarModule,
-    popupTableModule
+    PopupTableModule
 
   ],
   providers: [MessageService],

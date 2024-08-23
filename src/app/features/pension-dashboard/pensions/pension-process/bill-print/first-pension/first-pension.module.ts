@@ -4,7 +4,7 @@ import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 
 
 
@@ -17,7 +17,7 @@ import { popupTableModule } from 'src/app/core/popup-table/popup-table.module';
     MhPrimeDynamicTableModule,
     TableModule,
     ButtonModule,
-    popupTableModule
+    PopupTableModule
   ]
 })
 export class FirstPensionModule { }
