@@ -14,143 +14,104 @@
                 <div class="card mx-5 py-3">
                     <h5>PPO ID Details:</h5>
                     <hr class="border-b-2 h-10 border-dashed">
-                    <div class="grid col-12">
-                        <label for="PpoId" class="col-12 md:col-1">
+                    <div class="flex gap-5 w-full">
+                        <div class="flex items-center w-full">
+                          <label for="PpoId" class="mr-2 w-1/4">
                             PPO ID:
-                        </label>
-                        <input class="col-12 md:col-4" id="PpoId" type="text" pInputText formControlName="ppoId"
-                            placeholder="PPO ID" [(ngModel)]="ppoId" />
-
-                        <!-- <div *ngIf="ppoList$"> -->
-                        <!-- <h1>amit</h1> -->
-                        <app-popup-table name="" [service$]="ppoList$" class="" (return)="handleSelectedRow($event)"
-                            ></app-popup-table>
-
-                        
-                        <label for="PpoId" class="col-12 md:col-1 ml-4">
-                            Period To:
-                        </label>
-
-                    
-
-                        <p-calendar
-                            class="col-12 md:col-4 p-0  md border border-gray-300 rounded-md  shadow-sm focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
-                            id="periodTo" formControlName="periodTo" [(ngModel)]="period"
-                            (onSelect)="onDateSelect($event)" dateFormat="yy-mm-dd" placeholder="Select a date">
-                        </p-calendar>
-
-
-
-                        <div class="flex flex-wrap">
-                            <button type="submit" pButton pRipple (click)="getvalue()"
-                                [disabled]="!isButtonEnabled" class="">Generate</button>
+                          </label>
+                          <input
+                            id="PpoId"
+                            type="text"
+                            pInputText
+                            formControlName="ppoId"
+                            placeholder="PPO ID"
+                            [(ngModel)]="ppoId"
+                            [readonly]="isDisabled"
+                            class="h-10 w-full rounded-l-lg px-2"
+                            (click)="onInputClick()"
+                            />
+                          <app-popup-table
+                            name=""
+                            [service$]="ppoList$"
+                            (return)="handleSelectedRow($event)"
+                            [buttonStyle]="{'height': '51px'}"
+                          ></app-popup-table>
                         </div>
 
-                    </div>
+                        <div class="flex items-center w-full">
+                          <label for="periodTo" class="mr-2 w-1/3">
+                            Period To:
+                          </label>
+                          <p-calendar
+                            id="periodTo"
+                            formControlName="periodTo"
+                            [(ngModel)]="period"
+                            (onSelect)="onDateSelect($event)"
+                            dateFormat="yy-mm-dd"
+                            placeholder="Select a date"
+                            class="h-10 w-full"
+                            [disabled]="isDisabled"
+                            (click)="onInputClick()"
+                          ></p-calendar>
+                          <button
+                            type="submit"
+                            pButton
+                            pRipple
+                            (click)="getvalue()"
+                            [disabled]="!isButtonEnabled"
+                            class="h-10 pr-5"
+                          >
+                            Generate
+                          </button>
+                        </div>
+                      </div>
+
                 </div>
             </div>
+            
             <div class="flex justify-center card mx-6 my-2 py-1" *ngIf="isDataLoaded">
                 <br />
-
                 <div class="p-fluid p-formgrid grid md:col-12">
                     <div class="col-12 md:col-12 pb-1">
                         <h5>Pension Details</h5>
                         <hr class="border-b-2 h-10 border-dashed">
                     </div>
-
                     <div class="field col-12 md:col-4 mb-0 py-0">
                         <label htmlFor="ppoNo">PPO NO</label>
-                        <input pInputText id="ppoNo" type="text" formControlName="ppoNo" [attr.disabled]="true"
+                        <input pInputText id="ppoNo" type="text" formControlName="ppoNo" [readonly]="true"
                             class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('ppoNo')?.errors &&
-                                    pensionForm.get('ppoNo')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('ppoNo')?.errors?.['required']" class="p-error">
-                                Please enter PPO No
-                            </div>
-                        </div>
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0">
                         <label htmlFor="pensionerName">Pensioner Name</label>
                         <input pInputText id="pensionerName" type="text" formControlName="pensionerName"
-                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('pensionerName')?.errors &&
-                                    pensionForm.get('pensionerName')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('pensionerName')?.errors?.['required']" class="p-error">
-                                Please enter pensioner name
-                            </div>
-                        </div>
+                            [readonly]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0">
                         <label htmlFor="periodFrom">Period From</label>
                         <input pInputText id="periodFrom" formControlName="periodFrom" type="date"
-                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('periodFrom')?.errors &&
-                                    pensionForm.get('periodFrom')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('periodFrom')?.errors?.['required']" class="p-error">
-                                Please enter period from
-                            </div>
-                        </div>
+                            [readonly]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                       
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
                         <label htmlFor="periodTo">Period To</label>
-                        <input pInputText id="periodTo" type="date" formControlName="periodTo" [attr.disabled]="true"
+                        <input pInputText id="periodTo" type="date" formControlName="periodTo" [readonly]="true"
                             [(ngModel)]="period" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-
-                        <div *ngIf="
-                                    pensionForm.get('periodTo')?.errors &&
-                                    pensionForm.get('periodTo')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('periodTo')?.errors?.['required']" class="p-error">
-                                Please enter period to
-                            </div>
-                        </div>
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
                         <label htmlFor="bankName">Bank Name</label>
-                        <input pInputText id="bankName" type="text" formControlName="bankName" [attr.disabled]="true"
+                        <input pInputText id="bankName" type="text" formControlName="bankName" [readonly]="true"
                             class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('bankName')?.errors &&
-                                    pensionForm.get('bankName')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('bankName')?.errors?.['required']" class="p-error">
-                                Please enter bank name
-                            </div>
-                        </div>
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
                         <label htmlFor="accountNo">Account NO</label>
                         <input pInputText id="accountNo" type="number" class="remove-arrow" formControlName="accountNo"
-                            [attr.disabled]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('accountNo')?.errors &&
-                                    pensionForm.get('accountNo')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('accountNo')?.errors?.['required']" class="p-error">
-                                Please enter account no
-                            </div>
-                        </div>
+                            [readonly]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
                         <label htmlFor="billDate">Bill Date</label>
-                        <input pInputText id="billDate" type="date" formControlName="billDate" [attr.disabled]="true"
+                        <input pInputText id="billDate" type="date" formControlName="billDate" [readonly]="true"
                             class="bg-cyan-200" [ngStyle]="{'border-color' : 'black', 'font-color':'black'}" />
-                        <div *ngIf="
-                                    pensionForm.get('billDate')?.errors &&
-                                    pensionForm.get('billDate')?.touched
-                                ">
-                            <div *ngIf="pensionForm.get('billDate')?.errors?.['required']" class="p-error">
-                                Please enter bill date
-                            </div>
-                        </div>
                     </div>
-
                 </div>
             </div>
 
@@ -286,8 +247,5 @@
                 </button>
             </div>
         </div>
-        
-        
-
     </div>
 </form>

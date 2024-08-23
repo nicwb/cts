@@ -13,6 +13,7 @@ import {
   PensionComponentRevisionService,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { flush } from '@angular/core/testing';
 
 @Component({
   selector: 'app-pension-bill',
@@ -31,9 +32,9 @@ import { ToastService } from 'src/app/core/services/toast.service';
       //   padding: 0.9rem; /* Equivalent to p-2 in Tailwind CSS */
       // }
 
-      :host ::ng-deep app-search-popup span{
-      padding: 0.78rem;
-      }
+      // :host ::ng-deep app-popup-table span{
+      // padding: 0.78rem;
+      // }
     `,
   ],
 
@@ -54,6 +55,9 @@ export class PensionBillComponent implements OnInit {
   revisionResults: any;
   hasGenerated: boolean = false;
   hasSaved: boolean = false;
+  hasinput: boolean = true;
+  isDisabled: boolean = false;
+  res: any;
 
   get isButtonEnabled(): boolean {
     // console.log('Checking button enabled state:', !!this.ppoId, !!this.period, !this.hasGenerated);
@@ -82,10 +86,9 @@ export class PensionBillComponent implements OnInit {
         order: 'asc',
       },
     };
-
     this.ppoList$ = this.ppoListService.getAllPensioners(payload);
   }
-
+  
   onDateSelect(event: Date) {
     this.period = this.formatDate(event);
   }
@@ -108,64 +111,49 @@ export class PensionBillComponent implements OnInit {
       billDate: [this.today, Validators.required],
       // paymentMode: [null, Validators.required],
     });
-    console.log('Form Valid:', this.pensionForm.valid);
-
-    console.log('Form validity on init:', this.pensionForm.valid);
-    console.log('date :', this.period);
-
-    this.pensionForm.valueChanges.subscribe(() => {
-      this.updateStepValidity();
-      console.log('Form validity after changes:', this.pensionForm.valid);
-    });
-
-    this.updateStepValidity();
   }
-
-  updateStepValidity() {
-    this.isCurrentStepValid = this.getCurrentStepControls().valid;
-    console.log('Current step validity:', this.isCurrentStepValid);
-  }
-
-  getCurrentStepControls() {
-    return this.pensionForm;
-  }
-
+ 
   public async getvalue() {
     if (this.hasGenerated) {
       return;
     }
-
     const payload2: InitiateFirstPensionBillDTO = {
       ppoId: this.ppoId as number,
       toDate: this.period,
     };
-
     if (this.ppoId && this.period) {
       try {
         const response = await firstValueFrom(this.service.generateFirstPensionBill(payload2));
         this.hasGenerated = true;
-        console.log(response);
+        this.isDisabled = true;
         if (response && response.result) {
           this.result = response.result;
-          console.log(this.result);
-          this.pensionForm.patchValue({
-            ppoNo: this.result.pensioner.ppoNo,
-            pensionerName: this.result.pensioner.pensionerName,
-            periodFrom: this.result.pensioner.dateOfRetirement,
-            accountNo: this.result.bankAccount.bankAcNo,
-            bankName: this.result.bankAccount.bankCode,
-          });
-          this.payments = this.result.pensionerPayments;
-          this.pensioncategory = this.result.pensionCategory;
-          this.calculateTotalDueAmount();
-          this.isDataLoaded = true;
+          if (this.result.bankAccount === null) {
+            this.toastService.showError('Not found pensioner bank account');
+            this.hasGenerated = false;
+            this.isDisabled = false;
+          }
+          else {
+            this.pensionForm.patchValue({
+              ppoNo: this.result.pensioner.ppoNo,
+              pensionerName: this.result.pensioner.pensionerName,
+              periodFrom: this.result.pensioner.dateOfRetirement,
+              accountNo: this.result.bankAccount.bankAcNo,
+              bankName: this.result.bankAccount.bankCode,
+            });
+            this.payments = this.result.pensionerPayments;
+            this.pensioncategory = this.result.pensionCategory;
+            this.calculateTotalDueAmount();
+            this.isDataLoaded = true;
+            this.hasinput = false;
+          }
         }
       } catch (err) {
         console.error('Error fetching record:', err);
       }
     }
   }
-
+ // refresh
   refresh() {
     if (this.pensionForm.value) {
       this.pensionForm.reset();
@@ -176,6 +164,7 @@ export class PensionBillComponent implements OnInit {
       this.isDataLoaded = false;
       this.hasGenerated = false;
       this.hasSaved = false; // Reset the saved state on refresh
+      this.isDisabled = false;
     }
   }
 
@@ -187,34 +176,30 @@ export class PensionBillComponent implements OnInit {
     try {
       if (this.result) {
         this.hasSaved = false;
-
         const ppoId = this.result.pensioner.ppoId;
         const payloadArray: PpoComponentRevisionEntryDTO[] = this.result.pensionCategory.componentRates.map((rate: any) => ({
           rateId: rate.breakupId,
           fromDate: rate.effectiveFromDate,
           amountPerMonth: rate.rateAmount,
         }));
-        console.log(`Number of elements sent: ${payloadArray.length}`);
+        // console.log(`Number of elements sent: ${payloadArray.length}`);
 
         this.response = await firstValueFrom(this.revisionService.createPpoComponentRevisions(ppoId, payloadArray));
 
         if (this.response.apiResponseStatus === 1) {
           await this.saveFirstBill();
         } else if (this.response.apiResponseStatus === 3) {
-          this.toastService.showWarning("Component Detail already exists.");
           this.revisionResults = await firstValueFrom(this.revisionService.getPpoComponentRevisionsByPpoId(ppoId));
           if (this.revisionResults.apiResponseStatus === 1) {
             if (Array.isArray(this.revisionResults.result) && this.revisionResults.result.length > 1) {
-              this.toastService.showWarning('Bill already exists.');
-              await this.saveFirstBill();
-
-            } else {
+              // this.toastService.showWarning("Component Detail already exists.");
               await this.saveFirstBill();
             }
           }
         }
-
+        if(this.res && this.res.apiResponseStatus === 1){
         this.hasSaved = true; // Disable the save button after saving
+        }
       }
     } catch (error: unknown) {
       const errorMessage = (error instanceof Error) ? error.message : 'An unexpected error occurred.';
@@ -258,7 +243,7 @@ export class PensionBillComponent implements OnInit {
       }),
     };
     try {
-      const res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));
+      this.res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));
       this.toastService.showSuccess("Bill saved successfully.");
     } catch (billError) {
       const errorMessage = (billError instanceof Error) ? billError.message : 'Failed to save the first pension bill.';
@@ -270,5 +255,11 @@ export class PensionBillComponent implements OnInit {
     this.pensionForm.patchValue({
       ppoId: event.ppoId,
     });
+  }
+
+  onInputClick() {
+    if (this.isDisabled) {
+      alert("Insert a new entry Please click refresh !");
+    }
   }
 }

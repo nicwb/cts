@@ -39,8 +39,8 @@ export class AppMenuComponent implements OnInit {
                      { label: 'Component', icon: 'pi pi-fw pi-box', routerLink:['/master/app-pension/component'] },
                      { label: 'Component Rate', icon: 'pi pi-fw pi-box', routerLink:['master/app-pension/component-rate'] },
 
-                     { label: 'Classification', icon: 'pi pi-fw pi-box' },
-                     { label: 'Classification type', icon: 'pi pi-fw pi-box' },
+                    // { label: 'Classification', icon: 'pi pi-fw pi-box' },
+                    // { label: 'Classification type', icon: 'pi pi-fw pi-box' },
                 ]
             },
             {
@@ -61,9 +61,9 @@ export class AppMenuComponent implements OnInit {
                             {
                                 label: 'Pension Details', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
+                                   // { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark' },
+                                   // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
+                                   // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
                             {
@@ -75,108 +75,108 @@ export class AppMenuComponent implements OnInit {
 
                                         ]
                                      },
-                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Money Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Transfer', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Extragia Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'DA Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
+                                   // { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark' },
+                                  //  { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'Money Pension', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'Transfer', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'Extragia Pension', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'DA Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
+                                    // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
-                            {
-                                label: 'Approval', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
+                            // {
+                            //     label: 'Approval', icon: 'pi pi-fw pi-bookmark',
+                            //     items: [
+                            //         { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
+                            //         { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
+                            //         { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                            //     ]
+                            // },
                             {
                                 label: 'Bill Print', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                    { label: 'First Pension', icon: 'pi pi-fw pi-bookmark' ,routerLink: ['/pension/modules/pension-process/bill-print/first-pension']  },
+                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark' ,routerLink: ['/pension/modules/pension-process/bill-print/regular-pension']  },
+                                    // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
-                            {
-                                label: 'File Upload', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                                ]
-                            },
-                            {
-                                label: 'Send to Epradan', icon: 'pi pi-fw pi-bookmark',
+                            // {
+                            //     label: 'File Upload', icon: 'pi pi-fw pi-bookmark',
+                            //     items: [
+                            //         { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
+                            //     ]
+                            // },
+                            // {
+                            //     label: 'Send to Epradan', icon: 'pi pi-fw pi-bookmark',
 
-                            },
-                            {
+                            // },
+                            // {
 
-                                label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
+                            //     label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
 
-                            },
+                            // },
                         ]
                     },
-                    {
-                        label: 'Reports', icon: 'pi pi-fw pi-box',
-                        items: [
-                            {
-                                label: 'PPO Details', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Components Payable details', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'TDS Details', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'TDS Summery -EC-110', icon: 'pi pi-fw pi-bookmark' },
-                                            { label: 'TDS Pension Details TR 10 IFMS | EC-111', icon: 'pi pi-fw pi-bookmark' },
-                                        ]
-                                     },
-                                     { label: 'Approved PPO DetailsEC-112', icon: 'pi pi-fw pi-bookmark' },
-                                     { label: 'Life Certificate Not Submitted', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            {
-                                label: 'Bill', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Bank Register(All Bills)-EC-114', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: 'Bank Register-EC-115', icon: 'pi pi-fw pi-bookmark' },
-                                    { label: ' Transferred PPOs Register-EC-116', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },
-                            { label: 'Pension Master-EC-117', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Pensioner Bank Details-EC-118', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Suspended PPO-EC-119', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Pensioner Master-EC-120', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Pension EFP TO NFP-EC-121', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Converted Family Pension-EC-122', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'Pension Component Rate-EC-123', icon: 'pi pi-fw pi-bookmark' },
-                            { label: 'PPO Master-EC-124', icon: 'pi pi-fw pi-bookmark' },
+                    // {
+                    //     label: 'Reports', icon: 'pi pi-fw pi-box',
+                    //     items: [
+                    //         {
+                    //             label: 'PPO Details', icon: 'pi pi-fw pi-bookmark',
+                    //             items: [
+                    //                 { label: 'Components Payable details', icon: 'pi pi-fw pi-bookmark' },
+                    //                 { label: 'TDS Details', icon: 'pi pi-fw pi-bookmark',
+                    //                     items: [
+                    //                         { label: 'TDS Summery -EC-110', icon: 'pi pi-fw pi-bookmark' },
+                    //                         { label: 'TDS Pension Details TR 10 IFMS | EC-111', icon: 'pi pi-fw pi-bookmark' },
+                    //                     ]
+                    //                  },
+                    //                  { label: 'Approved PPO DetailsEC-112', icon: 'pi pi-fw pi-bookmark' },
+                    //                  { label: 'Life Certificate Not Submitted', icon: 'pi pi-fw pi-bookmark' },
+                    //             ]
+                    //         },
+                    //         {
+                    //             label: 'Bill', icon: 'pi pi-fw pi-bookmark',
+                    //             items: [
+                    //                 { label: 'Bank Register(All Bills)-EC-114', icon: 'pi pi-fw pi-bookmark' },
+                    //                 { label: 'Bank Register-EC-115', icon: 'pi pi-fw pi-bookmark' },
+                    //                 { label: ' Transferred PPOs Register-EC-116', icon: 'pi pi-fw pi-bookmark' },
+                    //             ]
+                    //         },
+                    //         { label: 'Pension Master-EC-117', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Pensioner Bank Details-EC-118', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Suspended PPO-EC-119', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Pensioner Master-EC-120', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Pension EFP TO NFP-EC-121', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Converted Family Pension-EC-122', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Pension Component Rate-EC-123', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'PPO Master-EC-124', icon: 'pi pi-fw pi-bookmark' },
 
 
-                        ]
-                    },
-                    {
-                        label: 'Query', icon: 'pi pi-fw pi-box',
-                        items: [
-                            {
-                                label: 'Pensioner Details', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    { label: 'Breakup Details', icon: 'pi pi-fw pi-bookmark' },
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Query', icon: 'pi pi-fw pi-box',
+                    //     items: [
+                    //         {
+                    //             label: 'Pensioner Details', icon: 'pi pi-fw pi-bookmark',
+                    //             items: [
+                    //                 { label: 'Breakup Details', icon: 'pi pi-fw pi-bookmark' },
 
-                                ]
-                            },
+                    //             ]
+                    //         },
 
-                        ]
-                    },
-                    {
-                        label: 'Festival Master', icon: 'pi pi-fw pi-box',
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Festival Master', icon: 'pi pi-fw pi-box',
 
-                    },
-                    {
+                    // },
+                    // {
 
-                        label: 'Festival Details', icon: 'pi pi-fw pi-box',
+                    //     label: 'Festival Details', icon: 'pi pi-fw pi-box',
 
-                    },
+                    // },
                 ]
             },
             {
