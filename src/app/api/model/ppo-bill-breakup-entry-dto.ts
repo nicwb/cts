@@ -18,5 +18,8 @@ export interface PpoBillBreakupEntryDTO {
     fromDate: string;
     toDate: string;
     breakupAmount: number;
+    dueAmount?: number;
+    drawnAmount?: number;
+    readonly netAmount?: number;
 }
 

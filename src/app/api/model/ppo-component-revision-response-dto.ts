@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 
 export interface PpoComponentRevisionResponseDTO { 
@@ -18,5 +19,6 @@ export interface PpoComponentRevisionResponseDTO {
     amountPerMonth: number;
     id?: number;
     toDate?: string;
+    rate?: ComponentRateResponseDTO;
 }
 
