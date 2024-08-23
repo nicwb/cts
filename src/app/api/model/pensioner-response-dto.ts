@@ -15,7 +15,7 @@ import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 
 export interface PensionerResponseDTO { 
-    receiptId: number;
+    dataSource?: { [key: string]: any; } | null;
     ppoNo: string;
     ppoType: string;
     ppoSubType: string;

@@ -12,7 +12,7 @@
 
 
 export interface PensionerEntryDTO { 
-    receiptId: number;
+    dataSource?: { [key: string]: any; } | null;
     ppoNo: string;
     ppoType: string;
     ppoSubType: string;
