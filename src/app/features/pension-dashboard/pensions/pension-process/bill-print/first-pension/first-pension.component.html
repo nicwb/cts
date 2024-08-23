@@ -24,18 +24,11 @@
                         formControlName="ppoId"
                         placeholder="PPO ID"
                       />
-                      <!-- <button
-                        pButton
-                        type="button"
-                        icon="pi pi-search"
-                        (click)="onSearch()"
-                        class="col-12 md:col-2"
-                      ></button> -->
                       <app-popup-table
                                 name=""
                                 [service$]="pensionComponent$"
                                 (return)="
-                                    handleSelectedRowByPensionComponent($event)
+                                    handleSearchEvent($event)
                                 "
                       ></app-popup-table>
                       <input
