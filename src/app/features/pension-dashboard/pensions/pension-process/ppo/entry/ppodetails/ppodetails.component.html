@@ -83,7 +83,7 @@
                   <ng-template pTemplate="header">
                     <tr>
                       <th *ngFor="let col of cols">{{ col.header }}</th>
-                      <th>Edit</th> <!-- Add a header for the Edit column -->
+                      <th>Edit</th>
                     </tr>
                   </ng-template>
   
@@ -91,7 +91,8 @@
                     <tr>
                       <td *ngFor="let col of cols">{{ record[col.field] }}</td>
                       <td>
-                        <p-button 
+                        <p-button
+                        label="Edit"
                           icon="pi pi-pencil" 
                           class="p-button-text" 
                           (click)="editThisRecord(record)">

@@ -26,6 +26,7 @@ export class DetailsComponent implements OnInit {
   categoryDescriptionFelid:string='';
   @Input() ppoId?:string | undefined | null;
   @Output() return = new EventEmitter();
+  @Output() returnBank = new EventEmitter();
   legend:string = 'PPO Details';
   sechButtonStyle={height: '267%'};
 
@@ -131,7 +132,7 @@ export class DetailsComponent implements OnInit {
         this.PensionPPODetailsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
           tap((res)=>{
             if(res.apiResponseStatus == 1 && res.result){
-              this.ppoFormDetails.patchValue(res.result);
+              this.patchData(res.result);
             }
             else{
               if (res.message) {
@@ -172,15 +173,19 @@ export class DetailsComponent implements OnInit {
   async saveData() {
     if (!this.ppoId) {
       try{
-        this.formateDate()
+        this.formateDate();
       }
       catch(error){
         console.error(error);
       }
+    }else{
+      this.ppoFormDetails.removeControl('retirementDate');
+      this.ppoFormDetails.removeControl('reducedPensionAmount');
+
     }
     this.removeNotrequiredField();
     console.log(this.ppoFormDetails.value);
-    if (this.ppoFormDetails.valid) {
+    if (this.ppoFormDetails.valid || this.ppoId) {
       if (!this.ppoId){
         await firstValueFrom(
           this.PensionPPODetailsService.createPensioner(this.ppoFormDetails.value).pipe(
@@ -221,6 +226,7 @@ export class DetailsComponent implements OnInit {
       return;
     }
     this.tostService.showError('Please fill all required fields');
+    console.log(this.ppoFormDetails.value)
   }
 
   // manual PPO entry search
@@ -285,5 +291,12 @@ export class DetailsComponent implements OnInit {
       this.ppoFormDetails.controls['subCatDesc'].setValue($event.subCategoryId);
       this.ppoFormDetails.controls['categoryId'].setValue($event.id);
     }
+  }
+
+  patchData(data:any){
+    console.log(data);
+    this.ppoFormDetails.patchValue(data);
+    this.ppoFormDetails.controls['receiptId'].setValue(data.receipt.id);
+    this.ppoFormDetails.controls['dateOfRetirement'].setValue(data.dateOfRetirement);
   }
 }
