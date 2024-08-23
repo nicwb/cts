@@ -31,13 +31,13 @@
                         (click)="onSearch()"
                         class="col-12 md:col-2"
                       ></button> -->
-                      <app-search-popup
+                      <app-popup-table
                                 name=""
                                 [service$]="pensionComponent$"
                                 (return)="
                                     handleSelectedRowByPensionComponent($event)
                                 "
-                      ></app-search-popup>
+                      ></app-popup-table>
                       <input
                         class="col-12 md:col-4"
                         id="pensionerName"
