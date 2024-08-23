@@ -9,8 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PensionerResponseDTO } from './pensioner-response-dto';
 import { PpoBillBreakupEntryDTO } from './ppo-bill-breakup-entry-dto';
-import { PensionerBankAcResponseDTO } from './pensioner-bank-ac-response-dto';
+import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 
 
 export interface PpoBillResponseDTO { 
@@ -25,8 +26,9 @@ export interface PpoBillResponseDTO {
     grossAmount: number;
     byTransferAmount: number;
     netAmount: number;
-    breakups: Array<PpoBillBreakupEntryDTO>;
     id?: number;
-    bankAccount?: PensionerBankAcResponseDTO;
+    breakups?: Array<PpoBillBreakupEntryDTO> | null;
+    pensioner?: PensionerResponseDTO;
+    ppoBillBreakups?: Array<PpoBillBreakupResponseDTO> | null;
 }
 
