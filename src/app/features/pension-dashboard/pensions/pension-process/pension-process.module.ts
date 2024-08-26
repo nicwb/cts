@@ -53,13 +53,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ApprovalComponent } from './approval/approval.component';
 
 @NgModule({
   declarations: [
     PensionProcessComponent,
     ArrearPensionComponent,
     PensionerDetailsComponent,
-    BillPrintComponent
+    BillPrintComponent,
+    ApprovalComponent
   ],
   imports: [
     CommonModule,
