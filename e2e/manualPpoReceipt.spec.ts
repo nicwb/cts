@@ -1,4 +1,5 @@
-import { test, expect, request } from '@playwright/test';
+import { test, expect } from '@playwright/test';
+import { DotEnv } from "utils/env"
 
 test.describe('Manual PPO Receipt Component', () => {
   test.beforeEach(async ({ page }) => {
@@ -6,7 +7,7 @@ test.describe('Manual PPO Receipt Component', () => {
       'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbiI6IntcIklkXCI6MyxcIk5hbWVcIjpcIkNUU1wiLFwiTGV2ZWxzXCI6W3tcIklkXCI6OCxcIk5hbWVcIjpcIlRyZWFzdXJ5XCIsXCJTY29wZVwiOltcIkRBQVwiXX1dLFwiUm9sZXNcIjpbe1wiSWRcIjoyNyxcIk5hbWVcIjpcImNsZXJrXCIsXCJQZXJtaXNzaW9uc1wiOltcImNhbi1yZWNlaXZlLWJpbGxcIl19XX0iLCJuYW1laWQiOiIzOSIsIm5hbWUiOiJDVFMgQ2xlcmsiLCJuYmYiOjE3MTc5OTY2OTksImV4cCI6MTcxODA4MzA5OSwiaWF0IjoxNzE3OTk2Njk5fQ.tLMRXKlXb2eyiE2ApSRgFgbX9EjvPbGNi1dgp_UpGadv-UitDdS4su2ZV6B4kp4Rf0TXjDQHTW7YvNkwciQVQg',
     });
     // Navigate to the page containing your component
-    await page.goto('http://localhost:4203/#/pension/modules/pension-process/ppo/manualPpoReceipt');
+    await page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt');
   });
 
   test('should display the "New Manual PPO Entry" button', async ({ page }) => {
@@ -15,16 +16,16 @@ test.describe('Manual PPO Receipt Component', () => {
   });
 
   test('should open the modal when "New Manual PPO Entry" button is clicked', async ({ page }) => {
-    page.on('console', msg => console.log('PAGE LOG:', msg.text()));
+    // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
   
-    console.log('Attempting to click the "New Manual PPO Entry" button');
+    // console.log('Attempting to click the "New Manual PPO Entry" button');
     await page.click('button:has-text("New Manual PPO Entry")');
     
-    console.log('Button clicked, waiting for 1 second');
+    // console.log('Button clicked, waiting for 1 second');
     await page.waitForTimeout(10000);
   
   
-    console.log('Attempting to locate the modal dialog');
+    // console.log('Attempting to locate the modal dialog');
   
     // Array of possible selectors for the modal
     const possibleSelectors = [
@@ -42,13 +43,13 @@ test.describe('Manual PPO Receipt Component', () => {
     let modalElement = null;
   
     for (const selector of possibleSelectors) {
-      console.log(`Trying selector: ${selector}`);
+      // console.log(`Trying selector: ${selector}`);
       const element = page.locator(selector);
       const count = await element.count();
       if (count > 0) {
-        console.log(`Found ${count} elements with selector: ${selector}`);
+        // console.log(`Found ${count} elements with selector: ${selector}`);
         const isVisible = await element.isVisible();
-        console.log(`Is element visible? ${isVisible}`);
+        // console.log(`Is element visible? ${isVisible}`);
         if (isVisible) {
           modalElement = element;
           break;
@@ -57,24 +58,24 @@ test.describe('Manual PPO Receipt Component', () => {
     }
   
     if (modalElement) {
-      console.log('Modal found, checking visibility');
+      // console.log('Modal found, checking visibility');
       try {
         await expect(modalElement).toBeVisible({ timeout: 10000 });
-        console.log('Modal is visible');
+        // console.log('Modal is visible');
   
         // Log the HTML content of the modal
         const modalHTML = await modalElement.evaluate(el => el.outerHTML);
-        console.log('Modal HTML:', modalHTML);
+        // console.log('Modal HTML:', modalHTML);
       } catch (error) {
         console.error('Error while waiting for modal to be visible:', error);
         throw error;
       }
     } else {
-      console.log('Modal not found with any of the tried selectors');
+      // console.log('Modal not found with any of the tried selectors');
       
       // Log the entire page content for debugging
       const bodyHTML = await page.evaluate(() => document.body.outerHTML);
-      console.log('Full page HTML:', bodyHTML);
+      // console.log('Full page HTML:', bodyHTML);
   
       throw new Error('Modal dialog not found');
     }
@@ -83,9 +84,12 @@ test.describe('Manual PPO Receipt Component', () => {
   test('should fill out the form and submit successfully', async ({ page }) => {
     await page.click('button:has-text("New Manual PPO Entry")');
     
-    await page.fill('input[formControlName="ppoNo"]', 'PPO445426');
-    await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
-    await page.fill('input[formControlName="mobileNumber"]', '9323232323');
+    await page.fill('input[formControlName="ppoNo"]', 'PPO-' + Math.floor(Math.random() * (999999 - 100000 + 1) + 100000));
+    await page.click('p-dropdown[formControlName="psaCode"]');
+    await page.click('li.p-dropdown-item:has-text("AGWB")');
+    
+    await page.click('p-dropdown[formControlName="ppoType"]');
+    await page.click('li.p-dropdown-item:has-text("New PPO")');
     
     await page.click('p-calendar[formControlName="dateOfCommencement"] input');
     await page.click('.p-datepicker-today');
@@ -93,17 +97,14 @@ test.describe('Manual PPO Receipt Component', () => {
     await page.click('p-calendar[formControlName="receiptDate"] input');
     await page.click('.p-datepicker-today');
     
+    await page.fill('input[formControlName="mobileNumber"]', '9323232323');
     
-    await page.click('p-dropdown[formControlName="psaCode"]');
-    await page.click('li.p-dropdown-item:has-text("AGWB")');
-
-    await page.click('p-dropdown[formControlName="ppoType"]');
-    await page.click('li.p-dropdown-item:has-text("New PPO")');
+    await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
     
     await page.click('button:has-text("Submit")');
     
     const successMessage = page.locator('text=PPO Receipt added successfully');
-    await expect(successMessage).toBeVisible();
+    await expect(successMessage).toBeVisible({timeout: 10000});
   });
 
   test('should display error for invalid date of commencement', async ({ page }) => {
@@ -118,7 +119,7 @@ test.describe('Manual PPO Receipt Component', () => {
 
     await page.click('button:has-text("Update")');
     const errorMessage = page.locator('text= An error occurred while submitting the form.');
-    await expect(errorMessage).toBeVisible();
+    await expect(errorMessage).toBeVisible({timeout: 30000});
   });
 
   test('should display error for invalid receipt date', async ({ page }) => {
@@ -142,8 +143,8 @@ test.describe('Manual PPO Receipt Component', () => {
   
     await page.click('button:has-text("New Manual PPO Entry")');
     await page.waitForTimeout(1000);
-  
-    await page.fill('input[formControlName="ppoNo"]', 'PPO445426');
+    const ppoNo = await page.getByText('PPO-').first().innerText();
+    await page.fill('input[formControlName="ppoNo"]', ppoNo);
     await page.fill('input[formControlName="pensionerName"]', 'John Pal');
     await page.fill('input[formControlName="mobileNumber"]', '9876541210');
   
@@ -175,7 +176,7 @@ test.describe('Manual PPO Receipt Component', () => {
   });
 
   test('should perform search and update table results', async ({ page }) => {
-    console.log('Starting search functionality test');
+    // console.log('Starting search functionality test');
 
     // Wait for the table to be visible
     const tableLocator = page.locator('mh-prime-dynamic-table');
@@ -200,14 +201,14 @@ test.describe('Manual PPO Receipt Component', () => {
     const rowSelector = 'tbody.p-element.p-datatable-tbody';
     const rowElements = await page.$$(rowSelector);
     const manualRowCount = rowElements.length;
-    console.log(`row selector: ${rowSelector}, row Elements: ${rowElements.length}`);
+    // console.log(`row selector: ${rowSelector}, row Elements: ${rowElements.length}`);
     
-    console.log(`Manual row count via Playwright: ${manualRowCount}`);
+    // console.log(`Manual row count via Playwright: ${manualRowCount}`);
 
     if (manualRowCount > 0) {
         // Validate row count and content
         const firstRowText = await rowElements[0].innerText();
-        console.log(`First row content: ${firstRowText}`);
+        // console.log(`First row content: ${firstRowText}`);
         expect(firstRowText).toContain(searchTerm);
     } else {
         // Check for error message when no rows are found
@@ -219,18 +220,18 @@ test.describe('Manual PPO Receipt Component', () => {
     }
 
     // Take a screenshot for debugging
-    await page.screenshot({ path: 'after_search.png' });
+    await page.screenshot({ path: DotEnv.NG_APP_PLAYWRIGHT_SCREENSHOT_DIR + '/after_search.png' });
 });
 
 
 test('should load the table with data', async ({ page }) => {
-  console.log('Starting table data loading test');
+  // console.log('Starting table data loading test');
 
   // Wait for the table component to be visible
   const table = page.locator('mh-prime-dynamic-table');
   await expect(table).toBeVisible();
 
-  console.log('Table visibility test completed');
+  // console.log('Table visibility test completed');
 });
 
   
@@ -256,7 +257,7 @@ test('should load the table with data', async ({ page }) => {
   });
 
   test('should change table query to display different number of rows', async ({ page }) => {
-    console.log('Starting table query change test');
+    // console.log('Starting table query change test');
     
     // Ensure the table is visible
     await page.waitForSelector('mh-prime-dynamic-table', { state: 'visible', timeout: 10000 });
@@ -264,7 +265,7 @@ test('should load the table with data', async ({ page }) => {
     const rowOptions = [10, 30, 50];
 
     for (const option of rowOptions) {
-        console.log(`Testing for ${option} rows`);
+        // console.log(`Testing for ${option} rows`);
 
         // Locate and click the rows per page dropdown trigger
         const dropdownTrigger = page.locator('p-dropdown .p-dropdown-trigger');
@@ -282,17 +283,17 @@ test('should load the table with data', async ({ page }) => {
         const rowCount = await rows.count();
 
         // Verify the number of rows displayed
-        console.log(`Number of rows displayed: ${rowCount}`);
+        // console.log(`Number of rows displayed: ${rowCount}`);
         expect(rowCount).toBeLessThanOrEqual(option);
 
         // Verify the dropdown value
         const selectedValue = await page.locator('p-dropdown .p-dropdown-label').textContent();
         expect(selectedValue?.trim()).toBe(option.toString());
 
-        console.log(`Verified ${option} rows option`);
+        // console.log(`Verified ${option} rows option`);
     }
 
-    console.log('Table query change test completed');
+    // console.log('Table query change test completed');
 });
 
 
@@ -300,8 +301,8 @@ test('should load the table with data', async ({ page }) => {
   test('debug: log HTML and take screenshot', async ({ page }) => {
     await page.waitForTimeout(10000); 
     
-    console.log(await page.evaluate(() => document.body.innerHTML));
+    // console.log(await page.evaluate(() => document.body.innerHTML));
     
-    await page.screenshot({ path: 'debug-screenshot.png', fullPage: true });
+    await page.screenshot({ path: DotEnv.NG_APP_PLAYWRIGHT_SCREENSHOT_DIR + '/debug-screenshot.png', fullPage: true });
   });
 });

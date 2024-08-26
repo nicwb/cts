@@ -25,6 +25,9 @@ yarn-error.log
 .vscode/*
 .history/*
 
+.env
+/e2e/screenshots/
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

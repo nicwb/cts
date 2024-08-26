@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  BaseURL: process.env["NG_APP_API_BASE_URL"] + '/api/', //'http://api.docker.test/api/',
-  OpenApiBaseURL: process.env["NG_APP_API_BASE_URL"], //'http://api.docker.test',
-//   BaseURL:'https://localhost:7249/api/',
+  BaseURL:'http://dotnet:8081/api/',
+  OpenApiBaseURL: 'http://dotnet:8081',
+//    BaseURL:'https://localhost:7249/api/',
 };
 
 /*
