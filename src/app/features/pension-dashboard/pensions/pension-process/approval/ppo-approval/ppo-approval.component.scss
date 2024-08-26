@@ -1,0 +1,32 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #5cc9ed; /* Light blue header background */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .table td {
+    text-align: center;
+  }
+  
+  .table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Alternating row color for readability */
+  }
+  
+  .table tr:hover {
+    background-color: #eaf3f7; /* Highlight on hover for better UX */
+  }
+  
