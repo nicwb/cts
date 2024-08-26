@@ -21,8 +21,8 @@ export class ManualPpoReceiptComponent implements OnInit {
   tableData: { headers: any, data: ManualPpoReceiptResponseDTO[], dataCount: number } | null = null;
   isTableDataLoading = false;
   selectedRow: any;
+  maxDate: Date = new Date();
 
-  maxDate = new Date();
 
   ppoIssuedBy: SelectItem[] = [
     { label: 'AGWB', value: 'A' },

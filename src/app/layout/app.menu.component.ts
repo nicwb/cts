@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { isNgTemplate } from '@angular/compiler';
 
 @Component({
@@ -85,6 +85,12 @@ export class AppMenuComponent implements OnInit {
                                     // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
+                            {
+                                label: 'Approval', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/approval'],
+                                items: [
+                                    { label: 'PPO', icon: 'pi pi-fw pi-bookmark' , routerLink: ['/pension/modules/pension-process/approval/ppo-approval']  }
+                                ]
+                            },
                             // {
                             //     label: 'Approval', icon: 'pi pi-fw pi-bookmark',
                             //     items: [
@@ -118,6 +124,14 @@ export class AppMenuComponent implements OnInit {
                             // },
                         ]
                     },
+                    {
+                        label: 'Reports', icon: 'pi pi-fw pi-box',
+                        items: [
+                            {
+                                label: 'Manual PPO Register', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-reports/manual-ppo-register']}
+                            ]
+                    }
+                    
                     // {
                     //     label: 'Reports', icon: 'pi pi-fw pi-box',
                     //     items: [

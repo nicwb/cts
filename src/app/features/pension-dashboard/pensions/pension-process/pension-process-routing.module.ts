@@ -7,6 +7,7 @@ import { PensionerDetailsComponent } from './pensioner-details/pensioner-details
 import {PensionBillComponent} from './pension-bill/pension-bill.component'
 import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';
 import { BillPrintComponent } from './bill-print/bill-print.component';
+import { ApprovalComponent } from './approval/approval.component';
 
 const routes: Routes = [
 
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'pensioner-details', component: PensionerDetailsComponent},
   {path: 'pension-bill',component:PensionBillComponent},
   {path:'app-arrear-pension',component:ArrearPensionComponent},
-  {path: 'bill-print', component: BillPrintComponent}
+  {path: 'bill-print', component: BillPrintComponent},
+  {path: 'approval', component: ApprovalComponent},
 
 ];
 
