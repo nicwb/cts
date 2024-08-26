@@ -198,7 +198,7 @@ export class PensionBillComponent implements OnInit {
 
                 swalWithTailwindButtons.fire({
                   title: 'Are you sure?',
-                  text: "You won't be able to revert this!",
+                  text: "The first bill is already saved!",
                   icon: 'warning',
                   showCancelButton: true,
                   confirmButtonText: 'Yes, save it!',
@@ -224,9 +224,7 @@ export class PensionBillComponent implements OnInit {
             }
           }
         }
-        if(this.res && this.res.apiResponseStatus === 1){
-        this.hasSaved = true; // Disable the save button after saving
-        }
+        
       }
     } catch (error: unknown) {
       const errorMessage = (error instanceof Error) ? error.message : 'An unexpected error occurred.';
@@ -283,6 +281,7 @@ export class PensionBillComponent implements OnInit {
             // Reference to the custom class for the content (if needed)
           }
         });
+        this.hasSaved = true;
       }
     } catch (billError) {
       const errorMessage = (billError instanceof Error) ? billError.message : 'Failed to save the first pension bill.';
