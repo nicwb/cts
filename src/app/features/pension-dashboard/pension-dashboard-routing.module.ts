@@ -79,7 +79,16 @@ const routes: Routes = [
     path : 'master/pension/component-rate',
     loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
 
+   },
+   {
+    path : 'modules/pension-process/approval',
+    loadChildren: () => import('./pensions/pension-process/approval/approval.module').then(m => m.ApprovalModule),
+   },
+   {
+    path : 'modules/pension-process/approval/ppo-approval',
+    loadChildren: () => import('./pensions/pension-process/approval/ppo-approval/ppo-approval.module').then(m => m.PpoApprovalModule),
    }
+   
   
   
   
