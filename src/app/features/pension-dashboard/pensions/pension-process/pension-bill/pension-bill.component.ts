@@ -14,6 +14,8 @@ import {
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { flush } from '@angular/core/testing';
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-pension-bill',
@@ -58,17 +60,9 @@ export class PensionBillComponent implements OnInit {
   hasinput: boolean = true;
   isDisabled: boolean = false;
   res: any;
+  massage:string = '';
 
-  get isButtonEnabled(): boolean {
-    // console.log('Checking button enabled state:', !!this.ppoId, !!this.period, !this.hasGenerated);
-    return !!this.ppoId && !!this.period && !this.hasGenerated;
-  }
-
-  get isSaveEnable(): boolean {
-    // console.log('Checking save button enabled state:', this.hasGenerated, this.pensionForm.valid, !this.hasSaved);
-    return this.hasGenerated && this.pensionForm.valid && !this.hasSaved;
-  }
-
+  
   constructor(
     private fb: FormBuilder,
     private service: PensionFirstBillService,
@@ -91,12 +85,6 @@ export class PensionBillComponent implements OnInit {
   
   onDateSelect(event: Date) {
     this.period = this.formatDate(event);
-  }
-  formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
   }
 
   ngOnInit(): void {
@@ -153,20 +141,7 @@ export class PensionBillComponent implements OnInit {
       }
     }
   }
- // refresh
-  refresh() {
-    if (this.pensionForm.value) {
-      this.pensionForm.reset();
-      this.pensionForm.patchValue({
-        billDate: this.today,
-      });
 
-      this.isDataLoaded = false;
-      this.hasGenerated = false;
-      this.hasSaved = false; // Reset the saved state on refresh
-      this.isDisabled = false;
-    }
-  }
 
   async save() {
     if (this.hasSaved) {
@@ -187,13 +162,65 @@ export class PensionBillComponent implements OnInit {
         this.response = await firstValueFrom(this.revisionService.createPpoComponentRevisions(ppoId, payloadArray));
 
         if (this.response.apiResponseStatus === 1) {
-          await this.saveFirstBill();
-        } else if (this.response.apiResponseStatus === 3) {
+          this.revisionResults = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
+        
+          if (this.revisionResults.apiResponseStatus === 3) {
+            await this.saveFirstBill();
+          } else if (this.revisionResults.apiResponseStatus === 1) {
+            // console.log("hello");
+        
+            for (const breakup of this.revisionResults.result.ppoBillBreakups) {
+              const { id: revisionId, fromDate, toDate } = breakup;
+              console.log(revisionId, fromDate, toDate);
+            }
+            
+            // for(const componentrevision of this.response.result){
+            //   const {id: id, fromDate} = componentrevision;
+            //   console.log(id,fromDate);
+
+            // 
+          }
+        }
+         else if (this.response.apiResponseStatus === 3) {
           this.revisionResults = await firstValueFrom(this.revisionService.getPpoComponentRevisionsByPpoId(ppoId));
+          let check = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
           if (this.revisionResults.apiResponseStatus === 1) {
             if (Array.isArray(this.revisionResults.result) && this.revisionResults.result.length > 1) {
               // this.toastService.showWarning("Component Detail already exists.");
-              await this.saveFirstBill();
+              if (this.revisionResults.result.length === check.result?.ppoBillBreakups?.length) {
+                const swalWithTailwindButtons = Swal.mixin({
+                  customClass: {
+                    confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg shadow-md mx-2 border-transparent',
+                    cancelButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg shadow-md mx-2 border-transparent',
+                  },
+                  buttonsStyling: false,
+                });
+
+                swalWithTailwindButtons.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonText: 'Yes, save it!',
+                  cancelButtonText: 'No, cancel!',
+                  reverseButtons: true,
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    await this.saveFirstBill();
+                  } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    swalWithTailwindButtons.fire({
+                      title: 'Cancelled',
+                      text: 'The save operation was cancelled.',
+                      icon: 'error',
+                    });
+                    this.hasSaved = false; // Reset the saved state on refresh
+                  }
+                });
+              } else {
+                await this.saveFirstBill();
+              }
+
+
             }
           }
         }
@@ -207,9 +234,6 @@ export class PensionBillComponent implements OnInit {
     }
   }
 
-  calculateTotalDueAmount() {
-    this.totalDueAmount = this.payments.reduce((acc, payment) => acc + payment.dueAmount, 0);
-  }
 
   async saveFirstBill() {
     const saveFirstBill: PpoBillEntryDTO = {
@@ -229,7 +253,7 @@ export class PensionBillComponent implements OnInit {
         if (this.response.apiResponseStatus === 1) {
           this.revisionResults = this.response?.result || [];
           revisionId = this.revisionResults[index]?.id;
-        } else if (this.response.apiResponseStatus === 3) {
+        }else if (this.response.apiResponseStatus === 3) {
           revisionId = this.revisionResults.result[index]?.id;
         }
 
@@ -244,7 +268,22 @@ export class PensionBillComponent implements OnInit {
     };
     try {
       this.res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));
-      this.toastService.showSuccess("Bill saved successfully.");
+      if(this.res.apiResponseStatus === 1){
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: "First bill saved",
+          showConfirmButton: false,
+          timer: 2500,
+          width: '500px', // Increased width
+          padding: '3em', // Increased padding
+          customClass: {
+            title: '.swal-custom-title ', // Reference to the custom class for the title
+            // Reference to the custom class for the content (if needed)
+          }
+        });
+      }
     } catch (billError) {
       const errorMessage = (billError instanceof Error) ? billError.message : 'Failed to save the first pension bill.';
       this.toastService.showError(errorMessage);
@@ -260,6 +299,62 @@ export class PensionBillComponent implements OnInit {
   onInputClick() {
     if (this.isDisabled) {
       alert("Insert a new entry Please click refresh !");
+    }
+  }
+
+  calculateTotalDueAmount() {
+    this.totalDueAmount = this.payments.reduce((acc, payment) => acc + payment.dueAmount, 0);
+  }
+
+  get isButtonEnabled(): boolean {
+    // console.log('Checking button enabled state:', !!this.ppoId, !!this.period, !this.hasGenerated);
+    return !!this.ppoId && !!this.period && !this.hasGenerated;
+  }
+
+  get isSaveEnable(): boolean {
+    // console.log('Checking save button enabled state:', this.hasGenerated, this.pensionForm.valid, !this.hasSaved);
+    return this.hasGenerated && this.pensionForm.valid && !this.hasSaved;
+  }
+
+
+   // refresh
+   refresh() {
+    if (this.pensionForm.value) {
+      this.pensionForm.reset();
+      this.pensionForm.patchValue({
+        billDate: this.today,
+      });
+
+      this.isDataLoaded = false;
+      this.hasGenerated = false;
+      this.hasSaved = false; // Reset the saved state on refresh
+      this.isDisabled = false;
+    }
+  }
+
+   
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
+
+  async onInputBlur(){
+    if(this.ppoId){
+      const id = this.ppoId;
+      const check = await firstValueFrom(this.service.getFirstPensionBillByPpoId(id));
+
+      console.log(check.result?.ppoBillBreakups?.length);
+      if(check.apiResponseStatus === 3){
+        this.massage = "PPO id not exist!";
+      }else if(check.apiResponseStatus === 1){
+        this.massage = "Valid PPO id"
+      }
+    }
+    else {
+      this.massage = '';
     }
   }
 }
