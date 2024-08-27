@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import {
@@ -24,6 +24,11 @@ export class ComponentRateComponent implements OnInit {
 
     ComponentRateForm: FormGroup = new FormGroup({});
     amountPlaceHolder: String = '₹';
+    //store the component rate data
+    data?: any;
+    cols: any[] = [];
+    records: any[] = [];
+    loading: boolean = false;
     constructor(
         private service: PensionComponentRateService,
         private pensionCategoryMasterService: PensionCategoryMasterService,
@@ -59,7 +64,7 @@ export class ComponentRateComponent implements OnInit {
         };
         this.allPensionCategory$ =
             this.pensionCategoryMasterService.getAllCategories(payload);
-        console.log();
+
         this.pensionComponent$ =
             this.pensionComponentService.getAllComponents(payload);
     }
@@ -116,6 +121,53 @@ export class ComponentRateComponent implements OnInit {
             this.amountPlaceHolder = '%';
         }
     }
+    //convert response into a table format
+    convertResponseToTable(dataset: any): void {
+        if (dataset.headers && dataset.data) {
+            this.data = dataset;
+            const { headers, data } = dataset;
+
+            this.records = data; // Use dataset.data directly
+
+            if (headers) {
+                this.cols = headers.map((header: any) => ({
+                    field: header.fieldName,
+                    header: header.name,
+                }));
+                this.loading = false;
+            }
+
+            console.log('Records:', this.records);
+            console.log('Cols:', this.cols);
+        }
+    }
+
+    //Show the list view
+    async fetchAllDetails(): Promise<void> {
+        this.loading = true;
+        let payload = {
+            pageSize: 10,
+            pageIndex: 0,
+            filterParameters: [],
+            sortParameters: {
+                field: '',
+                order: '',
+            },
+        };
+
+        await firstValueFrom(
+            this.PensionComponentRateService.getAllComponentRates(payload).pipe(
+                tap((response) => {
+                    if (response && response.result) {
+                        // console.log(response.result);
+                        this.convertResponseToTable(response.result);
+                    }
+                })
+            )
+        );
+    }
+
+  
 
     async onSubmit() {
         this.formatDate();
@@ -144,6 +196,7 @@ export class ComponentRateComponent implements OnInit {
                     tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
                         if (response.message) {
                             if (response.apiResponseStatus === 1) {
+                                this.fetchAllDetails();
                                 this.toastService.showSuccess(response.message);
                             } else {
                                 this.toastService.showError(response.message);
@@ -154,4 +207,35 @@ export class ComponentRateComponent implements OnInit {
             );
         }
     }
+
+    // Method to reset the form and re-add removed controls
+    resetForm():void {
+        // Re-add the removed controls
+        this.ComponentRateForm.addControl('categoryName', new FormControl(''));
+        this.ComponentRateForm.addControl('componentName', new FormControl(''));
+       
+
+        // Clear the form errors
+        this.ComponentRateForm.markAsPristine();
+        this.ComponentRateForm.updateValueAndValidity();
+
+        // Reset the form to its initial state
+        this.ComponentRateForm.reset();
+
+        // Set the default amount placeholder
+        // this.amountPlaceHolder = '��';
+
+        this.records = [];
+        this.cols = [];
+
+        // Reset the form to its initial state
+        this.ComponentRateForm.reset();
+
+        // Set the default amount placeholder
+        // this.amountPlaceHolder = '₹';
+
+        this.records = [];
+        this.cols = [];
+    }
+   
 }
