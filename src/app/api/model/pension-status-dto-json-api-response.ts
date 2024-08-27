@@ -9,14 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ListHeader } from './list-header';
-import { PensionerListItemDTO } from './pensioner-list-item-dto';
+import { APIResponseStatus } from './api-response-status';
+import { PensionStatusDTO } from './pension-status-dto';
 
 
-export interface PensionerListItemDTOIEnumerableDynamicListResult { 
-    dataSource?: { [key: string]: any; } | null;
-    headers?: Array<ListHeader> | null;
-    data?: Array<PensionerListItemDTO> | null;
-    dataCount?: number;
+export interface PensionStatusDTOJsonAPIResponse { 
+    result?: PensionStatusDTO;
+    apiResponseStatus?: APIResponseStatus;
+    message?: string | null;
 }
+export namespace PensionStatusDTOJsonAPIResponse {
+}
+
 

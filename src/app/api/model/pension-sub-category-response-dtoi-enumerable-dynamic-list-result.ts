@@ -14,6 +14,7 @@ import { PensionSubCategoryResponseDTO } from './pension-sub-category-response-d
 
 
 export interface PensionSubCategoryResponseDTOIEnumerableDynamicListResult { 
+    dataSource?: { [key: string]: any; } | null;
     headers?: Array<ListHeader> | null;
     data?: Array<PensionSubCategoryResponseDTO> | null;
     dataCount?: number;

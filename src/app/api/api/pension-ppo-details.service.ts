@@ -25,8 +25,6 @@ import { PensionerEntryDTO } from '../model/pensioner-entry-dto';
 // @ts-ignore
 import { PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-api-response';
 // @ts-ignore
-import { PensionerResponseDTOAPIResponse } from '../model/pensioner-response-dtoapi-response';
-// @ts-ignore
 import { PensionerResponseDTOJsonAPIResponse } from '../model/pensioner-response-dto-json-api-response';
 
 // @ts-ignore
@@ -251,9 +249,9 @@ export class PensionPPODetailsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPensionerByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerResponseDTOAPIResponse>;
-    public getPensionerByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerResponseDTOAPIResponse>>;
-    public getPensionerByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerResponseDTOAPIResponse>>;
+    public getPensionerByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerResponseDTOJsonAPIResponse>;
+    public getPensionerByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerResponseDTOJsonAPIResponse>>;
+    public getPensionerByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerResponseDTOJsonAPIResponse>>;
     public getPensionerByPpoId(ppoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling getPensionerByPpoId.');
@@ -298,7 +296,7 @@ export class PensionPPODetailsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/details`;
-        return this.httpClient.request<PensionerResponseDTOAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -316,9 +314,9 @@ export class PensionPPODetailsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerResponseDTOAPIResponse>;
-    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerResponseDTOAPIResponse>>;
-    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerResponseDTOAPIResponse>>;
+    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerResponseDTOJsonAPIResponse>;
+    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerResponseDTOJsonAPIResponse>>;
+    public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerResponseDTOJsonAPIResponse>>;
     public updatePensionerByPpoId(ppoId: number, pensionerEntryDTO?: PensionerEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling updatePensionerByPpoId.');
@@ -374,7 +372,7 @@ export class PensionPPODetailsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/details`;
-        return this.httpClient.request<PensionerResponseDTOAPIResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerResponseDTOJsonAPIResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionerEntryDTO,

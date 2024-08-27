@@ -25,7 +25,6 @@ export * from './list-all-ppo-receipts-response-dtoi-enumerable-dynamic-list-res
 export * from './list-header';
 export * from './manual-ppo-receipt-entry-dto';
 export * from './manual-ppo-receipt-response-dto';
-export * from './manual-ppo-receipt-response-dtoapi-response';
 export * from './manual-ppo-receipt-response-dto-json-api-response';
 export * from './object-json-api-response';
 export * from './pension-breakup-entry-dto';
@@ -45,9 +44,9 @@ export * from './pension-primary-category-response-dtoi-enumerable-dynamic-list-
 export * from './pension-primary-category-response-dtoi-enumerable-dynamic-list-result-json-api-response';
 export * from './pension-primary-category-response-dto-json-api-response';
 export * from './pension-status-dto';
-export * from './pension-status-dtoapi-response';
+export * from './pension-status-dto-json-api-response';
 export * from './pension-status-entry-dto';
-export * from './pension-status-entry-dtoapi-response';
+export * from './pension-status-entry-dto-json-api-response';
 export * from './pension-sub-category-entry-dto';
 export * from './pension-sub-category-response-dto';
 export * from './pension-sub-category-response-dtoi-enumerable-dynamic-list-result';
@@ -61,7 +60,6 @@ export * from './pensioner-list-item-dto';
 export * from './pensioner-list-item-dtoi-enumerable-dynamic-list-result';
 export * from './pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-api-response';
 export * from './pensioner-response-dto';
-export * from './pensioner-response-dtoapi-response';
 export * from './pensioner-response-dto-json-api-response';
 export * from './ppo-bill-breakup-entry-dto';
 export * from './ppo-bill-breakup-response-dto';

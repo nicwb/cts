@@ -12,6 +12,7 @@
 
 
 export interface ManualPpoReceiptResponseDTO { 
+    dataSource?: { [key: string]: any; } | null;
     ppoNo: string;
     pensionerName: string;
     dateOfCommencement: string;

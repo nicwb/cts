@@ -14,6 +14,7 @@ import { ListAllPpoReceiptsResponseDTO } from './list-all-ppo-receipts-response-
 
 
 export interface ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResult { 
+    dataSource?: { [key: string]: any; } | null;
     headers?: Array<ListHeader> | null;
     data?: Array<ListAllPpoReceiptsResponseDTO> | null;
     dataCount?: number;

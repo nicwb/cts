@@ -14,6 +14,7 @@ import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 
 export interface ComponentRateResponseDTOIEnumerableDynamicListResult { 
+    dataSource?: { [key: string]: any; } | null;
     headers?: Array<ListHeader> | null;
     data?: Array<ComponentRateResponseDTO> | null;
     dataCount?: number;

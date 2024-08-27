@@ -25,8 +25,6 @@ import { ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIRespons
 // @ts-ignore
 import { ManualPpoReceiptEntryDTO } from '../model/manual-ppo-receipt-entry-dto';
 // @ts-ignore
-import { ManualPpoReceiptResponseDTOAPIResponse } from '../model/manual-ppo-receipt-response-dtoapi-response';
-// @ts-ignore
 import { ManualPpoReceiptResponseDTOJsonAPIResponse } from '../model/manual-ppo-receipt-response-dto-json-api-response';
 
 // @ts-ignore
@@ -105,9 +103,9 @@ export class PensionManualPPOReceiptService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ManualPpoReceiptResponseDTOAPIResponse>;
-    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ManualPpoReceiptResponseDTOAPIResponse>>;
-    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ManualPpoReceiptResponseDTOAPIResponse>>;
+    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ManualPpoReceiptResponseDTOJsonAPIResponse>;
+    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ManualPpoReceiptResponseDTOJsonAPIResponse>>;
+    public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ManualPpoReceiptResponseDTOJsonAPIResponse>>;
     public createPpoReceipt(manualPpoReceiptEntryDTO?: ManualPpoReceiptEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -160,7 +158,7 @@ export class PensionManualPPOReceiptService {
         }
 
         let localVarPath = `/api/v1/manual-ppo/receipts`;
-        return this.httpClient.request<ManualPpoReceiptResponseDTOAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: manualPpoReceiptEntryDTO,

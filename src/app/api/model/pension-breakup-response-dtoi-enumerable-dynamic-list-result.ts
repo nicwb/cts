@@ -14,6 +14,7 @@ import { PensionBreakupResponseDTO } from './pension-breakup-response-dto';
 
 
 export interface PensionBreakupResponseDTOIEnumerableDynamicListResult { 
+    dataSource?: { [key: string]: any; } | null;
     headers?: Array<ListHeader> | null;
     data?: Array<PensionBreakupResponseDTO> | null;
     dataCount?: number;

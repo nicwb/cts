@@ -105,6 +105,7 @@ export class PensionComponentRevisionService {
      * @param ppoComponentRevisionEntryDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
+     * @deprecated
      */
     public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoComponentRevisionResponseDTOListJsonAPIResponse>;
     public createPpoComponentRevisions(ppoId: number, ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoComponentRevisionResponseDTOListJsonAPIResponse>>;

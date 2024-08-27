@@ -14,6 +14,7 @@ import { ListHeader } from './list-header';
 
 
 export interface PensionCategoryListDTOIEnumerableDynamicListResult { 
+    dataSource?: { [key: string]: any; } | null;
     headers?: Array<ListHeader> | null;
     data?: Array<PensionCategoryListDTO> | null;
     dataCount?: number;
