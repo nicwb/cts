@@ -20,8 +20,8 @@
                                 PPO ID:
                             </label>
                             <input id="PpoId" type="text" pInputText formControlName="ppoId" placeholder="PPO ID"
-                                [(ngModel)]="ppoId" [readonly]="isDisabled" class="h-10 w-full rounded-l-lg px-2"
-                                (click)="onInputClick()" (blur)="onInputBlur()" />
+                                [(ngModel)]="ppoId" [readonly]="isApiResponseStatus1" class="h-10 w-full rounded-l-lg px-2"
+                                (blur)="onInputBlur()" />
                             <app-popup-table name="" [service$]="ppoList$" (return)="handleSelectedRow($event)"
                                 [buttonStyle]="{'height': '51px'}"></app-popup-table>
                         </div>
@@ -31,16 +31,27 @@
                             </label>
                             <p-calendar id="periodTo" formControlName="periodTo" [(ngModel)]="period"
                                 (onSelect)="onDateSelect($event)" dateFormat="yy-mm-dd" placeholder="Select a date"
-                                class="h-10 w-full" [disabled]="isDisabled" (click)="onInputClick()"></p-calendar>
-                            <button type="submit" pButton pRipple (click)="getvalue()" [disabled]="!isButtonEnabled"
-                                class="h-10 pr-5">
+                                class="h-10 w-full" [disabled]="isApiResponseStatus1"></p-calendar>
+                            <button type="submit" pButton pRipple (click)="getvalue()" 
+                                class="h-10 pr-5" [disabled]="!isgenerate">
                                 Generate
                             </button>
                         </div>
                     </div>
-                    <div>
-                        <span *ngIf="massage">{{ massage }}</span>
+                    <div class="flex gap-5 w-full">
+                        <div class="flex items-center w-full pl-7">
+                            <span *ngIf="massage" [ngClass]="massageColor"
+                                class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block">
+                                {{ massage }}
+                            </span>
+                        </div>
+                        <div class="flex items-center w-full pl-7">
+                            <span *ngIf="pensionForm.get('periodTo')?.errors?.['dateRange']" class="text-red-500">
+                                The date must be between today and the end of the month.
+                            </span>
+                        </div>
                     </div>
+
 
 
                 </div>
@@ -75,7 +86,7 @@
                             [(ngModel)]="period" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
                     </div>
                     <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                        <label htmlFor="bankName">Bank Name</label>
+                        <label htmlFor="bankName">Bank Code</label>
                         <input pInputText id="bankName" type="text" formControlName="bankName" [readonly]="true"
                             class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
                     </div>
@@ -119,16 +130,16 @@
                                 <td></td>
                                 <td>{{ category.categoryName }}</td>
                                 <td>{{ category.primaryCategory.hoaId }}</td>
-                                <td>{{ totalDueAmount }}</td>
+                                <td>₹ {{ totalDueAmount }}</td>
                                 <td>0</td>
-                                <td>{{ totalDueAmount }}</td>
+                                <td>₹ {{ totalDueAmount }}</td>
                                 <td><input pInputText type="text" class="w-full" /></td>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="footer">
                             <tr>
                                 <td colspan="6"></td>
-                                <td>Total Component Amount: {{ totalDueAmount }}</td>
+                                <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
                                 <td></td>
                             </tr>
                         </ng-template>
@@ -192,15 +203,17 @@
                             <td>{{ payment.componentName }}</td>
                             <td>{{ payment.fromDate }}</td>
                             <td>{{ payment.toDate }}</td>
-                            <td>{{ payment.rateAmount }}</td>
-                            <td>{{ payment.dueAmount }}</td>
+                            <td>{{ payment.rateAmount }}
+                                {{ payment.rateType === 'P' ? '%' : '₹' }}
+                            </td>
+                            <td>₹ {{ payment.dueAmount }}</td>
                             <td><input pInputText type="text" class="w-full" /></td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
-                            <td colspan="5"></td>
-                            <td>Total Component Amount: {{ totalDueAmount }}</td>
+                            <td colspan="8"></td>
+                            <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
                             <td></td>
                         </tr>
                     </ng-template>
@@ -214,7 +227,7 @@
             <div class="flex flex-wrap gap-2 mx-2">
                 <button type="submit" pButton pRipple (click)="save()"
                     class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                    [disabled]="!isSaveEnable">
+                   [disabled]="!hasSaved" >
                     <i class="pi pi-check mr-2"></i> Save
                 </button>
             </div>

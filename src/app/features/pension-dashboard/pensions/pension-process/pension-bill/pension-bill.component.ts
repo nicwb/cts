@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Observable, firstValueFrom } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import {
@@ -9,14 +9,10 @@ import {
   PpoBillBreakupEntryDTO,
   PpoComponentRevisionEntryDTO,
   PensionPPODetailsService,
-  PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse,
   PensionComponentRevisionService,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { flush } from '@angular/core/testing';
 import Swal from 'sweetalert2'
-
-
 @Component({
   selector: 'app-pension-bill',
   templateUrl: './pension-bill.component.html',
@@ -30,17 +26,10 @@ import Swal from 'sweetalert2'
   padding: 1.2rem;
   padding-left: 0.50rem; /* Adjust left padding as needed */
 }
-      // .p-calendar .p-inputtext {
-      //   padding: 0.9rem; /* Equivalent to p-2 in Tailwind CSS */
-      // }
-
-      // :host ::ng-deep app-popup-table span{
-      // padding: 0.78rem;
-      // }
     `,
   ],
-
 })
+
 export class PensionBillComponent implements OnInit {
   ppoId?: number;
   payments: any[] = [];
@@ -50,19 +39,23 @@ export class PensionBillComponent implements OnInit {
   isCurrentStepValid = false;
   totalDueAmount: number = 0;
   isDataLoaded: boolean = false;
-  today = new Date().toISOString().split('T')[0];
-  ppoList$: Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
+  billdate = new Date().toISOString().split('T')[0];
+  ppoList$: Observable<any>;
   result: any;
   response: any;
   revisionResults: any;
-  hasGenerated: boolean = false;
+  hasGenerated: boolean = true;
   hasSaved: boolean = false;
-  hasinput: boolean = true;
-  isDisabled: boolean = false;
   res: any;
-  massage:string = '';
+  massage: string = '';
+  saved: boolean = false;
+  today: Date = new Date();
+  check: any;
+  validppid: boolean = true;
+  endOfMonth: Date = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 0); // Initialized directly
+  isApiResponseStatus1: boolean = false;
 
-  
+  // Define all constractor
   constructor(
     private fb: FormBuilder,
     private service: PensionFirstBillService,
@@ -82,29 +75,27 @@ export class PensionBillComponent implements OnInit {
     };
     this.ppoList$ = this.ppoListService.getAllPensioners(payload);
   }
-  
+
+  //select data 
   onDateSelect(event: Date) {
     this.period = this.formatDate(event);
   }
-
+  // all from control 
   ngOnInit(): void {
+    this.endOfMonth = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 0);
     this.pensionForm = this.fb.group({
       ppoId: ['', Validators.required],
       ppoNo: ['', Validators.required],
       pensionerName: ['', Validators.required],
       periodFrom: ['', Validators.required],
-      periodTo: ['', Validators.required],
+      periodTo: ['', [Validators.required, this.dateRangeValidator(this.today, this.endOfMonth)]],
       bankName: ['', Validators.required],
       accountNo: ['', Validators.required],
-      billDate: [this.today, Validators.required],
-      // paymentMode: [null, Validators.required],
+      billDate: [this.billdate, Validators.required],
     });
   }
- 
+  // all get value
   public async getvalue() {
-    if (this.hasGenerated) {
-      return;
-    }
     const payload2: InitiateFirstPensionBillDTO = {
       ppoId: this.ppoId as number,
       toDate: this.period,
@@ -112,14 +103,12 @@ export class PensionBillComponent implements OnInit {
     if (this.ppoId && this.period) {
       try {
         const response = await firstValueFrom(this.service.generateFirstPensionBill(payload2));
-        this.hasGenerated = true;
-        this.isDisabled = true;
-        if (response && response.result) {
+        this.isApiResponseStatus1 = response.apiResponseStatus === 1; 
+        if (response.apiResponseStatus === 1) {
+          this.hasSaved = true;
           this.result = response.result;
           if (this.result.bankAccount === null) {
             this.toastService.showError('Not found pensioner bank account');
-            this.hasGenerated = false;
-            this.isDisabled = false;
           }
           else {
             this.pensionForm.patchValue({
@@ -133,60 +122,45 @@ export class PensionBillComponent implements OnInit {
             this.pensioncategory = this.result.pensionCategory;
             this.calculateTotalDueAmount();
             this.isDataLoaded = true;
-            this.hasinput = false;
+            this.massage = '';
           }
         }
       } catch (err) {
-        console.error('Error fetching record:', err);
-      }
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });      }
     }
   }
 
-
+// save function 
   async save() {
-    if (this.hasSaved) {
-      return;
-    }
-
     try {
       if (this.result) {
-        this.hasSaved = false;
         const ppoId = this.result.pensioner.ppoId;
         const payloadArray: PpoComponentRevisionEntryDTO[] = this.result.pensionCategory.componentRates.map((rate: any) => ({
           rateId: rate.breakupId,
           fromDate: rate.effectiveFromDate,
           amountPerMonth: rate.rateAmount,
         }));
-        // console.log(`Number of elements sent: ${payloadArray.length}`);
-
         this.response = await firstValueFrom(this.revisionService.createPpoComponentRevisions(ppoId, payloadArray));
-
         if (this.response.apiResponseStatus === 1) {
-          this.revisionResults = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
-        
-          if (this.revisionResults.apiResponseStatus === 3) {
+          let getfirstpensionbill = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
+          if (getfirstpensionbill.apiResponseStatus === 3) {
             await this.saveFirstBill();
-          } else if (this.revisionResults.apiResponseStatus === 1) {
-            // console.log("hello");
-        
-            for (const breakup of this.revisionResults.result.ppoBillBreakups) {
-              const { id: revisionId, fromDate, toDate } = breakup;
-              console.log(revisionId, fromDate, toDate);
+          } else if (getfirstpensionbill.apiResponseStatus === 1) {
+            this.revisionResults = await firstValueFrom(this.revisionService.getPpoComponentRevisionsByPpoId(ppoId));
+            if (this.revisionResults.apiResponseStatus === 1) {
+              await this.saveFirstBill();
             }
-            
-            // for(const componentrevision of this.response.result){
-            //   const {id: id, fromDate} = componentrevision;
-            //   console.log(id,fromDate);
-
-            // 
           }
         }
-         else if (this.response.apiResponseStatus === 3) {
+        else if (this.response.apiResponseStatus === 3) {
           this.revisionResults = await firstValueFrom(this.revisionService.getPpoComponentRevisionsByPpoId(ppoId));
           let check = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
           if (this.revisionResults.apiResponseStatus === 1) {
             if (Array.isArray(this.revisionResults.result) && this.revisionResults.result.length > 1) {
-              // this.toastService.showWarning("Component Detail already exists.");
               if (this.revisionResults.result.length === check.result?.ppoBillBreakups?.length) {
                 const swalWithTailwindButtons = Swal.mixin({
                   customClass: {
@@ -195,7 +169,6 @@ export class PensionBillComponent implements OnInit {
                   },
                   buttonsStyling: false,
                 });
-
                 swalWithTailwindButtons.fire({
                   title: 'Are you sure?',
                   text: "The first bill is already saved!",
@@ -213,18 +186,14 @@ export class PensionBillComponent implements OnInit {
                       text: 'The save operation was cancelled.',
                       icon: 'error',
                     });
-                    this.hasSaved = false; // Reset the saved state on refresh
                   }
                 });
               } else {
                 await this.saveFirstBill();
               }
-
-
             }
           }
         }
-        
       }
     } catch (error: unknown) {
       const errorMessage = (error instanceof Error) ? error.message : 'An unexpected error occurred.';
@@ -232,7 +201,7 @@ export class PensionBillComponent implements OnInit {
     }
   }
 
-
+// save first bill
   async saveFirstBill() {
     const saveFirstBill: PpoBillEntryDTO = {
       pensionerId: this.result.pensioner.id,
@@ -241,32 +210,32 @@ export class PensionBillComponent implements OnInit {
       fromDate: this.result.pensioner.dateOfRetirement,
       toDate: this.result.billDate,
       billType: 'F',
-      billDate: this.today,
+      billDate: this.billdate,
       grossAmount: this.result.grossAmount,
       byTransferAmount: this.result.netAmount,
       netAmount: this.result.netAmount,
       breakups: this.result.pensionerPayments.map((payment: PpoBillBreakupEntryDTO, index: number) => {
         let revisionId: number | undefined;
-
-        if (this.response.apiResponseStatus === 1) {
+        if (this.response.apiResponseStatus === 1 && this.saved) {
           this.revisionResults = this.response?.result || [];
           revisionId = this.revisionResults[index]?.id;
-        }else if (this.response.apiResponseStatus === 3) {
+        } else {  // if (this.response.apiResponseStatus === 3 || this.saved)
           revisionId = this.revisionResults.result[index]?.id;
         }
-
         return {
           revisionId: revisionId,
           ppoId: this.result.pensioner.ppoId,
           fromDate: payment.fromDate,
           toDate: payment.toDate,
-          breakupAmount: this.result.pensionerPayments.netAmount,
+          breakupAmount: payment.netAmount,
+          dueAmount: payment.dueAmount,
+          drawnAmount: payment.drawnAmount
         };
       }),
     };
     try {
       this.res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));
-      if(this.res.apiResponseStatus === 1){
+      if (this.res.apiResponseStatus === 1) {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -274,50 +243,64 @@ export class PensionBillComponent implements OnInit {
           text: "First bill saved",
           showConfirmButton: false,
           timer: 2500,
-          width: '500px', // Increased width
-          padding: '3em', // Increased padding
+          width: '500px', 
+          padding: '3em', 
           customClass: {
-            title: '.swal-custom-title ', // Reference to the custom class for the title
-            // Reference to the custom class for the content (if needed)
+            title: '.swal-custom-title ', 
           }
         });
-        this.hasSaved = true;
+        this.hasSaved = false;
       }
     } catch (billError) {
-      const errorMessage = (billError instanceof Error) ? billError.message : 'Failed to save the first pension bill.';
-      this.toastService.showError(errorMessage);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        width: '500px', 
+        text: "Failed to save the first pension bill!",
+      });
     }
   }
 
+
+  // check ppoid is valid or not
+  massageColor: string = '';
+  async onInputBlur() {
+    if (this.ppoId) {
+       this.check = await firstValueFrom(this.ppoListService.getPensionerByPpoId(this.ppoId));
+      if (this.check.apiResponseStatus === 3) {
+        this.massage = "In valid ppoId!";
+        this.massageColor = 'text-red-600';
+        this.validppid = false;
+      } else if (this.check.apiResponseStatus === 1) {
+        this.massage = '';
+        this.validppid = true;
+      }
+    }
+    else {
+      this.massage = '';
+      this.massageColor = ''; 
+    }
+  }
+
+  // select data insert into search-list
   handleSelectedRow(event: any) {
     this.pensionForm.patchValue({
       ppoId: event.ppoId,
     });
   }
 
-  onInputClick() {
-    if (this.isDisabled) {
-      alert("Insert a new entry Please click refresh !");
-    }
-  }
-
+  // calculate total value
   calculateTotalDueAmount() {
     this.totalDueAmount = this.payments.reduce((acc, payment) => acc + payment.dueAmount, 0);
   }
 
-  get isButtonEnabled(): boolean {
-    // console.log('Checking button enabled state:', !!this.ppoId, !!this.period, !this.hasGenerated);
-    return !!this.ppoId && !!this.period && !this.hasGenerated;
+  // generate button cuntrol
+  get isgenerate(): boolean {
+    return !!this.ppoId && !!this.period && this.validppid && this.hasGenerated && !this.isApiResponseStatus1;
   }
 
-  get isSaveEnable(): boolean {
-    // console.log('Checking save button enabled state:', this.hasGenerated, this.pensionForm.valid, !this.hasSaved);
-    return this.hasGenerated && this.pensionForm.valid && !this.hasSaved;
-  }
-
-
-   // refresh
-   refresh() {
+  // refresh to clear all value
+  refresh() {
     if (this.pensionForm.value) {
       this.pensionForm.reset();
       this.pensionForm.patchValue({
@@ -325,13 +308,14 @@ export class PensionBillComponent implements OnInit {
       });
 
       this.isDataLoaded = false;
-      this.hasGenerated = false;
-      this.hasSaved = false; // Reset the saved state on refresh
-      this.isDisabled = false;
+      this.isApiResponseStatus1 = false;
+      this.hasSaved = false; 
+      this.massage = '';
+      this.massageColor = ''; 
     }
   }
-
-   
+  
+  // date calculate in p-calendar html propaty 
   formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -339,21 +323,22 @@ export class PensionBillComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-
-  async onInputBlur(){
-    if(this.ppoId){
-      const id = this.ppoId;
-      const check = await firstValueFrom(this.service.getFirstPensionBillByPpoId(id));
-
-      console.log(check.result?.ppoBillBreakups?.length);
-      if(check.apiResponseStatus === 3){
-        this.massage = "PPO id not exist!";
-      }else if(check.apiResponseStatus === 1){
-        this.massage = "Valid PPO id"
+  
+  dateRangeValidator(startDate: Date, endDate: Date): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const date = new Date(control.value);  
+      if (isNaN(date.getTime())) {
+        return null; // Consider empty or invalid dates as valid for now.
       }
-    }
-    else {
-      this.massage = '';
-    }
+      // Ensure the date is not before today and not after the last day of the month
+      if (date < startDate || date > endDate) {
+        this.hasGenerated = false;
+        return { dateRange: true };
+      }
+      this.hasGenerated = true;
+      return null;
+      ;
+    };
   }
-}
+  }
+
