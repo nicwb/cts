@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
 import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
 
@@ -8,7 +9,8 @@ import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.mod
   declarations: [],
   imports: [
     CommonModule,
-    SearchPopupTempModule
+    SearchPopupTempModule,
+    TableModule
   ]
 })
 export class PpoApprovalModule { }

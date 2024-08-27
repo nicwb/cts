@@ -16,6 +16,19 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { PanelModule } from 'primeng/panel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
+
+import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { DropdownModule } from 'primeng/dropdown';
+import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
+import { TableModule } from 'primeng/table';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { RippleModule } from 'primeng/ripple';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { SliderModule } from 'primeng/slider';
+import { RatingModule } from 'primeng/rating';
 import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
 
 const routes: Routes = [
@@ -48,6 +61,18 @@ const routes: Routes = [
     PanelModule,
     FieldsetModule,
     RadioButtonModule,
+    TableModule,
+    MhPrimeDynamicTableModule,
+    DynamicTableModule,
+    DropdownModule,
+    TreasuryDropdownModule,
+    ToggleButtonModule,
+    RippleModule,
+    MultiSelectModule,
+    ProgressBarModule,  
+    ToastModule,
+    SliderModule,
+    RatingModule,
     SearchPopupTempModule,
     RouterModule.forChild(routes),
   ]
