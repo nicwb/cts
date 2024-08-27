@@ -3,9 +3,11 @@ import { DotEnv } from "utils/env"
 
 test.describe('Manual PPO Receipt Component', () => {
   test.beforeEach(async ({ page }) => {
-    await page.setExtraHTTPHeaders({
-      'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbiI6IntcIklkXCI6MyxcIk5hbWVcIjpcIkNUU1wiLFwiTGV2ZWxzXCI6W3tcIklkXCI6OCxcIk5hbWVcIjpcIlRyZWFzdXJ5XCIsXCJTY29wZVwiOltcIkRBQVwiXX1dLFwiUm9sZXNcIjpbe1wiSWRcIjoyNyxcIk5hbWVcIjpcImNsZXJrXCIsXCJQZXJtaXNzaW9uc1wiOltcImNhbi1yZWNlaXZlLWJpbGxcIl19XX0iLCJuYW1laWQiOiIzOSIsIm5hbWUiOiJDVFMgQ2xlcmsiLCJuYmYiOjE3MTc5OTY2OTksImV4cCI6MTcxODA4MzA5OSwiaWF0IjoxNzE3OTk2Njk5fQ.tLMRXKlXb2eyiE2ApSRgFgbX9EjvPbGNi1dgp_UpGadv-UitDdS4su2ZV6B4kp4Rf0TXjDQHTW7YvNkwciQVQg',
-    });
+    // Navigate to the static login page containing user roles
+    await page.goto('/#/static-login');
+    await page.getByRole('link', { name: 'cleark' }).click();
+    const dashboard = page.getByText('CCTSCLERK');
+    await expect(dashboard).toBeVisible();
     // Navigate to the page containing your component
     await page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt');
   });
@@ -110,29 +112,6 @@ test.describe('Manual PPO Receipt Component', () => {
     const successMessage = page.locator('text=PPO Receipt added successfully');
     await expect(successMessage).toBeVisible();
   });
-
-  // test('should display error for invalid date of commencement', async ({ page }) => {
-  //   // await page.waitForSelector('tbody.p-element.p-datatable-tbody', { state: 'attached', timeout: 10000 });
-  //   await page.click('td.ng-star-inserted button:has-text("Edit")'); 
-    
-  //   await page.click('p-calendar[formControlName="dateOfCommencement"] input');
-  //   await page.getByRole('cell', { name: `${new Date().getDate() + 1}` }).nth(1).click();
-
-  //   await page.click('button:has-text("Update")');
-  //   const errorMessage = page.locator('text= An error occurred while submitting the form.');
-  //   await expect(errorMessage).toBeVisible();
-  // });
-
-  // test('should display error for invalid receipt date', async ({ page }) => {
-  //   // await page.waitForSelector('tbody.p-element.p-datatable-tbody', { state: 'attached', timeout: 10000 });
-  //   await page.click('td.ng-star-inserted button:has-text("Edit")'); 
-  //   await page.click('p-calendar[formControlName="receiptDate"] input');
-  //   await page.getByRole('cell', { name: `${new Date().getDate() + 1}` }).nth(1).click();
-  //   await page.click('button:has-text("Update")');
-  //   const errorMessage = page.locator('text= An error occurred while submitting the form.');
-  //   await expect(errorMessage).toBeVisible();
-  // });
-
 
   test('should display error for duplicate PPO number', async ({ page }) => {
     // test.setTimeout(60000); // Increase timeout for this test
