@@ -75,11 +75,7 @@ const routes: Routes = [
     path: 'modules/pension-process/bill-print/first-pension',
     loadChildren: () => import('./pensions/pension-process/bill-print/first-pension/first-pension.module').then(m => m.FirstPensionModule),
    },
-   {
-    path : 'master/pension/component-rate',
-    loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
-
-   }
+  
   
   
   

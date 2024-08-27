@@ -1,4 +1,4 @@
-<form [formGroup]="ComponentRateForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="ComponentRateForm" (ngSubmit)="onSubmit($event)">
     <div class="container mx-auto">
         <div class="card" style="width: 95%; align-items: center">
             <p-fieldset
@@ -24,7 +24,6 @@
                                 pInputText
                                 type="text"
                                 formControlName="categoryName"
-                                
                             />
 
                             <app-popup-table
@@ -71,36 +70,96 @@
                     </div>
                     <div class="field col-12 md:col-6">
                         <label class="text-lg">Rate Type P/A</label>
-                        <p-dropdown (onChange)="onSelectRtaeRateType($event)"
+                        <p-dropdown
+                            (onChange)="onSelectRtaeRateType($event)"
                             [options]="[
                                 { label: 'A', value: 'A' },
                                 { label: 'P', value: 'P' }
                             ]"
                             formControlName="rateType"
+                            placeholder="P/A"
                         ></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <label class="text-lg">Amount</label>
+                        <label class="text-lg">{{ amountLabel }}</label>
                         <input
                             pInputText
                             type="text"
                             formControlName="rateAmount"
-                            [placeholder]="amountPlaceHolder"
+                            [placeholder]="amountPlaceholder"
                         />
                     </div>
                 </div>
-            </p-fieldset>
-            <div class="w-full text-center mt-2">
-                <button
-                    pButton
-                    pRipple
-                    type="submit"
-                    class="p-button-raised p-button-info"
-                    [disabled]="!ComponentRateForm.valid"
-                    (ngClick)="onSubmit()"
+
+                <div
+                    class="flex flex-col mt-1 align-items-center justify-content-center"
                 >
-                    Submit
-                </button>
+                    <!-- Save Button -->
+                    <div class="flex flex-wrap gap-2 mx-2">
+                        <button
+                            type="submit"
+                            pButton
+                            pRipple
+                            class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                            [disabled]="!ComponentRateForm.valid"
+                        >
+                            <i class="pi pi-check mr-2"></i> Submit
+                        </button>
+                    </div>
+
+                    <!-- Refresh Button -->
+                    <div class="flex flex-wrap gap-2 mx-2">
+                        <button
+                            type="button"
+                            pButton
+                            pRipple
+                            (click)="resetAndReload()"
+                            class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                        >
+                            <i class="pi pi-refresh mr-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <!-- for ListView table -->
+            <div *ngIf="data">
+                <div class="flex justify-center card mx-6 mt-2 py-0">
+                    <div class="col-12">
+                        <h5>Component Detail</h5>
+                        <hr class="border-b-2 h-10 border-dashed" />
+
+                        <p-table
+                            [value]="records"
+                            class="justify-center"
+                            [scrollable]="true"
+                            scrollHeight="600px"
+                            [loading]="loading"
+                        >
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th
+                                        *ngFor="let col of cols"
+                                        pSortableColumn="{{ col.field }}"
+                                    >
+                                        {{ col.header
+                                        }}<p-sortIcon
+                                            [field]="col.field"
+                                        ></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+
+                            <ng-template pTemplate="body" let-record>
+                                <tr>
+                                    <td *ngFor="let col of cols">
+                                        {{ record[col.field] }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
