@@ -79,6 +79,6 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [PpodetailsComponent],
-  exports: [RouterModule]
+  exports: [RouterModule,BankDetailsComponent]
 })
 export class PpodetailsModule { }

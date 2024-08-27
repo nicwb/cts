@@ -20,60 +20,71 @@
     }
 </style>
 
-<form [formGroup]="BankDetailsForm" >
-    <p-fieldset legend="Bank Details" class="line-height-3 m-0">
-        <div class="p-formgrid grid">
-
-            <div class="col-12 md:col-6">
-                <label for="payMode" class="col-12 mb-2 md:col-2 md:mb-0">Pay Mode:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
+<div>
+    <form [formGroup]="BankDetailsForm">
+         <p-fieldset [legend]="legend" class="line-height-3 m-0">
+            <div class="p-formgrid grid">
+                <div class="col-12 md:col-6">
                     <p-dropdown [style]="{width: '100%', height: '45px'}"
-                        [options]="[{label: 'Treasury', value: 'treasury'}, {label: 'Bank', value: 'bank'}]"
-                        formControlName="payMode"></p-dropdown>
+                        [options]="[{label: 'Treasury', value: 'Q'}, {label: 'Bank', value: 'B'}]"
+                        formControlName="payMode" placeholder="Pay Mode"></p-dropdown>
                 </div>
-            </div>
+                <div class="col-12 md:col-6">
+                    <p-dropdown [style]="{width: '100%', height: '45px'}"
+                        [options]="banks"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name" 
+                        [showClear]="true"
+                        (onChange)="onChangeBank($event)"
+                        placeholder="Bank Name">
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ selectedOption.name }}</div>
+                                </div>
+                            </ng-template>
+                    </p-dropdown>
+                </div>
 
-            <div class="col-12 md:col-6">
-                <label for="bankBranchName" class="col-12 mb-2 md:col-2 md:mb-0">Bank-Branch
-                    Name:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px" (click)="searchBank();">
-                    <p-dropdown  *ngIf="(banks$| async)  as bankResponce"
-                        class="h-45px w-100" id="bankBranchName"
-                        [options]="[bankResponce.result]" 
-                        formControlName="bankBranchName"
-                        optionLabel="Bank-Branch Name" 
-                        placeholder="Bank-Branch Name"></p-dropdown>
-                    <!-- <input type="text" pInputText
-                        formControlName="bankBranchName" placeholder="Bank-Branch Name" /> -->
+                <div class="col-12 md:col-6" *ngIf="banksBranch">
+                        <p-dropdown [style]="{width: '100%', height: '45px'}"
+                        [options]="banksBranch"
+                        optionLabel="name"
+                        [filter]="true"
+                        filterBy="name" 
+                        [showClear]="true"
+                        (onChange)="onChangeBankBranch($event.value)"
+                        placeholder="Bank-Branch">
+                            <ng-template pTemplate="selectedItem" let-selectedOption>
+                                <div class="flex align-items-center gap-2">
+                                    <div>{{ selectedOption.name }}</div>
+                                </div>
+                            </ng-template>
+                    </p-dropdown>
                 </div>
-            </div>
 
-            <div class="col-12 md:col-6">
-                <label for="accountNo" class="col-12 mb-2 md:col-2 md:mb-0">Account
-                    No:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                    <input class="h-45px w-100" id="accountNo" type="text" pInputText formControlName="accountNo"
-                        placeholder="Account No" />
+                <div class="col-12 md:col-6">
+                    <span class="p-float-label h-45px w-100">
+                        <input class="h-full w-100" id="float-input" type="text" pInputText formControlName="bankAcNo">
+                        <label for="float-input">Account No</label>
+                    </span>
                 </div>
-            </div>
 
-            <div class="col-12 md:col-6">
-                <label for="accountHolderName" class="col-12 mb-2 md:col-2 md:mb-0">Account
-                    Holder:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
-                    <input class="w-100 h-45px" id="accountHolderName" type="text" pInputText
-                        formControlName="accountHolderName" placeholder="Account Holder" />
+                <div class="col-12 md:col-6">
+                    <span class="p-float-label h-45px w-100">
+                        <input class="h-full w-100" id="float-input" type="text" pInputText [readonly]="true"formControlName="ifscCode">
+                        <label for="float-input">IFSC Code</label>
+                    </span>
                 </div>
             </div>
-
-            <div class="col-12 md:col-6">
-                <label for="ifscCode" class="col-12 mb-2 md:col-2 md:mb-0">IFSC
-                    Code:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50px">
-                    <input id="ifscCode" class="w-100 h-45px" type="text" pInputText formControlName="IFSCCode"
-                        placeholder="IFSC Code" />
-                </div>
+            <div class="w-100" style="display: flex; justify-content: center;">
+                <p-button 
+                    label="Save"
+                    icon="pi pi-bookmark"
+                    styleClass="p-button-raised" 
+                    (click)="saveData()">
+                  </p-button>
             </div>
-        </div>
-    </p-fieldset>
-</form>
+         </p-fieldset>
+    </form>
+</div>

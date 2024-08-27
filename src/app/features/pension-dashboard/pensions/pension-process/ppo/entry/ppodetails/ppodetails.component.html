@@ -10,13 +10,13 @@
 
                 <!-- PPO and OtherDetails -->
                 <div *ngIf="currentStepIndex === 0" class="flex flex-column gap-3">
-                   <app-details [ppoId]="ppoId" (return)="setPpoId($event);"></app-details>
+                    <app-details [ppoId]="ppoId" (return)="setPpoId($event);"></app-details>
                 </div>
 
 
                 <!-- BankDetails -->
                 <div *ngIf="currentStepIndex === 1" class="flex flex-column gap-3">
-                    <app-bank-details></app-bank-details>
+                    <app-bank-details [ppoId]="ppoId" [pensionerName]="pensionerName"></app-bank-details>
                 </div>
 
 

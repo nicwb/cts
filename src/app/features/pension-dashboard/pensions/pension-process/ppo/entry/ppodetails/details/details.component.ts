@@ -29,6 +29,7 @@ export class DetailsComponent implements OnInit {
   @Output() returnBank = new EventEmitter();
   legend:string = 'PPO Details';
   sechButtonStyle={height: '267%'};
+  pensionerName: any;
 
   constructor(
     private fb: FormBuilder, 
@@ -196,7 +197,13 @@ export class DetailsComponent implements OnInit {
                 }
                 if (res.result?.ppoId) {
                       this.ppoId = String(res.result.ppoId);
-                      this.return.emit(this.ppoId);
+                      this.pensionerName = String(res.result.pensionerName)
+                      this.return.emit([this.ppoId, this.pensionerName]);
+                }
+              }
+              else{
+                if (res.message) {
+                  this.tostService.showError(res.message);
                 }
               }
             },
@@ -231,26 +238,7 @@ export class DetailsComponent implements OnInit {
 
   // manual PPO entry search
   MEDetailsSearch(): void{
-    
-    let payload:Payload = {
-      "pageSize":10,
-      "pageIndex":0,
-      "filterParameters": [],
-      "sortParameters":{
-        "field":"",
-        "order":""
-      }
-    };
-    
-    if (this.eppoid) {
-      payload.filterParameters = [{
-        "field": "TreasuryReceiptNo",
-        "value": this.eppoid,
-        "operator": "contains"
-      }];
-    }
-
-    this.allManualPPOReceipt$ = this.PensionManualPPOReceiptService.getAllPpoReceipts(payload);
+    this.allManualPPOReceipt$ = this.PensionManualPPOReceiptService.getAllUnusedPpoReceipts();
   }
 
   // handelManualEntrySelectRow

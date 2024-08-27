@@ -41,6 +41,7 @@ export class PpodetailsComponent implements OnInit {
 
   // component data
   ppoId?: any;
+  pensionerName?: string;
 
   constructor(
     private toastService: ToastService,
@@ -156,6 +157,7 @@ export class PpodetailsComponent implements OnInit {
     // this.ppoId=record.id;
     if (record['ppoId']) {
       this.ppoId = record['ppoId'];
+      this.pensionerName = record['pensionerName']
       this.cdr.detectChanges();
     }
     this.viewChange(false);
@@ -163,9 +165,10 @@ export class PpodetailsComponent implements OnInit {
 
   setPpoId(id:any){
     if(id){
-      this.ppoId=id;
+      this.ppoId=id[0];
+      this.pensionerName = id[1];
       this.cdr.detectChanges();
-      this.next();
+      // this.next();
     }
   }
 }
