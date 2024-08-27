@@ -22,6 +22,8 @@ export class ManualPpoReceiptComponent implements OnInit {
   isTableDataLoading = false;
   selectedRow: any;
 
+  maxDate = new Date();
+
   ppoIssuedBy: SelectItem[] = [
     { label: 'AGWB', value: 'A' },
     { label: 'DPPGWG', value: 'D' },
