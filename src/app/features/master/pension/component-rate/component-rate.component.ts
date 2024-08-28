@@ -23,7 +23,8 @@ export class ComponentRateComponent implements OnInit {
     pensionComponent$?: Observable<any>;
 
     ComponentRateForm: FormGroup = new FormGroup({});
-    amountPlaceHolder: String = '₹';
+    amountLabel: string = 'Amount/Percentage';
+    amountPlaceholder: string = ''; // Start with a blank placeholder
     //store the component rate data
     data?: any;
     cols: any[] = [];
@@ -46,7 +47,7 @@ export class ComponentRateComponent implements OnInit {
             breakupId: ['', Validators.required],
             componentName: [''],
             effectiveFromDate: ['', Validators.required],
-            rateType: ['A', Validators.required],
+            rateType: ['', Validators.required],
             rateAmount: ['', Validators.required],
         });
     }
@@ -112,14 +113,24 @@ export class ComponentRateComponent implements OnInit {
         this.ComponentRateForm.removeControl('componentName');
     }
 
+    // Method to update label and placeholder based on rateType
+    updateAmountLabelAndPlaceholder(rateType: string): void {
+        if (rateType === 'A') {
+            this.amountLabel = 'Amount';
+            this.amountPlaceholder = '₹';
+        } else if (rateType === 'P') {
+            this.amountLabel = 'Percentage';
+            this.amountPlaceholder = '%';
+        } else {
+            this.amountLabel = 'Amount/Percentage';
+            this.amountPlaceholder = ''; // Default or blank placeholder
+        }
+    }
+
     //change amount placeholder according to selecte rate type
     onSelectRtaeRateType($event: any): void {
         const rateType = this.ComponentRateForm.get('rateType')?.value;
-        if (rateType === 'A') {
-            this.amountPlaceHolder = '₹';
-        } else if (rateType === 'P') {
-            this.amountPlaceHolder = '%';
-        }
+        this.updateAmountLabelAndPlaceholder(rateType);
     }
     //convert response into a table format
     convertResponseToTable(dataset: any): void {

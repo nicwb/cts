@@ -77,15 +77,16 @@
                                 { label: 'P', value: 'P' }
                             ]"
                             formControlName="rateType"
+                            placeholder="P/A"
                         ></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-6">
-                        <label class="text-lg">Amount</label>
+                        <label class="text-lg">{{ amountLabel }}</label>
                         <input
                             pInputText
                             type="text"
                             formControlName="rateAmount"
-                            [placeholder]="amountPlaceHolder"
+                            [placeholder]="amountPlaceholder"
                         />
                     </div>
                 </div>
