@@ -198,16 +198,16 @@ export class SubCategoryComponent implements OnInit {
         }
     }
 
-    fun_refresh() {
-        this.refresh_b = false;
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
-        this.searching.val=false;
-        this.searching.data=null;
-        this.getData();
-    }
+    // fun_refresh() {
+    //     this.refresh_b = false;
+    //     this.tableQueryParameters = {
+    //         pageSize: 10,
+    //         pageIndex: 0,
+    //     };
+    //     this.searching.val=false;
+    //     this.searching.data=null;
+    //     this.getData();
+    // }
 
     emitSubCategory(): void {
         this.Sub_Category_Details.emit(this.SubForm.value);
