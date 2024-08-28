@@ -27,10 +27,8 @@ const routes: Routes = [{ path: '', component: ComponentRateComponent }];
         FieldsetModule, // Add FieldsetModule here
         CalendarModule,
         DropdownModule,
-
         PopupTableModule,
         TableModule,  // Add TableModule here
-
         RouterModule.forChild(routes),
     ],
     exports: [ComponentRateComponent],

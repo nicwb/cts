@@ -159,7 +159,7 @@ export class ComponentRateComponent implements OnInit {
             this.PensionComponentRateService.getAllComponentRates(payload).pipe(
                 tap((response) => {
                     if (response && response.result) {
-                        // console.log(response.result);
+                        console.log(response.result);
                         this.convertResponseToTable(response.result);
                     }
                 })
@@ -167,11 +167,12 @@ export class ComponentRateComponent implements OnInit {
         );
     }
 
-  
-
-    async onSubmit() {
+    async onSubmit(event: Event) {
+        event.preventDefault(); // Prevent default form submission
+        console.log('onSubmit called');
         this.formatDate();
         this.removeUnwantedAttributes();
+
         if (this.ComponentRateForm.valid) {
             // Convert the form values to the expected DTO format
             const formValues = this.ComponentRateForm.value;
@@ -209,33 +210,20 @@ export class ComponentRateComponent implements OnInit {
     }
 
     // Method to reset the form and re-add removed controls
-    resetForm():void {
+    resetForm(): void {
         // Re-add the removed controls
         this.ComponentRateForm.addControl('categoryName', new FormControl(''));
         this.ComponentRateForm.addControl('componentName', new FormControl(''));
-       
-
-        // Clear the form errors
-        this.ComponentRateForm.markAsPristine();
-        this.ComponentRateForm.updateValueAndValidity();
 
         // Reset the form to its initial state
         this.ComponentRateForm.reset();
-
-        // Set the default amount placeholder
-        // this.amountPlaceHolder = '��';
-
-        this.records = [];
-        this.cols = [];
-
-        // Reset the form to its initial state
-        this.ComponentRateForm.reset();
-
-        // Set the default amount placeholder
-        // this.amountPlaceHolder = '₹';
 
         this.records = [];
         this.cols = [];
     }
-   
+
+    resetAndReload(): void {
+        this.resetForm();
+        this.data = undefined;
+    }
 }
