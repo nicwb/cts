@@ -13,6 +13,7 @@
 
 export interface PensionerBankAcResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
+    payMode: string;
     accountHolderName: string;
     bankAcNo: string;
     ifscCode: string;
