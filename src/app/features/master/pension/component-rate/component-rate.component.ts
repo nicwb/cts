@@ -136,9 +136,6 @@ export class ComponentRateComponent implements OnInit {
                 }));
                 this.loading = false;
             }
-
-            console.log('Records:', this.records);
-            console.log('Cols:', this.cols);
         }
     }
 
@@ -169,7 +166,6 @@ export class ComponentRateComponent implements OnInit {
 
     async onSubmit(event: Event) {
         event.preventDefault(); // Prevent default form submission
-        console.log('onSubmit called');
         this.formatDate();
         this.removeUnwantedAttributes();
 
