@@ -47,6 +47,8 @@
     [(visible)]="displayInsertModal"
     [modal]="true"
     [style]="{ width: '45vw' }"
+    [breakpoints]="{ '1199px': '60vw', '575px': '90vw' }" 
+    [maximizable]="true"
     [baseZIndex]="10000"
 >
     <form [formGroup]="ComponentForm" class="flex flex-column gap-4 mt-3">
