@@ -1,7 +1,7 @@
 <div class="grid">
   <div class="col-12">
     <app-common-header [headerName]="'Manual PPO Receipt'" [imgSrc]="'assets/layout/images/icons/ppo-receipt.png'">
-      <button pButton pRipple (click)="showInsertDialog()" type="button" icon="pi pi-plus" label="New Manual PPO Entry"
+      <button pButton pRipple (click)="openNewPpoReceiptForm()" type="button" icon="pi pi-plus" label="New Manual PPO Entry"
               class="p-button-rounded p-button-raised"></button>
     </app-common-header>
   </div>
@@ -12,16 +12,16 @@
       [numberRowsShown]="10"
       [rowsPerPageOptions]="[10, 30, 50]"
       [showTopMenubar]="true"
-      [isLoading]="isTableDataLoading"
-      [actionButtons]="tableActionButton"
-      (actionButtonClicked)="handleActionButtonClicked($event)"
-      (queryParameterChange)="handQueryParameterChange($event)"
-      (searchKeyChange)="handSearchKeyChange($event)">
+      [isLoading]="isDataLoading"
+      [actionButtons]="actionButtons"
+      (actionButtonClicked)="onActionButtonClick($event)"
+      (queryParameterChange)="onQueryParametersChange($event)"
+      (searchKeyChange)="onSearchKeyChange($event)">
     </mh-prime-dynamic-table>
   </div>
 </div>
 
-<p-dialog header="Manual PPO Receipt" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '45vw'}"
+<p-dialog header="Manual PPO Receipt" [(visible)]="isInsertModalVisible" [modal]="true" [style]="{width: '45vw'}"
           [baseZIndex]="10000">
   <form [formGroup]="manualPpoForm" class="flex flex-column gap-4 mt-3">
     <div class="flex gap-2 xl:flex-row flex-column">
@@ -68,9 +68,9 @@
     </div>
   </form>
   <div class="flex gap-2 justify-content-end pt-3">
-    <button *ngIf="!selectedRow" pButton label="Submit" (click)="onSubmit()"
+    <button *ngIf="!selectedRow" pButton label="Submit" (click)="submitPpoReceipt()"
             class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
-    <button *ngIf="selectedRow" pButton label="Update" (click)="onSubmit()"
+    <button *ngIf="selectedRow" pButton label="Update" (click)="submitPpoReceipt()"
             class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
     <button pButton label="Cancel" (click)="resetAndCloseDialog()" class="p-button-rounded"></button>
   </div>
