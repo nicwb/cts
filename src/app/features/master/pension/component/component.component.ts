@@ -75,13 +75,16 @@ export class ComponentComponent {
             pageIndex: 0,
         };
 
+        
         this.getData();
+        
     }
 
 
     showInsertDialog() {
         this.displayInsertModal = true;
         this.ComponentForm.reset();
+        this.ComponentForm.patchValue({reliefFlag : false});
     }
 
     handleRowSelection($event: any) {
@@ -155,7 +158,7 @@ export class ComponentComponent {
                 '',
                 [Validators.required],
             ],
-            reliefFlag: [null, [Validators.required]],
+            reliefFlag: ['', [Validators.required]],
         });
     }
 
