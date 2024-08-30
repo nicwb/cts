@@ -12,15 +12,10 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { EntryComponent } from './entry.component';
-import { PpodetailsComponent } from './ppodetails/ppodetails.component';
-import { SanctionComponent } from './ppodetails/sanction/sanction.component';
-import { FamilyNomineeComponent } from './ppodetails/family-nominee/family-nominee.component';
+import { PpodetailsModule } from './ppodetails/ppodetails.module';
 
 const routes: Routes = [
   { path: '', component: EntryComponent },
-  { path: 'ppodetails', component: PpodetailsComponent },
-  { path: 'pposanction', component: SanctionComponent },
-  { path: 'ppofamilynominee', component: FamilyNomineeComponent}
 ];
 
 @NgModule({
@@ -37,6 +32,7 @@ const routes: Routes = [
     DialogModule,
     CalendarModule,
     TreasuryDropdownModule,
+    PpodetailsModule,
     RouterModule.forChild(routes),
   ],
 })

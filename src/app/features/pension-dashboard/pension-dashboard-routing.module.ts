@@ -24,16 +24,13 @@ const routes: Routes = [
     path: 'modules/pension-process/ppo/entry',
     loadChildren: () => import('./pensions/pension-process/ppo/entry/entry.module').then(m => m.EntryModule),
   },
-  {
-    path: 'modules/pension-process/ppo/entry/ppodetails',
-    loadChildren: () =>
-      import('./pensions/pension-process/ppo/entry/ppodetails/ppodetails.module').then(m => m.PpodetailsModule),
-  },
+  
   {
     path: 'modules/pension-process/ppo/manual-ppo-receipt',
     loadChildren: () =>
       import('./pensions/pension-process/ppo/manual-ppo-receipt/manual-ppo-receipt.module').then(m => m.ManualPpoReceiptModule),
   },
+  
   {
     path: 'modules/pension-process/ppo/entry/sanction',
     loadChildren: () => import('./pensions/pension-process/ppo/entry/ppodetails/sanction/sanction.module').then(m => m.SanctionModule),

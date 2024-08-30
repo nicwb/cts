@@ -32,7 +32,12 @@ import { TableModule } from 'primeng/table';
 // import { FloatLabe } ;
 
 const routes: Routes = [
-  { path: '', component: PpodetailsComponent },
+  { path: 'ppodetails', component: PpodetailsComponent },
+  {
+    path: ':ppoId/bank-account',
+    component: BankDetailsComponent
+  }
+  
 ];
 
 
@@ -41,8 +46,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [PpodetailsComponent, DetailsComponent, BankDetailsComponent],
   imports: [
-    SanctionModule,
     CommonModule,
+    SanctionModule,
     ButtonModule,
     ReactiveFormsModule,    
     DynamicTableModule,
@@ -56,15 +61,12 @@ const routes: Routes = [
     InputTextModule,
     RadioButtonModule,
     RouterModule,
-    BrowserModule,
     InputTextareaModule,
-    BrowserModule,
     InputTextModule,
     CalendarModule,
     DropdownModule,
     SelectButtonModule,
     CardModule,
-    BrowserModule,
     FormsModule,
     DropdownModule,
     CheckboxModule,
