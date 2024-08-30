@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('testing primary category', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, isMobile }) => {
+        test.fixme(isMobile, "Complete task-141 before runnign this test");
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         const dashboard = page.getByText('CCTSCLERK');

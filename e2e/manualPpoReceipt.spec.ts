@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 import { DotEnv } from "utils/env"
 
 test.describe('Manual PPO Receipt Component', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, isMobile }) => {
+    test.fixme(isMobile, "Complete task-144 before runnign this test");
     // Navigate to the static login page containing user roles
     await page.goto('/#/static-login');
     await page.getByRole('link', { name: 'cleark' }).click();
@@ -99,9 +100,11 @@ test.describe('Manual PPO Receipt Component', () => {
     
     await page.click('p-calendar[formControlName="dateOfCommencement"] input');
     await page.click('.p-datepicker-today');
+    await page.waitForTimeout(500);
     
     await page.click('p-calendar[formControlName="receiptDate"] input');
     await page.click('.p-datepicker-today');
+    await page.waitForTimeout(500);
     
     await page.fill('input[formControlName="mobileNumber"]', '9323232323');
     

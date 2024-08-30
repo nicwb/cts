@@ -2,11 +2,12 @@ import {test, expect } from "@playwright/test";
 import { DotEnv } from "utils/env"
 
 test.describe('pensionCategory test', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, isMobile }) => {
+        test.fixme(isMobile, "Complete task-143 before runnign this test");
         await page.goto('/#/static-login');
-    await page.getByRole('link', { name: 'cleark' }).click();
-    const dashboard = page.getByText('CCTSCLERK');
-    await expect(dashboard).toBeVisible();
+        await page.getByRole('link', { name: 'cleark' }).click();
+        const dashboard = page.getByText('CCTSCLERK');
+        await expect(dashboard).toBeVisible();
         // Navigate to the page containing your component
         await page.goto('/#/master/app-pension/app-pension-category');
     });

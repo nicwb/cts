@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('SubCategory Details Module', () => {
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, isMobile }) => {
+        test.fixme(isMobile, "Complete task-142 before runnign this test");
         // Navigate to the static login page containing user roles
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();

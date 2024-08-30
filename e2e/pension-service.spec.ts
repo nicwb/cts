@@ -25,10 +25,9 @@ test.describe('Pension Module Test', () =>{
 
     ].forEach(({ role, displayName }) => {
         test(`${displayName} can login`,
-            async ({page}) => {
-                let MOBILE_VIEWPORT_WIDTH = 991
+            async ({page, isMobile}) => {
                 await page.getByRole('link', { name: `${role}` }).click();
-                if(page.viewportSize()?.width! <= MOBILE_VIEWPORT_WIDTH) {
+                if(isMobile) {
                     page.locator('button.layout-topbar-menu-button').click()
                 }
                 const dashboard = page.getByText(`CCTS${displayName}`);
