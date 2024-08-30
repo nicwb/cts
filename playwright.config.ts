@@ -26,7 +26,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-     baseURL: 'http://127.0.0.1:4200',
+     baseURL: process.env.NG_APP_PLAYWRIGHT_BASE_URL,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -50,14 +50,14 @@ export default defineConfig({
     },
 
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    },
 
     /* Test against branded browsers. */
     // {
@@ -73,8 +73,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     ignoreHTTPSErrors: true,
-    command: process.env.NG_APP_ENV_DOCKER ? 'npm run start:test' : 'npm run start',
-    url: 'http://127.0.0.1:4200',
+    command: 'npm run start',
+    url: process.env.NG_APP_PLAYWRIGHT_BASE_URL,
     reuseExistingServer: true,
     // reuseExistingServer: !process.env.CI,
   },
