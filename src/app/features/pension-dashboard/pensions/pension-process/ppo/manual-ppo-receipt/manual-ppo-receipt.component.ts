@@ -97,7 +97,7 @@ export class ManualPpoReceiptComponent implements OnInit {
   
 
   openNewPpoReceiptForm(): void {
-    if(environment.production == 'false'){
+    if(!environment.production){
       this.fillFactoryData();
     }
     this.isInsertModalVisible = true;
