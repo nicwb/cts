@@ -23,7 +23,6 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 
-import { ManualPpoReceiptService } from 'src/app/core/services/manualPpoReceipt/manual-ppo-receipt.service';
 
 
 
