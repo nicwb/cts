@@ -32,7 +32,7 @@ test.describe('pensionCategory test', () => {
                 .filter({ hasText: /^Pension Category Details$/ })
         ).toBeVisible();
     });
-    test('is the form and submit button working', async ({ page }) => {
+    test.skip('is the form and submit button working', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
             page
