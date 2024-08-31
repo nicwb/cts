@@ -8,17 +8,17 @@
     top: 10rem;
     left: 2rem;
     transition: transform $transitionDuration, left $transitionDuration;
-    background-color: var(--surface-overlay);
-    border-radius: $borderRadius;
-    padding: 0.5rem 1.5rem;
-	background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
-	box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    padding: 0rem 0.2rem;
 }
 
 .layout-menu {
     margin: 0;
-    padding: 0;
+    padding: 0.5rem 1.5rem;
     list-style-type: none;
+    border-radius: $borderRadius;
+    background-color: var(--surface-overlay);
+    background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 
     .layout-root-menuitem {
         >.layout-menuitem-root-text {

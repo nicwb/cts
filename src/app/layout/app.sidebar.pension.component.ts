@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService } from './service/app.layout.service';
 
 @Component({
-  selector: 'app-app-sidebar-pension',   //app-app.sidebar.pension
+  selector: 'app-sidebar-pension',   //app-app.sidebar.pension
   templateUrl: 'app.sidebar.pension.component.html',
 
 })
