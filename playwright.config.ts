@@ -74,9 +74,8 @@ export default defineConfig({
   webServer: {
     ignoreHTTPSErrors: true,
     command: 'npm run start',
-    url: process.env.NG_APP_PLAYWRIGHT_BASE_URL,
-    reuseExistingServer: true,
-    // reuseExistingServer: !process.env.CI,
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env.CI,
   },
   globalSetup:"utils/globalSetup.ts"
 });
