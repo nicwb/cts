@@ -5,6 +5,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse } from 'src/app/api';
 import { PensionStatusFlag } from 'src/app/shared/modules/pensioner-status/enumsStatus';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ppo-approval',
@@ -28,7 +29,8 @@ export class PpoApprovalComponent implements OnInit {
     private toastService: ToastService,
     private pensionPPODetailsService: PensionPPODetailsService,
     private pensionPPOStatusService: PensionPPOStatusService,
-    private bankService: BankService
+    private bankService: BankService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +50,10 @@ export class PpoApprovalComponent implements OnInit {
 
     this.idList$ = this.pensionPPODetailsService.getAllPensioners(payload);
     
+  }
+
+  navigateToBankAccountDetails(): void {
+    this.router.navigate(['/pension/modules/pension-process/ppo/entry/1/bank-account']);
   }
 
   handlePpoSearchEvent(event: any) {
