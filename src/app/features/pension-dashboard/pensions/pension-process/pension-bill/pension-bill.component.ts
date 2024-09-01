@@ -213,34 +213,34 @@ export class PensionBillComponent implements OnInit {
 
   async saveFirstBill() {
     const saveFirstBill: PpoBillEntryDTO = {
-      pensionerId: this.result.pensioner.id,
-      bankAccountId: this.result.bankAccount.id,
+      // pensionerId: this.result.pensioner.id,
+      // bankAccountId: this.result.bankAccount.id,
       ppoId: this.result.pensioner.ppoId,
-      fromDate: this.result.pensioner.dateOfRetirement,
+      // fromDate: this.result.pensioner.dateOfRetirement,
       toDate: this.result.billDate,
-      billType: 'F',
-      billDate: this.today,
-      grossAmount: this.result.grossAmount,
-      byTransferAmount: this.result.netAmount,
-      netAmount: this.result.netAmount,
-      breakups: this.result.pensionerPayments.map((payment: PpoBillBreakupEntryDTO, index: number) => {
-        let revisionId: number | undefined;
+      // billType: 'F',
+      // billDate: this.today,
+      // grossAmount: this.result.grossAmount,
+      // byTransferAmount: this.result.netAmount,
+      // netAmount: this.result.netAmount,
+      // breakups: this.result.pensionerPayments.map((payment: PpoBillBreakupEntryDTO, index: number) => {
+      //   let revisionId: number | undefined;
 
-        if (this.response.apiResponseStatus === 1) {
-          this.revisionResults = this.response?.result || [];
-          revisionId = this.revisionResults[index]?.id;
-        } else if (this.response.apiResponseStatus === 3) {
-          revisionId = this.revisionResults.result[index]?.id;
-        }
+      //   if (this.response.apiResponseStatus === 1) {
+      //     this.revisionResults = this.response?.result || [];
+      //     revisionId = this.revisionResults[index]?.id;
+      //   } else if (this.response.apiResponseStatus === 3) {
+      //     revisionId = this.revisionResults.result[index]?.id;
+      //   }
 
-        return {
-          revisionId: revisionId,
-          ppoId: this.result.pensioner.ppoId,
-          fromDate: payment.fromDate,
-          toDate: payment.toDate,
-          breakupAmount: this.result.pensionerPayments.netAmount,
-        };
-      }),
+      //   return {
+      //     revisionId: revisionId,
+      //     ppoId: this.result.pensioner.ppoId,
+      //     fromDate: payment.fromDate,
+      //     toDate: payment.toDate,
+      //     breakupAmount: this.result.pensionerPayments.netAmount,
+      //   };
+      // }),
     };
     try {
       this.res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));

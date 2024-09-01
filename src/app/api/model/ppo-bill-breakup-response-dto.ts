@@ -15,7 +15,6 @@ import { PpoComponentRevisionResponseDTO } from './ppo-component-revision-respon
 export interface PpoBillBreakupResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoId: number;
-    revisionId: number;
     fromDate: string;
     toDate: string;
     breakupAmount: number;
@@ -23,6 +22,7 @@ export interface PpoBillBreakupResponseDTO {
     drawnAmount?: number;
     readonly netAmount?: number;
     id?: number;
+    readonly revisionId?: number;
     revision?: PpoComponentRevisionResponseDTO;
 }
 

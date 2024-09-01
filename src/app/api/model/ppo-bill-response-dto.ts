@@ -16,22 +16,24 @@ import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 
 export interface PpoBillResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    pensionerId: number;
-    bankAccountId: number;
     ppoId: number;
-    fromDate: string;
     toDate: string;
-    billType: string;
-    billDate: string;
-    grossAmount: number;
-    byTransferAmount: number;
-    netAmount: number;
     id?: number;
+    pensionerId?: number;
+    bankAccountId?: number;
+    fromDate?: string;
+    billType?: string;
+    billDate?: string;
+    grossAmount?: number;
+    byTransferAmount?: number;
+    netAmount?: number;
+    breakups?: Array<PpoBillBreakupEntryDTO> | null;
     drawnAmount?: number;
     treasuryVoucherNo?: string | null;
     treasuryVoucherDate?: string;
-    breakups?: Array<PpoBillBreakupEntryDTO> | null;
     pensioner?: PensionerResponseDTO;
     ppoBillBreakups?: Array<PpoBillBreakupResponseDTO> | null;
+    preparedBy?: string | null;
+    preparedOn?: string;
 }
 

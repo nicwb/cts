@@ -9,21 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PpoBillBreakupEntryDTO } from './ppo-bill-breakup-entry-dto';
 
 
 export interface PpoBillEntryDTO { 
     dataSource?: { [key: string]: any; } | null;
-    pensionerId: number;
-    bankAccountId: number;
     ppoId: number;
-    fromDate: string;
     toDate: string;
-    billType: string;
-    billDate: string;
-    grossAmount: number;
-    byTransferAmount: number;
-    netAmount: number;
-    breakups: Array<PpoBillBreakupEntryDTO>;
 }
 

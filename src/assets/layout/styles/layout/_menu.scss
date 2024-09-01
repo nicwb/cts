@@ -3,7 +3,6 @@
     width: 300px;
     height: calc(100vh - 12rem);
     z-index: 999;
-    overflow-y: auto;
     user-select: none;
     top: 10rem;
     left: 2rem;
@@ -12,8 +11,10 @@
 }
 
 .layout-menu {
-    margin: 0;
+    margin: 0 0 3rem 0;
     padding: 0.5rem 1.5rem;
+    overflow-y: auto;
+    min-height: calc(100vh - 12rem);
     list-style-type: none;
     border-radius: $borderRadius;
     background-color: var(--surface-overlay);
