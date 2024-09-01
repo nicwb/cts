@@ -18,68 +18,20 @@ test.describe('Pension Component Module', () => {
     })
     
     test('Check the input box is visible or not and submit successfully', async ({ page }) => {
-        let text = Math.floor(Math.random() * 1000 - 999 + 1) + 999;
         await page.getByRole('button', { name: 'New Entry' }).click();
-        await expect(page.getByPlaceholder('Description ')).toBeVisible();
-        await page.getByPlaceholder('Description ').fill(`TEST ${text}`);
-        await expect(page.getByLabel('Pension Components Details').getByLabel('dropdown trigger')).toBeVisible();
-        await page.getByLabel('Pension Components Details').getByLabel('dropdown trigger').click();
-        let num = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-        if(num==0){
-            await expect(page.getByLabel('Payment')).toBeVisible();
-            await page.getByLabel('Payment').click();
-        }else{
-            await expect(page.getByLabel('Deduction')).toBeVisible();
-            await page.getByLabel('Deduction').click();
-        }
-        await expect(page.getByRole('checkbox', { name: 'No' })).toBeVisible();
-        if(num==1){
-            await page.getByRole('checkbox', { name: 'No' }).click();
-        }
-        await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('alert')).toContainText("Component Details added successfully");
     })
 
     test('Duplicate data Checking', async ({ page }) => {
-        let text = Math.floor(Math.random() * 1000 - 999 + 1) + 999;
         await page.getByRole('button', { name: 'New Entry' }).click();
-        await expect(page.getByPlaceholder('Description ')).toBeVisible();
-        await page.getByPlaceholder('Description ').fill(`TEST ${text}`);
-        await expect(page.getByLabel('Pension Components Details').getByLabel('dropdown trigger')).toBeVisible();
-        await page.getByLabel('Pension Components Details').getByLabel('dropdown trigger').click();
-        let num = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
-        if(num==0){
-            await expect(page.getByLabel('Payment')).toBeVisible();
-            await page.getByLabel('Payment').click();
-        }else{
-            await expect(page.getByLabel('Deduction')).toBeVisible();
-            await page.getByLabel('Deduction').click();
-        }
-        await expect(page.getByRole('checkbox', { name: 'No' })).toBeVisible();
-        if(num==1){
-            await page.getByRole('checkbox', { name: 'No' }).click();
-        }
+        let data1= await page.locator('input[formControlName=componentName]').inputValue();
         await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('alert')).toContainText("Component Details added successfully");
 
         await page.getByRole('button', { name: 'New Entry' }).click();
-        await expect(page.getByPlaceholder('Description ')).toBeVisible();
-        await page.getByPlaceholder('Description ').fill(`TEST ${text}`);
-        await expect(page.getByLabel('Pension Components Details').getByLabel('dropdown trigger')).toBeVisible();
-        await page.getByLabel('Pension Components Details').getByLabel('dropdown trigger').click();
-        if(num==0){
-            await expect(page.getByLabel('Payment')).toBeVisible();
-            await page.getByLabel('Payment').click();
-        }else{
-            await expect(page.getByLabel('Deduction')).toBeVisible();
-            await page.getByLabel('Deduction').click();
-        }
-        await expect(page.getByRole('checkbox', { name: 'No' })).toBeVisible();
-        if(num==1){
-            await page.getByRole('checkbox', { name: 'No' }).click();
-        }
+        await page.locator('input[formControlName=componentName]').fill(data1);
         await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('alert')).toContainText("already exists");

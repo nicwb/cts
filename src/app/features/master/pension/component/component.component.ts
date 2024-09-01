@@ -17,8 +17,9 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
-import { PensionComponentService } from 'src/app/api';
+import { PensionComponentService, PensionFactoryService } from 'src/app/api';
 import { firstValueFrom,observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -58,7 +59,8 @@ export class ComponentComponent {
         private toastService: ToastService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef,
-        private Service: PensionComponentService
+        private Service: PensionComponentService,
+        private pensionFactoryService : PensionFactoryService
     ) {}
 
     @Output() ComponentSelected = new EventEmitter<any>();
@@ -85,6 +87,24 @@ export class ComponentComponent {
         this.displayInsertModal = true;
         this.ComponentForm.reset();
         this.ComponentForm.patchValue({reliefFlag : false});
+        if(!environment.production){
+            this.generateNewData();
+        }
+    }
+
+    async generateNewData(): Promise<void>{
+        try{
+            const data = await firstValueFrom(this.pensionFactoryService.createFake("PensionBreakupEntryDTO"));
+            console.log(data);
+            this.ComponentForm.patchValue({
+                componentName:data.result.componentName,
+                componentType:data.result.componentType,
+                reliefFlag:data.result.reliefFlag
+            });
+        }
+        catch(error){
+            this.toastService.showError('Failed to fetch component details.');
+        }
     }
 
     handleRowSelection($event: any) {
