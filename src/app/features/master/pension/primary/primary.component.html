@@ -46,7 +46,9 @@
     header="Primary Category Details"
     [(visible)]="displayInsertModal"
     [modal]="true"
-    [style]="{ width: '45vw' }"
+    [style]="{ width: '50vw' }"
+    [breakpoints]="{ '900px': '80vw', '575px': '95vw' }"
+    [maximizable]="true"
     [baseZIndex]="10000"
 >
     <form [formGroup]="primaryForm" class="flex flex-column gap-4 mt-3">

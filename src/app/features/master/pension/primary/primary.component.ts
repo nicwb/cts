@@ -1,4 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 import {
     Component,
     OnInit,
@@ -16,7 +17,10 @@ import {
 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
-import { PensionCategoryMasterService } from 'src/app/api';
+import {
+    PensionCategoryMasterService,
+    PensionFactoryService,
+} from 'src/app/api';
 import { firstValueFrom } from 'rxjs';
 
 interface expandedRows {
@@ -49,7 +53,8 @@ export class PrimaryComponent {
     constructor(
         private toastService: ToastService,
         private fb: FormBuilder,
-        private service: PensionCategoryMasterService
+        private service: PensionCategoryMasterService,
+        private generate: PensionFactoryService
     ) {}
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
@@ -69,6 +74,9 @@ export class PrimaryComponent {
     showInsertDialog() {
         this.displayInsertModal = true;
         this.primaryForm.reset();
+if(!environment.production){
+        this.generateData();
+}
     }
 
     handleRowSelection($event: any) {
@@ -164,6 +172,19 @@ export class PrimaryComponent {
             );
         }
     }
+    async generateData(): Promise<void> {
+        try {
+            const data = await firstValueFrom(
+                this.generate.createFake('PensionPrimaryCategoryEntryDTO')
+            );
+            this.primaryForm.patchValue({
+                HoaId: data.result.hoaId,
+                PrimaryCategoryName: data.result.primaryCategoryName,
+            });
+        } catch (error) {
+            this.toastService.showError('Failed to fetch');
+        }
+    }
 
     private handleErrorResponse(response: any) {
         if (
@@ -173,7 +194,7 @@ export class PrimaryComponent {
             )
         ) {
             this.toastService.showError(
-                'This Primary number already exists. Please use a different PPO number.'
+                'This Primary number already exists.'
             );
             this.primaryForm.get('PCID')?.setErrors({ duplicate: true });
         } else {
@@ -199,21 +220,20 @@ export class PrimaryComponent {
         this.isTableDataLoading = false;
     }
     async findById(data: any) {
-
         let payload = this.tableQueryParameters;
-        payload.filterParameters = [{ field: "HoaId", value: data, operator: 'contains'}];
-        payload.pageIndex=0;
+        payload.filterParameters = [
+            { field: 'HoaId', value: data, operator: 'contains' },
+        ];
+        payload.pageIndex = 0;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllPrimaryCategories(payload)
         );
-        if(response.result?.data?.length!=0){
+        if (response.result?.data?.length != 0) {
             this.tableData = response.result;
             this.refresh_b = true;
-        }else{
+        } else {
             this.toastService.showError('No Pension Category ID found');
-
-
         }
 
         this.isTableDataLoading = false;
@@ -227,8 +247,6 @@ export class PrimaryComponent {
         };
         this.getData();
     }
-
-
 
     emitPrimaryCategory(): void {
         this.Primary_Category_Details.emit(this.primaryForm.value);
