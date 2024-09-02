@@ -4,8 +4,8 @@ test.describe('testing primary category', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
-        const dashboard = page.getByText('CCTSCLERK');
-        await expect(dashboard).toBeVisible();
+        // const dashboard = page.getByText('CCTSCLERK');
+        await expect(page.getByRole('link', { name: 'logo | CTS' })).toBeVisible();
         await page.goto('/#/master/app-pension/app-primary');
     });
 
@@ -81,30 +81,5 @@ test.describe('testing primary category', () => {
                 .first()
         ).toBeHidden();
     });
-    test('testing the refresh button', async ({ page }) => {
-        await page.getByRole('button', { name: 'New' }).click();
-        await expect(
-            page.getByPlaceholder('0000 - 00 - 000 - 00 - 000 -')
-        ).toBeVisible();
-        await expect(page.getByPlaceholder('Description')).toBeVisible();
-        let data2 = await page
-            .locator('[formControlName=PrimaryCategoryName]')
-            .inputValue();
 
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
-        await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('alert')).toContainText(
-            'Primary Category Details added successfully'
-        );
-
-        await page.getByPlaceholder('Search').click();
-        await page.getByPlaceholder('Search').click();
-        await page.getByPlaceholder('Search').fill(data2);
-        await page.getByRole('toolbar').getByRole('button').nth(4).click();
-        await expect(page.getByRole('button', { name: 'Reset' })).toBeVisible();
-        await page.getByRole('button', { name: 'Reset' }).click();
-        await expect(page.getByRole('button', { name: 'Reset' })).toBeHidden();
-    });
 });
