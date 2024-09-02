@@ -60,7 +60,7 @@ export class AppSidebarPensionComponent implements OnInit {
               {
                 label: 'Pension Details', icon: 'pi pi-fw pi-bookmark',
                 items: [
-                  // { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark' },
+                  { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/pensioner-details/revision']},
                   // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
                   // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
                 ]

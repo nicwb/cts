@@ -105,3 +105,9 @@ $gutter: 1rem; //for primeflex grid system
     background: transparent;
     border: none;
 }
+
+.card {
+	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12) !important;
+	background-image: url("./assets/img/wavy_lines.png");
+	background-repeat: no-repeat;
+}
