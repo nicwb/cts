@@ -86,19 +86,88 @@ export class FirstPensionComponent implements OnInit {
       this.toastService.showError('Please select a PPO ID first');
       return;
     }
-
+  
     firstValueFrom(this.pensionFirstBillService.getFirstPensionBillByPpoId(ppoId)).then(response => {
+      if(response.apiResponseStatus !== 1) {
+        this.toastService.showError(response.message ?? 'An unknown error occurred');
+        return;
+      }
+
+      switch (true) {
+        case !response?.result?.id:
+          this.toastService.showError('Id is missing');
+          break;
+        case !response?.result?.treasuryVoucherNo:
+          this.toastService.showError('TreasuryVoucherNo is missing');
+          break;
+        case !response?.result?.billDate:
+          this.toastService.showError('BillDate is missing');
+          break; 
+        case !response?.result?.treasuryVoucherDate:
+          this.toastService.showError('TreasuryVoucherDate is missing');
+          break;
+        case !response?.result?.pensioner?.ppoId:
+          this.toastService.showError('Ppo id is missing');
+          break;
+        case !response?.result?.pensioner?.ppoNo:
+          this.toastService.showError('Ppo No is missing');
+          break;
+        case !response?.result?.pensioner?.receipt:
+          this.toastService.showError('Receipt information is missing');
+          break;
+        case !response?.result?.pensioner?.bankAccounts:
+          this.toastService.showError('Bank account information is missing');
+          break;
+        case !response?.result?.pensioner?.bankAccounts || !response?.result?.pensioner?.bankAccounts.length:
+          this.toastService.showError('Bank account information is missing');
+          break;
+        case !response?.result?.pensioner?.dateOfCommencement:
+          this.toastService.showError('Date of commencement is missing');
+          break;
+        case !response?.result?.pensioner?.pensionerName:
+          this.toastService.showError('Pensioner name is missing');
+          break;
+        case !response?.result?.pensioner?.category:
+          this.toastService.showError('Category information is missing');
+          break;
+        case !response?.result?.pensioner?.category?.primaryCategory:
+          this.toastService.showError('PrimaryCategory information is missing');
+          break;
+        case !response?.result?.pensioner?.category?.primaryCategory?.hoaId:
+          this.toastService.showError('Hoa id is missing');
+          break;
+        case !response?.result?.pensioner?.category?.categoryName:
+          this.toastService.showError('Category name is missing');
+          break;
+        case !response?.result?.ppoBillBreakups:
+          this.toastService.showError('PPO bill breakup information is missing');
+          break;
+        case response?.result?.ppoBillBreakups && !response?.result?.ppoBillBreakups.some(breakup => breakup.revision):
+          this.toastService.showError('Revision information is missing in some or all PPO bill breakups');
+          break;
+        case !response?.result?.preparedBy:
+          this.toastService.showError('Prepared by information is missing');
+          break;
+        case !response?.result?.preparedOn:
+          this.toastService.showError('Prepared on information is missing');
+          break;
+      }
+      
       this.pdfData = {
         response: response,
         bankName: '',
         branchName: '',
         branchAddress: ''
       };
+      // if(response.result?.pensioner === null || response.result?.pensioner?.receipt === null || response.result?.pensioner?.bankAccounts === null || response.result?.pensioner?.category === null || response.result?.ppoBillBreakups === null) {
+      //   this.toastService.showError('Data is missing, cannot generate PDF. Please check if all required fields are available.');
+      //   return;
+        
+      // }
       const bankAccounts = response?.result?.pensioner?.bankAccounts;
       const branchCode = bankAccounts && bankAccounts[0] && bankAccounts[0].branchCode;
       if (!branchCode) {
-        console.warn('Branch code is missing, skipping branch details');
-        this.pdfGenerationService.generatePdf(this.pdfData);
+        this.toastService.showError('Branch code is missing, cannot generate PDF');
         return;
       }
   
@@ -108,16 +177,20 @@ export class FirstPensionComponent implements OnInit {
         firstValueFrom(this.bankService.getBranchByBranchCode(branchCode)).then(branchResponse => {
           this.pdfData.branchAddress = branchResponse.result?.branchAddress;
           this.pdfData.branchName = branchResponse.result?.branchName;
-          this.pdfGenerationService.generatePdf(this.pdfData);
+          if (this.pdfData.bankName && this.pdfData.branchName && this.pdfData.branchAddress) {
+            this.pdfGenerationService.generatePdf(this.pdfData);
+            this.toastService.showSuccess('PDF generated successfully!');
+          } else {
+            console.error('Not all data is available, cannot generate PDF. Please check if bank name, branch name, and branch address are available.');
+            this.toastService.showError('Not all data is available, cannot generate PDF');
+          }
         }).catch(branchError => {
           console.error('Error fetching branch name:', branchError);
           this.toastService.showError('Error fetching branch address');
-          this.pdfGenerationService.generatePdf(this.pdfData);
         });
       }).catch(bankError => {
         console.error('Error fetching bank name:', bankError);
         this.toastService.showError('Error fetching bank name');
-        this.pdfGenerationService.generatePdf(this.pdfData);
       });
     }).catch(error => {
       console.error('Error generating PDF:', error);
