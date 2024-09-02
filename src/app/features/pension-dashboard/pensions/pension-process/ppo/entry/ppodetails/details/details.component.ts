@@ -7,8 +7,8 @@ import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
 import { PensionManualPPOReceiptService, PensionPPODetailsService, PensionCategoryMasterService } from 'src/app/api';
 import { catchError, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
-
-
+import { environment } from 'src/environments/environment';
+import { PensionFactoryService } from 'src/app/api';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -30,6 +30,7 @@ export class DetailsComponent implements OnInit {
   legend:string = 'PPO Details';
   sechButtonStyle={height: '267%'};
   pensionerName: any;
+  saveButton:boolean = false;
 
   constructor(
     private fb: FormBuilder, 
@@ -37,6 +38,7 @@ export class DetailsComponent implements OnInit {
     private ppoCategoryService: PensionCategoryMasterService,
     private PensionPPODetailsService: PensionPPODetailsService,
     private tostService: ToastService,
+    private factoryService: PensionFactoryService
   ) {
     this.ininalizer();
     this.MEDetailsSearch();
@@ -61,7 +63,28 @@ export class DetailsComponent implements OnInit {
       { label: 'Wife', value: 'W' },
     ];
   }
+  ngOnInit(): void {
+    if (!environment.production && !this.ppoId) {
+      console.log('Environment Now On Development');
+      this.factory();
+    }
+  }
 
+  async factory(){
+    await firstValueFrom(this.factoryService.createFake("PensionerEntryDTO").pipe(
+      tap(
+        (res)=>{
+          if (res.result) {
+            this.ppoFormDetails.patchValue(res.result);
+            this.ppoFormDetails.controls['dateOfRetirement'].setValue(this.parseDate(this.ppoFormDetails.get('dateOfRetirement')?.value));
+            this.ppoFormDetails.controls['dateOfCommencement'].setValue(this.parseDate(this.ppoFormDetails.get('dateOfCommencement')?.value));
+            this.ppoFormDetails.controls['dateOfBirth'].setValue(this.parseDate(this.ppoFormDetails.get('dateOfBirth')?.value));
+          }
+        }
+      )
+    ))
+  }
+  
   ngOnChanges(): void {
     if (this.ppoId) {
       this.legend="ID-"+this.ppoId;
@@ -122,10 +145,6 @@ export class DetailsComponent implements OnInit {
     return null;
   }
 
-  ngOnInit() {
-  }
-
-
   
   async fetchPpoDetails(){
     if (this.ppoId) {
@@ -153,6 +172,19 @@ export class DetailsComponent implements OnInit {
     return '';
   }
 
+  // convert string to date object
+  parseDate(dateString: string): Date | null {
+    // Check if the dateString matches the yyyy-MM-dd format
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(dateString)) {
+      return null; // Invalid date format
+    }
+    
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day); // Months are 0-indexed in JavaScript
+  }
+
+  
   // make this all data objet to string formate yy-mm-dd
   formateDate():void {
     this.ppoFormDetails.controls['dateOfRetirement'].setValue(this.getFormattedDate(this.ppoFormDetails.get('dateOfRetirement')?.value));
@@ -185,7 +217,6 @@ export class DetailsComponent implements OnInit {
 
     }
     this.removeNotrequiredField();
-    console.log(this.ppoFormDetails.value);
     if (this.ppoFormDetails.valid || this.ppoId) {
       if (!this.ppoId){
         await firstValueFrom(
@@ -199,6 +230,7 @@ export class DetailsComponent implements OnInit {
                       this.ppoId = String(res.result.ppoId);
                       this.pensionerName = String(res.result.pensionerName)
                       this.return.emit([this.ppoId, this.pensionerName]);
+                      this.saveButton=true
                 }
               }
               else{
@@ -233,7 +265,6 @@ export class DetailsComponent implements OnInit {
       return;
     }
     this.tostService.showError('Please fill all required fields');
-    console.log(this.ppoFormDetails.value)
   }
 
   // manual PPO entry search
@@ -282,7 +313,6 @@ export class DetailsComponent implements OnInit {
   }
 
   patchData(data:any){
-    console.log(data);
     this.ppoFormDetails.patchValue(data);
     this.ppoFormDetails.controls['receiptId'].setValue(data.receipt.id);
     this.ppoFormDetails.controls['dateOfRetirement'].setValue(data.dateOfRetirement);

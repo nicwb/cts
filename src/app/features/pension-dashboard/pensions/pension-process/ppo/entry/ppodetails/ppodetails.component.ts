@@ -95,6 +95,7 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
   }
 
   async loadById(){
+   if (this.ppoId) {
     await firstValueFrom(this.ppoDetialsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
       tap(
         res => {
@@ -107,6 +108,7 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
         }
       )
     ))
+   }
   }
 
   ngOnInit(): void {
