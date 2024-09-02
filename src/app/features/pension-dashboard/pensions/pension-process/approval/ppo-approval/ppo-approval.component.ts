@@ -53,7 +53,8 @@ export class PpoApprovalComponent implements OnInit {
   }
 
   navigateToBankAccountDetails(): void {
-    this.router.navigate(['/pension/modules/pension-process/ppo/entry/1/bank-account']);
+    const ppoId = this.ApprovalForm.get('ppoId')!.value;
+    this.router.navigate(['/pension/modules/pension-process/ppo/entry', ppoId, 'bank-account']);
   }
 
   handlePpoSearchEvent(event: any) {
