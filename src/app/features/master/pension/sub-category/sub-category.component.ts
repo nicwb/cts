@@ -17,7 +17,8 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
-import { PensionCategoryMasterService } from 'src/app/api';
+import { PensionCategoryMasterService,PensionFactoryService } from 'src/app/api';
+import { environment } from 'src/environments/environment';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -52,7 +53,8 @@ export class SubCategoryComponent implements OnInit {
     constructor(
         private toastService: ToastService,
         private fb: FormBuilder,
-        private service: PensionCategoryMasterService
+        private service: PensionCategoryMasterService,
+        private pensionFactoryService: PensionFactoryService
     ) {}
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
@@ -73,6 +75,21 @@ export class SubCategoryComponent implements OnInit {
     showInsertDialog() {
         this.displayInsertModal = true;
         this.SubForm.reset();
+        if(!environment.production){
+            this.generateNewData();
+        }
+    }
+
+    async generateNewData(): Promise<void> {
+        try{
+            const data = await firstValueFrom(this.pensionFactoryService.createFake("PensionSubCategoryEntryDTO"));
+            this.SubForm.patchValue({
+                SubCategoryName:data.result.subCategoryName
+            });
+        }
+        catch(error){
+            this.toastService.showError('Failed to patch new subcategory details.');
+        }
     }
 
     handleRowSelection($event: any) {
