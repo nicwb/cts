@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'ppodetails', component: PpodetailsComponent },
   {
     path: ':ppoId/bank-account',
-    component: BankDetailsComponent
+    component: PpodetailsComponent
   }
   
 ];

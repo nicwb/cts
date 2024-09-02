@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PensionBankAccountsService, BankService } from 'src/app/api';
 import { firstValueFrom, tap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-bank-details',
@@ -24,7 +24,6 @@ export class BankDetailsComponent implements OnInit, OnChanges {
     private service: PensionBankAccountsService,
     private banksService: BankService,
     private tostService: ToastService,
-    private route: ActivatedRoute // Inject ActivatedRoute
   ) { 
     this.initializeForm();
   }
@@ -44,15 +43,6 @@ export class BankDetailsComponent implements OnInit, OnChanges {
     // Fetch banks and route parameters
     this.fetchBanks();
     
-    // Check if ppoId is provided via route parameters
-    this.route.paramMap.subscribe(params => {
-      const routePpoId = params.get('ppoId');
-      if (routePpoId) {
-        this.ppoId = routePpoId;
-        this.legend = "ID-" + this.ppoId;
-        this.fetchUserInfo();
-      }
-    });
   }
 
   async ngOnChanges(changes: SimpleChanges) {
