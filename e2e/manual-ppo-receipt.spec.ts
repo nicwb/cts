@@ -3,7 +3,7 @@ import { DotEnv } from "utils/env"
 
 test.describe('Manual PPO Receipt Component', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        test.fixme(isMobile, "Complete task-144 before runnign this test");
+        //test.fixme(isMobile, "Complete task-144 before runnign this test");
         // Navigate to the static login page containing user roles
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
@@ -84,37 +84,64 @@ test.describe('Manual PPO Receipt Component', () => {
         }
     });
 
+    // test('should fill out the form and submit successfully', async ({ page }) => {
+    //     // Wait for the table data to refresh
+    //     // await page.waitForTimeout(500);
+    //     await page.click('button:has-text("New Manual PPO Entry")');
+    //     const modal = page.locator('p-dialog');
+    //     await expect(modal).toBeVisible();
+
+    //     // await page.fill('input[formControlName="ppoNo"]', 'PPO-' + Math.floor(Math.random() * (999999 - 100000 + 1) + 100000));
+    //     // await page.click('p-dropdown[formControlName="psaCode"]');
+    //     // await page.waitForTimeout(500);
+    //     // await page.click('li.p-dropdown-item:has-text("AGWB")');
+
+    //     // await page.click('p-dropdown[formControlName="ppoType"]');
+    //     // await page.waitForTimeout(500);
+    //     // await page.click('li.p-dropdown-item:has-text("New PPO")');
+
+    //     // await page.click('p-calendar[formControlName="dateOfCommencement"] input');
+    //     // await page.click('.p-datepicker-today');
+    //     // await page.waitForTimeout(500);
+
+    //     // await page.click('p-calendar[formControlName="receiptDate"] input');
+    //     // await page.click('.p-datepicker-today');
+    //     // await page.waitForTimeout(500);
+
+    //     // await page.fill('input[formControlName="mobileNumber"]', '9323232323');
+
+    //     // await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
+
+    //     await page.click('button:has-text("Submit")');
+
+    //     const successMessage = page.locator('text=PPO Receipt added successfully');
+    //     await expect(successMessage).toBeVisible();
+    // });
+
     test('should fill out the form and submit successfully', async ({ page }) => {
         // Wait for the table data to refresh
-        // await page.waitForTimeout(500);
+        await page.waitForTimeout(500);
         await page.click('button:has-text("New Manual PPO Entry")');
-
-        // await page.fill('input[formControlName="ppoNo"]', 'PPO-' + Math.floor(Math.random() * (999999 - 100000 + 1) + 100000));
-        // await page.click('p-dropdown[formControlName="psaCode"]');
-        // await page.waitForTimeout(500);
-        // await page.click('li.p-dropdown-item:has-text("AGWB")');
-
-        // await page.click('p-dropdown[formControlName="ppoType"]');
-        // await page.waitForTimeout(500);
-        // await page.click('li.p-dropdown-item:has-text("New PPO")');
-
-        // await page.click('p-calendar[formControlName="dateOfCommencement"] input');
-        // await page.click('.p-datepicker-today');
-        // await page.waitForTimeout(500);
-
-        // await page.click('p-calendar[formControlName="receiptDate"] input');
-        // await page.click('.p-datepicker-today');
-        // await page.waitForTimeout(500);
-
-        // await page.fill('input[formControlName="mobileNumber"]', '9323232323');
-
-        // await page.fill('input[formControlName="pensionerName"]', 'Nilakshi Chakraborty');
-
+      
+        // Wait for factory data to be filled in
+        try {
+          await page.waitForFunction(() => {
+            const inputs = document.querySelectorAll('input[formControlName]');
+            console.log('Input values:', Array.from(inputs).map(input => (input as HTMLInputElement).value));
+            return Array.from(inputs).every(input => (input as HTMLInputElement).value !== '');
+          }, { timeout: 60000 }); // increase timeout to 1 minute
+        } catch (error) {
+          console.error('Error waiting for form data to fill in:', error);
+          throw error;
+        }
+      
+        // Submit the form
+        await page.waitForTimeout(2000);
         await page.click('button:has-text("Submit")');
-
+      
         const successMessage = page.locator('text=PPO Receipt added successfully');
         await expect(successMessage).toBeVisible();
-    });
+      });
 
     test('should display error for duplicate PPO number', async ({ page }) => {
         // test.setTimeout(60000); // Increase timeout for this test
