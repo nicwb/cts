@@ -22,7 +22,7 @@
 </div>
 
 <p-dialog header="Manual PPO Receipt" [(visible)]="isInsertModalVisible" [modal]="true" [style]="{width: '45vw'}"
-          [baseZIndex]="10000">
+          [baseZIndex]="10000" [maximizable]="true">
   <form [formGroup]="manualPpoForm" class="flex flex-column gap-4 mt-3">
     <div class="flex gap-2 xl:flex-row flex-column">
       <div class="flex-auto">
