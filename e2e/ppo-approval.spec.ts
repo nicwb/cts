@@ -23,16 +23,11 @@ test.describe('Approval PPO Component', () => {
     }
   });
 
-  // test('should show error when Approve clicked without PPO ID', async ({ page }) => {
-  //   await page.locator('input[placeholder="PPO ID"]').fill('');
-  //   await page.locator('button:has-text("Approve")').click();
-  //   await expect(page.locator('p-messages div:has-text("required")')).toBeVisible();
-  // });
 
   test('should display search dialog with correct elements', async ({ page }) => {
     await page.click('app-search-popup');
     const dialog = page.locator('div[role="dialog"]');
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(500);
     await expect(dialog).toBeVisible();
 
     await expect(dialog.locator('label[for="float-input"]')).toHaveText('Search data');
@@ -47,17 +42,14 @@ test.describe('Approval PPO Component', () => {
   test('should select PPO and display details', async ({ page }) => {
     await page.click('app-search-popup');
     const dialog = page.locator('div[role="dialog"]');
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(500);
     await expect(dialog).toBeVisible();
-
+    await page.waitForTimeout(500);
     await page.waitForSelector('tbody tr');
     const firstRow = dialog.locator('tbody tr:first-child');
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
     await firstRow.click();
-    // await expect(dialog).not.toBeVisible();
-
-    // await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(ppoIdValue ?? '');
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(500);
     const table = page.locator('table.table.p-datatable.p-component');
     await expect(table).toBeVisible();
 
@@ -72,6 +64,7 @@ test.describe('Approval PPO Component', () => {
     const dialog = page.locator('.p-dialog.p-component');
     await expect(dialog).toBeVisible();
     const firstRow = dialog.locator('tbody tr:first-child');
+    await page.waitForTimeout(500);
     await expect(firstRow).toBeVisible(); 
     await firstRow.click();
     const ppoIdCell = firstRow.locator('td').first(); 
@@ -90,17 +83,13 @@ test.describe('Approval PPO Component', () => {
   
 
   test('should show "No records found" for invalid search', async ({ page }) => {
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(500);
     await page.click('app-search-popup');
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(500);
     await page.fill('input#float-input', 'NonExistentPPO');
     await expect(page.locator('text="No records found"')).toBeVisible();
   });
 
-  // test('should disable Approve button with invalid form', async ({ page }) => {
-  //   await page.locator('input[placeholder="PPO ID"]').fill('');
-  //   await expect(page.locator('button:has-text("Approve")')).toBeDisabled();
-  // });
 
   test('should approve PPO successfully', async ({ page }) => {
     await page.click('app-search-popup');
@@ -120,6 +109,7 @@ test.describe('Approval PPO Component', () => {
 
  test('should route to bank page if bank record is not available', async ({ page }) => {
     await page.click('app-search-popup');
+    await page.waitForTimeout(500);
     await page.waitForSelector('tbody tr');
     await page.locator('tbody tr:first-child').click();
     const ppoId = await page.locator('input[placeholder="PPO ID"]').inputValue();
