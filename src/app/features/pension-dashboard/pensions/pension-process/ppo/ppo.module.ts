@@ -24,6 +24,10 @@ const routes: Routes = [
   {path: 'entry', component: EntryComponent},
   {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent},
   {path: 'sanction', component: SanctionComponent},
+  {
+    path: ':treasuryReceiptNo/receipt',
+    component: ManualPpoReceiptComponent
+  }
 ];
 
 

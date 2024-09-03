@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
@@ -8,6 +8,7 @@ import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynami
 import { SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-manual-ppo-receipt',
@@ -15,6 +16,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./manual-ppo-receipt.component.scss']
 })
 export class ManualPpoReceiptComponent implements OnInit {
+  @Input() ppoId?: string;
   isInsertModalVisible = false;
   manualPpoForm!: FormGroup;
   tableQueryParameters: DynamicTableQueryParameters = { pageSize: 10, pageIndex: 0, filterParameters: [], sortParameters: { field: '', order: '' } };
@@ -22,6 +24,7 @@ export class ManualPpoReceiptComponent implements OnInit {
   tableData: { headers: any, data: ManualPpoReceiptResponseDTO[], dataCount: number } | null = null;
   isDataLoading = false;
   selectedRow: any;
+  @Input () treasuryReceiptNo?: string;
 
   maxDate = new Date();
 
@@ -44,14 +47,26 @@ export class ManualPpoReceiptComponent implements OnInit {
     private toastService: ToastService,
     private pensionManualPpoReceiptService: PensionManualPPOReceiptService,
     private pensionFactoryService: PensionFactoryService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {
     this.initializePpoReceiptForm();
+    if (this.ppoId) {
+      this.loadInitialTableData();
+    }
   }
 
   ngOnInit(): void {
     this.actionButtons = this.getActionButtonConfig();
     this.loadInitialTableData();
+    // Check if treasuryReceiptNo is provided via route parameters
+    this.route.paramMap.subscribe(params => {
+      const routeTreasuryReceiptNo = params.get('treasuryReceiptNo');
+      if (routeTreasuryReceiptNo) {
+        this.treasuryReceiptNo = routeTreasuryReceiptNo;
+        this.fetchUserInfo();
+      }
+    });
   }
 
   initializePpoReceiptForm(): void {
@@ -64,6 +79,29 @@ export class ManualPpoReceiptComponent implements OnInit {
       psaCode: ['', [Validators.required, Validators.pattern('[ADO]')]],
       ppoType: ['', [Validators.required, Validators.pattern('[NRPO]')]]
     });
+  }
+
+  async fetchUserInfo(): Promise<void> {
+    if (this.treasuryReceiptNo) {
+      try {
+        const response = await firstValueFrom(this.pensionManualPpoReceiptService.getPpoReceiptByTreasuryReceiptNo(this.treasuryReceiptNo));
+        if (response.result) {
+          const ppoReceipt: ManualPpoReceiptResponseDTO = response.result;
+          this.manualPpoForm.patchValue({
+            ppoNo: ppoReceipt.ppoNo,
+            pensionerName: ppoReceipt.pensionerName,
+            dateOfCommencement: this.parseToDate(ppoReceipt.dateOfCommencement),
+            mobileNumber: ppoReceipt.mobileNumber,
+            receiptDate: this.parseToDate(ppoReceipt.receiptDate),
+            psaCode: ppoReceipt.psaCode,
+            ppoType: ppoReceipt.ppoType
+          });
+          this.isInsertModalVisible = true;
+        }
+      } catch (error) {
+        this.toastService.showError('Failed to fetch PPO receipt details.');
+      }
+    }
   }
 
   getActionButtonConfig(): ActionButtonConfig[] {
