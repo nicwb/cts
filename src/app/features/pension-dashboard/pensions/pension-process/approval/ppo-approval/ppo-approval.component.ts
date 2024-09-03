@@ -21,6 +21,7 @@ export class PpoApprovalComponent implements OnInit {
   selectedRow: any;
   showTable = false;
   tableData: Array<{ response: any, branchName: string }> = [];
+  
 
 
 
@@ -38,17 +39,7 @@ export class PpoApprovalComponent implements OnInit {
       ppoId: ['', Validators.required]
     })
 
-    let payload = {
-      pageSize: 10,
-      pageIndex: 0,
-      filterParameters: [],
-      sortParameters: {
-          field: '',
-          order: '',
-      },
-  };
-
-    this.idList$ = this.pensionPPODetailsService.getAllPensioners(payload);
+    this.idList$ = this.pensionPPODetailsService.getAllNotApprovedPensioners();
     
   }
 
