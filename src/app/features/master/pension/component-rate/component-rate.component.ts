@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import {
@@ -23,7 +23,13 @@ export class ComponentRateComponent implements OnInit {
     pensionComponent$?: Observable<any>;
 
     ComponentRateForm: FormGroup = new FormGroup({});
-    amountPlaceHolder: String = '₹';
+    amountLabel: string = 'Amount/Percentage';
+    amountPlaceholder: string = ''; // Start with a blank placeholder
+    //store the component rate data
+    data?: any;
+    cols: any[] = [];
+    records: any[] = [];
+    loading: boolean = false;
     constructor(
         private service: PensionComponentRateService,
         private pensionCategoryMasterService: PensionCategoryMasterService,
@@ -41,7 +47,7 @@ export class ComponentRateComponent implements OnInit {
             breakupId: ['', Validators.required],
             componentName: [''],
             effectiveFromDate: ['', Validators.required],
-            rateType: ['A', Validators.required],
+            rateType: ['', Validators.required],
             rateAmount: ['', Validators.required],
         });
     }
@@ -59,7 +65,7 @@ export class ComponentRateComponent implements OnInit {
         };
         this.allPensionCategory$ =
             this.pensionCategoryMasterService.getAllCategories(payload);
-        console.log();
+
         this.pensionComponent$ =
             this.pensionComponentService.getAllComponents(payload);
     }
@@ -107,19 +113,73 @@ export class ComponentRateComponent implements OnInit {
         this.ComponentRateForm.removeControl('componentName');
     }
 
-    //change amount placeholder according to selecte rate type
-    onSelectRtaeRateType($event: any): void {
-        const rateType = this.ComponentRateForm.get('rateType')?.value;
+    // Method to update label and placeholder based on rateType
+    updateAmountLabelAndPlaceholder(rateType: string): void {
         if (rateType === 'A') {
-            this.amountPlaceHolder = '₹';
+            this.amountLabel = 'Amount';
+            this.amountPlaceholder = '₹';
         } else if (rateType === 'P') {
-            this.amountPlaceHolder = '%';
+            this.amountLabel = 'Percentage';
+            this.amountPlaceholder = '%';
+        } else {
+            this.amountLabel = 'Amount/Percentage';
+            this.amountPlaceholder = ''; // Default or blank placeholder
         }
     }
 
-    async onSubmit() {
+    //change amount placeholder according to selecte rate type
+    onSelectRtaeRateType($event: any): void {
+        const rateType = this.ComponentRateForm.get('rateType')?.value;
+        this.updateAmountLabelAndPlaceholder(rateType);
+    }
+    //convert response into a table format
+    convertResponseToTable(dataset: any): void {
+        if (dataset.headers && dataset.data) {
+            this.data = dataset;
+            const { headers, data } = dataset;
+
+            this.records = data; // Use dataset.data directly
+
+            if (headers) {
+                this.cols = headers.map((header: any) => ({
+                    field: header.fieldName,
+                    header: header.name,
+                }));
+                this.loading = false;
+            }
+        }
+    }
+
+    //Show the list view
+    async fetchAllDetails(): Promise<void> {
+        this.loading = true;
+        let payload = {
+            pageSize: 10,
+            pageIndex: 0,
+            filterParameters: [],
+            sortParameters: {
+                field: '',
+                order: '',
+            },
+        };
+
+        await firstValueFrom(
+            this.PensionComponentRateService.getAllComponentRates(payload).pipe(
+                tap((response) => {
+                    if (response && response.result) {
+                        console.log(response.result);
+                        this.convertResponseToTable(response.result);
+                    }
+                })
+            )
+        );
+    }
+
+    async onSubmit(event: Event) {
+        event.preventDefault(); // Prevent default form submission
         this.formatDate();
         this.removeUnwantedAttributes();
+
         if (this.ComponentRateForm.valid) {
             // Convert the form values to the expected DTO format
             const formValues = this.ComponentRateForm.value;
@@ -144,6 +204,7 @@ export class ComponentRateComponent implements OnInit {
                     tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
                         if (response.message) {
                             if (response.apiResponseStatus === 1) {
+                                this.fetchAllDetails();
                                 this.toastService.showSuccess(response.message);
                             } else {
                                 this.toastService.showError(response.message);
@@ -153,5 +214,23 @@ export class ComponentRateComponent implements OnInit {
                 )
             );
         }
+    }
+
+    // Method to reset the form and re-add removed controls
+    resetForm(): void {
+        // Re-add the removed controls
+        this.ComponentRateForm.addControl('categoryName', new FormControl(''));
+        this.ComponentRateForm.addControl('componentName', new FormControl(''));
+
+        // Reset the form to its initial state
+        this.ComponentRateForm.reset();
+
+        this.records = [];
+        this.cols = [];
+    }
+
+    resetAndReload(): void {
+        this.resetForm();
+        this.data = undefined;
     }
 }
