@@ -32,7 +32,8 @@ import { SelectItem } from 'primeng/api';
 import { PensionCategoryDetails } from 'src/app/core/models/pension-category-details';
 import { PensionCategoryDetailsService } from 'src/app/core/services/pensionCategoryDetails/pension-category-details.service';
 import { Observable, filter, firstValueFrom } from 'rxjs';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import { pathToFileURL } from 'url';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -61,20 +62,26 @@ export class PensionCategoryComponent implements OnInit {
     sub_id_select: SelectItem[] = [];
     rowData: any;
     refresh_b = false;
-    primary_id!: string;
-    sub_id!: string;
+    primary_id!: any;
+    sub_id!:any;
     searching = {
         val: false,
         data: null,
     };
     primary_table = false;
     sub_table = false;
+    New_Primary!:String;
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
     constructor(
         // private datePipe: DatePipe,
         private toastService: ToastService,
-        private service: PensionCategoryMasterService
+        private service: PensionCategoryMasterService,
+        private fb: FormBuilder,
+        private cd: ChangeDetectorRef,
+        private pensionCategoryDetailsService: PensionCategoryDetailsService,
+        private router: Router,
+        private route: ActivatedRoute
     ) {}
 
     @Output() PensionCategorySelected = new EventEmitter<any>();
@@ -89,11 +96,11 @@ export class PensionCategoryComponent implements OnInit {
         this.get_id_from_primary_category();
         this.get_id_from_sub_category();
         this.getData();
+        this.check_for_data();
     }
 
     showInsertDialog() {
         this.displayInsertModal = true;
-        this.PensionForm.reset();
     }
 
     handleRowSelection($event: any) {
@@ -125,6 +132,61 @@ export class PensionCategoryComponent implements OnInit {
         }
 
         this.getData();
+    }
+    async check_for_data() {
+        let from;
+        let name;
+        this.route.queryParams.subscribe((params) => {
+            from = params['from'];
+            name = params['name'];
+        });
+        console.log(from, name);
+        if (from == 'primary') {
+            const id = name;
+            if (id == null) {
+                return;
+            }
+            let data = {
+                pageSize: 1,
+                pageIndex: 0,
+                filterParameters: [
+                    {
+                        field: 'PrimaryCategoryName',
+                        value: id,
+                        operator: 'contains',
+                    },
+                ],
+            };
+
+            let response = await firstValueFrom(
+                this.service.getAllPrimaryCategories(data)
+            );
+            this.PensionForm.patchValue({
+                PrimaryCategoryId: response.result?.data?.[0]?.id,
+            });
+            if (response.result && response.result.data) {
+                let value = response.result.data;
+                if (value.length != 0) {
+                    let len_val = value.length;
+                    this.primary_id_select = [];
+                    for (let i = 0; i < len_val; i++) {
+                        this.primary_id_select.push({
+                            label: `${value[i].id}-${value[i].primaryCategoryName}`,
+                            value: value[i].id,
+                        });
+                    }
+                } else {
+                    this.toastService.showError('Could Not Found');
+                }
+            }
+            this.primary_id = this.primary_id_select.find((country) => country.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`);
+
+            this.displayInsertModal = true;
+
+
+        }else{
+            this.New_Primary="New Primary";
+        }
     }
     // searching without get api
     handsearchKeyChange(event: string): void {
@@ -178,7 +240,11 @@ export class PensionCategoryComponent implements OnInit {
             pageSize: 10000,
             pageIndex: 0,
             filterParameters: [
-                { field: 'PrimaryCategoryName', value: id, operator: 'contains' },
+                {
+                    field: 'PrimaryCategoryName',
+                    value: id,
+                    operator: 'contains',
+                },
             ],
         };
 
@@ -241,19 +307,17 @@ export class PensionCategoryComponent implements OnInit {
             console.error('Invalid response from API');
         }
     }
-    clicked_Primary(id: any, lable: any) {
-        this.primary_id = lable;
-        console.log(this.primary_id);
+    clicked_Primary(name:any) {
+
         let value_for_patch = {
-            PrimaryCategoryId: id,
+            PrimaryCategoryId: this.primary_id.value,
         };
         this.PensionForm.patchValue(value_for_patch);
     }
-    clicked_Sub(id: any, label: any) {
-        this.sub_id = label;
-        console.log(this.sub_id);
+    clicked_Sub(name:any) {
+
         let value_for_patch = {
-            SubCategoryId: id,
+            SubCategoryId: this.sub_id.value, // Fixed the error here
         };
         this.PensionForm.patchValue(value_for_patch);
     }
@@ -309,7 +373,7 @@ export class PensionCategoryComponent implements OnInit {
 
             for (let i = 0; i < len_val; i++) {
                 this.primary_id_select.push({
-                    label:`${value[i].id}-${value[i].primaryCategoryName}`,
+                    label: `${value[i].id}-${value[i].primaryCategoryName}`,
                     value: value[i].id,
                 });
             }
@@ -398,6 +462,13 @@ export class PensionCategoryComponent implements OnInit {
         this.searching.data = null;
         this.getData();
     }
+    // date 30-aug
+    show_new_primary() {
+        this.router.navigate(['master/app-pension/app-primary'], {
+            queryParams: { todo: 'create' },
+        });
+    }
+    show_new_sub() {}
 
     emitPensionCategorySelected(): void {
         this.PensionCategorySelected.emit(this.PensionForm.value);

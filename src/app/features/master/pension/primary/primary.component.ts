@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import {
     Component,
@@ -22,6 +21,7 @@ import {
     PensionFactoryService,
 } from 'src/app/api';
 import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -49,12 +49,15 @@ export class PrimaryComponent {
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
     refresh_b = false;
+    called_from_pension=false;
 
     constructor(
         private toastService: ToastService,
         private fb: FormBuilder,
         private service: PensionCategoryMasterService,
-        private generate: PensionFactoryService
+        private generate: PensionFactoryService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
@@ -69,14 +72,15 @@ export class PrimaryComponent {
         };
         // this.tableData = sd;
         this.getData();
+        this.check_if_called();
     }
 
     showInsertDialog() {
         this.displayInsertModal = true;
         this.primaryForm.reset();
-if(!environment.production){
-        this.generateData();
-}
+        if (!environment.production) {
+            this.generateData();
+        }
     }
 
     handleRowSelection($event: any) {
@@ -100,26 +104,19 @@ if(!environment.production){
             return;
         }
         this.findById(event);
-
-        // if (event == '') {
-        //     this.toastService.showError(`Search can not be empty`);
-        //     return;
-        // }
-        // let flag = true;
-        // const numArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-        // const eve_len = event.length;
-        // for (let i = 0; i < eve_len; i++) {
-        //     if (!numArr.includes(parseInt(event[i]))) {
-        //         flag = false;
-        //         break;
-        //     }
-        // }
-        // if (!flag) {
-        //     this.toastService.showError(`Search can only contain Category ID`);
-        //     return;
-        // } else {
-        //     this.findById(parseInt(event));
-        // }
+    }
+    check_if_called() {
+        let data = null;
+        this.route.queryParams.subscribe((params) => {
+            data = params['todo'];
+        });
+        console.log(data);
+        if (data == 'create') {
+            this.called_from_pension=true;
+            this.showInsertDialog();
+        }else{
+            this.called_from_pension=false;
+        }
     }
 
     initializeForm(): void {
@@ -151,6 +148,8 @@ if(!environment.production){
     async add_primary_category() {
         if (this.primaryForm.valid) {
             const formData = this.primaryForm.value;
+            let name=this.primaryForm.value.PrimaryCategoryName;
+            console.log(name)
             let response = await firstValueFrom(
                 this.service.createPrimaryCategory(formData)
             );
@@ -162,9 +161,13 @@ if(!environment.production){
                 this.toastService.showSuccess(
                     'Primary Category Details added successfully'
                 );
+                if (this.called_from_pension==true){
+                    this.router.navigate(["master/app-pension/app-pension-category"], { queryParams: { from: "primary" ,name:name} });
+                }
             } else {
                 this.handleErrorResponse(response);
             }
+
             this.getData();
         } else {
             this.toastService.showError(
@@ -193,9 +196,7 @@ if(!environment.production){
                 'duplicate key value violates unique constraint'
             )
         ) {
-            this.toastService.showError(
-                'This Primary number already exists.'
-            );
+            this.toastService.showError('This Primary number already exists.');
             this.primaryForm.get('PCID')?.setErrors({ duplicate: true });
         } else {
             this.toastService.showError(
