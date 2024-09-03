@@ -70,7 +70,9 @@
   <div class="flex gap-2 justify-content-end pt-3">
     <button *ngIf="!selectedRow" pButton label="Submit" (click)="submitPpoReceipt()"
             class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
-    <button *ngIf="selectedRow" pButton label="Update" (click)="submitPpoReceipt()"
+    <button *ngIf="selectedRow&&!isFetchUserInfo" pButton label="Update" (click)="submitPpoReceipt()"
+            class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
+    <button *ngIf="isFetchUserInfo" pButton label="Update" (click)="fetchUserInfoUpdate()"
             class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
     <button pButton label="Cancel" (click)="resetAndCloseDialog()" class="p-button-rounded"></button>
   </div>

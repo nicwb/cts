@@ -16,7 +16,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./manual-ppo-receipt.component.scss']
 })
 export class ManualPpoReceiptComponent implements OnInit {
-  @Input() ppoId?: string;
   isInsertModalVisible = false;
   manualPpoForm!: FormGroup;
   tableQueryParameters: DynamicTableQueryParameters = { pageSize: 10, pageIndex: 0, filterParameters: [], sortParameters: { field: '', order: '' } };
@@ -24,7 +23,8 @@ export class ManualPpoReceiptComponent implements OnInit {
   tableData: { headers: any, data: ManualPpoReceiptResponseDTO[], dataCount: number } | null = null;
   isDataLoading = false;
   selectedRow: any;
-  @Input () treasuryReceiptNo?: string;
+  @Input () receiptId?: number;
+  isFetchUserInfo = false;
 
   maxDate = new Date();
 
@@ -51,19 +51,16 @@ export class ManualPpoReceiptComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.initializePpoReceiptForm();
-    if (this.ppoId) {
-      this.loadInitialTableData();
-    }
   }
 
   ngOnInit(): void {
     this.actionButtons = this.getActionButtonConfig();
     this.loadInitialTableData();
-    // Check if treasuryReceiptNo is provided via route parameters
+    // Check if receiptId is provided via route parameters
     this.route.paramMap.subscribe(params => {
-      const routeTreasuryReceiptNo = params.get('treasuryReceiptNo');
-      if (routeTreasuryReceiptNo) {
-        this.treasuryReceiptNo = routeTreasuryReceiptNo;
+      const routeReceiptId = params.get('receiptId');
+      if (routeReceiptId) {
+        this.receiptId = this.route.snapshot.params['receiptId'] as number;
         this.fetchUserInfo();
       }
     });
@@ -82,9 +79,9 @@ export class ManualPpoReceiptComponent implements OnInit {
   }
 
   async fetchUserInfo(): Promise<void> {
-    if (this.treasuryReceiptNo) {
+    if (this.receiptId) {
       try {
-        const response = await firstValueFrom(this.pensionManualPpoReceiptService.getPpoReceiptByTreasuryReceiptNo(this.treasuryReceiptNo));
+        const response = await firstValueFrom(this.pensionManualPpoReceiptService.getPpoReceiptById(this.receiptId));
         if (response.result) {
           const ppoReceipt: ManualPpoReceiptResponseDTO = response.result;
           this.manualPpoForm.patchValue({
@@ -96,11 +93,33 @@ export class ManualPpoReceiptComponent implements OnInit {
             psaCode: ppoReceipt.psaCode,
             ppoType: ppoReceipt.ppoType
           });
+          this.selectedRow = true;
+          this.manualPpoForm.enable();
           this.isInsertModalVisible = true;
         }
       } catch (error) {
         this.toastService.showError('Failed to fetch PPO receipt details.');
       }
+    }
+    this.isFetchUserInfo = true;
+  }
+
+  async fetchUserInfoUpdate(): Promise<void> {
+    if (this.receiptId !== undefined) {
+      const formData: ManualPpoReceiptEntryDTO = {
+        ppoNo: this.manualPpoForm.get('ppoNo')?.value,
+        pensionerName: this.manualPpoForm.get('pensionerName')?.value,
+        dateOfCommencement: this.formatDateToString(this.manualPpoForm.get('dateOfCommencement')?.value) ?? '',
+        mobileNumber: this.manualPpoForm.get('mobileNumber')?.value,
+        receiptDate: this.formatDateToString(this.manualPpoForm.get('receiptDate')?.value) ?? '',
+        psaCode: this.manualPpoForm.get('psaCode')?.value,
+        ppoType: this.manualPpoForm.get('ppoType')?.value
+      };
+  
+      const response = await firstValueFrom(this.pensionManualPpoReceiptService.updatePpoReceipt(this.receiptId, formData));
+      this.isFetchUserInfo = false;
+    } else {
+      console.error('receiptId is undefined');
     }
   }
 
@@ -188,6 +207,8 @@ export class ManualPpoReceiptComponent implements OnInit {
         const apiCall = this.selectedRow 
           ? this.pensionManualPpoReceiptService.updatePpoReceiptByTreasuryReceiptNo(this.selectedRow.treasuryReceiptNo, formData)
           : this.pensionManualPpoReceiptService.createPpoReceipt(formData);
+        console.log(apiCall);
+        
   
         const response = await firstValueFrom(apiCall);
   
