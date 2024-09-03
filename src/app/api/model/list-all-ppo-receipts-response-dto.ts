@@ -17,5 +17,6 @@ export interface ListAllPpoReceiptsResponseDTO {
     ppoNo?: string | null;
     pensionerName?: string | null;
     receiptDate?: string;
+    dateOfCommencement?: string;
 }
 
