@@ -11,7 +11,7 @@ import { PensionQueryComponent } from './pension-query/pension-query.component';
 
 
 const routes: Routes = [{path: '', component: PensionsComponent},
-  {path: 'pension-process', component: PensionProcessComponent},
+  {path: 'pension-process', data: { breadcrumb: 'Pension Process' }, component: PensionProcessComponent},
   {path: 'pension-reports', component: PensionReportsComponent},
   {path: 'pension-query', component: PensionQueryComponent},
 ];

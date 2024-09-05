@@ -15,7 +15,7 @@ import { EntryComponent } from './entry.component';
 import { PpodetailsModule } from './ppodetails/ppodetails.module';
 
 const routes: Routes = [
-  { path: '', component: EntryComponent },
+  { path: '', component: EntryComponent,  data: { breadcrumb: 'PPO Entry' } },
 ];
 
 @NgModule({

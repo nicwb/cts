@@ -13,7 +13,7 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
     imports: [
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent,
+                path: '', component: AppLayoutComponent, data: { breadcrumb: 'Home' },
                 children: [
                     // { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: '', loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule) },
@@ -31,7 +31,7 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                     {path:'cheque',loadChildren: () => import('./features/cheque/cheque.module').then(m => m.ChequeModule)},
                     {path:'master',loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule)},
                     {path:'stamp-strong-room',loadChildren: () => import('./features/stamp-strong-room/stamp-strong-room.module').then(m => m.StampStrongRoomModule)},
-                    {path:'pension',loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule)},
+                    {path:'pension', data: { breadcrumb: 'Pension' },loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule)},
                     {path:'master/app-pension/component-rate',loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule)},
 
                 ]

@@ -13,7 +13,7 @@ const routes: Routes = [
 
 
   {path: '', component: PensionProcessComponent},
-  {path: 'ppo', component: PpoComponent},
+  {path: 'ppo',data: { breadcrumb: 'PPO' }, component: PpoComponent},
   {path: 'pensioner-details', component: PensionerDetailsComponent},
   {path: 'pension-bill',component:PensionBillComponent},
   {path:'app-arrear-pension',component:ArrearPensionComponent},
