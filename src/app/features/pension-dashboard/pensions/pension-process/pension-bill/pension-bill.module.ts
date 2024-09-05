@@ -15,7 +15,7 @@ import { PensionBillComponent } from './pension-bill.component';
 import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
-
+import { DividerModule } from 'primeng/divider';
 @NgModule({
   declarations: [
     PensionBillComponent,
@@ -35,7 +35,8 @@ import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
     TableModule,
     DialogModule,
     CalendarModule,
-    PopupTableModule
+    PopupTableModule,
+    DividerModule
 
   ],
   providers: [MessageService],

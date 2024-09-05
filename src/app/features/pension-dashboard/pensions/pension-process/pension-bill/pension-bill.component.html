@@ -1,154 +1,141 @@
-<form [formGroup]="pensionForm" class="mx-8">
-    <div class="card">
-        <div>
-            <h3
-                class="text-4xl font-bold text-gray-900 leading-tight mb-2 border-t-4 border-b-4 border-purple-600 py-4 ml-6">
-                First Pension Bill Generation
-            </h3>
-            <p class="text-lg text-gray-800 mb-4 ml-6">
-                This section captures the First Pension Bill Generation details for a
-                Pensioner. The information from here will be used for
-                identifying the Pensioner.
-            </p>
-            <div class="col-12 md:col-12">
-                <div class="card mx-5 py-3">
-                    <h5>PPO ID Details:</h5>
-                    <hr class="border-b-2 h-10 border-dashed">
-                    <div class="flex gap-5 w-full">
-                        <div class="flex items-center w-full">
-                            <label for="PpoId" class="mr-2 w-1/4">
-                                PPO ID:
-                            </label>
-                            <input id="PpoId" type="text" pInputText formControlName="ppoId" placeholder="PPO ID"
-                                [(ngModel)]="ppoId" [readonly]="isApiResponseStatus1" class="h-10 w-full rounded-l-lg px-2"
-                                (blur)="onInputBlur()" />
-                            <app-popup-table name="" [service$]="ppoList$" (return)="handleSelectedRow($event)"
-                                [buttonStyle]="{'height': '51px'}"></app-popup-table>
-                        </div>
-                        <div class="flex items-center w-full">
-                            <label for="periodTo" class="mr-2 w-1/3">
-                                Period To:
-                            </label>
-                            <p-calendar id="periodTo" formControlName="periodTo" [minDate]="today" [maxDate]="endOfMonth" [(ngModel)]="period"
-                                (onSelect)="onDateSelect($event)" dateFormat="yy-mm-dd" placeholder="Select a date"
-                                class="h-10 w-full" [disabled]="isApiResponseStatus1"></p-calendar>
-                            <button type="submit" pButton pRipple (click)="getvalue()" 
-                                class="h-10 pr-5" [disabled]="!isgenerate">
-                                Generate
-                            </button>
-                        </div>
+<h2 class="bg-color text-xl"><b> First Pension Bill Generation</b></h2>
+<form [formGroup]="pensionForm">
+    <div class="card py-2">
+        <div class="row">
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>PPO ID Details:</b>
+                </div>
+            </p-divider>
+            <div class="p-fluid p-formgrid grid">
+
+                <div class="field col-12 md:col-6">
+                    <label for="PpoId"><b>
+                            PPO ID:
+                        </b></label>
+                    <div class="w-full flex gap-1">
+                        <input type="text" pInputText formControlName="ppoId" placeholder="PPO ID" [(ngModel)]="ppoId"
+                            [readonly]="isApiResponseStatus1" class="" (blur)="onInputBlur()" />
+                        <app-popup-table name="" [service$]="ppoList$"
+                            (return)="handleSelectedRow($event)"></app-popup-table>
                     </div>
-                    <div class="flex gap-5 w-full">
-                        <div class="flex items-center w-full pl-7">
-                            <span *ngIf="massage" [ngClass]="massageColor"
-                                class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block">
-                                {{ massage }}
-                            </span>
-                        </div>
-                        <div class="flex items-center w-full pl-7">
-                            <span *ngIf="pensionForm.get('periodTo')?.errors?.['dateRange']" class="text-red-500">
-                                The date must be between today and the end of the month.
-                            </span>
-                        </div>
+                    <span *ngIf="massage" [ngClass]="massageColor"
+                        class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block">
+                        {{ massage }}
+                    </span>
+                </div>
+
+                <div class="field col-12 md:col-6">
+                    <label for="periodTo"><b>
+                            Period To:
+                        </b></label>
+                    <div class="w-full flex gap-1">
+                        <p-calendar class="w-full" id="periodTo" formControlName="periodTo" [minDate]="today"
+                            [maxDate]="endOfMonth" [(ngModel)]="period" (onSelect)="onDateSelect($event)"
+                            dateFormat="yy-mm-dd" placeholder="Select a date"
+                            [disabled]="isApiResponseStatus1"></p-calendar>
+                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit"
+                            [disabled]="!isgenerate">
+                            Generate
+                        </button>
                     </div>
-
-
-
                 </div>
             </div>
 
-            <div class="flex justify-center card mx-6 my-2 py-1" *ngIf="isDataLoaded">
-                <br />
-                <div class="p-fluid p-formgrid grid md:col-12">
-                    <div class="col-12 md:col-12 pb-1">
-                        <h5>Pension Details</h5>
-                        <hr class="border-b-2 h-10 border-dashed">
+            <br />
+            <div *ngIf="isDataLoaded">
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Pension Details:</b>
                     </div>
-                    <div class="field col-12 md:col-4 mb-0 py-0">
-                        <label htmlFor="ppoNo">PPO NO</label>
-                        <input pInputText id="ppoNo" type="text" formControlName="ppoNo" [readonly]="true"
-                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                </p-divider>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col">
+                        <label class="label" htmlFor="ppoNo"><b>PPO NO</b></label>
+                        <input pInputText id="ppoNo" placeholder="PPO NO" type="text" formControlName="ppoNo"
+                            [readonly]="true" class="" />
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0">
-                        <label htmlFor="pensionerName">Pensioner Name</label>
-                        <input pInputText id="pensionerName" type="text" formControlName="pensionerName"
-                            [readonly]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                    <div class="field col-12 md:col">
+                        <label htmlFor="pensionerName"><b>Pensioner Name</b></label>
+                        <input pInputText id="pensionerName" type="text" placeholder="Pensioner Name"
+                            formControlName="pensionerName" [readonly]="true" class="" />
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0">
-                        <label htmlFor="periodFrom">Period From</label>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="periodFrom"><b>Period From</b></label>
                         <input pInputText id="periodFrom" formControlName="periodFrom" type="date" [readonly]="true"
-                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                            class="" />
 
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                        <label htmlFor="periodTo">Period To</label>
-                        <input pInputText id="periodTo" type="date" formControlName="periodTo" [readonly]="true"
-                            [(ngModel)]="period" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                    <div class="field col-12 md:col">
+                        <label htmlFor="periodTo"><b>Period To</b></label>
+                        <input pInputText id="periodTo" type="date" placeholder="Period To" formControlName="periodTo"
+                            [readonly]="true" [(ngModel)]="period" class="" />
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                        <label htmlFor="bankName">Bank Code</label>
-                        <input pInputText id="bankName" type="text" formControlName="bankName" [readonly]="true"
-                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                    <div class="field col-12 md:col">
+                        <label htmlFor="bankName"><b>Bank Code</b></label>
+                        <input pInputText id="bankName" type="text" formControlName="bankName" placeholder="Bank Code"
+                            [readonly]="true" class="" />
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                        <label htmlFor="accountNo">Account NO</label>
-                        <input pInputText id="accountNo" type="number" class="remove-arrow" formControlName="accountNo"
-                            [readonly]="true" class="bg-cyan-200" [ngStyle]="{'border-color' : 'black'}" />
+                    <div class="field col-12 md:col">
+                        <label htmlFor="accountNo"><b>Account NO</b></label>
+                        <input pInputText id="accountNo" type="number" class="remove-arrow" placeholder="Account NO"
+                            formControlName="accountNo" [readonly]="true" class="" />
                     </div>
-                    <div class="field col-12 md:col-4  mb-0 py-0 mt-1">
-                        <label htmlFor="billDate">Bill Date</label>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="billDate"><b>Bill Date</b></label>
                         <input pInputText id="billDate" type="date" formControlName="billDate" [readonly]="true"
-                            class="bg-cyan-200" [ngStyle]="{'border-color' : 'black', 'font-color':'black'}" />
+                            class="" [ngStyle]="{'font-color':'black'}" />
                     </div>
                 </div>
             </div>
-
-            <div class="flex justify-center card mx-6 mt-2 mb-2 py-0" *ngIf="isDataLoaded">
-                <div class="col-12">
-                    <h5>Bill Details</h5>
-                    <hr class="border-b-2 h-10 border-dashed">
-                    <p-table class="justify-center" [value]="[pensioncategory]" dataKey="id" [responsive]="true"
-                        [scrollable]="true" scrollHeight="300px" *ngIf="pensioncategory">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th pSortableColumn="id">Bill No<p-sortIcon field="id"></p-sortIcon></th>
-                                <th pSortableColumn="categoryName">Description<p-sortIcon
-                                        field="categoryName"></p-sortIcon></th>
-                                <th pSortableColumn="hoaId">Account Head<p-sortIcon
-                                        field="primaryCategory.hoaId"></p-sortIcon></th>
-                                <th pSortableColumn="grossAmount">Gross Amount<p-sortIcon
-                                        field="grossAmount"></p-sortIcon></th>
-                                <th pSortableColumn="rateAmount">By Transfer<p-sortIcon field="rateAmount"></p-sortIcon>
-                                </th>
-                                <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon>
-                                </th>
-                                <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-category>
-                            <tr>
-                                <td></td>
-                                <td>{{ category.categoryName }}</td>
-                                <td>{{ category.primaryCategory.hoaId }}</td>
-                                <td>₹ {{ totalDueAmount }}</td>
-                                <td>0</td>
-                                <td>₹ {{ totalDueAmount }}</td>
-                                <td><input pInputText type="text" class="w-full" /></td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <tr>
-                                <td colspan="6"></td>
-                                <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
-                                <td></td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-
-                </div>
+            <div *ngIf="isDataLoaded">
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Bill Details:</b>
+                    </div>
+                </p-divider>
+                <p-table class="justify-center" [responsive]="true" [scrollable]="true" *ngIf="pensioncategory"
+                    dataKey="id" [value]="[pensioncategory]">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="id">Bill No<p-sortIcon field="id"></p-sortIcon></th>
+                            <th pSortableColumn="categoryName">Description<p-sortIcon field="categoryName"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="hoaId">Account Head<p-sortIcon
+                                    field="primaryCategory.hoaId"></p-sortIcon></th>
+                            <th pSortableColumn="grossAmount">Gross Amount<p-sortIcon field="grossAmount"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="rateAmount">By Transfer<p-sortIcon field="rateAmount"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-category>
+                        <tr>
+                            <td></td>
+                            <td>{{ category.categoryName }}</td>
+                            <td>{{ category.primaryCategory.hoaId }}</td>
+                            <td>₹ {{ totalDueAmount }}</td>
+                            <td>0</td>
+                            <td>₹ {{ totalDueAmount }}</td>
+                            <td><input pInputText type="text" class="w-full" /></td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="6"></td>
+                            <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
+                            <td></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
 
             </div>
-            <!-- </div> -->
 
             <!-- Step 3: Component Details -->
             <!-- <div *ngIf="currentStepIndex === 2" class="flex flex-column gap-3"> -->
@@ -176,20 +163,24 @@
 
             </div>
              -->
-        </div>
-
-        <div class="flex justify-center card mx-6 mt-2 py-0" *ngIf="isDataLoaded">
-            <div class="col-12">
-                <h5>Component Detail</h5>
-                <hr class="border-b-2 h-10 border-dashed">
-
+            <!-- *ngIf="isDataLoaded" -->
+            <!-- <div class="flex justify-center mx-6 mt-2 py-0"> -->
+            <!-- <div class="col-12"> -->
+            <div *ngIf="isDataLoaded">
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Component Detail:</b>
+                    </div>
+                </p-divider>
                 <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true"
-                    [scrollable]="true" scrollHeight="600px">
+                    [scrollable]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="breakupId">Component Id<p-sortIcon field="breakupId"></p-sortIcon></th>
                             <th pSortableColumn="componentName">Description<p-sortIcon
-                                    field="componentName"></p-sortIcon></th>
+                                    field="componentName"></p-sortIcon>
+                            </th>
                             <th pSortableColumn="fromDate">From Date<p-sortIcon field="fromDate"></p-sortIcon></th>
                             <th pSortableColumn="toDate">To Date<p-sortIcon field="toDate"></p-sortIcon></th>
                             <th pSortableColumn="rateAmount">Rate<p-sortIcon field="rateAmount"></p-sortIcon></th>
@@ -218,26 +209,29 @@
                         </tr>
                     </ng-template>
                 </p-table>
-
             </div>
 
-        </div>
-        <div class="flex flex-col mt-1 align-items-center justify-content-center">
-            <!-- Save Button -->
-            <div class="flex flex-wrap gap-2 mx-2">
-                <button type="submit" pButton pRipple (click)="save()"
-                    class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                   [disabled]="!hasSaved" >
-                    <i class="pi pi-check mr-2"></i> Save
-                </button>
-            </div>
-            <!-- Refresh Button -->
-            <div class="flex flex-wrap gap-2 mx-2">
-                <button type="button" pButton pRipple (click)="refresh()"
-                    class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                    <i class="pi pi-refresh mr-2"></i>Refresh
-                </button>
+            <!-- </div> -->
+
+            <!-- </div> -->
+            <div class="flex flex-col mt-1 align-items-center justify-content-center">
+                <!-- Save Button -->
+                <div class="flex flex-wrap gap-2 mx-2">
+                    <button type="submit" pButton pRipple (click)="save()"
+                        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        [disabled]="!hasSaved">
+                        <i class="pi pi-check mr-2"></i> Save
+                    </button>
+                </div>
+                <!-- Refresh Button -->
+                <div class="flex flex-wrap gap-2 mx-2">
+                    <button type="button" pButton pRipple (click)="refresh()"
+                        class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        <i class="pi pi-refresh mr-2"></i>Refresh
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
 </form>

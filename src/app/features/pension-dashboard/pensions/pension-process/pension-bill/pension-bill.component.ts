@@ -17,18 +17,19 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-pension-bill',
   templateUrl: './pension-bill.component.html',
+  styleUrls: ['./pension-bill.component.scss'],
   providers: [MessageService],
-  styles: [
-    `
-      :host ::ng-deep .p-menubar-root-list {
-        flex-wrap: wrap;
-      }
-      :host ::ng-deep .p-calendar .p-inputtext {
-  padding: 1.2rem;
-  padding-left: 0.50rem; /* Adjust left padding as needed */
-}
-    `,
-  ],
+//   styles: [
+//     `
+//       :host ::ng-deep .p-menubar-root-list {
+//         flex-wrap: wrap;
+//       }
+//       :host ::ng-deep .p-calendar .p-inputtext {
+//   padding: 1.2rem;
+//   padding-left: 0.50rem; /* Adjust left padding as needed */
+// }
+//     `,
+//   ],
 })
 
 export class PensionBillComponent implements OnInit {
@@ -175,12 +176,12 @@ export class PensionBillComponent implements OnInit {
     try {
       if (this.result) {
         const ppoId = this.result.pensioner.ppoId;
-        const payloadArray: PpoComponentRevisionEntryDTO[] = this.result.pensionCategory.componentRates.map((rate: any) => ({
+        const payloadArray: PpoComponentRevisionEntryDTO = this.result.pensionCategory.componentRates.map((rate: any) => ({
           rateId: rate.breakupId,
           fromDate: rate.effectiveFromDate,
           amountPerMonth: rate.rateAmount,
         }));
-        this.response = await firstValueFrom(this.revisionService.createPpoComponentRevisions(ppoId, payloadArray));
+        this.response = await firstValueFrom(this.revisionService.createSinglePpoComponentRevision(ppoId, payloadArray));
         if (this.response.apiResponseStatus === 1) {
           let getfirstpensionbill = await firstValueFrom(this.service.getFirstPensionBillByPpoId(ppoId));
           if (getfirstpensionbill.apiResponseStatus === 3) {

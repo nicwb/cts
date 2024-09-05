@@ -111,3 +111,21 @@ $gutter: 1rem; //for primeflex grid system
 	background-image: url("./assets/img/wavy_lines.png");
 	background-repeat: no-repeat;
 }
+.p-divider .p-divider-content {
+	border-radius: 6px;
+	padding: 4px;
+	background: #99e2e5 !important;
+}
+
+.p-divider.p-divider-horizontal:before {
+	border-top: 1px #1c61afed !important;
+}
+
+
+.p-divider-solid.p-divider-horizontal:before {
+	border-top-style: dashed !important;
+}
+
+.p-divider.p-divider-horizontal .p-divider-content {
+	padding: 0.2rem 0.5rem !important;
+}
