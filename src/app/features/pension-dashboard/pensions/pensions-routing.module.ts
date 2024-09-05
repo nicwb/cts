@@ -8,16 +8,29 @@ import { PensionsComponent } from './pensions.component';
 import { PensionProcessComponent } from './pension-process/pension-process.component';
 import { PensionReportsComponent } from './pension-reports/pension-reports.component';
 import { PensionQueryComponent } from './pension-query/pension-query.component';
-
+import { PensionProcessModule } from './pension-process/pension-process.module';
 
 const routes: Routes = [{path: '', component: PensionsComponent},
-  {path: 'pension-process', component: PensionProcessComponent},
-  {path: 'pension-reports', component: PensionReportsComponent},
-  {path: 'pension-query', component: PensionQueryComponent},
+  {
+    path: 'pension-process', 
+    data: { breadcrumb: 'Pension Process' }, 
+    component: PensionProcessComponent
+  },
+  {
+    path: 'pension-reports', 
+    data: { breadcrumb: 'Pension Reports' }, 
+    component: PensionReportsComponent
+  },
+  {
+    path: 'pension-query', 
+    data: { breadcrumb: 'Pension Query' }, 
+    component: PensionQueryComponent
+  },
+  
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [PensionProcessModule, RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class PensionsRoutingModule { }

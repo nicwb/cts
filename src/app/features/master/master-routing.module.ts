@@ -6,10 +6,22 @@ import { PensionComponent } from './pension/pension.component';
 
 const routes: Routes = [
   {path: '', component: MasterComponent},
-  {path: 'stamp', loadChildren: () => import('./stamp/stamp.module').then(m => m.StampModule)},
-  {path: 'pension', loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule)},
-  {path: 'app-pension', component: PensionComponent}, {path: 'app-pension', loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule)},
-
+  {
+    path: 'stamp',
+    data: { breadcrumb: 'Stamp' },
+    loadChildren: () => import('./stamp/stamp.module').then(m => m.StampModule)
+  },
+  {
+    path: 'pension',
+    data: { breadcrumb: 'Pension' },
+    loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule)
+  },
+  {
+    path: 'app-pension', 
+    loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule)
+  },
+  
+   
 ];
 
 @NgModule({

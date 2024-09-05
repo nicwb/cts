@@ -35,7 +35,11 @@ const routes: Routes = [
 
 
   {path: '', component: ApprovalComponent},
-  {path: 'ppo-approval', component: PpoApprovalComponent}
+  {
+    path : 'ppo-approval',
+    data: { breadcrumb: 'PPO Approval' },
+    loadChildren: () => import('./ppo-approval/ppo-approval.module').then(m => m.PpoApprovalModule),
+   }
 
 ];
 

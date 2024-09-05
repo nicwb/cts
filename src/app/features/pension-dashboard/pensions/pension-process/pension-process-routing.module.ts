@@ -13,12 +13,39 @@ const routes: Routes = [
 
 
   {path: '', component: PensionProcessComponent},
-  {path: 'ppo', component: PpoComponent},
-  {path: 'pensioner-details', component: PensionerDetailsComponent},
-  {path: 'pension-bill',component:PensionBillComponent},
-  {path:'app-arrear-pension',component:ArrearPensionComponent},
-  {path: 'bill-print', component: BillPrintComponent},
-  {path: 'approval', component: ApprovalComponent},
+  {
+    path: 'ppo',
+    data: { breadcrumb: 'PPO' },
+    loadChildren: () => import('./ppo/ppo.module').then(m => m.PpoModule),
+  },
+
+  {
+    path: 'pension-bill',
+    data: { breadcrumb: 'Pension Bill' },
+    loadChildren: () => import('./pension-bill/pension-bill.module').then(m => m.PensionBillModule),
+  },
+
+  {
+    path: 'pensioner-details',
+    data: { breadcrumb: 'Pensioner Details' },
+    loadChildren: () => import('./pensioner-details/pensioner-details.module').then(m => m.PensionerDetailsModule),
+  },
+  {
+    path: 'bill-print',
+    data: { breadcrumb: 'Bill Print' },
+    loadChildren: () => import('./bill-print/bill-print.module').then(m => m.BillPrintModule)
+  },
+  {
+    path : 'approval',
+    data: { breadcrumb: 'Approval' },
+    loadChildren: () => import('./approval/approval.module').then(m => m.ApprovalModule),
+  },
+  {
+    path: 'app-arrear-pension',
+    data: { breadcrumb: 'Arrear Pension' },
+    loadChildren: () => import('./arrear-pension/arrear-pension.module').then(m => m.ArrearPensionModule),
+  },
+  
 
 ];
 

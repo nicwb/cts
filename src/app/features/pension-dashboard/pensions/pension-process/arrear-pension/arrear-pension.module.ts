@@ -12,7 +12,6 @@ import { ToastModule } from 'primeng/toast';
 import { RatingModule } from 'primeng/rating';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
-import { SearchPopupComponent } from 'src/app/core/search-popup/search-popup.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { ArrearPensionRoutingModule } from './arrear-pension-routing.module';
@@ -20,8 +19,7 @@ import { ArrearPensionComponent } from './arrear-pension.component';
 
 
 @NgModule({
-  declarations: [ArrearPensionComponent,
-    SearchPopupComponent],
+  declarations: [],
   imports: [
     CommonModule,
     ArrearPensionRoutingModule,
@@ -41,7 +39,6 @@ import { ArrearPensionComponent } from './arrear-pension.component';
   ],
   exports: [
     RouterModule,
-    SearchPopupComponent
   ],
   providers: [
     MessageService,

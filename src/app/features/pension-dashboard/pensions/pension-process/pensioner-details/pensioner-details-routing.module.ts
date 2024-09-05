@@ -5,7 +5,11 @@ import { RevisionofComponentsComponent } from './revisionof-components/revisiono
 
 const routes: Routes = [
     {path: '', component: PensionerDetailsComponent},
-    {path: 'revision', component: RevisionofComponentsComponent}
+    {
+      path: 'revision', 
+      data: { breadcrumb: 'Revision Component' },
+      component: RevisionofComponentsComponent
+    }
 ];
 
 @NgModule({

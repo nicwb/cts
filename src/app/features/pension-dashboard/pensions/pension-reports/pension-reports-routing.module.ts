@@ -7,8 +7,11 @@ const routes: Routes = [
 
 
   {path: '', component: PensionReportsComponent},
-  {path: 'manual-ppo-register', component: ManualPpoRegisterComponent},
-
+  {
+    path : 'manual-ppo-register',
+    data: { breadcrumb: 'Manual PPO Register' },
+    loadChildren: () => import('./manual-ppo-register/manual-ppo-register.module').then(m => m.ManualPpoRegisterModule),
+  },
 ];
 
 @NgModule({

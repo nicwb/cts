@@ -21,11 +21,30 @@ import { PpoComponent } from './ppo.component';
 
 const routes: Routes = [
   {path: '', component: PpoComponent},
-  {path: 'entry', component: EntryComponent},
-  {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent},
-  {path: 'sanction', component: SanctionComponent},
+  {
+    path: 'entry',
+    data:{breadcrumb: 'PPO Entry'},
+    loadChildren: () => import('./entry/entry.module').then(m => m.EntryModule),
+  },
+  {
+    path: 'manual-ppo-receipt',
+    data:{breadcrumb: 'Manual PPO Receipt'},
+    loadChildren: () =>
+      import('./manual-ppo-receipt/manual-ppo-receipt.module').then(m => m.ManualPpoReceiptModule),
+  },
+  {
+    path: 'convert-to-family-pension',
+    data:{breadcrumb: 'Convert to Family Pension'},
+    loadChildren: () => import('./convert-to-family-pension/convert-to-family-pension.module').then(m => m.ConvertToFamilyPensionModule),
+  },
+  {
+    path: 'life-certificate',
+    data:{breadcrumb: 'Life Certificate'},
+    loadChildren: () => import('./life-certificate/life-certificate.module').then(m => m.LifeCertificateModule),
+  },
   {
     path: ':receiptId/receipt',
+    data:{breadcrumb: 'Manual Receipt'},
     component: ManualPpoReceiptComponent
   }
 ];

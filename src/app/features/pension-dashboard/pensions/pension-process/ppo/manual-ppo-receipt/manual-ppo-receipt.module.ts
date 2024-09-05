@@ -22,7 +22,13 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
-
+import { RouterModule, Routes } from '@angular/router';
+const routes:Routes=[
+  {
+    path:'',
+    component:ManualPpoReceiptComponent
+  }
+]
 
 
 
@@ -53,7 +59,9 @@ import { RatingModule } from 'primeng/rating';
     ToastModule,
     SliderModule,
     RatingModule,
-    MhPrimeDynamicTableModule
-  ]
+    MhPrimeDynamicTableModule,
+    RouterModule.forChild(routes)
+  ],
+  exports:[RouterModule]
 })
 export class ManualPpoReceiptModule { }

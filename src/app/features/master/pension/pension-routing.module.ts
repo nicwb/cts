@@ -7,12 +7,34 @@ import { PensionCategoryComponent } from './pension-category/pension-category.co
 import { SubCategoryComponent } from './sub-category/sub-category.component';
 
 const routes: Routes = [
-    {path: 'component', component: ComponentComponent},
-  {path: 'component', loadChildren: () => import('./component/component.module').then(m => m.ComponentModule)},
   {path: '', component:PensionComponent},
-    { path: 'app-primary', component: PrimaryComponent },
-    { path: 'app-pension-category', component: PensionCategoryComponent },
-    { path: 'app-sub-category', component: SubCategoryComponent },
+  {
+    path: 'component',
+    data: { breadcrumb: 'Component' },
+    loadChildren: () => import('./component/component.module').then(m => m.ComponentModule)
+  },
+  { 
+    path: 'app-primary', 
+    data: { breadcrumb: 'Primary' },
+    component: PrimaryComponent 
+  },
+  { 
+    path: 'app-pension-category',
+    data: { breadcrumb: 'Pension Category' },
+    component: PensionCategoryComponent 
+  },
+  { 
+    path: 'app-sub-category',
+    data: { breadcrumb: 'Sub Category' },
+    component: SubCategoryComponent 
+  },
+  {
+    path : 'component-rate',
+    data: { breadcrumb: 'Component Rate' },
+
+    loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
+
+  },
 ];
 
 @NgModule({

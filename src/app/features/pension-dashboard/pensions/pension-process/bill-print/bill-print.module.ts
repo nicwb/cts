@@ -53,10 +53,20 @@ const routes: Routes = [
 
 
   {path: '', component: BillPrintComponent},
-  {path: 'regular-pension', component: RegularPensionComponent},
-  { path: 'first-pension', component: FirstPensionComponent },
+  {
+    path: 'regular-pension',
+    data: { breadcrumb: 'Regular Pension' },
+    loadChildren: () => RegularPensionComponent,
+   },
+   {
+    path: 'first-pension',
+    data: { breadcrumb: 'First Pension' },
+
+    loadChildren: () => FirstPensionComponent,
+   },
   {
     path: ':ppoId/first-pension',
+    data: { breadcrumb: 'First Pension' },
     component: FirstPensionComponent
   }
 

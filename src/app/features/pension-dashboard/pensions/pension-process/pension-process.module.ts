@@ -54,7 +54,7 @@ import { RouterModule } from '@angular/router';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ApprovalComponent } from './approval/approval.component';
-
+import { PensionDashboardRoutingModule } from '../../pension-dashboard-routing.module';
 @NgModule({
   declarations: [
     PensionProcessComponent,
@@ -109,6 +109,6 @@ import { ApprovalComponent } from './approval/approval.component';
     TableModule,
     CalendarModule,
     FormsModule
-  ]
+  ],
 })
 export class PensionProcessModule { }

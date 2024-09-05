@@ -37,7 +37,14 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { RouterModule, Routes } from '@angular/router';
 
+const route:Routes = [
+  {
+    path: '',
+    component: ComponentComponent
+  }
+]
 @NgModule({
   declarations: [ComponentComponent],
   imports: [
@@ -76,7 +83,8 @@ import { ColorPickerModule } from 'primeng/colorpicker';
     CheckboxModule,
     InputSwitchModule,
     ColorPickerModule,
-
-  ]
+    RouterModule.forChild(route)
+  ],
+  exports: [RouterModule]
 })
 export class ComponentModule { }
