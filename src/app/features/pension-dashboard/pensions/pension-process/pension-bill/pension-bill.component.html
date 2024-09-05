@@ -10,7 +10,7 @@
             </p-divider>
             <div class="p-fluid p-formgrid grid">
 
-                <div class="field col-12 md:col-6">
+                <div class="field col-12 md:col-6 mb-0">
                     <label for="PpoId"><b>
                             PPO ID:
                         </b></label>
@@ -26,7 +26,7 @@
                     </span>
                 </div>
 
-                <div class="field col-12 md:col-6">
+                <div class="field col-12 md:col-6 mb-0">
                     <label for="periodTo"><b>
                             Period To:
                         </b></label>
@@ -79,14 +79,14 @@
                             [readonly]="true" class="" />
                     </div>
                     <div class="field col-12 md:col">
-                        <label htmlFor="accountNo"><b>Account NO</b></label>
-                        <input pInputText id="accountNo" type="number" class="remove-arrow" placeholder="Account NO"
-                            formControlName="accountNo" [readonly]="true" class="" />
-                    </div>
-                    <div class="field col-12 md:col">
                         <label htmlFor="billDate"><b>Bill Date</b></label>
                         <input pInputText id="billDate" type="date" formControlName="billDate" [readonly]="true"
                             class="" [ngStyle]="{'font-color':'black'}" />
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="accountNo"><b>Account NO</b></label>
+                        <input pInputText id="accountNo" type="number" class="remove-arrow" placeholder="Account NO"
+                            formControlName="accountNo" [readonly]="true" class="" />
                     </div>
                 </div>
             </div>
@@ -128,9 +128,9 @@
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
-                            <td colspan="6"></td>
-                            <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
                             <td></td>
+                            <td></td>
+                            <td class="text-lg">Total Component Amount: ₹ {{ totalDueAmount }}</td>
                         </tr>
                     </ng-template>
                 </p-table>
@@ -189,12 +189,12 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-payment>
-                        <tr>
-                            <td>{{ payment.breakupId }}</td>
-                            <td>{{ payment.componentName }}</td>
-                            <td>{{ payment.fromDate }}</td>
-                            <td>{{ payment.toDate }}</td>
-                            <td>{{ payment.rateAmount }}
+                        <tr class="">
+                            <td class="p-2">{{ payment.breakupId }}</td>
+                            <td class="p-2">{{ payment.componentName }}</td>
+                            <td class="p-2">{{ payment.fromDate }}</td>
+                            <td class="p-2">{{ payment.toDate }}</td>
+                            <td class="p-2">{{ payment.rateAmount }}
                                 {{ payment.rateType === 'P' ? '%' : '₹' }}
                             </td>
                             <td>₹ {{ payment.dueAmount }}</td>
@@ -203,9 +203,10 @@
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
-                            <td colspan="8"></td>
-                            <td>Total Component Amount: ₹ {{ totalDueAmount }}</td>
                             <td></td>
+                            <td></td>
+                            <td class="text-lg">Total Component Amount: ₹ {{ totalDueAmount }}</td>
+                           
                         </tr>
                     </ng-template>
                 </p-table>
@@ -214,7 +215,7 @@
             <!-- </div> -->
 
             <!-- </div> -->
-            <div class="flex flex-col mt-1 align-items-center justify-content-center">
+            <div class="flex flex-col mt-2 align-items-center justify-content-center">
                 <!-- Save Button -->
                 <div class="flex flex-wrap gap-2 mx-2">
                     <button type="submit" pButton pRipple (click)="save()"
@@ -228,6 +229,13 @@
                     <button type="button" pButton pRipple (click)="refresh()"
                         class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         <i class="pi pi-refresh mr-2"></i>Refresh
+                    </button>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mx-2">
+                    <button pButton pRipple type="button" label="Print"
+                        class="p-button-secondary px-4" (click)="billprint()">
+                        <i class="pi pi-check mr-2"></i>
                     </button>
                 </div>
             </div>
