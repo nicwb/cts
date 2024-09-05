@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { DotEnv } from "utils/env"
 
-test.describe('Manual PPO Receipt Component', () => {
-    test.beforeEach(async ({ page }) => {
+test.describe('Manual PPO Receipt', () => {
+    test.beforeEach(async ({ page, isMobile }) => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
-        await expect(page.getByRole('link', { name: 'logo | CTS' })).toBeVisible();
+        if(isMobile) {
+            page.locator('button.layout-topbar-menu-button').click()
+        }
+        const dashboard = page.getByText(`CCTSCLERK`);
+        await expect(dashboard).toBeVisible();
         await page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt');
     });
 

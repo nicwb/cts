@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('testing primary category', () => {
-    test.beforeEach(async ({ page }) => {
+test.describe('Primary Category', () => {
+    test.beforeEach(async ({ page, isMobile }) => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
-        // const dashboard = page.getByText('CCTSCLERK');
-        await expect(page.getByRole('link', { name: 'logo | CTS' })).toBeVisible();
+        if(isMobile) {
+            page.locator('button.layout-topbar-menu-button').click()
+        }
+        const dashboard = page.getByText(`CCTSCLERK`);
+        await expect(dashboard).toBeVisible();
         await page.goto('/#/master/app-pension/app-primary');
     });
-
+    
     test('new button', async ({ page }) => {
         await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
         await page.getByRole('button', { name: 'New' }).click();
@@ -17,7 +20,7 @@ test.describe('testing primary category', () => {
     });
     test('testing the form and submit button', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
-
+        
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
@@ -29,13 +32,12 @@ test.describe('testing primary category', () => {
     test('duplicate primary category entry ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         let data1 = await page
-            .locator('input[formControlName=HoaId]')
-            .inputValue();
-
+        .locator('input[formControlName=HoaId]')
+        .inputValue();
+        
         let data2 = await page
-            .locator('input[formControlName=PrimaryCategoryName]')
-            .inputValue();
-        console.log(data2);
+        .locator('input[formControlName=PrimaryCategoryName]')
+        .inputValue();
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
@@ -45,19 +47,19 @@ test.describe('testing primary category', () => {
         );
         await expect(
             page
-                .getByLabel('Primary Category Details')
-                .locator('div')
-                .filter({ hasText: 'Head Of Account:(Major-' })
-                .first()
+            .getByLabel('Primary Category Details')
+            .locator('div')
+            .filter({ hasText: 'Head Of Account:(Major-' })
+            .first()
         ).toBeHidden();
-
+        
         await page.getByRole('button', { name: 'New' }).click();
         await page.locator('input[formControlName=HoaId]').fill(`${data1}`);
         // await page.locator('.p-inputtext').nth(2).fill(`${data1}`);
-
+        
         await page
-            .locator('input[formControlName=PrimaryCategoryName]')
-            .fill(`${data2}`);
+        .locator('input[formControlName=PrimaryCategoryName]')
+        .fill(`${data2}`);
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
@@ -66,7 +68,7 @@ test.describe('testing primary category', () => {
             'This Primary number already exists.'
         );
     });
-
+    
     test('testing the cancel button', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
@@ -75,11 +77,11 @@ test.describe('testing primary category', () => {
         await page.getByRole('button', { name: 'Cancel' }).click();
         await expect(
             page
-                .getByLabel('Primary Category Details')
-                .locator('div')
-                .filter({ hasText: 'Head Of Account:(Major-' })
-                .first()
+            .getByLabel('Primary Category Details')
+            .locator('div')
+            .filter({ hasText: 'Head Of Account:(Major-' })
+            .first()
         ).toBeHidden();
     });
-
+    
 });

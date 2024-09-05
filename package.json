@@ -7,7 +7,7 @@
     "start:test": "ng serve -c test --host 0.0.0.0 --port 4200 --disable-host-check",
     "build": "node --max_old_space_size=14336 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /cts/ --aot --build-optimizer",
     "watch": "ng build --watch --configuration development",
-    "test": "npx playwright test --reporter=list --trace=on --project=chromium",
+    "test": "npx playwright test --reporter=list",
     "lint": "ng lint",
     "e2e:dev": "playwright test --ui"
   },

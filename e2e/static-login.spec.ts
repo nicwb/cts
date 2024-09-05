@@ -2,7 +2,7 @@ import { test, expect, request } from '@playwright/test';
 
 import { DotEnv } from "utils/env"
 
-test.describe('Pension Module Test', () =>{
+test.describe('Static Login', () =>{
     
     test.beforeEach(async ({ page }) => {
         // Navigate to the static login page containing user roles
@@ -22,7 +22,7 @@ test.describe('Pension Module Test', () =>{
         { role: 'treasury-officer', displayName: 'TREASURY-OFFICER' },
         { role: 'DTA', displayName: 'DTA' },
         { role: 'CHEQUE-OPERATOR', displayName: 'CHEQUE-OPERATOR' },
-
+        
     ].forEach(({ role, displayName }) => {
         test(`${displayName} can login`,
             async ({page, isMobile}) => {
@@ -35,7 +35,7 @@ test.describe('Pension Module Test', () =>{
             }
         );
     });
-
+    
 });
 
 

@@ -1,23 +1,18 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('SubCategory Details Module', () => {
+test.describe('Sub Category', () => {
     test.beforeEach(async ({ page, isMobile }) => {
         // Navigate to the static login page containing user roles
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
-        await page.waitForTimeout(500)
-        await page.goto('/#/master/app-pension/app-sub-category');
         if(isMobile) {
             page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
-        
-        if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
-        }
+        await page.goto('/#/master/app-pension/app-sub-category');
     });
-
+    
     test('Check the input box is visible and working or not and submit it successfully', async ({
         page,
     }) => {
@@ -30,7 +25,7 @@ test.describe('SubCategory Details Module', () => {
             'Sub Category Details added successfully'
         );
     });
-
+    
     
     test('Duplicate Data Checking ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
@@ -44,7 +39,7 @@ test.describe('SubCategory Details Module', () => {
         );
         await page.getByRole('button', { name: 'New' }).click();
         await page.locator('input[formControlName=SubCategoryName]').fill(data);
-
+        
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
