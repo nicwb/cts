@@ -16,8 +16,8 @@
                         </b></label>
                     <div class="w-full flex gap-1">
                         <input type="text" pInputText formControlName="ppoId" placeholder="PPO ID" [(ngModel)]="ppoId"
-                            [readonly]="isApiResponseStatus1" class="" (blur)="onInputBlur()" />
-                        <app-popup-table name="" [service$]="ppoList$"
+                            [readonly]="true" class="" (blur)="onInputBlur()" />
+                        <app-popup-table name="Search" [service$]="ppoList$"
                             (return)="handleSelectedRow($event)"></app-popup-table>
                     </div>
                     <span *ngIf="massage" [ngClass]="massageColor"
@@ -35,7 +35,7 @@
                             [maxDate]="endOfMonth" [(ngModel)]="period" (onSelect)="onDateSelect($event)"
                             dateFormat="yy-mm-dd" placeholder="Select a date"
                             [disabled]="isApiResponseStatus1"></p-calendar>
-                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit"
+                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit pr-4"
                             [disabled]="!isgenerate">
                             Generate
                         </button>
@@ -218,11 +218,18 @@
             <div class="flex flex-col mt-2 align-items-center justify-content-center">
                 <!-- Save Button -->
                 <div class="flex flex-wrap gap-2 mx-2">
-                    <button type="submit" pButton pRipple (click)="save()"
+                    <!-- <button type="submit" pButton pRipple (click)="save()"
                         class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                         [disabled]="!hasSaved">
-                        <i class="pi pi-check mr-2"></i> Save
-                    </button>
+                        <i class="pi pi-save mr-2"></i> Save
+                    </button> -->
+                    <p-button
+                        label="Save"
+                        icon="pi pi-check"
+                        [disabled]="!hasSaved"
+                        styleClass="p-button-success"
+                        (click)="save()">
+                    </p-button>
                 </div>
                 <!-- Refresh Button -->
                 <div class="flex flex-wrap gap-2 mx-2">

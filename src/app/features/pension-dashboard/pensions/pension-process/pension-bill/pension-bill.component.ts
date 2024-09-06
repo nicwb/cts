@@ -11,6 +11,7 @@ import {
     APIResponseStatus,
     InitiateFirstPensionBillResponseDTOJsonAPIResponse,
     PpoPaymentListItemDTO,
+    ObjectJsonAPIResponse,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
@@ -34,7 +35,7 @@ export class PensionBillComponent implements OnInit {
     response!: InitiateFirstPensionBillResponseDTOJsonAPIResponse;
     hasGenerated: boolean = true;
     hasSaved: boolean = false;
-    res: any;
+    res?: ObjectJsonAPIResponse;
     massage: string = '';
     today: Date = new Date();
     check: any;
@@ -188,26 +189,10 @@ export class PensionBillComponent implements OnInit {
                 this.hasSaved = false;
             }
             if (this.res.apiResponseStatus === APIResponseStatus.Error) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'The first pension bill is already saved!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your file has been deleted.',
-                            icon: 'success',
-                        });
-                    }
-                });
+                this.toastService.showError("" + this.res.message);
             }
         } catch (billError) {
-            this.toastService.showError('Failed to save the first pension bill!');
+            this.toastService.showError("" + billError);
         }
     }
 

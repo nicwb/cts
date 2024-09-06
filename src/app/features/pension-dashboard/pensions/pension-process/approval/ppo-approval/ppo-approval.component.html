@@ -95,16 +95,13 @@
                 </table>
               </div>
               <div class="flex flex-wrap gap-2 w-full justify-content-center">
-                <button
+                <p-button
+                  label="Approve"
+                  icon="pi pi-check"
                   [disabled]="allowApproval"
-                  pButton
-                  pRipple
-                  (click)="approve(allowApproval)"
-                  type="button"
-                  class="p-button-raised p-button-info pi pi-check"
-                >
-                  Approve
-                </button>
+                  styleClass="p-button-success"
+                  (click)="approve(allowApproval)">
+              </p-button>
               </div>
             </p-dialog>
           </div>
