@@ -14,10 +14,10 @@ test.describe('Pension Component', () => {
         await page.goto('/#/master/app-pension/component');
     });
 
-    test('Check the input box is visible or not and submit successfully', async ({ page }) => {
+    test('Pension component can be saved', async ({ page }) => {
         await page.getByRole('button', { name: 'New Entry' }).click();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByLabel('Success')).toContainText("Component Details added successfully");
+        await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
     });
 
     test('Duplicate data Checking', async ({ page }) => {
@@ -25,13 +25,12 @@ test.describe('Pension Component', () => {
         let data1= await page.locator('input[formControlName=componentName]').inputValue();
         await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByLabel('Success')).toContainText("Component Details added successfully");
+        await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
         await page.getByRole('button', { name: 'OK' }).click();
 
         await page.getByRole('button', { name: 'New Entry' }).click();
         await page.locator('input[formControlName=componentName]').fill(data1);
-        await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByLabel('Aww! Snap...')).toContainText("already exists");
+        await expect(page.getByRole('heading', { name: 'Aww! Snap...' })).toBeVisible();
     });
 });

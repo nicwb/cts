@@ -1,6 +1,6 @@
-<p-button label="{{name}}" icon="pi pi-search" (click)="showDialog()" [style]="buttonStyle"></p-button>
+<p-button label="{{name}}" icon="pi pi-book" (click)="showDialog()" [style]="buttonStyle"></p-button>
 
-<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style"  [responsive]="true"
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style"
     [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true">
 
 <span class="p-float-label mb-3">
@@ -25,7 +25,7 @@
     {{onresult}}
 </div>
 
-<p-footer>
+<!-- <p-footer>
     <button pButton type="button" label="Close" (click)="closeDialog()"></button>
-</p-footer>
+</p-footer> -->
 </p-dialog>

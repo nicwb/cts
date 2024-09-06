@@ -185,7 +185,7 @@ export class PensionBillComponent implements OnInit {
                 this.service.saveFirstPensionBill(saveFirstBill)
             );
             if (this.res?.apiResponseStatus === APIResponseStatus.Success) {
-                this.toastService.showSuccess('First bill saved');
+                this.toastService.showSuccess("" + this.res.message);
                 this.hasSaved = false;
             }
             if (this.res.apiResponseStatus === APIResponseStatus.Error) {

@@ -1,4 +1,4 @@
-import { test, expect, request } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 import { DotEnv } from "utils/env"
 
@@ -6,7 +6,7 @@ test.describe('Static Login', () =>{
 
     test.beforeEach(async ({ page }) => {
         // Navigate to the static login page containing user roles
-        await page.goto('/#/static-login');
+        await page.goto('/#/static-login', { waitUntil: "commit" });
     });
 
     test('should display the "Static Login" page', async ({ page }) => {

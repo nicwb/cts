@@ -16,9 +16,10 @@
                         </b></label>
                     <div class="w-full flex gap-1">
                         <input type="text" pInputText formControlName="ppoId" placeholder="PPO ID" [(ngModel)]="ppoId"
-                            [readonly]="true" class="" (blur)="onInputBlur()" />
-                        <app-popup-table name="Search" [service$]="ppoList$"
-                            (return)="handleSelectedRow($event)"></app-popup-table>
+                            [readonly]="true" class="w-fit" (blur)="onInputBlur()" />
+                        <app-popup-table name="Open" [service$]="ppoList$"
+                            (return)="handleSelectedRow($event)">
+                        </app-popup-table>
                     </div>
                     <span *ngIf="massage" [ngClass]="massageColor"
                         class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block">
@@ -31,11 +32,11 @@
                             Period To:
                         </b></label>
                     <div class="w-full flex gap-1">
-                        <p-calendar class="w-full" id="periodTo" formControlName="periodTo" [minDate]="today"
+                        <p-calendar class="w-fit" id="periodTo" formControlName="periodTo" [minDate]="today"
                             [maxDate]="endOfMonth" [(ngModel)]="period" (onSelect)="onDateSelect($event)"
                             dateFormat="yy-mm-dd" placeholder="Select a date"
                             [disabled]="isApiResponseStatus1"></p-calendar>
-                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit pr-4"
+                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit"
                             [disabled]="!isgenerate">
                             Generate
                         </button>

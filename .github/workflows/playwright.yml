@@ -50,8 +50,11 @@ jobs:
       #   run: npm run start
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=list
+      - name: Run Changed Playwright tests
+        run: xvfb-run npx playwright test --only-changed=$GITHUB_BASE_REF --reporter=list --headed
+        if: github.event_name == 'push'
+      - name: Run Full Playwright tests suite
+        run: xvfb-run npx playwright test --reporter=list --headed
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

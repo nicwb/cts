@@ -21,7 +21,7 @@ interface PPOData {
     templateUrl: './ppodetails.component.html',
     styleUrls: ['./ppodetails.component.scss'],
 })
-export class PpodetailsComponent implements OnInit,OnDestroy {
+export class PpodetailsComponent implements OnInit, OnDestroy {
     currentStepIndex = 0;
     steps = [
         { label: 'PPO Details' },
