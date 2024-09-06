@@ -1,36 +1,21 @@
-import { PrimaryCategory } from './../../../../core/models/pension-bill';
-import { Payload } from './../../../../core/models/search-query';
-import { FormData } from 'src/app/core/models/indentFormData';
-import { HttpErrorResponse } from '@angular/common/http';
 import { PensionCategoryMasterService } from 'src/app/api';
 import {
     Component,
     OnInit,
     Output,
     EventEmitter,
-    ChangeDetectorRef,
     ElementRef,
-    AfterViewInit,
     ViewChild,
 } from '@angular/core';
-import {
-    FormBuilder,
-    FormControl,
-    FormGroup,
-    Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
     ActionButtonConfig,
-    DynamicTable,
     DynamicTableQueryParameters,
-    TableHeader,
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
-import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import { PensionCategoryDetails } from 'src/app/core/models/pension-category-details';
-import { PensionCategoryDetailsService } from 'src/app/core/services/pensionCategoryDetails/pension-category-details.service';
 import { Observable, filter, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { pathToFileURL } from 'url';
@@ -63,23 +48,22 @@ export class PensionCategoryComponent implements OnInit {
     rowData: any;
     refresh_b = false;
     primary_id!: any;
-    sub_id!:any;
+    sub_id!: any;
     searching = {
         val: false,
         data: null,
     };
     primary_table = false;
     sub_table = false;
-    New_Primary!:String;
+
+    primary_from_url!: String;
+    sub_from_url!: string;
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
     constructor(
         // private datePipe: DatePipe,
         private toastService: ToastService,
         private service: PensionCategoryMasterService,
-        private fb: FormBuilder,
-        private cd: ChangeDetectorRef,
-        private pensionCategoryDetailsService: PensionCategoryDetailsService,
         private router: Router,
         private route: ActivatedRoute
     ) {}
@@ -134,32 +118,29 @@ export class PensionCategoryComponent implements OnInit {
         this.getData();
     }
     async check_for_data() {
-        let from;
-        let name;
+        let primary;
+        let sub;
         this.route.queryParams.subscribe((params) => {
-            from = params['from'];
-            name = params['name'];
+            primary = params['primary'];
+            sub = params['sub'];
         });
-        console.log(from, name);
-        if (from == 'primary') {
-            const id = name;
-            if (id == null) {
-                return;
-            }
-            let data = {
+        console.log(primary, sub);
+        if (primary && sub) {
+            this.primary_from_url = primary;
+            this.sub_from_url = sub;
+            let dataP = {
                 pageSize: 1,
                 pageIndex: 0,
                 filterParameters: [
                     {
                         field: 'PrimaryCategoryName',
-                        value: id,
+                        value: primary,
                         operator: 'contains',
                     },
                 ],
             };
-
             let response = await firstValueFrom(
-                this.service.getAllPrimaryCategories(data)
+                this.service.getAllPrimaryCategories(dataP)
             );
             this.PensionForm.patchValue({
                 PrimaryCategoryId: response.result?.data?.[0]?.id,
@@ -179,36 +160,34 @@ export class PensionCategoryComponent implements OnInit {
                     this.toastService.showError('Could Not Found');
                 }
             }
-            this.primary_id = this.primary_id_select.find((val) => val.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`);
+            this.primary_id = this.primary_id_select.find(
+                (val) =>
+                    val.label ==
+                    `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`
+            );
 
             this.displayInsertModal = true;
 
-
-        }else if(from == "sub"){
-            const id = name;
-            if (id == null) {
-                return;
-            }
-            let data = {
+            let dataS = {
                 pageSize: 1,
                 pageIndex: 0,
                 filterParameters: [
                     {
                         field: 'SubCategoryName',
-                        value: id,
+                        value: sub,
                         operator: 'contains',
                     },
                 ],
             };
 
-            let response = await firstValueFrom(
-                this.service.getAllSubCategories(data)
+            let responseS = await firstValueFrom(
+                this.service.getAllSubCategories(dataS)
             );
             this.PensionForm.patchValue({
-                PrimaryCategoryId: response.result?.data?.[0]?.id,
+                PrimaryCategoryId: responseS.result?.data?.[0]?.id,
             });
-            if (response.result && response.result.data) {
-                let value = response.result.data;
+            if (responseS.result && responseS.result.data) {
+                let value = responseS.result.data;
                 if (value.length != 0) {
                     let len_val = value.length;
                     this.sub_id_select = [];
@@ -222,15 +201,110 @@ export class PensionCategoryComponent implements OnInit {
                     this.toastService.showError('Could Not Found');
                 }
             }
-            this.sub_id = this.sub_id_select.find((val) => val.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.subCategoryName}`);
+            this.sub_id = this.sub_id_select.find(
+                (val) =>
+                    val.label ==
+                    `${responseS.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
+            );
 
             this.displayInsertModal = true;
+            let value_for_patch = {
+                PrimaryCategoryId: this.primary_id.value,
+                SubCategoryId: this.sub_id.value, // Fixed the error here
+            };
+            this.PensionForm.patchValue(value_for_patch);
+        } else if (primary) {
+            this.primary_from_url = primary;
+            let dataP = {
+                pageSize: 1,
+                pageIndex: 0,
+                filterParameters: [
+                    {
+                        field: 'PrimaryCategoryName',
+                        value: primary,
+                        operator: 'contains',
+                    },
+                ],
+            };
+            let response = await firstValueFrom(
+                this.service.getAllPrimaryCategories(dataP)
+            );
+            this.PensionForm.patchValue({
+                PrimaryCategoryId: response.result?.data?.[0]?.id,
+            });
+            if (response.result && response.result.data) {
+                let value = response.result.data;
+                if (value.length != 0) {
+                    let len_val = value.length;
+                    this.primary_id_select = [];
+                    for (let i = 0; i < len_val; i++) {
+                        this.primary_id_select.push({
+                            label: `${value[i].id}-${value[i].primaryCategoryName}`,
+                            value: value[i].id,
+                        });
+                    }
+                } else {
+                    this.toastService.showError('Could Not Found');
+                }
+            }
+            this.primary_id = this.primary_id_select.find(
+                (val) =>
+                    val.label ==
+                    `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`
+            );
+            this.displayInsertModal = true;
+            let value_for_patch = {
+                PrimaryCategoryId: this.primary_id.value,
+            };
+            this.PensionForm.patchValue(value_for_patch);
+        } else if (sub) {
+            this.sub_from_url = sub;
+            let dataS = {
+                pageSize: 1,
+                pageIndex: 0,
+                filterParameters: [
+                    {
+                        field: 'SubCategoryName',
+                        value: sub,
+                        operator: 'contains',
+                    },
+                ],
+            };
 
+            let responseS = await firstValueFrom(
+                this.service.getAllSubCategories(dataS)
+            );
+            this.PensionForm.patchValue({
+                PrimaryCategoryId: responseS.result?.data?.[0]?.id,
+            });
+            if (responseS.result && responseS.result.data) {
+                let value = responseS.result.data;
+                if (value.length != 0) {
+                    let len_val = value.length;
+                    this.sub_id_select = [];
+                    for (let i = 0; i < len_val; i++) {
+                        this.sub_id_select.push({
+                            label: `${value[i].id}-${value[i].subCategoryName}`,
+                            value: value[i].id,
+                        });
+                    }
+                } else {
+                    this.toastService.showError('Could Not Found');
+                }
+            }
+            this.sub_id = this.sub_id_select.find(
+                (val) =>
+                    val.label ==
+                    `${responseS.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
+            );
 
+            this.displayInsertModal = true;
+            let value_for_patch = {
+                SubCategoryId: this.sub_id.value, // Fixed the error here
+            };
+            this.PensionForm.patchValue(value_for_patch);
         }
-        else{
-            this.New_Primary="New Primary";
-        }
+        //
     }
     // searching without get api
     handsearchKeyChange(event: string): void {
@@ -267,8 +341,8 @@ export class PensionCategoryComponent implements OnInit {
                 this.displayInsertModal = false; // Close the dialog
                 this.checkIfAlreadyExsist(formData);
                 this.PensionForm.reset();
-                this.primary_id=null;
-                this.sub_id=null;
+                this.primary_id = null;
+                this.sub_id = null;
             } else {
                 this.handleErrorResponse(response);
             }
@@ -354,15 +428,13 @@ export class PensionCategoryComponent implements OnInit {
             console.error('Invalid response from API');
         }
     }
-    clicked_Primary(name:any) {
-
+    clicked_Primary(name: any) {
         let value_for_patch = {
             PrimaryCategoryId: this.primary_id.value,
         };
         this.PensionForm.patchValue(value_for_patch);
     }
-    clicked_Sub(name:any) {
-
+    clicked_Sub(name: any) {
         let value_for_patch = {
             SubCategoryId: this.sub_id.value, // Fixed the error here
         };
@@ -512,29 +584,36 @@ export class PensionCategoryComponent implements OnInit {
     // date 30-aug
     show_new_primary() {
         this.router.navigate(['master/app-pension/app-primary'], {
-            queryParams: { todo: 'create' },
+            queryParams: {
+                todo: 'create',
+                primary: this.primary_from_url,
+                sub: this.sub_from_url,
+            },
         });
     }
     show_new_sub() {
         this.router.navigate(['master/app-pension/app-sub-category'], {
-            queryParams: { todo: 'create' },
+            queryParams: {
+                todo: 'create',
+                primary: this.primary_from_url,
+                sub: this.sub_from_url,
+            },
         });
     }
 
-    onClearPrimary(name:any){
-        if(name === null){
+    onClearPrimary(name: any) {
+        if (name === null) {
             this.PensionForm.patchValue({
-                PrimaryCategoryId:null
-            })
+                PrimaryCategoryId: null,
+            });
         }
     }
-    onClearSub(name:any){
-        if(name===null){
+    onClearSub(name: any) {
+        if (name === null) {
             this.PensionForm.patchValue({
-                SubCategoryId:null
-            })
+                SubCategoryId: null,
+            });
         }
-
     }
 
     emitPensionCategorySelected(): void {

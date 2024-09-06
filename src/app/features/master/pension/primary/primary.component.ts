@@ -49,7 +49,9 @@ export class PrimaryComponent {
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
     refresh_b = false;
-    called_from_pension=false;
+    called_from_pension = false;
+    primary!:string;
+    sub!:string;
 
     constructor(
         private toastService: ToastService,
@@ -106,16 +108,20 @@ export class PrimaryComponent {
         this.findById(event);
     }
     check_if_called() {
-        let data = null;
+        let todo = null;
+
         this.route.queryParams.subscribe((params) => {
-            data = params['todo'];
+            (todo = params['todo']),
+                (this.primary = params['primary']),
+                (this.sub = params['sub']);
         });
-        console.log(data);
-        if (data == 'create') {
-            this.called_from_pension=true;
+
+        console.log(todo, this.primary, this.sub);
+        if (todo == 'create') {
+            this.called_from_pension = true;
             this.showInsertDialog();
-        }else{
-            this.called_from_pension=false;
+        } else {
+            this.called_from_pension = false;
         }
     }
 
@@ -148,7 +154,7 @@ export class PrimaryComponent {
     async add_primary_category() {
         if (this.primaryForm.valid) {
             const formData = this.primaryForm.value;
-            let name=this.primaryForm.value.PrimaryCategoryName;
+            let name = this.primaryForm.value.PrimaryCategoryName;
             let response = await firstValueFrom(
                 this.service.createPrimaryCategory(formData)
             );
@@ -160,8 +166,11 @@ export class PrimaryComponent {
                 this.toastService.showSuccess(
                     'Primary Category Details added successfully'
                 );
-                if (this.called_from_pension==true){
-                    this.router.navigate(["master/app-pension/app-pension-category"], { queryParams: { from: "primary" ,name:name} });
+                if (this.called_from_pension == true) {
+                    this.router.navigate(
+                        ['master/app-pension/app-pension-category'],
+                        { queryParams: { primary: name, sub: this.sub } }
+                    );
                 }
             } else {
                 this.handleErrorResponse(response);

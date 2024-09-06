@@ -54,6 +54,8 @@ export class SubCategoryComponent implements OnInit {
         val: false,
         data: null,
     };
+    primary!:string;
+    sub !:string;
     called_from_pension = false;
     constructor(
         private toastService: ToastService,
@@ -80,12 +82,14 @@ export class SubCategoryComponent implements OnInit {
         this.check_if_called();
     }
     check_if_called() {
-        let data = null;
+        let todo = null;
         this.route.queryParams.subscribe((params) => {
-            data = params['todo'];
+            (todo = params['todo']),
+                (this.primary = params['primary']),
+                (this.sub = params['sub']);
         });
-        console.log(data);
-        if (data == 'create') {
+        console.log(todo);
+        if (todo == 'create') {
             this.called_from_pension = true;
             this.showInsertDialog();
         } else {
@@ -208,8 +212,9 @@ export class SubCategoryComponent implements OnInit {
                     'Sub Category Details added successfully'
                 );
                 if (this.called_from_pension==true){
-                    this.router.navigate(["master/app-pension/app-pension-category"], { queryParams: { from: "sub" ,name:name} });
+                    this.router.navigate(["master/app-pension/app-pension-category"],{ queryParams: { primary: this.primary, sub: name } });
                 }
+
             } else {
                 this.handleErrorResponse(response);
             }
