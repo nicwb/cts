@@ -179,12 +179,56 @@ export class PensionCategoryComponent implements OnInit {
                     this.toastService.showError('Could Not Found');
                 }
             }
-            this.primary_id = this.primary_id_select.find((country) => country.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`);
+            this.primary_id = this.primary_id_select.find((val) => val.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`);
 
             this.displayInsertModal = true;
 
 
-        }else{
+        }else if(from == "sub"){
+            const id = name;
+            if (id == null) {
+                return;
+            }
+            let data = {
+                pageSize: 1,
+                pageIndex: 0,
+                filterParameters: [
+                    {
+                        field: 'SubCategoryName',
+                        value: id,
+                        operator: 'contains',
+                    },
+                ],
+            };
+
+            let response = await firstValueFrom(
+                this.service.getAllSubCategories(data)
+            );
+            this.PensionForm.patchValue({
+                PrimaryCategoryId: response.result?.data?.[0]?.id,
+            });
+            if (response.result && response.result.data) {
+                let value = response.result.data;
+                if (value.length != 0) {
+                    let len_val = value.length;
+                    this.sub_id_select = [];
+                    for (let i = 0; i < len_val; i++) {
+                        this.sub_id_select.push({
+                            label: `${value[i].id}-${value[i].subCategoryName}`,
+                            value: value[i].id,
+                        });
+                    }
+                } else {
+                    this.toastService.showError('Could Not Found');
+                }
+            }
+            this.sub_id = this.sub_id_select.find((val) => val.label == `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.subCategoryName}`);
+
+            this.displayInsertModal = true;
+
+
+        }
+        else{
             this.New_Primary="New Primary";
         }
     }
@@ -222,6 +266,9 @@ export class PensionCategoryComponent implements OnInit {
                 // Assuming 1 means success
                 this.displayInsertModal = false; // Close the dialog
                 this.checkIfAlreadyExsist(formData);
+                this.PensionForm.reset();
+                this.primary_id=null;
+                this.sub_id=null;
             } else {
                 this.handleErrorResponse(response);
             }
@@ -468,7 +515,27 @@ export class PensionCategoryComponent implements OnInit {
             queryParams: { todo: 'create' },
         });
     }
-    show_new_sub() {}
+    show_new_sub() {
+        this.router.navigate(['master/app-pension/app-sub-category'], {
+            queryParams: { todo: 'create' },
+        });
+    }
+
+    onClearPrimary(name:any){
+        if(name === null){
+            this.PensionForm.patchValue({
+                PrimaryCategoryId:null
+            })
+        }
+    }
+    onClearSub(name:any){
+        if(name===null){
+            this.PensionForm.patchValue({
+                SubCategoryId:null
+            })
+        }
+
+    }
 
     emitPensionCategorySelected(): void {
         this.PensionCategorySelected.emit(this.PensionForm.value);

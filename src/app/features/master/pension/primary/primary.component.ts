@@ -149,7 +149,6 @@ export class PrimaryComponent {
         if (this.primaryForm.valid) {
             const formData = this.primaryForm.value;
             let name=this.primaryForm.value.PrimaryCategoryName;
-            console.log(name)
             let response = await firstValueFrom(
                 this.service.createPrimaryCategory(formData)
             );

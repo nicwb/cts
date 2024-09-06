@@ -17,8 +17,12 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
-import { PensionCategoryMasterService,PensionFactoryService } from 'src/app/api';
+import {
+    PensionCategoryMasterService,
+    PensionFactoryService,
+} from 'src/app/api';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface expandedRows {
     [key: string]: boolean;
@@ -46,15 +50,18 @@ export class SubCategoryComponent implements OnInit {
     selectedDrop: SelectItem = { value: '' };
     rowData: any;
     refresh_b = false;
-    searching={
-        val:false,
-        data:null
+    searching = {
+        val: false,
+        data: null,
     };
+    called_from_pension = false;
     constructor(
         private toastService: ToastService,
         private fb: FormBuilder,
         private service: PensionCategoryMasterService,
-        private pensionFactoryService: PensionFactoryService
+        private pensionFactoryService: PensionFactoryService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
@@ -70,25 +77,43 @@ export class SubCategoryComponent implements OnInit {
 
         this.getData();
         // this.showVAL();
+        this.check_if_called();
     }
-
+    check_if_called() {
+        let data = null;
+        this.route.queryParams.subscribe((params) => {
+            data = params['todo'];
+        });
+        console.log(data);
+        if (data == 'create') {
+            this.called_from_pension = true;
+            this.showInsertDialog();
+        } else {
+            this.called_from_pension = false;
+        }
+    }
     showInsertDialog() {
         this.displayInsertModal = true;
         this.SubForm.reset();
-        if(!environment.production){
+        if (!environment.production) {
             this.generateNewData();
         }
     }
 
     async generateNewData(): Promise<void> {
-        try{
-            const data = await firstValueFrom(this.pensionFactoryService.createFake("PensionSubCategoryEntryDTO"));
+        try {
+            const data = await firstValueFrom(
+                this.pensionFactoryService.createFake(
+                    'PensionSubCategoryEntryDTO'
+                )
+            );
             this.SubForm.patchValue({
-                SubCategoryName:data.result.subCategoryName
+                SubCategoryName: data.result.subCategoryName,
             });
-        }
-        catch(error){
-            this.toastService.showError('Failed to patch new subcategory details.');
+        } catch (error) {
+            this.toastService.showError(
+                'Failed to patch new subcategory details.'
+            );
         }
     }
 
@@ -98,15 +123,21 @@ export class SubCategoryComponent implements OnInit {
 
     handQueryParameterChange(event: any) {
         console.log('Query parameter changed:', event);
-        if(this.searching.val==true){
+        if (this.searching.val == true) {
             this.tableQueryParameters = {
                 pageSize: event.pageSize,
                 pageIndex: event.pageIndex / 10,
-                filterParameters: [{ field: "SubCategoryName", value: this.searching.data, operator: 'contains'}],
+                filterParameters: [
+                    {
+                        field: 'SubCategoryName',
+                        value: this.searching.data,
+                        operator: 'contains',
+                    },
+                ],
                 sortParameters: event.sortParameters,
             };
-        }
-        else{this.tableQueryParameters = {
+        } else {
+            this.tableQueryParameters = {
                 pageSize: event.pageSize,
                 pageIndex: event.pageIndex / 10,
                 filterParameters: event.filterParameters || [],
@@ -117,9 +148,8 @@ export class SubCategoryComponent implements OnInit {
         this.getData();
     }
 
-
     handsearchKeyChange(event: string): void {
-        if(event == ""){
+        if (event == '') {
             this.toastService.showError(`Search can not be empty`);
             return;
         }
@@ -128,23 +158,25 @@ export class SubCategoryComponent implements OnInit {
 
     async findById(data: any) {
         let payload = this.tableQueryParameters;
-        payload.filterParameters = [{ field: "SubCategoryName", value: data, operator: 'contains'}];
-        payload.pageIndex=0;
+        payload.filterParameters = [
+            { field: 'SubCategoryName', value: data, operator: 'contains' },
+        ];
+        payload.pageIndex = 0;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllSubCategories(payload)
         );
         console.log(response);
-        if(response.result?.data?.length!=0){
+        if (response.result?.data?.length != 0) {
             this.tableData = response.result;
             this.refresh_b = true;
-            this.searching.val=true;
-            this.searching.data=data;
-        }else{
+            this.searching.val = true;
+            this.searching.data = data;
+        } else {
             this.toastService.showError('No Pension Category ID found');
         }
 
-          this.isTableDataLoading = false;
+        this.isTableDataLoading = false;
     }
     initializeForm(): void {
         this.SubForm = this.fb.group({
@@ -165,7 +197,7 @@ export class SubCategoryComponent implements OnInit {
     async add_Sub_category() {
         if (this.SubForm.valid) {
             const formData = this.SubForm.value;
-
+            let name=this.SubForm.value.SubCategoryName;
             const response = await firstValueFrom(
                 this.service.createSubCategory(formData)
             );
@@ -175,6 +207,9 @@ export class SubCategoryComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Sub Category Details added successfully'
                 );
+                if (this.called_from_pension==true){
+                    this.router.navigate(["master/app-pension/app-pension-category"], { queryParams: { from: "sub" ,name:name} });
+                }
             } else {
                 this.handleErrorResponse(response);
             }
@@ -221,8 +256,8 @@ export class SubCategoryComponent implements OnInit {
             pageSize: 10,
             pageIndex: 0,
         };
-        this.searching.val=false;
-        this.searching.data=null;
+        this.searching.val = false;
+        this.searching.data = null;
         this.getData();
     }
 

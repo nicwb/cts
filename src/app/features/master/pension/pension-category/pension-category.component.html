@@ -69,6 +69,8 @@
                 placeholder="Select a SubCategoryName"
                 (onFilter)="find_extra_primary_id($event)"
                 (onChange)="clicked_Primary($event)"
+                (ngModelChange)="onClearPrimary($event)"
+
               >
                 <ng-template pTemplate="selectedItem">
                     <div>
@@ -102,6 +104,7 @@
                 placeholder="Select a SubCategoryName"
                 (onFilter)="find_extra_sub_id($event)"
                 (onChange)="clicked_Sub($event)"
+                (ngModelChange)="onClearSub($event)"
               >
                 <ng-template pTemplate="selectedItem">
                   <div>
