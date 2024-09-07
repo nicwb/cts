@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PensionFirstBillService,BankService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from 'src/app/api'; 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -17,7 +18,7 @@ export class FirstPensionComponent implements OnInit {
   selectedPension: any;
   pdfData: any;
   pensionComponent$?: Observable<any>;
-
+  @Input() ppoId?: string;
   
   
 
@@ -27,7 +28,8 @@ export class FirstPensionComponent implements OnInit {
     private pensionFirstBillService: PensionFirstBillService,
     private pdfGenerationService: PdfGenerationService,
     private pensionPPODetailsService: PensionPPODetailsService,
-    private bankService: BankService
+    private bankService: BankService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -47,12 +49,58 @@ export class FirstPensionComponent implements OnInit {
   };
     this.pensionComponent$ =
             this.pensionPPODetailsService.getAllPensioners(payload);
+    // Check if ppoId is provided via route parameters
+    this.route.paramMap.subscribe(params => {
+      const routePpoId = params.get('ppoId');
+      if (routePpoId) {
+        this.ppoId = routePpoId;
+        this.fetchUserInfo();
+      }
+    });
   }
 
   handleSearchEvent(event: any) {
     console.log("",event);
     this.FirstPensionForm.controls['ppoId'].setValue(event.ppoId);
     this.FirstPensionForm.controls['pensionerName'].setValue(event.pensionerName);
+}
+
+async fetchUserInfo(): Promise<void> {
+  if (this.ppoId) {
+    try {
+      if (this.pensionComponent$) {
+        const response = await firstValueFrom(this.pensionComponent$);
+
+        if (response && response.result && response.result.data) {
+          if (Array.isArray(response.result.data)) {
+            
+            const matchingPensioner = response.result.data.find((p: any) => p.ppoId.toString() === this.ppoId);
+            
+            if (matchingPensioner) {
+              this.handleSearchEvent(matchingPensioner);
+            } else {
+              console.warn('No matching pensioner found for ppoId:', this.ppoId);
+            }
+          } else {
+            console.warn('Response result data is not an array:', typeof response.result.data);
+          }
+        } else {
+          console.warn('Response, result, or data is missing:', response);
+        }
+      } else {
+        console.warn('pensionComponent$ is undefined');
+      }
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
+    }
+  } else {
+    console.warn('No ppoId provided');
+  }
+  console.warn('fetchUserInfo completed');
 }
 
   

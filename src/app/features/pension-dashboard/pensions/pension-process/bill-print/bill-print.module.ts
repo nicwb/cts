@@ -54,7 +54,11 @@ const routes: Routes = [
 
   {path: '', component: BillPrintComponent},
   {path: 'regular-pension', component: RegularPensionComponent},
-  { path: 'first-pension', component: FirstPensionComponent }
+  { path: 'first-pension', component: FirstPensionComponent },
+  {
+    path: ':ppoId/first-pension',
+    component: FirstPensionComponent
+  }
 
 ];
 
