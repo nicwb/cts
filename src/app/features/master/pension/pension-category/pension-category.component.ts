@@ -336,18 +336,24 @@ export class PensionCategoryComponent implements OnInit {
             let response = await firstValueFrom(
                 this.service.createCategory(formData)
             );
-            if (response) {
+            if (response.apiResponseStatus===1) {
                 // Assuming 1 means success
+                this.toastService.showSuccess(
+                    'Pension Category Details added successfully'
+                );
                 this.displayInsertModal = false; // Close the dialog
-                this.checkIfAlreadyExsist(formData);
                 this.PensionForm.reset();
                 this.primary_id = null;
                 this.sub_id = null;
             } else {
+                this.toastService.showError(
+                    'Pension Category Details already exsists'
+                );
                 this.handleErrorResponse(response);
             }
             this.getData();
             console.log(response);
+
         }
     }
     async find_extra_primary_id(filterValue: any) {
@@ -526,30 +532,6 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
 
-    checkIfAlreadyExsist(parms: any) {
-        let flag = true;
-        let value = this.tableData.data;
-        let match_from1 = parms.PrimaryCategoryId;
-        let match_from2 = parms.SubCategoryId;
-        let len_val = value.length;
-        for (let i = 0; i < len_val; i++) {
-            if (
-                value[i].primaryCategoryId == match_from1 &&
-                value[i].subCategoryId == match_from2
-            ) {
-                flag = false;
-            }
-        }
-        if (flag == true) {
-            this.toastService.showSuccess(
-                'Pension Category Details added successfully'
-            );
-        } else {
-            this.toastService.showError(
-                'Pension Category Details already exsists'
-            );
-        }
-    }
 
     async findById(id: any) {
         let payload = this.tableQueryParameters;

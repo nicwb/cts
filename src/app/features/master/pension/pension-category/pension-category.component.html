@@ -66,11 +66,11 @@
                 optionLabel="label"
                 filterBy="label"
                 [showClear]="true"
-                placeholder="Select a SubCategoryName"
+                placeholder="Select a Primary CategoryName"
                 (onFilter)="find_extra_primary_id($event)"
                 (onChange)="clicked_Primary($event)"
                 (ngModelChange)="onClearPrimary($event)"
-
+                id="primary"
               >
                 <ng-template pTemplate="selectedItem">
                     <div>
@@ -105,6 +105,7 @@
                 (onFilter)="find_extra_sub_id($event)"
                 (onChange)="clicked_Sub($event)"
                 (ngModelChange)="onClearSub($event)"
+                id="sub"
               >
                 <ng-template pTemplate="selectedItem">
                   <div>

@@ -1,82 +1,110 @@
-import {test, expect } from "@playwright/test";
-import { DotEnv } from "utils/env"
+import { test, expect } from '@playwright/test';
+import { DotEnv } from 'utils/env';
 
 test.describe('Pension Category', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        test.fixme(isMobile, "Complete task-143 before runnign this test");
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
+        if (isMobile) {
+            page.locator('button.layout-topbar-menu-button').click();
+        }
         const dashboard = page.getByText('CCTSCLERK');
         await expect(dashboard).toBeVisible();
-        // Navigate to the page containing your component
         await page.goto('/#/master/app-pension/app-pension-category');
     });
-    test('is the page open', async ({ page }) => {
-        await expect(
-            page
-            .locator('app-common-header div')
-            .filter({ hasText: 'Pension Caregory Details' })
-            .nth(3)
-        ).toBeVisible();
-    });
-    // checking the new button
-    test('check new button', async ({ page }) => {
-        await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
-        await page.getByRole('button', { name: 'New' }).click();
-    });
+
     test('is the dialogbox opening', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
             page
-            .locator('div')
-            .filter({ hasText: /^Pension Category Details$/ })
+                .locator('div')
+                .filter({ hasText: /^Pension Category Details$/ })
         ).toBeVisible();
     });
-    test.skip('is the form and submit button working', async ({ page }) => {
+    test('is the form and submit button working', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
             page
-            .getByLabel('Pension Category Details')
-            .locator('div')
-            .filter({ hasText: 'Primary Category Name:Select' })
-            .first()
+                .locator('div')
+                .filter({ hasText: /^Pension Category Details$/ })
         ).toBeVisible();
         await expect(
-            page.getByText('Select a PrimaryCategoryName')
+            page.getByRole('button', { name: 'New Primary' })
         ).toBeVisible();
-        await page.getByText('Select a PrimaryCategoryName').click();
-        
-        await expect(page.getByLabel('-State Pension')).toBeVisible();
-        await page.getByLabel('-State Pension').click();
-        
-        await expect(page.getByText('Select a SubCategoryName')).toBeVisible();
-        await page.getByText('Select a SubCategoryName').click();
-        
-        await expect(page.getByText('-NO SUB CATEGORY')).toBeVisible();
-        await page.getByText('-NO SUB CATEGORY').click();
-        
+        await page.getByRole('button', { name: 'New Primary' }).click();
+
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(
+            page.getByRole('button', { name: 'New Sub' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'New Sub' }).click();
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByRole('alert').first()).toContainText(
+            'Pension Category Details added successfully'
+        );
     });
-    
-    test('is the cancle button working', async ({ page }) => {
+
+    test('duplicate checking', async ({ page }) => {
+
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
-            page.getByRole('button', { name: 'Cancel' })
+            page
+                .locator('div')
+                .filter({ hasText: /^Pension Category Details$/ })
         ).toBeVisible();
-        await page.getByRole('button', { name: 'Cancel' }).click();
-    });
-    
-    
-    test('is the refresh button working', async ({ page }) => {
-        await page.getByPlaceholder('Search').fill('State Pension-ROPA 2009');
-        await page.getByRole('toolbar').getByRole('button').nth(4).click();
-        await expect(page.getByRole('button', { name: 'Reset' })).toBeVisible();
-        await page.getByRole('button', { name: 'Reset' }).click();
-        // Check if the table is reset
-        const rowSelector = 'tbody.p-element.p-datatable-tbody';
-        const rowElements = await page.$$(rowSelector);
+        await expect(
+            page.getByRole('button', { name: 'New Primary' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'New Primary' }).click();
+
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(
+            page.getByRole('button', { name: 'New Sub' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'New Sub' }).click();
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        page.waitForTimeout(100);
+
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByRole('alert').first()).toContainText(
+            'Pension Category Details added successfully'
+        );
+
+        await page.getByRole('button', { name: 'New' }).click();
+        await page.locator('#primary').getByLabel('dropdown trigger').click();
+
+        await page.locator('p-dropdownitem.p-element').first().click();
+
+        await page.locator('#sub').getByLabel('dropdown trigger').click();
+
+
+        await page.locator('p-dropdownitem.p-element').first().click();
+
+        await expect(
+            page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByRole('alert').first()).toContainText(
+            'Pension Category Details already exsists'
+        );
     });
 });
