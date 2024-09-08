@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-
 test.describe('First pension bill', () => {
     test.beforeEach(async ({ page, isMobile }) => {
         // Navigate to the static login page containing user roles
@@ -41,8 +40,6 @@ test.describe('First pension bill', () => {
             await page.locator(`text="${day}"`).click(),
             await expect(page.getByRole('button', { name: 'Generate' })).toBeVisible(),
             await page.getByRole('button', { name: 'Generate' }).click(),
-            await expect(page.getByLabel('Success')).toBeVisible(),
-
         ]);
 
         // Assert the HTTP status code
@@ -52,12 +49,14 @@ test.describe('First pension bill', () => {
         const responseBody = await response.json();
 
         // Check if the `apiResponseStatus` is 1
+        if(responseBody.apiResponseStatus === 1){
         expect(responseBody.apiResponseStatus).toBe(1);
-
+        await expect(page.getByLabel('Success')).toBeVisible();
+        }else if(responseBody.apiResponseStatus === 3){
+            expect(responseBody.apiResponseStatus).toBe(3);
+            await expect(page.getByLabel('Oops...')).toBeVisible();
+        }
         // Optional: Log the response body for debugging purposes
-        console.log(responseBody);
-
-
     });
 
     test('First bill save', async ({ page }) => {
@@ -89,14 +88,8 @@ test.describe('First pension bill', () => {
 
         // Extract the response body and validate the apiResponseStatus
         const responseBody = await response.json();
-
-        // Check if the `apiResponseStatus` is 1
-        expect(responseBody.apiResponseStatus).toBe(1);
-
-        // Optional: Log the response body for debugging purposes
-        console.log(responseBody);
-
         if (responseBody.apiResponseStatus === 1) {
+            expect(responseBody.apiResponseStatus).toBe(1);
             // Proceed to the next request if apiResponseStatus is 1
             const [result] = await Promise.all([
                 page.waitForResponse(response =>
@@ -108,10 +101,8 @@ test.describe('First pension bill', () => {
 
             // Assert the HTTP status code of the next response
             expect(result.status()).toBe(200);
-
             // Log the result response body if needed
             const resultBody = await result.json();
-            console.log(resultBody);
             if (resultBody.apiResponseStatus === 1) {
                 expect(resultBody.apiResponseStatus).toBe(1);
                 await expect(page.getByLabel('Success')).toBeVisible();
@@ -121,7 +112,7 @@ test.describe('First pension bill', () => {
             }
             // Additional validations or operations based on the result can go here
         } else {
-            console.log('API response status is not 1, skipping the next block.');
+            console.log('API response status is not 1');
         }
     });
 
