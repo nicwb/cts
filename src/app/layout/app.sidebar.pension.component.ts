@@ -97,6 +97,7 @@ export class AppSidebarPensionComponent implements OnInit {
                 label: 'Approval', icon: 'pi pi-fw pi-bookmark',
                 items: [
                   { label: 'PPO', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/approval/ppo-approval'] },
+                  { label: 'First pension Bill', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/approval/firstpensionbill-approval'] },
                   // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                 ]
               },

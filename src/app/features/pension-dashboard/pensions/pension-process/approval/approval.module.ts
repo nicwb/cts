@@ -30,12 +30,15 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.module';
+import {FirstpensionbillapprovalComponent} from './firstpensionbillapproval/firstpensionbillapproval.component'
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { DividerModule } from 'primeng/divider';
+
 
 const routes: Routes = [
-
-
   {path: '', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
-  {path: 'ppo-approval', component: PpoApprovalComponent, data: { breadcrumb: 'PpoApprovalComponent' }}
+  {path: 'ppo-approval', component: PpoApprovalComponent, data: { breadcrumb: 'PpoApprovalComponent' }},
+  {path: 'firstpensionbill-approval', component: FirstpensionbillapprovalComponent, data: {Breadcrumb: 'FirstpensionbillapprovalComponent'}}
 
 ];
 
@@ -43,7 +46,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    PpoApprovalComponent
+    PpoApprovalComponent,
+    FirstpensionbillapprovalComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +78,8 @@ const routes: Routes = [
     SliderModule,
     RatingModule,
     SearchPopupTempModule,
+    PopupTableModule,
+    DividerModule,
     RouterModule.forChild(routes),
   ]
 })
