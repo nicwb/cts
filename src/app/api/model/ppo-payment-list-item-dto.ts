@@ -24,6 +24,7 @@ export interface PpoPaymentListItemDTO {
     rateType?: string;
     rateAmount?: number;
     periodInMonths?: number;
+    periodInDays?: number;
     dueAmount?: number;
     drawnAmount?: number;
     netAmount?: number;
