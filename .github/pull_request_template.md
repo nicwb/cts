@@ -1,8 +1,9 @@
 > [!IMPORTANT]
-> PR for [Task-###](https://tree.taiga.io/project/santosh84das-ifms-pension-module/task/###)
-<!-- Replace ### characters above with your task number -->
+> PR for [Task-###: title](https://tree.taiga.io/project/santosh84das-ifms-pension-module/task/###)
 
-## Please follow the guidelines when sending PR
+<!-- Replace ### characters with task number and "title" -->
+
+## The guidelines are followed when sending PR
 
 - [ ] PR has a single commit only.
 - [ ] Commit Message is same as the task title

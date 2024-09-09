@@ -362,7 +362,7 @@ export class PensionFirstBillService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/bill`;
+        let localVarPath = `/api/v1/ppo/send-bill`;
         return this.httpClient.request<string>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

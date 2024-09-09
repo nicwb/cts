@@ -74,3 +74,4 @@ export * from './ppo-component-revision-response-dto-list-json-api-response';
 export * from './ppo-component-revision-update-dto';
 export * from './ppo-payment-list-item-dto';
 export * from './sort-parameter';
+export * from './string-json-api-response';
