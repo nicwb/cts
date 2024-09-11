@@ -94,6 +94,8 @@ model/ppo-component-revision-response-dto-list-json-api-response.ts
 model/ppo-component-revision-response-dto.ts
 model/ppo-component-revision-response-dtoi-enumerable-json-api-response.ts
 model/ppo-component-revision-update-dto.ts
+model/ppo-list-response-dto-json-api-response.ts
+model/ppo-list-response-dto.ts
 model/ppo-payment-list-item-dto.ts
 model/sort-parameter.ts
 model/string-json-api-response.ts
