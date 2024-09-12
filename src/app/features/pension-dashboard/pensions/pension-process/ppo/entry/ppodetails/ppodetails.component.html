@@ -48,67 +48,70 @@
           </div>
   
           <!-- Table View -->
-          <div *ngIf="viewMode" class="flex flex-column gap-4 mt-4">
-            <p-fieldset legend="All PPO" class="line-height-3 m-0">
-              <div class="relative p-4 m-4">
-                <div class="absolute left-0">
-                  <span class="p-float-label">
-                    <input 
-                      [(ngModel)]="ppoSearchField" 
-                      id="inputtext" 
-                      pInputText 
-                      (ngModelChange)="search()" 
-                    />
-                    <label for="inputtext">Search</label>
-                  </span>
+          <p-dialog [(visible)]="viewMode" [maximizable]="true" [modal]="true" header="All PPOs">
+            <div *ngIf="viewMode" class="flex flex-column gap-4 mt-4">
+              <p-fieldset legend="All PPO" class="line-height-3 m-0">
+                <div class="relative p-4 m-4">
+                  <div class="absolute left-0">
+                    <span class="p-float-label">
+                      <input 
+                        [(ngModel)]="ppoSearchField" 
+                        id="inputtext" 
+                        pInputText 
+                        (ngModelChange)="search()" 
+                      />
+                      <label for="inputtext">Search</label>
+                    </span>
+                  </div>
+                  <div class="absolute right-0">
+                    <button 
+                      label="Add New PPO" 
+                      pButton 
+                      pRipple 
+                      icon="pi pi-plus" 
+                      (click)="newPPOEntry()">
+                    </button>
+                  </div>
                 </div>
-                <div class="absolute right-0">
-                  <button 
-                    label="Add New PPO" 
-                    pButton 
-                    pRipple 
-                    icon="pi pi-plus" 
-                    (click)="newPPOEntry()">
-                  </button>
+    
+                <!-- Table Container with Scroll -->
+                <div class="table-wrapper">
+                  <p-table 
+                    [value]="data.data" 
+                    selectionMode="single" 
+                    [scrollable]="true" 
+                    [loading]="isLoading">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th *ngFor="let col of cols">{{ col.header }}</th>
+                        <th>Edit</th>
+                      </tr>
+                    </ng-template>
+    
+                    <ng-template pTemplate="body" let-record>
+                      <tr>
+                        <td *ngFor="let col of cols">{{ record[col.field] }}</td>
+                        <td>
+                          <p-button
+                          label="Edit"
+                            icon="pi pi-pencil" 
+                            class="p-button-text" 
+                            (click)="editThisRecord(record)">
+                          </p-button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
                 </div>
-              </div>
-  
-              <!-- Table Container with Scroll -->
-              <div class="table-wrapper">
-                <p-table 
-                  [value]="data.data" 
-                  selectionMode="single" 
-                  [scrollable]="true" 
-                  [loading]="isLoading">
-                  <ng-template pTemplate="header">
-                    <tr>
-                      <th *ngFor="let col of cols">{{ col.header }}</th>
-                      <th>Edit</th>
-                    </tr>
-                  </ng-template>
-  
-                  <ng-template pTemplate="body" let-record>
-                    <tr>
-                      <td *ngFor="let col of cols">{{ record[col.field] }}</td>
-                      <td>
-                        <p-button
-                        label="Edit"
-                          icon="pi pi-pencil" 
-                          class="p-button-text" 
-                          (click)="editThisRecord(record)">
-                        </p-button>
-                      </td>
-                    </tr>
-                  </ng-template>
-                </p-table>
-              </div>
-  
-              <!-- Table Message -->
-              <div class="m-4 text-center">
-                <h1>{{ tableMsg }}</h1>
-              </div>
-            </p-fieldset>
-          </div>
+    
+                <!-- Table Message -->
+                <div class="m-4 text-center">
+                  <h1>{{ tableMsg }}</h1>
+                </div>
+              </p-fieldset>
+            </div>
+          </p-dialog>
+          
   
         </div>
       </div>
