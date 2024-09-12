@@ -1,8 +1,11 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PensionBankAccountsService, BankService } from 'src/app/api';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { PensionBankAccountsService, BankService, PensionFactoryService } from 'src/app/api';
 import { firstValueFrom, tap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { environment } from 'src/environments/environment';
+import { log } from 'console';
+
 
 
 @Component({
@@ -18,11 +21,13 @@ export class BankDetailsComponent implements OnInit, OnChanges {
   banksBranch?: any;
   isEditing: boolean = false;
   legend: string = "Bank Details";
+  selectedBank: any = null;
 
   constructor(
     private fb: FormBuilder,
     private service: PensionBankAccountsService,
     private banksService: BankService,
+    private pensionFactoryService: PensionFactoryService,
     private tostService: ToastService,
   ) { 
     this.initializeForm();
@@ -35,14 +40,76 @@ export class BankDetailsComponent implements OnInit, OnChanges {
       accountHolderName: [''],
       ifscCode: ['', [Validators.required]],
       bankCode: ['', [Validators.required]],
-      branchCode: ['', [Validators.required]]
+      branchCode: ['', [Validators.required]],
+      bank: new FormControl(''),
+      bankName: ['']
     });
   }
 
   ngOnInit(): void {
+    if(!environment.production){
+      this.fillFactoryData();
+    }
     // Fetch banks and route parameters
     this.fetchBanks();
     
+  }
+
+  async fillFactoryData() {
+    if (this.banks.length === 0) {
+      await this.fetchBanks();  
+    }
+    await firstValueFrom(this.pensionFactoryService.createFake("PensionerBankAcEntryDTO").pipe(
+      tap(
+        async (res) => {
+          if (res.result) {
+            this.BankDetailsForm.patchValue(res.result);
+            
+            if (res.result.bankCode && this.banks.length > 0) {
+              const selectedBank = this.banks.find((bank: any) => bank.code === res.result.bankCode);
+              
+              if (selectedBank) {
+                this.BankDetailsForm.patchValue({ 
+                  bankName: selectedBank.name,
+                  bank: selectedBank 
+                });
+                
+                await this.fetchAndPatchBranchName(res.result.bankCode, res.result.branchCode);
+              }
+            }
+          }
+        }
+      )
+    ));
+  }
+
+  async fetchAndPatchBranchName(bankCode: number, branchCode: number) {
+    await firstValueFrom(this.banksService.getBranchByBranchCode(bankCode).pipe(
+      tap(response => {
+        if (response.result) {
+          this.banksBranch = response.result;
+          const selectedBranch = this.banksBranch.find((branch: { code: number }) => branch.code === branchCode);
+          if (selectedBranch) {
+            this.BankDetailsForm.patchValue({ branchName: selectedBranch.name });
+          }
+        }
+      })
+    ));
+  }
+
+  async fetchAndSetBankName(bankCode: number) {
+    await firstValueFrom(
+      this.banksService.getAllBanks().pipe(
+        tap(response => {
+          if (response.result) {
+            const selectedBank = response.result.find(bank => bank.code === bankCode);
+            if (selectedBank) {
+              this.BankDetailsForm.patchValue({ bankName: selectedBank.name });
+            }
+          }
+        })
+      )
+    );
   }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -100,6 +167,8 @@ export class BankDetailsComponent implements OnInit, OnChanges {
           }
         })
       ));
+      // Update bankName form control value
+      this.BankDetailsForm.get('bankName')?.setValue(event.value.name);
     } else {
       this.banksBranch = undefined;
     }

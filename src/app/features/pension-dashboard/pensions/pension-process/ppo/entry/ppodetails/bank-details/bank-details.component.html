@@ -31,20 +31,21 @@
                 </div>
                 <div class="col-12 md:col-6">
                     <p-dropdown [style]="{width: '100%', height: '45px'}"
-                        [options]="banks"
-                        optionLabel="name"
-                        [filter]="true"
-                        filterBy="name" 
-                        [showClear]="true"
-                        (onChange)="onChangeBank($event)"
-                        placeholder="Bank Name">
-                            <ng-template pTemplate="selectedItem" let-selectedOption>
-                                <div class="flex align-items-center gap-2">
-                                    <div>{{ selectedOption.name }}</div>
-                                </div>
-                            </ng-template>
+                      [options]="banks"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name" 
+                      [showClear]="true"
+                      (onChange)="onChangeBank($event)"
+                      formControlName="bank"
+                      placeholder="Bank Name">
+                      <ng-template pTemplate="selectedItem" let-selectedOption>
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ selectedOption.name }}</div>
+                        </div>
+                      </ng-template>
                     </p-dropdown>
-                </div>
+                  </div>
 
                 <div class="col-12 md:col-6" *ngIf="banksBranch">
                         <p-dropdown [style]="{width: '100%', height: '45px'}"
