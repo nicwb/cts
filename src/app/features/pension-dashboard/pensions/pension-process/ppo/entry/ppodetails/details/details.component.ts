@@ -277,6 +277,7 @@ export class DetailsComponent implements OnInit {
     this.ppoFormDetails.controls['receiptId'].setValue($event.id);
     this.ppoFormDetails.controls['pensionerName'].setValue($event.pensionerName);
     this.ppoFormDetails.controls['ppoNo'].setValue($event.ppoNo);
+    this.ppoFormDetails.controls['dateOfCommencement'].setValue(this.parseDate($event.dateOfCommencement));
     this.eppoid = $event.treasuryReceiptNo;
   }
 
