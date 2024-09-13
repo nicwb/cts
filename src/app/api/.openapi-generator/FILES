@@ -86,6 +86,8 @@ model/pensioner-response-dto.ts
 model/ppo-bill-breakup-entry-dto.ts
 model/ppo-bill-breakup-response-dto.ts
 model/ppo-bill-entry-dto.ts
+model/ppo-bill-list-response-dto-json-api-response.ts
+model/ppo-bill-list-response-dto.ts
 model/ppo-bill-response-dto-json-api-response.ts
 model/ppo-bill-response-dto.ts
 model/ppo-component-revision-entry-dto.ts

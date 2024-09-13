@@ -64,6 +64,8 @@ export * from './pensioner-response-dto-json-api-response';
 export * from './ppo-bill-breakup-entry-dto';
 export * from './ppo-bill-breakup-response-dto';
 export * from './ppo-bill-entry-dto';
+export * from './ppo-bill-list-response-dto';
+export * from './ppo-bill-list-response-dto-json-api-response';
 export * from './ppo-bill-response-dto';
 export * from './ppo-bill-response-dto-json-api-response';
 export * from './ppo-component-revision-entry-dto';
