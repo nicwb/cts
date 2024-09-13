@@ -114,7 +114,7 @@ test.describe('PPO Approval', () => {
         await page.click('app-search-popup');
         await page.waitForTimeout(500);
         await page.waitForSelector('tbody tr');
-        await page.locator('tbody tr:first-child').click();
+        await page.locator('tbody tr:nth-child(1)').click();
         const ppoId = await page.locator('input[placeholder="PPO ID"]').inputValue();
         const table = page.locator('table').last();
         await expect(table).toBeVisible();
@@ -132,6 +132,32 @@ test.describe('PPO Approval', () => {
             if (await message.isVisible()) {
                 await page.click('button:has-text("Update Bank Account Details")');
                 await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account`);
+                await expect(page.locator('text=Bank Details')).toBeVisible();
+                await expect(page.locator('text=ID-'+ppoId)).toBeVisible(); 
+        
+                await expect(page.locator('p-dropdown[formcontrolname="payMode"]')).toBeVisible();
+                await expect(page.locator('p-dropdown[formcontrolname="bank"]')).toBeVisible();
+                await expect(page.locator('input[formcontrolname="ifscCode"]')).toBeVisible();
+                await expect(page.locator('input[formcontrolname="bankAcNo"]')).toBeVisible();
+
+               
+                const saveButton = page.locator('button:has-text("Save")');
+                await expect(saveButton).toBeVisible();
+                await expect(saveButton).toBeEnabled();
+
+            
+                const backButton = page.locator('button:has-text("Back")');
+                await expect(backButton).toBeVisible();
+                await expect(backButton).toBeEnabled();
+
+                
+                const nextButton = page.locator('button:has-text("Next")');
+                await expect(nextButton).toBeVisible();
+                await expect(nextButton).toBeEnabled();
+
+                await page.click('button:has-text("Save")');
+                const successMessage = await page.locator('.p-toast-message-text').textContent();
+                expect(successMessage).toContain('Bank account saved successfully');
             } 
         }
     });
