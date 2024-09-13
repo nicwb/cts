@@ -15,25 +15,25 @@ import { EntryComponent } from './entry.component';
 import { PpodetailsModule } from './ppodetails/ppodetails.module';
 
 const routes: Routes = [
-  { path: '', component: EntryComponent },
+    { path: '', component: EntryComponent, data: { breadcrumb: 'EntryComponent' } },
 ];
 
 @NgModule({
-  declarations: [EntryComponent], // Ensure both components are declared
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    DynamicTableModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    TreasuryDropdownModule,
-    PpodetailsModule,
-    RouterModule.forChild(routes),
-  ],
+    declarations: [EntryComponent], // Ensure both components are declared
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        DynamicTableModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        TreasuryDropdownModule,
+        PpodetailsModule,
+        RouterModule.forChild(routes),
+    ],
 })
 export class EntryModule {}

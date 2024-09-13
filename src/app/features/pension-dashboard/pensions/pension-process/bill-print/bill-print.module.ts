@@ -52,13 +52,10 @@ import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 const routes: Routes = [
 
 
-  {path: '', component: BillPrintComponent},
-  {path: 'regular-pension', component: RegularPensionComponent},
-  { path: 'first-pension', component: FirstPensionComponent },
-  {
-    path: ':ppoId/first-pension',
-    component: FirstPensionComponent
-  }
+  { path: '', component: BillPrintComponent, data: { breadcrumb: 'BillPrintComponent' }},
+  { path: 'regular-pension', component: RegularPensionComponent, data: { breadcrumb: 'RegularPensionComponent' }},
+  { path: 'first-pension', component: FirstPensionComponent, data: { breadcrumb: 'FirstPensionComponent' }},
+  { path: ':ppoId/first-pension', component: FirstPensionComponent, data: { breadcrumb: 'FirstPensionComponent[:ppoId]' }}
 
 ];
 

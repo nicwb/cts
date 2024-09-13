@@ -34,8 +34,8 @@ import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.mod
 const routes: Routes = [
 
 
-  {path: '', component: ApprovalComponent},
-  {path: 'ppo-approval', component: PpoApprovalComponent}
+  {path: '', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
+  {path: 'ppo-approval', component: PpoApprovalComponent, data: { breadcrumb: 'PpoApprovalComponent' }}
 
 ];
 

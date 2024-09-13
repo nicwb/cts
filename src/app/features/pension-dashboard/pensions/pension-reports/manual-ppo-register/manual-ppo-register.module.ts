@@ -21,7 +21,7 @@ import { ManualPpoRegisterComponent } from './manual-ppo-register.component';
 const routes: Routes = [
 
 
-  {path: '', component: ManualPpoRegisterComponent},
+  {path: '', component: ManualPpoRegisterComponent, data: { breadcrumb: 'ManualPpoRegisterComponent' }},
 
 ];
 

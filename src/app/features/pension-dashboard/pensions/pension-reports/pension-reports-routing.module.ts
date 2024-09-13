@@ -6,8 +6,8 @@ import { ManualPpoRegisterComponent } from './manual-ppo-register/manual-ppo-reg
 const routes: Routes = [
 
 
-  {path: '', component: PensionReportsComponent},
-  {path: 'manual-ppo-register', component: ManualPpoRegisterComponent},
+  {path: '', component: PensionReportsComponent, data: { breadcrumb: 'PensionReportsComponent' }},
+  {path: 'manual-ppo-register', component: ManualPpoRegisterComponent, data: { breadcrumb: 'ManualPpoRegisterComponent' }},
 
 ];
 

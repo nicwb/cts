@@ -15,8 +15,11 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
             {
                 path: '', component: AppLayoutComponent,
                 children: [
-                    // { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
-                    { path: '', loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule) },
+                    {
+                        path: '',
+                        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
+                        data: { breadcrumb: 'DashboardModule' }
+                    },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
                     { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
@@ -29,15 +32,28 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                     {path:'return-memo',canActivate: [NgxPermissionsGuard],data: {permissions: {only: 'can-generate-return-memo',redirectTo: '/notfound'}},loadChildren: () => import('./features/return-memo/return-memo.module').then(m => m.ReturnMemoModule)},
                     {path:'payment-mandate',loadChildren:()=>import('./features/payment-mandate/payment-mandate.module').then(m=>m.PaymentMandateModule)},
                     {path:'cheque',loadChildren: () => import('./features/cheque/cheque.module').then(m => m.ChequeModule)},
-                    {path:'master',loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule)},
+                    {
+                        path:'master',
+                        loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule),
+                        data: { breadcrumb: 'MasterModule' }
+                    },
                     {path:'stamp-strong-room',loadChildren: () => import('./features/stamp-strong-room/stamp-strong-room.module').then(m => m.StampStrongRoomModule)},
-                    {path:'pension',loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule)},
-                    {path:'master/app-pension/component-rate',loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule)},
+                    {
+                        path:'pension',
+                        loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule),
+                        data: { breadcrumb: 'PensionDashboardModule' }
+                    },
+                    {
+                        path:'master/app-pension/component-rate',
+                        loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
+                        data: { breadcrumb: 'ComponentRateModule' }                    
+                    },
 
-                ]
+                ],
+                data: { breadcrumb: 'CTS AppLayoutComponent' }
             },
-            {path:'login',component:LoginComponent},
-            {path:'static-login',component:StaticLoginComponent},
+            {path:'login',component:LoginComponent, data: { breadcrumb: 'LoginComponent' }},
+            {path:'static-login',component:StaticLoginComponent, data: { breadcrumb: 'StaticLoginComponent' }},
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotFoundComponent },

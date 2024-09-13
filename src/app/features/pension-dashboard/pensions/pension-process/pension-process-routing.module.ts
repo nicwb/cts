@@ -12,13 +12,13 @@ import { ApprovalComponent } from './approval/approval.component';
 const routes: Routes = [
 
 
-  {path: '', component: PensionProcessComponent},
-  {path: 'ppo', component: PpoComponent},
-  {path: 'pensioner-details', component: PensionerDetailsComponent},
-  {path: 'pension-bill',component:PensionBillComponent},
-  {path:'app-arrear-pension',component:ArrearPensionComponent},
-  {path: 'bill-print', component: BillPrintComponent},
-  {path: 'approval', component: ApprovalComponent},
+  {path: '', component: PensionProcessComponent, data: { breadcrumb: 'PensionProcessComponent' }},
+  {path: 'ppo', component: PpoComponent, data: { breadcrumb: 'PpoComponent' }},
+  {path: 'pensioner-details', component: PensionerDetailsComponent, data: { breadcrumb: 'PensionerDetailsComponent' }},
+  {path: 'pension-bill',component:PensionBillComponent, data: { breadcrumb: 'PensionBillComponent' }},
+  {path:'app-arrear-pension',component:ArrearPensionComponent, data: { breadcrumb: 'ArrearPensionComponent' }},
+  {path: 'bill-print', component: BillPrintComponent, data: { breadcrumb: 'BillPrintComponent' }},
+  {path: 'approval', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
 
 ];
 

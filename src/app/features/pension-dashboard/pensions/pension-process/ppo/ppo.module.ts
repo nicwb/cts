@@ -20,35 +20,36 @@ import { PpoComponent } from './ppo.component';
 
 
 const routes: Routes = [
-  {path: '', component: PpoComponent},
-  {path: 'entry', component: EntryComponent},
-  {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent},
-  {path: 'sanction', component: SanctionComponent},
-  {
-    path: ':receiptId/receipt',
-    component: ManualPpoReceiptComponent
-  }
+    {path: '', component: PpoComponent, data: { breadcrumb: 'PpoComponent' }},
+    {path: 'entry', component: EntryComponent, data: { breadcrumb: 'EntryComponent' }},
+    {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent, data: { breadcrumb: 'ManualPpoReceiptComponent' }},
+    {path: 'sanction', component: SanctionComponent, data: { breadcrumb: 'SanctionComponent' }},
+    {
+        path: ':receiptId/receipt',
+        component: ManualPpoReceiptComponent,
+        data: { breadcrumb: 'ManualPpoReceiptComponent' }
+    }
 ];
 
 
 @NgModule({
-  declarations: [PpoComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,    
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [RouterModule]
+    declarations: [PpoComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,    
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule,
+        RouterModule.forChild(routes)
+    ],
+    exports: [RouterModule]
 })
 export class PpoModule { }

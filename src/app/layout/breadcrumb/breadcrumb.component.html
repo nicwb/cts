@@ -5,7 +5,7 @@
         <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="pageReload()"></button>
     </div>
     <div class="flex-grow-1">
-        <p-breadcrumb [model]="breadcrumbs"></p-breadcrumb>
+        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home', routerLink: '/' }"></p-breadcrumb>
         <!-- <p-breadcrumb [model]="breadcrumbs" [home]="home"></p-breadcrumb> -->
         <!-- <app-breadcrumb></app-breadcrumb> -->
     </div>

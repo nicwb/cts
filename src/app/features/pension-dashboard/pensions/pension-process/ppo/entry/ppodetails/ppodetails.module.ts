@@ -32,10 +32,11 @@ import { TableModule } from 'primeng/table';
 // import { FloatLabe } ;
 
 const routes: Routes = [
-  { path: 'ppodetails', component: PpodetailsComponent },
+  { path: 'ppodetails', component: PpodetailsComponent, data: { breadcrumb: 'PpodetailsComponent' } },
   {
     path: ':ppoId/bank-account',
-    component: PpodetailsComponent
+    component: PpodetailsComponent,
+    data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
   }
   
 ];

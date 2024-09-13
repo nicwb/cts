@@ -14,7 +14,13 @@ import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { TableModule } from 'primeng/table';
 
 
-const routes: Routes = [{ path: '', component: ComponentRateComponent }];
+const routes: Routes = [
+    {
+        path: '',
+        component: ComponentRateComponent,
+        data: { breadcrumb: 'ComponentRateComponent' }
+    }
+];
 
 @NgModule({
     declarations: [ComponentRateComponent],

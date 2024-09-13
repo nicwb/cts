@@ -11,15 +11,15 @@ import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  declarations: [PensionDashboardComponent],
-  imports: [
-    CommonModule,
-    OptionCardModule,
-    PensionDashboardRoutingModule,
-    RouterModule.forChild([
-      { path: '', component: PensionDashboardComponent }
-    ]),
-    PensionProcessModule
-  ]
+    declarations: [PensionDashboardComponent],
+    imports: [
+        CommonModule,
+        OptionCardModule,
+        PensionDashboardRoutingModule,
+        RouterModule.forChild([
+            { path: '', component: PensionDashboardComponent, data: { breadcrumb: 'PensionDashboardComponent' } }
+        ]),
+        PensionProcessModule
+    ]
 })
 export class PensionDashboardModule { }

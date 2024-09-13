@@ -29,42 +29,42 @@ import { ConvertToFamilyPensionComponent } from './convert-to-family-pension.com
 
 
 const routes: Routes = [
-  { path: '', component: ConvertToFamilyPensionComponent },
+    { path: '', component: ConvertToFamilyPensionComponent, data: { breadcrumb: 'ConvertToFamilyPensionComponent' } },
 ];
 
 
 @NgModule({
-  declarations: [
-    ConvertToFamilyPensionComponent
-  ],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,    
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule,
-    TableModule,
-    InputTextModule,
-    ToggleButtonModule,
-    RippleModule,
-    MultiSelectModule,
-    ProgressBarModule,
-    ToastModule,
-    SliderModule,
-    RatingModule,
-    InputNumberModule,
-    FieldsetModule,
-    CheckboxModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [RouterModule]
+    declarations: [
+        ConvertToFamilyPensionComponent
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,    
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule,
+        TableModule,
+        InputTextModule,
+        ToggleButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        ProgressBarModule,
+        ToastModule,
+        SliderModule,
+        RatingModule,
+        InputNumberModule,
+        FieldsetModule,
+        CheckboxModule,
+        RouterModule.forChild(routes)
+    ],
+    exports: [RouterModule]
 })
 export class ConvertToFamilyPensionModule { }
