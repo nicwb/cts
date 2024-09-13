@@ -68,6 +68,8 @@ export * from './ppo-bill-list-response-dto';
 export * from './ppo-bill-list-response-dto-json-api-response';
 export * from './ppo-bill-response-dto';
 export * from './ppo-bill-response-dto-json-api-response';
+export * from './ppo-bill-save-response-dto';
+export * from './ppo-bill-save-response-dto-json-api-response';
 export * from './ppo-component-revision-entry-dto';
 export * from './ppo-component-revision-response-dto';
 export * from './ppo-component-revision-response-dtoi-enumerable-json-api-response';

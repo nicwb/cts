@@ -90,6 +90,8 @@ model/ppo-bill-list-response-dto-json-api-response.ts
 model/ppo-bill-list-response-dto.ts
 model/ppo-bill-response-dto-json-api-response.ts
 model/ppo-bill-response-dto.ts
+model/ppo-bill-save-response-dto-json-api-response.ts
+model/ppo-bill-save-response-dto.ts
 model/ppo-component-revision-entry-dto.ts
 model/ppo-component-revision-response-dto-json-api-response.ts
 model/ppo-component-revision-response-dto-list-json-api-response.ts

@@ -23,7 +23,7 @@ import { PpoBillEntryDTO } from '../model/ppo-bill-entry-dto';
 // @ts-ignore
 import { PpoBillListResponseDTOJsonAPIResponse } from '../model/ppo-bill-list-response-dto-json-api-response';
 // @ts-ignore
-import { PpoBillResponseDTOJsonAPIResponse } from '../model/ppo-bill-response-dto-json-api-response';
+import { PpoBillSaveResponseDTOJsonAPIResponse } from '../model/ppo-bill-save-response-dto-json-api-response';
 // @ts-ignore
 import { PpoListResponseDTOJsonAPIResponse } from '../model/ppo-list-response-dto-json-api-response';
 
@@ -252,9 +252,9 @@ export class PensionRegularBillService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoBillResponseDTOJsonAPIResponse>;
-    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoBillResponseDTOJsonAPIResponse>>;
-    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoBillResponseDTOJsonAPIResponse>>;
+    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoBillSaveResponseDTOJsonAPIResponse>;
+    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoBillSaveResponseDTOJsonAPIResponse>>;
+    public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoBillSaveResponseDTOJsonAPIResponse>>;
     public saveRegularPensionBill(ppoBillEntryDTO?: PpoBillEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -307,7 +307,7 @@ export class PensionRegularBillService {
         }
 
         let localVarPath = `/api/v1/ppo/pension-bill`;
-        return this.httpClient.request<PpoBillResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PpoBillSaveResponseDTOJsonAPIResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ppoBillEntryDTO,
