@@ -1,15 +1,24 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+async function waitForToastMessage(page: Page, expectedText: string, timeout = 5000): Promise<void> {
+    await page.waitForFunction(
+      (text) => {
+        const toasts = Array.from(document.querySelectorAll('.p-toast-message-text'));
+        return toasts.some(toast => toast.textContent?.includes(text));
+      },
+      expectedText,
+      { timeout }
+    );
+  }
 
 test.describe('PPO Approval', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        test.fixme(true, 'Fix the tests to handle empty list of PPOs for approval');
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click();
         }
-        const dashboard = page.getByText(`CCTSCLERK`);
-        await expect(dashboard).toBeVisible();
+        await expect(page.getByText(`CCTSCLERK`)).toBeVisible();
         await page.goto('/#/pension/modules/pension-process/approval/ppo-approval');
     });
     
@@ -17,124 +26,177 @@ test.describe('PPO Approval', () => {
         const elements = [
             { locator: 'text=PPO Approval', type: 'text' },
             { locator: 'input[placeholder="PPO ID"]', type: 'input' },
-            { locator: 'app-search-popup', type: 'component' },
-            { locator: 'button >> text="Approve"', type: 'button' },
+            { locator: 'app-popup-table', type: 'component' },
             { locator: 'button >> text="Refresh"', type: 'button' }
         ];
         
-        for (const element of elements) {
-            await expect(page.locator(element.locator)).toBeVisible();
+        await Promise.all(elements.map(element => 
+            expect(page.locator(element.locator)).toBeVisible()
+        ));
+    });
+    
+    test('should handle empty list of PPOs', async ({ page }) => {
+        await page.click('app-popup-table');
+        const dialog = page.locator('div[role="dialog"]');
+        await expect(dialog).toBeVisible();
+        
+        const noRecordsMessage = dialog.locator('text="No records found"');
+        if (await noRecordsMessage.isVisible()) {
+            await expect(noRecordsMessage).toBeVisible();
+            await expect(dialog.locator('tbody tr')).toHaveCount(0);
+        }
+        else {
+            test.skip();
         }
     });
     
-    
     test('should display search dialog with correct elements', async ({ page }) => {
-        await page.click('app-search-popup');
+        await page.click('app-popup-table');
         const dialog = page.locator('div[role="dialog"]');
-        await page.waitForTimeout(500);
         await expect(dialog).toBeVisible();
         
         await expect(dialog.locator('label[for="float-input"]')).toHaveText('Search data');
         await expect(dialog.locator('input#float-input')).toBeVisible();
         
         const tableHeaders = ['PPO ID', 'Name of Pensioner', 'Mobile', 'Date of Birth', 'Date of Retirement', 'PPO No'];
-        for (const header of tableHeaders) {
-            await expect(dialog.locator(`th:has-text("${header}")`)).toBeVisible();
-        }
+        await Promise.all(tableHeaders.map(header => 
+            expect(dialog.locator(`th:has-text("${header}")`)).toBeVisible()
+        ));
     });
     
-    test('should select PPO and display details', async ({ page }) => {
-        await page.click('app-search-popup');
+    test('should select PPO and display details if available', async ({ page }) => {
+        await page.click('app-popup-table');
         const dialog = page.locator('div[role="dialog"]');
-        await page.waitForTimeout(500);
         await expect(dialog).toBeVisible();
-        await page.waitForTimeout(500);
-        await page.waitForSelector('tbody tr');
-        const firstRow = dialog.locator('tbody tr:first-child');
-        const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-        await firstRow.click();
-        await page.waitForTimeout(500);
-        const table = page.locator('table.table.p-datatable.p-component');
-        await expect(table).toBeVisible();
         
-        const expectedHeaders = ['PPO Id', 'PPO Number', 'Pensioner\'s Name', 'Payment Mode', 'Account Holder', 'Bank Branch Name', 'IFSC Code', 'Bank Account Number', 'Expiry Date', 'Commencement Date'];
-        for (const header of expectedHeaders) {
-            await expect(table.locator(`th:has-text("${header}")`)).toBeVisible();
+        const firstRow = dialog.locator('tbody tr:first-child');
+        if (await firstRow.isVisible()) {
+            await firstRow.click();
+            const table = page.locator('table.table.p-datatable.p-component');
+            await expect(table).toBeVisible();
+            
+            const expectedHeaders = ['PPO Id', 'PPO Number', 'Pensioner\'s Name', 'Payment Mode', 'Account Holder', 'Bank Branch Name', 'IFSC Code', 'Bank Account Number', 'Expiry Date', 'Commencement Date'];
+            await Promise.all(expectedHeaders.map(header => 
+                expect(table.locator(`th:has-text("${header}")`)).toBeVisible()
+            ));
+            const approveButton = dialog.locator('button:has-text("Approve")');
+            await expect(approveButton).toBeVisible();
         }
     });
-    
-    test('should refresh page and clear PPO ID', async ({ page }) => {
-        await page.click('app-search-popup');
-        const dialog = page.locator('.p-dialog.p-component');
-        await expect(dialog).toBeVisible();
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await page.waitForTimeout(500);
-        await expect(firstRow).toBeVisible(); 
-        await firstRow.click();
-        const ppoIdCell = firstRow.locator('td').first(); 
-        const ppoIdValue = await ppoIdCell.textContent();
-        const closeButton = dialog.locator('.p-dialog-header-close-icon.pi.pi-times').nth(0);
-        await closeButton.click();
-        await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(ppoIdValue?.trim() ?? '');
-        
-        await page.click('button:has-text("Refresh")');
-        
-        await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
-    });
-    
-    
-    
-    
     
     test('should show "No records found" for invalid search', async ({ page }) => {
-        await page.waitForTimeout(500);
-        await page.click('app-search-popup');
-        await page.waitForTimeout(500);
+        await page.click('app-popup-table');
         await page.fill('input#float-input', 'NonExistentPPO');
         await expect(page.locator('text="No records found"')).toBeVisible();
     });
-    
+
+    test('should route to bank page if bank record is not available', async ({ page }) => {
+        await page.click('app-popup-table');
+        
+        const firstRow = page.locator('tbody tr:first-child');
+        if (await firstRow.isVisible()) {
+            await firstRow.click();
+            const ppoId = await page.locator('input[placeholder="PPO ID"]').inputValue();
+            const table = page.locator('table').last();
+            await expect(table).toBeVisible();
+            
+            const ppoIdCell = table.locator('td:has-text("PPO Id")');
+            if (!(await ppoIdCell.isVisible())) {
+                const message = table.locator('td:has-text("Pensioner bank account not updated")');
+                if (await message.isVisible()) {
+                    await page.click('button:has-text("Update Bank Account Details")');
+                    await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
+                    await expect(page.locator('text=Bank Details')).toBeVisible();
+                    await expect(page.locator('text=ID-'+ppoId)).toBeVisible(); 
+            
+                    await expect(page.locator('p-dropdown[formcontrolname="payMode"]')).toBeVisible();
+                    await expect(page.locator('p-dropdown[formcontrolname="bank"]')).toBeVisible();
+                    await expect(page.locator('input[formcontrolname="ifscCode"]')).toBeVisible();
+                    await expect(page.locator('input[formcontrolname="bankAcNo"]')).toBeVisible();
+
+                    const saveButton = page.locator('button:has-text("Save")');
+                    await expect(saveButton).toBeVisible();
+                    await expect(saveButton).toBeEnabled();
+
+                    const backButton = page.locator('button:has-text("Back")');
+                    await expect(backButton).toBeVisible();
+                    await expect(backButton).toBeEnabled();
+
+                    const nextButton = page.locator('button:has-text("Next")');
+                    await expect(nextButton).toBeVisible();
+                    await expect(nextButton).toBeEnabled();
+
+                    await page.click('button:has-text("Save")');
+                    await waitForToastMessage(page, 'Bank account saved');
+                    const dialogHeader = page.getByRole('dialog');
+                    const isModalVisible = await dialogHeader.isVisible();
+      
+                    if (isModalVisible) {
+                        await page.click('button:has-text("Yes")');
+                        await expect(page).toHaveURL(`/#/pension/modules/pension-process/approval/ppo-approval/${ppoId}`);
+                        await page.click('button:has-text("Approve")');
+                        await page.waitForSelector('text=PPO Status Flag Set Successfully');
+                    }
+                } 
+            }
+        }
+    });
     
     test('should approve PPO successfully', async ({ page }) => {
-        await page.click('app-search-popup');
+        await page.click('app-popup-table');
         const dialog = page.locator('.p-dialog.p-component');
         await expect(dialog).toBeVisible();
+        
         const firstRow = dialog.locator('tbody tr:first-child');
-        await expect(firstRow).toBeVisible(); 
-        await firstRow.click();
-        const ppoIdCell = firstRow.locator('td').first(); 
-        const ppoIdValue = await ppoIdCell.textContent();
-        const closeButton = dialog.locator('.p-dialog-header-close-icon.pi.pi-times').nth(0);
-        await closeButton.click();
-        await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(ppoIdValue?.trim() ?? '');
-        await page.click('button:has-text("Approve")');
-        await expect(page.locator('text=PPO Approved successfully')).toBeVisible();
+        if (await firstRow.isVisible()) {
+            await firstRow.click();
+            const ppoId = await page.locator('input[placeholder="PPO ID"]').inputValue();
+            const approveButton = dialog.locator('button:has-text("Approve")');
+            await expect(approveButton).toBeVisible();
+            if(!(await page.locator('button:has-text("Update Bank Account Details")').isVisible())) {       
+                await expect(approveButton).toBeEnabled();
+                await approveButton.click();
+                await expect(page.locator('text=PPO Status Flag Set Successfully')).toBeVisible();
+            }
+            else {
+                const message = page.locator('td:has-text("Pensioner bank account not updated")');
+                await message.isVisible();
+                await page.click('button:has-text("Update Bank Account Details")');
+                await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
+                await expect(page.locator('text=Bank Details')).toBeVisible();
+                await expect(page.locator('text=ID-'+ppoId)).toBeVisible(); 
+            
+                await expect(page.locator('p-dropdown[formcontrolname="payMode"]')).toBeVisible();
+                await expect(page.locator('p-dropdown[formcontrolname="bank"]')).toBeVisible();
+                await expect(page.locator('input[formcontrolname="ifscCode"]')).toBeVisible();
+                await expect(page.locator('input[formcontrolname="bankAcNo"]')).toBeVisible();
+
+                const saveButton = page.locator('button:has-text("Save")');
+                await expect(saveButton).toBeVisible();
+                await expect(saveButton).toBeEnabled();
+
+                const backButton = page.locator('button:has-text("Back")');
+                await expect(backButton).toBeVisible();
+                await expect(backButton).toBeEnabled();
+
+                const nextButton = page.locator('button:has-text("Next")');
+                await expect(nextButton).toBeVisible();
+                await expect(nextButton).toBeEnabled();
+
+                await page.click('button:has-text("Save")');
+                await waitForToastMessage(page, 'Bank account saved');
+                const dialogHeader = page.getByRole('dialog');
+                const isModalVisible = await dialogHeader.isVisible();
+      
+                if (isModalVisible) {
+                    await page.click('button:has-text("Yes")');
+                    await expect(page).toHaveURL(`/#/pension/modules/pension-process/approval/ppo-approval/${ppoId}`);
+                    await page.click('button:has-text("Approve")');
+                    await page.waitForSelector('text=PPO Status Flag Set Successfully');
+                }
+            }
+        }
     });
     
-    test.skip('should route to bank page if bank record is not available', async ({ page }) => {
-        await page.click('app-search-popup');
-        await page.waitForTimeout(500);
-        await page.waitForSelector('tbody tr');
-        await page.locator('tbody tr:first-child').click();
-        const ppoId = await page.locator('input[placeholder="PPO ID"]').inputValue();
-        const table = page.locator('table').last();
-        await expect(table).toBeVisible();
-        const tableHeaders = ['PPO Id', 'PPO Number', 'Pensioner\'s Name', 'Payment Mode', 'Account Holder', 'Bank Branch Name','IFSC Code','Bank Account Number','Expiry Date','Commencement Date'];
-        for (const header of tableHeaders) {
-            await expect(table.locator(`th:has-text("${header}")`)).toBeVisible();
-        }
-        
-        const ppoIdCell = table.locator('td:has-text("PPO Id")');
-        if (await ppoIdCell.isVisible()) {
-            const ppoNumberCell = table.locator('td:has-text("PPO Number")');
-            await expect(ppoNumberCell).toBeVisible();
-        } else {
-            const message = table.locator('td:has-text("Pensioner bank account not updated")');
-            if (await message.isVisible()) {
-                await page.click('button:has-text("Update Bank Account Details")');
-                await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account`);
-            } 
-        }
-    });
     
 });

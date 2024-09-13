@@ -111,7 +111,9 @@ export class DetailsComponent implements OnInit, OnChanges {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                this.router.navigate(["/pension/modules/pension-process/ppo/manualPpoReceipt"]);
+                                this.router.navigate(["/pension/modules/pension-process/ppo/manualPpoReceipt"], {
+                                    queryParams: { returnUri: '/pension/modules/pension-process/ppo/entry/new' }
+                                });
                             }else{
                                 this.router.navigate(["/pension/modules/pension-process/ppo/entry"]);
                             }
@@ -140,6 +142,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
             ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
+            ppoId: [null, []],
             pensionerName: [
                 null,
                 [Validators.maxLength(100), Validators.minLength(0)],
@@ -301,6 +304,7 @@ export class DetailsComponent implements OnInit, OnChanges {
         if (this.saveButton) {
             return;
         }
+        this.saveButton = true;
 
         if (!this.ppoId) {
             try {

@@ -191,7 +191,12 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
     }
 
     prev(): void {
-        this.location.back();
+        if(this.ppoId){
+            this.router.navigate(['/pension/modules/pension-process/ppo/entry/',this.ppoId,'edit']); 
+        }
+        else{
+            this.location.back()
+        }
         if (this.currentStepIndex > 0) {
             this.currentStepIndex--;
         } else {

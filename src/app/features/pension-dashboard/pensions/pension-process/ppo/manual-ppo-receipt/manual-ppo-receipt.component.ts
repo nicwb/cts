@@ -8,7 +8,8 @@ import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynami
 import { SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-manual-ppo-receipt',
@@ -16,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./manual-ppo-receipt.component.scss']
 })
 export class ManualPpoReceiptComponent implements OnInit {
+    returnUri: string | null = null;
     isInsertModalVisible = false;
     manualPpoForm!: FormGroup;
     tableQueryParameters: DynamicTableQueryParameters = { pageSize: 10, pageIndex: 0, filterParameters: [], sortParameters: { field: '', order: '' } };
@@ -48,7 +50,8 @@ export class ManualPpoReceiptComponent implements OnInit {
     private pensionManualPpoReceiptService: PensionManualPPOReceiptService,
     private pensionFactoryService: PensionFactoryService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
       this.initializePpoReceiptForm();
   }
@@ -56,6 +59,9 @@ export class ManualPpoReceiptComponent implements OnInit {
   ngOnInit(): void {
       this.actionButtons = this.getActionButtonConfig();
       this.loadInitialTableData();
+      this.route.queryParamMap.subscribe(params => {
+          this.returnUri = params.get('returnUri');
+      });
       // Check if receiptId is provided via route parameters
       this.route.paramMap.subscribe(params => {
           const routeReceiptId = params.get('receiptId');
@@ -207,15 +213,27 @@ export class ManualPpoReceiptComponent implements OnInit {
               const apiCall = this.selectedRow 
                   ? this.pensionManualPpoReceiptService.updatePpoReceiptByTreasuryReceiptNo(this.selectedRow.treasuryReceiptNo, formData)
                   : this.pensionManualPpoReceiptService.createPpoReceipt(formData);
-              console.log(apiCall);
-        
-  
+
               const response = await firstValueFrom(apiCall);
-  
+
               if (response.apiResponseStatus === APIResponseStatus.Success) {
                   await this.loadInitialTableData();
                   this.resetAndCloseDialog();
                   this.toastService.showSuccess(`PPO Receipt ${this.selectedRow ? 'updated' : 'added'} successfully`);
+                
+                  if (this.returnUri) {
+                      await Swal.fire({
+                          title: 'Manual PPO receipt is created. Do you want to go back to entry form?',
+                          icon: 'question',
+                          showCancelButton: true,
+                          confirmButtonText: 'Yes',
+                          cancelButtonText: 'No'
+                      }).then((result) => {
+                          if (result.isConfirmed) {
+                              this.router.navigate([this.returnUri]);
+                          }
+                      });
+                  }
               } else {
                   this.handleErrorResponse(response);
               }
