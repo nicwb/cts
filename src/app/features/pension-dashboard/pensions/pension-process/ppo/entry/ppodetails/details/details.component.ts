@@ -184,6 +184,12 @@ export class DetailsComponent implements OnInit {
     return new Date(year, month - 1, day); // Months are 0-indexed in JavaScript
   }
 
+  parseToDate(dateOnly: any): Date | null {
+    if (!dateOnly) return null;
+    if (dateOnly instanceof Date) return dateOnly;
+    const parsedDate = new Date(dateOnly);
+    return isNaN(parsedDate.getTime()) ? null : parsedDate;
+  }
   
   // make this all data objet to string formate yy-mm-dd
   formateDate():void {
@@ -195,11 +201,11 @@ export class DetailsComponent implements OnInit {
 
   // remove that fild not required for server
   removeNotrequiredField(): void {
-    this.ppoFormDetails.removeControl('categoryDescription'); 
-    this.ppoFormDetails.removeControl('categoryIdShow');
-    this.ppoFormDetails.removeControl('subCatDesc');
-    this.ppoFormDetails.removeControl('effectiveDate');
-    this.ppoFormDetails.removeControl('reducedPensionAmount');
+    // this.ppoFormDetails.removeControl('categoryDescription'); 
+    // this.ppoFormDetails.removeControl('categoryIdShow');
+    // this.ppoFormDetails.removeControl('subCatDesc');
+    // this.ppoFormDetails.removeControl('effectiveDate');
+    // this.ppoFormDetails.removeControl('reducedPensionAmount');
   }
 
   // call this method for save database
@@ -277,6 +283,7 @@ export class DetailsComponent implements OnInit {
     this.ppoFormDetails.controls['receiptId'].setValue($event.id);
     this.ppoFormDetails.controls['pensionerName'].setValue($event.pensionerName);
     this.ppoFormDetails.controls['ppoNo'].setValue($event.ppoNo);
+    this.ppoFormDetails.controls['dateOfCommencement'].setValue(this.parseToDate($event.dateOfCommencement));
     this.eppoid = $event.treasuryReceiptNo;
   }
 
