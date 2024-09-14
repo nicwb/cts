@@ -1,30 +1,31 @@
 <p-button label="{{name}}" icon="pi pi-search" (click)="showDialog()" [style]="buttonStyle"></p-button>
 
-<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style"  [responsive]="true">
-  
-  <span class="p-float-label mb-3">
-    <input id="float-input" type="text" pInputText [(ngModel)]="searchTerm" (ngModelChange)="searchRecords()" /> 
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [style]="style"  [responsive]="true"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true">
+
+<span class="p-float-label mb-3">
+    <input id="float-input" type="text" pInputText [(ngModel)]="searchTerm" (ngModelChange)="searchRecords()" />
     <label for="float-input">Search data</label>
-  </span>
+</span>
 
-  <p-table #searchPopupDIT [value]="data.data" selectionMode="single" [scrollable]="true" [loading]="isLoading" (onLazyLoad)="loadMore($event)" [totalRecords]="totalRecords">
-        <ng-template pTemplate="header">
-          <tr>
+<p-table #searchPopupDIT [value]="data.data" selectionMode="single" [scrollable]="true" [loading]="isLoading" (onLazyLoad)="loadMore($event)" [totalRecords]="totalRecords">
+    <ng-template pTemplate="header">
+        <tr>
             <th *ngFor="let col of cols">{{ col.header }}</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-record>
-          <tr (click)="onRowSelect(record)">
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-record>
+        <tr (click)="onRowSelect(record)">
             <td *ngFor="let col of cols">{{ record[col.field] }}</td>
-          </tr>
-        </ng-template>      
-  </p-table>
+        </tr>
+    </ng-template>
+</p-table>
 
-  <div *ngIf="onresult" style="text-align: center;" class="p-3"> 
-    {{onresult}} 
-  </div>
+<div *ngIf="onresult" style="text-align: center;" class="p-3">
+    {{onresult}}
+</div>
 
-  <p-footer>
+<p-footer>
     <button pButton type="button" label="Close" (click)="closeDialog()"></button>
-  </p-footer>
+</p-footer>
 </p-dialog>

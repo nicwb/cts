@@ -13,7 +13,8 @@
   </div>
 </div>
 
-<p-dialog header="Pension Category" [(visible)]="displayInsertModal" [modal]="true" [style]="{width: '45vw'}"
+<p-dialog header="Pension Category" [(visible)]="displayInsertModal" [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
     [baseZIndex]="10000">
     <form [formGroup]="stampIndentForm" class="flex flex-column gap-4 mt-3">
         <div class="flex gap-2 xl:flex-row flex-column">
@@ -28,7 +29,7 @@
                     appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
             </div>
         </div>
-        
+
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
                 <label for="Denomination (Rs.)" class="block mb-1 text-color text-lg">Denomination (Rs.)</label>

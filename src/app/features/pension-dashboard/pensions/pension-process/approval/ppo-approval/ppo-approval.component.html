@@ -34,10 +34,8 @@
             <p-dialog
               header="PPO Details"
               [(visible)]="showTable"
-              [style]="{ width: '50rem' }"
-              [breakpoints]="{ '1199px': '75vw', '575px': '50vw' }"
+              [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
               [modal]="true"
-              [maximizable]="true"
             >
               <div class="col-12">
                 <table class="table p-datatable p-component">
