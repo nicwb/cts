@@ -283,7 +283,11 @@ export class PensionBillComponent implements OnInit {
 
   // Print bill
   billprint(): void{
-    this.router.navigate(['/pension/modules/pension-process/bill-print/first-pension']);
+    this.router.navigate(
+      this.ppoId 
+      ? ['/pension/modules/pension-process/bill-print', this.ppoId, 'first-pension']
+      : ['/pension/modules/pension-process/bill-print/first-pension']
+  );
   }
 }
 
