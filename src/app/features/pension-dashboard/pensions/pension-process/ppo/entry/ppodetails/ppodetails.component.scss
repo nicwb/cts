@@ -65,3 +65,167 @@ input[type="checkbox"] {
 .w-400{
   width: 400px;
 }
+.ppo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 16px;
+
+    .search-button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+
+      .search-input {
+        flex-grow: 1;
+        margin-right: 1rem;
+
+        input {
+          width: 100%;
+          font-size: 1rem;
+        }
+      }
+
+      // Add New PPO Button
+      .add-button {
+        flex-shrink: 0;
+
+        button {
+          font-size: 1rem; // Default button font size
+        }
+      }
+    }
+
+    // Table container styles
+    .table-wrapper {
+      overflow-x: auto; // Allow horizontal scrolling for table on mobile
+      -webkit-overflow-scrolling: touch; // Better scrolling on iOS
+
+      p-table {
+        width: 100%;
+
+        th, td {
+          padding: 0.75rem 1rem;
+          font-size: 1rem; // Default font size for table content
+        }
+
+        .p-button {
+          font-size: 1rem; // Default font size for the Edit button
+        }
+
+        // Collapse rows into card-like format for mobile view
+        @media screen and (max-width: 768px) {
+          tr {
+            display: block;
+            margin-bottom: 1rem;
+          }
+
+          td {
+            display: block;
+            width: 100%;
+            text-align: right;
+            padding: 0.5rem;
+            position: relative;
+            font-size: 1rem; // Larger font for mobile
+            border: none;
+
+            &:before {
+              content: attr(data-label);
+              position: absolute;
+              left: 0;
+              text-align: left;
+              font-weight: bold;
+              font-size: 1rem; // Ensure the label is also larger
+            }
+          }
+
+          th {
+            display: none; // Hide table headers on mobile
+          }
+        }
+      }
+    }
+
+    // Table message styling
+    .text-center {
+      h1 {
+        font-size: 2rem; // Default large font size for desktop
+
+        @media screen and (max-width: 768px) {
+          font-size: 1rem; // Reduce font size for tablets
+        }
+
+        @media screen and (max-width: 480px) {
+          font-size: 1rem; // Further reduce font size for small mobile devices
+        }
+      }
+    }
+
+    // General responsive rules for smaller screens
+    @media screen and (max-width: 768px) {
+      font-size: 16px; // Increase base font size for tablet
+
+      .search-button-container {
+        flex-direction: column;
+        align-items: stretch;
+
+        .search-input {
+          margin-bottom: 1rem;
+
+          input {
+            font-size: 1rem; // Larger font size for the search input on mobile
+          }
+        }
+
+        .add-button {
+          width: 100%;
+          margin-bottom: 1rem;
+
+          button {
+            font-size: 1rem; // Larger font for the Add New PPO button
+          }
+        }
+      }
+    }
+
+    // Even smaller screens (mobile phones)
+    @media screen and (max-width: 480px) {
+      font-size: 16px; // Further increase base font size for mobile
+
+      .search-button-container {
+        flex-direction: column;
+
+        .search-input {
+          margin-bottom: 1rem;
+
+          input {
+            font-size: 1rem; // Further increase input font size for small screens
+          }
+        }
+
+        .add-button {
+          width: 100%;
+          margin-bottom: 0.5rem;
+
+          button {
+            font-size: 1rem; // Further increase button font size
+
+          }
+        }
+      }
+
+      .table-wrapper {
+        p-table {
+          th, td {
+            font-size: 1rem; // Increase table content font size for mobile
+          }
+
+          .p-button {
+            font-size: 1rem; // Increase button font size in table rows for mobile
+          }
+        }
+      }
+    }
+  }
