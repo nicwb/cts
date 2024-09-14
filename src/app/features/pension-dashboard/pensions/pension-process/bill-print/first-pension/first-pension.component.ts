@@ -34,7 +34,7 @@ export class FirstPensionComponent implements OnInit {
 
   ngOnInit(): void {
     this.FirstPensionForm = this.fb.group({
-      generation: [''],
+      generation: ['generalBill'],
       ppoId: ['', Validators.required],
       pensionerName: ['', Validators.required]
     });
@@ -50,11 +50,12 @@ export class FirstPensionComponent implements OnInit {
     this.pensionComponent$ =
             this.pensionPPODetailsService.getAllPensioners(payload);
     // Check if ppoId is provided via route parameters
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(async params => {
       const routePpoId = params.get('ppoId');
       if (routePpoId) {
         this.ppoId = routePpoId;
-        this.fetchUserInfo();
+        await this.fetchUserInfo();
+        this.onGenerate(this.FirstPensionForm.value.generation)
       }
     });
   }

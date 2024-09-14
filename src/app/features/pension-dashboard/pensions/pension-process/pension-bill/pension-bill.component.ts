@@ -210,6 +210,14 @@ export class PensionBillComponent implements OnInit {
           }
         });
       }
+      if (this.ppoId) {
+        this.router.navigate([
+          '/pension/modules/pension-process/bill-print', 
+          this.ppoId, 
+          'first-pension'
+        ]);
+        return;
+      }
     } catch (billError) {
       Swal.fire({
         icon: "error",
