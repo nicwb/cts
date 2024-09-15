@@ -12,14 +12,15 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2'
 import { Router } from '@angular/router';
-@Component({
-    selector: 'app-pension-bill',
-    templateUrl: './pension-bill.component.html',
-    styleUrls: ['./pension-bill.component.scss'],
-    providers: [MessageService],
-})
 
-export class PensionBillComponent implements OnInit {
+  @Component({
+      selector: 'app-first-pension-pension-bill',
+      templateUrl: './first-pension-pension-bill.component.html',
+      styleUrls: ['./first-pension-pension-bill.component.scss'],
+      providers: [MessageService],
+  })
+export class FirstPensionPensionBillComponent implements OnInit {
+
     ppoId?: number;
     payments: any[] = [];
     pensioncategory: any = {};
@@ -43,12 +44,12 @@ export class PensionBillComponent implements OnInit {
 
     // Define all constractor
     constructor(
-    private fb: FormBuilder,
-    private service: PensionFirstBillService,
-    private ppoListService: PensionPPODetailsService,
-    private revisionService: PensionComponentRevisionService,
-    private toastService: ToastService,
-    private router: Router
+      private fb: FormBuilder,
+      private service: PensionFirstBillService,
+      private ppoListService: PensionPPODetailsService,
+      private revisionService: PensionComponentRevisionService,
+      private toastService: ToastService,
+      private router: Router
     ) {
         const payload = {
             listType: 'type1',
@@ -95,8 +96,8 @@ export class PensionBillComponent implements OnInit {
                     this.hasSaved = true;
                     this.result = this.response.result;
                     if (!this.result.pensioner.bankAccounts || 
-            this.result.pensioner.bankAccounts.length === 0 || 
-            this.result.pensioner.bankAccounts[0].bankAcNo === null) {
+                this.result.pensioner.bankAccounts.length === 0 || 
+                this.result.pensioner.bankAccounts[0].bankAcNo === null) {
                         this.hasSaved = false;
                         this.isApiResponseStatus1 = false;
                         Swal.fire({
@@ -168,7 +169,7 @@ export class PensionBillComponent implements OnInit {
     }
 
     // save first bill
-  
+      
     async saveFirstBill() {
         const saveFirstBill: PpoBillEntryDTO = {
             ppoId: this.result.pensioner.ppoId,
@@ -283,10 +284,7 @@ export class PensionBillComponent implements OnInit {
 
     // Print bill
     billprint(): void{
-        this.router.navigate(
-            this.ppoId 
-                ? ['/pension/modules/pension-process/bill-print', this.ppoId, 'first-pension']
-                : ['/pension/modules/pension-process/bill-print/first-pension']
-        );
+        this.router.navigate(['/pension/modules/pension-process/bill-print/first-pension']);
     }
+
 }
