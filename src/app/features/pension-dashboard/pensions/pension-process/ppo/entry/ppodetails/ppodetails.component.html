@@ -1,18 +1,17 @@
 <div class="container">
     <div class="grid">
-        <div class="col-12">
-            <div class="card">
+
                 <!-- Step Navigation and Action Buttons -->
-                <div *ngIf="!viewMode">
+                <div class="card px-0 py-4 mt-2" *ngIf="!viewMode">
                     <p-steps
                         [model]="steps"
                         [(activeIndex)]="currentStepIndex"
                     ></p-steps>
-                    <div class="my-4 px-4">
+                    <div class="my-4 px-0">
                         <!-- PPO and OtherDetails -->
                         <div
                             *ngIf="currentStepIndex === 0"
-                            class="flex flex-column gap-3"
+                            class="flex flex-column p-0 m-0 gap-3"
                         >
                             <app-details
                                 [ppoId]="ppoId"
@@ -23,7 +22,7 @@
                         <!-- BankDetails -->
                         <div
                             *ngIf="currentStepIndex === 1"
-                            class="flex flex-column gap-3"
+                            class="flex flex-column p-0 m-0 gap-3"
                         >
                             <app-bank-details
                                 [ppoId]="ppoId"
@@ -33,7 +32,7 @@
 
                         <div
                             *ngIf="currentStepIndex === 2"
-                            class="flex flex-column gap-3"
+                            class="flex flex-column p-0 m-0 gap-3"
                         >
                             <!-- add from for sanction -->
                             <app-sanction></app-sanction>
@@ -41,7 +40,7 @@
 
                         <div
                             *ngIf="currentStepIndex === 3"
-                            class="flex flex-column gap-3"
+                            class="flex flex-column p-0 m-0 gap-3"
                         >
                             <app-family-nominee></app-family-nominee>
                         </div>
@@ -70,13 +69,15 @@
                 </div>
 
                 <!-- Table View -->
+                <div class="col-12">
+                    <div class="card" *ngIf="viewMode">
                 <div
-                    *ngIf="viewMode"
-                    class="flex flex-column gap-4 mt-4 ppo-container"
+
+                    class="flex flex-column  ppo-container"
                 >
                     <p-fieldset legend="All PPO" class="line-height-3 m-0">
                         <!-- Responsive Search Input and Button -->
-                        <div class="relative p-4 m-4 search-button-container">
+                        <div class="relative mb-2 search-button-container">
                             <!-- Search Input -->
                             <div class="search-input">
                                 <span class="p-float-label">

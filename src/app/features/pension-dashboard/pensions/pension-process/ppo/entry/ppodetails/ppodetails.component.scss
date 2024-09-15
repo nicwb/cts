@@ -76,7 +76,6 @@ input[type="checkbox"] {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem;
 
       .search-input {
         flex-grow: 1;
@@ -201,7 +200,7 @@ input[type="checkbox"] {
           margin-bottom: 1rem;
 
           input {
-            font-size: 1rem; // Further increase input font size for small screens
+            font-size: 1rem;
           }
         }
 

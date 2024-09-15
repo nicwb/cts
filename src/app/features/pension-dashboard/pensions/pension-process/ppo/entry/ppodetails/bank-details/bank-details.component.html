@@ -20,7 +20,7 @@
     }
 </style>
 
-<div>
+<div class="col-12 md:col-12">
     <form [formGroup]="BankDetailsForm">
          <p-fieldset [legend]="legend" class="line-height-3 m-0">
             <div class="p-formgrid grid">
@@ -34,7 +34,7 @@
                       [options]="banks"
                       optionLabel="name"
                       [filter]="true"
-                      filterBy="name" 
+                      filterBy="name"
                       [showClear]="true"
                       (onChange)="onChangeBank($event)"
                       formControlName="bank"
@@ -52,7 +52,7 @@
                         [options]="banksBranch"
                         optionLabel="name"
                         [filter]="true"
-                        filterBy="name" 
+                        filterBy="name"
                         [showClear]="true"
                         (onChange)="onChangeBankBranch($event.value)"
                         placeholder="Bank-Branch">
@@ -79,10 +79,10 @@
                 </div>
             </div>
             <div class="w-100" style="display: flex; justify-content: center;">
-                <p-button 
+                <p-button
                     label="Save"
                     icon="pi pi-bookmark"
-                    styleClass="p-button-raised" 
+                    styleClass="p-button-raised"
                     (click)="saveData()">
                   </p-button>
             </div>

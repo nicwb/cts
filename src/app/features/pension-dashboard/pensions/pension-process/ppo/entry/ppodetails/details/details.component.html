@@ -54,7 +54,7 @@
                     <div class="field col-12 mb-2 lg:col-4 lg:mb-0 h-full w-100">
                         <p-dropdown [style]="{width: '100%',height: '47px'}" dataKey="Pension"
                             [options]="[
-                            {label: 'Pension', value: 'P'}, 
+                            {label: 'Pension', value: 'P'},
                             {label: 'Bank', value: 'F'},
                             {label: 'CPF', value: 'C'}]"
                             formControlName="ppoType"></p-dropdown>
@@ -89,7 +89,7 @@
                     <app-popup-table [service$]="catDescription$" [buttonStyle]="sechButtonStyle" (return)="handelCategoryDescription($event)"></app-popup-table>
                 </div>
             </div>
-            
+
             <div class="col-12 md:col-6">
                 <label for="catSubCatid" class="col-12 mb-2 md:col-2 md:mb-0">Cat-SubCatID:</label>
                 <div class="flex mt-1">
@@ -129,7 +129,7 @@
                     <input pInputText class="h-45px" formControlName="commutedPensionAmount" />
                 </div>
             </div>
-            
+
             <div class="col-12 md:col-6">
                 <label for="effectiveDate" class="col-12 mb-2 md:col-2 md:mb-0">Effective Date:</label>
                 <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
@@ -157,7 +157,7 @@
                     <p-dropdown
                         [style]="{height: '45px',width:'100%'}"
                         [options]="[
-                        {label: 'Male', value: 'M'}, 
+                        {label: 'Male', value: 'M'},
                         {label: 'Female', value: 'F'},
                         {label: 'Other', value: 'O'}]"
                         formControlName="gender"></p-dropdown>
@@ -208,15 +208,15 @@
 
         </div>
         <div class="w-100" style="display: flex; justify-content: center;">
-            <p-button 
+            <p-button
                 label="Save"
                 icon="pi pi-bookmark"
-                [disabled]="saveButton" 
-                styleClass="p-button-raised" 
+                [disabled]="saveButton"
+                styleClass="p-button-raised"
                 (click)="saveData()">
               </p-button>
         </div>
         </p-fieldset>
     </form>
-    
+
 </div>
