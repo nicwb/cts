@@ -13,6 +13,18 @@ test.describe('First pension bill', () => {
         // Navigate to the page containing your component
         await page.goto('/#/pension/modules/pension-process/pension-bill');
     });
+    test('PPO Entry', async ({ page }) => {
+        await page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt');
+        await page.getByRole('button', { name: 'New Manual PPO Entry' }).click();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await page.goto('/#/pension/modules/pension-process/ppo/entry/ppodetails');
+        await page.getByRole('button', { name: 'Add New PPO' }).click();
+        await page.locator('span').filter({ hasText: 'e-PPO Application No/TRID' }).getByRole('button').click();
+        await page.locator('role=cell').filter({ hasText: /\d+/ }).first().click();
+        await page.getByRole('button', { name: 'Save' }).click();
+        await page.getByRole('button', { name: 'Next' }).click();
+        await page.getByRole('button', { name: 'Save' }).click();
+    });
     test('Input button or button visible or not', async ({ page }) => {
         await expect(page.getByPlaceholder('PPO ID')).toBeVisible();
         await expect(page.getByRole('textbox', { name: 'Select a date' })).toBeVisible();
