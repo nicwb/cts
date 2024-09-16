@@ -8,7 +8,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   templateUrl: './micr.component.html',
   styleUrls: ['./micr.component.scss']
 })
-export class MicrComponent implements OnInit {
+export class MicrComponent {
 
   displayModal: boolean | undefined;
   bankList: [] = [];
@@ -19,10 +19,6 @@ export class MicrComponent implements OnInit {
   bankDetails!: bankDetails | undefined;
   @Output() inputValueChange = new EventEmitter<string>();
   constructor( private bankServices: BankService,  private toastService: ToastService, ) { }
-
-  ngOnInit(): void {
-  }
-
 
   showBankDetails() {
     // if(index!=this.selectedIndex){

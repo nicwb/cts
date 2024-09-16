@@ -28,7 +28,7 @@ interface expandedRows {
     templateUrl: './component.component.html',
     styleUrls: ['./component.component.scss'],
 })
-export class ComponentComponent {
+export class ComponentComponent implements OnInit {
     expandedRows: expandedRows = {};
     displayInsertModal: boolean = false;
     ComponentForm!: FormGroup;

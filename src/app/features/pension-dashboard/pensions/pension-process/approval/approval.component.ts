@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './approval.component.html',
   styleUrls: ['./approval.component.scss']
 })
-export class ApprovalComponent implements OnInit {
+export class ApprovalComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

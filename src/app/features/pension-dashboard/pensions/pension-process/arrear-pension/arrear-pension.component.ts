@@ -9,11 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './arrear-pension.component.html',
   styleUrls: ['./arrear-pension.component.scss']
 })
-export class ArrearPensionComponent implements OnInit {
+export class ArrearPensionComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

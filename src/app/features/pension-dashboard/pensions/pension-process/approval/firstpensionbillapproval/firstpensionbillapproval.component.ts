@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './firstpensionbillapproval.component.html',
   styleUrls: ['./firstpensionbillapproval.component.scss']
 })
-export class FirstpensionbillapprovalComponent implements OnInit {
+export class FirstpensionbillapprovalComponent {
   pensionForm: FormGroup;
   getpensionbill: any;
   pensioncategory: any = {};
@@ -38,9 +38,6 @@ export class FirstpensionbillapprovalComponent implements OnInit {
       },
     };
     this.ppoList$ = this.ppoListService.getAllPensioners(payload);
-  }
-
-  ngOnInit(): void {
   }
 
   pensionbill() {

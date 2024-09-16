@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbService } from 'src/app/layout/service/breadcrumb-service.service';
@@ -10,7 +10,7 @@ import { filter, Observable, Subscription, tap } from 'rxjs';
     selector: 'app-breadcrumb',
     templateUrl: './breadcrumb.component.html',
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent implements OnInit, OnDestroy {
     breadcrumbs: Array<{ label: string, url: string }> = [];
     navigationSubscription: Subscription;
     constructor(

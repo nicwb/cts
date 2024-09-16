@@ -4,11 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
     templateUrl: './cheque.component.html',
     styleUrls: ['./cheque.component.scss'],
 })
-export class ChequeComponent implements OnInit {
+export class ChequeComponent {
     constructor() {}
-
-    ngOnInit(): void {
-
-    }
 
 }

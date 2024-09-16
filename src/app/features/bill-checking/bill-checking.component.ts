@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -16,7 +16,7 @@ import { TokenService } from 'src/app/core/services/Token/token.service';
     templateUrl: './bill-checking.component.html',
     styleUrls: ['./bill-checking.component.scss'],
 })
-export class BillCheckingComponent implements OnInit {
+export class BillCheckingComponent implements OnInit, OnDestroy {
     StatusType = StatusType;
     routeItems: MenuItem[] = [];
     tableActionButton: ActionButtonConfig[] = [];

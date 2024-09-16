@@ -6,7 +6,7 @@ import { PensionService } from 'src/app/api';
   templateUrl: './static-login.component.html',
   styleUrls: ['./static-login.component.scss']
 })
-export class StaticLoginComponent implements OnInit {
+export class StaticLoginComponent {
   public readonly baseUrl : string;
   public readonly apiUrl;
   public readonly playwrightUrl : string;
@@ -14,9 +14,6 @@ export class StaticLoginComponent implements OnInit {
     this.apiUrl = service.configuration.basePath;
     this.baseUrl = import.meta.env.NG_APP_BASE_URL;
     this.playwrightUrl = import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL
-  }
-
-  ngOnInit(): void {
   }
 
 }

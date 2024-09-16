@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './stamps.component.html',
   styleUrls: ['./stamps.component.scss']
 })
-export class StampsComponent implements OnInit {
+export class StampsComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

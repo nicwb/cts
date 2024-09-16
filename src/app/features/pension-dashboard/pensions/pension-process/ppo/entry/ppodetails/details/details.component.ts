@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -15,7 +15,7 @@ import { PensionFactoryService } from 'src/app/api';
   styleUrls: ['./details.component.scss'],
 })
 
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnChanges {
   religionOptions: SelectItem[];
   subDivOptions: SelectItem[];
   ppoFormDetails: FormGroup = new FormGroup({});

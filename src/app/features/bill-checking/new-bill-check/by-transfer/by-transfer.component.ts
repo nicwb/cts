@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './by-transfer.component.html',
   styleUrls: ['./by-transfer.component.scss']
 })
-export class ByTransferComponent implements OnInit {
+export class ByTransferComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

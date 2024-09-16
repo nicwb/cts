@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './payment-mandate.component.html',
   styleUrls: ['./payment-mandate.component.scss']
 })
-export class PaymentMandateComponent implements OnInit {
+export class PaymentMandateComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

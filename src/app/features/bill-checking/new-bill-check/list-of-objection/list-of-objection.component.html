@@ -45,7 +45,7 @@
                         {{selectedObjection.description}}</div>
                     <div class="text-900 flex-1 md:w-2" style="padding-left: 15px;">
                         <!-- {{typeof(selectedObjection.overruledRemark)}} -->
-                        {{(selectedObjection.overruledRemark!=undefined)?selectedObjection.overruledRemark:selectedObjection.remark}}
+                        {{(selectedObjection.overruledRemark!==undefined)?selectedObjection.overruledRemark:selectedObjection.remark}}
                     </div>
                     <div class="text-900 flex flex-1  md:w-1 justify-content-center">
                         {{(selectedObjection.objectionBy)?selectedObjection.objectionBy:'You'}}</div>

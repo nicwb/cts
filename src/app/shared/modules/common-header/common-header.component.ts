@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './common-header.component.html',
   styleUrls: ['./common-header.component.scss']
 })
-export class CommonHeaderComponent implements OnInit {
+export class CommonHeaderComponent {
   @Input() headerName: string = '';
   @Input() imgSrc: string = '';
   @Input() SubHeaderName: string = '';
@@ -16,6 +16,4 @@ export class CommonHeaderComponent implements OnInit {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-  }
 }

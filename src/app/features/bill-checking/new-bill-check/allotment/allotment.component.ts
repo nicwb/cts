@@ -7,16 +7,12 @@ import { BillService } from 'src/app/core/services/Bill/bill.service';
   templateUrl: './allotment.component.html',
   styleUrls: ['./allotment.component.scss']
 })
-export class AllotmentComponent implements OnInit {
+export class AllotmentComponent {
   @Input() subHeadDetails:subDeatilsHead |any;
   // allotments:any;
   constructor(public billservice: BillService) {
     // console.log('bill', this.billservice.billDetails?.billDetailsDetails?.subDeatilsHead);
     
-  }
-
-  ngOnInit(): void {
-
   }
 
 }

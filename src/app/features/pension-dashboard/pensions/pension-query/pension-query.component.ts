@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './pension-query.component.html',
   styleUrls: ['./pension-query.component.scss']
 })
-export class PensionQueryComponent implements OnInit {
+export class PensionQueryComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

@@ -6,7 +6,7 @@ import { firstValueFrom, Observable, tap } from 'rxjs';
   templateUrl: './search-popup.component.html',
   styleUrls: []
 })
-export class SearchPopupComponentTemp {
+export class SearchPopupTempComponent {
   @Input() service$?: Observable<any> | null | undefined; // Optional service
   @Input() data: { headers: any, data: any } = { headers: [], data: [] }; // Optional data
   @Input() title: string = "Search"; // Optional data

@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './generate-return-memo.component.html',
   styleUrls: ['./generate-return-memo.component.scss']
 })
-export class GenerateReturnMemoComponent implements OnInit {
+export class GenerateReturnMemoComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

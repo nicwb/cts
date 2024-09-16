@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './stamp-strong-room.component.html',
   styleUrls: ['./stamp-strong-room.component.scss']
 })
-export class StampStrongRoomComponent implements OnInit {
+export class StampStrongRoomComponent {
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

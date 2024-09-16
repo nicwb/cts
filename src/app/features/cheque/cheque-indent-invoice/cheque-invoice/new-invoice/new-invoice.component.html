@@ -130,7 +130,7 @@
                             (click)="addNewSeries()" *ngIf="seriesGroupArray.length===i+1"></button> -->
             </div>
 
-            <div class="card overflow-auto" *ngIf="micrDetailsList != null && micrDetailsList.length > 0">
+            <div class="card overflow-auto" *ngIf="micrDetailsList !== null && micrDetailsList.length > 0">
                 <div style="height: 145px">
                     <div class="grid grid-nogutter surface-ground static border-2 border-round border-primary border-solid text-gray-800 p-3 mb-3 "
                         style="min-width: 300px; min-height: 60px;" *ngFor="let micrSeriesList of micrDetailsList">

@@ -3,7 +3,7 @@ import { LayoutService } from './service/app.layout.service';
 
 @Component({
   selector: 'app-sidebar-pension',   //app-app.sidebar.pension
-  templateUrl: 'app.sidebar.pension.component.html',
+  templateUrl: './app.sidebar.pension.component.html',
 
 })
 
