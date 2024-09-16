@@ -8,9 +8,9 @@ import { ToastService } from 'src/app/core/services/toast.service';
 
 
 @Component({
-  selector: 'app-pay-mandate-shortlist',
-  templateUrl: './pay-mandate-shortlist.component.html',
-  styleUrls: ['./pay-mandate-shortlist.component.scss']
+    selector: 'app-pay-mandate-shortlist',
+    templateUrl: './pay-mandate-shortlist.component.html',
+    styleUrls: ['./pay-mandate-shortlist.component.scss']
 })
 export class PayMandateShortlistComponent implements OnInit {
   [x: string]: any;
@@ -23,71 +23,71 @@ export class PayMandateShortlistComponent implements OnInit {
   constructor(private paymandateservice: PaymandateService, public billservice: BillService, private toastService: ToastService) { }
 
   ngOnInit(): void {
-    this.allpaymandateShortlist();
+      this.allpaymandateShortlist();
   }
 
   allpaymandateShortlist() {
-    this.paymandateservice.getPaymandateShortlist().subscribe((response) => {
-      if (response.apiResponseStatus == 1) {
-        this.paymandateShortlist = response.result;
-        console.log('->>>', this.paymandateShortlist);
+      this.paymandateservice.getPaymandateShortlist().subscribe((response) => {
+          if (response.apiResponseStatus == 1) {
+              this.paymandateShortlist = response.result;
+              console.log('->>>', this.paymandateShortlist);
 
-      } else {
+          } else {
 
-      }
-    })
+          }
+      })
   }
 
   selectPaymandate(paymandate: any) {
-    // console.log(paymandate);
+      // console.log(paymandate);
 
-    // if (!this.selectedPaymandates) {
-    //   this.selectedPaymandates = []; 
-    // }
-    // this.selectedPaymandates.push(paymandate);
+      // if (!this.selectedPaymandates) {
+      //   this.selectedPaymandates = []; 
+      // }
+      // this.selectedPaymandates.push(paymandate);
   }
 
   updateSelectedPaymandates(paymandate: any) {
-    // console.log(paymandate);
+      // console.log(paymandate);
 
-    // if (!this.selectedPaymandates) {
-    //   this.selectedPaymandates = []; 
-    // }
-    // if (paymandate.selected) {
-    //   this.selectedPaymandates.push(paymandate);
-    // } else {
-    //   const index = this.selectedPaymandates.findIndex(item => item?.tokenId === paymandate?.tokenId);
-    //   if (index !== -1) {
-    //     this.selectedPaymandates.splice(index, 1);
-    //   }
-    // }
+      // if (!this.selectedPaymandates) {
+      //   this.selectedPaymandates = []; 
+      // }
+      // if (paymandate.selected) {
+      //   this.selectedPaymandates.push(paymandate);
+      // } else {
+      //   const index = this.selectedPaymandates.findIndex(item => item?.tokenId === paymandate?.tokenId);
+      //   if (index !== -1) {
+      //     this.selectedPaymandates.splice(index, 1);
+      //   }
+      // }
   }
 
 
   dataSave() {
-    if (this.selectedPaymandates && this.selectedPaymandates.length > 0) {
-      const payloadArray = this.selectedPaymandates.map((paymandate: { tokenId: any; selectedDate: any; }) => ({
-        tokenId: paymandate.tokenId,
-        PaymentDate: new Date(paymandate.selectedDate).toISOString(),
-      }));
-      console.log('tt');
-      console.log(payloadArray);
-      this.paymandateservice.saveNewPaymandateShortlist(payloadArray).subscribe((response) => {
-        console.log('ht');
-        if (response.apiResponseStatus == 1) {
-          this.toastService.showAlert(
-            response.message,
-            response.apiResponseStatus
-          );
-          this.allpaymandateShortlist();
-        } else {
-          this.toastService.showError(response.message);
-        }
-      })
-      console.log('---->', payloadArray);
-    } else {
-      console.error('No paymandates selected.');
-    }
+      if (this.selectedPaymandates && this.selectedPaymandates.length > 0) {
+          const payloadArray = this.selectedPaymandates.map((paymandate: { tokenId: any; selectedDate: any; }) => ({
+              tokenId: paymandate.tokenId,
+              PaymentDate: new Date(paymandate.selectedDate).toISOString(),
+          }));
+          console.log('tt');
+          console.log(payloadArray);
+          this.paymandateservice.saveNewPaymandateShortlist(payloadArray).subscribe((response) => {
+              console.log('ht');
+              if (response.apiResponseStatus == 1) {
+                  this.toastService.showAlert(
+                      response.message,
+                      response.apiResponseStatus
+                  );
+                  this.allpaymandateShortlist();
+              } else {
+                  this.toastService.showError(response.message);
+              }
+          })
+          console.log('---->', payloadArray);
+      } else {
+          console.error('No paymandates selected.');
+      }
   }
 
 }

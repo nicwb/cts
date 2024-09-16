@@ -13,8 +13,8 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
+    HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+}       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BankService {
 
@@ -80,7 +80,7 @@ export class BankService {
                 if (key != null) {
                     httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
                 } else {
-                   throw Error("key may not be null if value is Date");
+                    throw Error("key may not be null if value is Date");
                 }
             } else {
                 Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
@@ -168,7 +168,7 @@ export class BankService {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (branchCode !== undefined && branchCode !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>branchCode, 'branchCode');
         }
 
@@ -238,7 +238,7 @@ export class BankService {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (bankCode !== undefined && bankCode !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>bankCode, 'bankCode');
         }
 

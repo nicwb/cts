@@ -21,31 +21,31 @@ import { ManualPpoRegisterComponent } from './manual-ppo-register.component';
 const routes: Routes = [
 
 
-  {path: '', component: ManualPpoRegisterComponent, data: { breadcrumb: 'ManualPpoRegisterComponent' }},
+    {path: '', component: ManualPpoRegisterComponent, data: { breadcrumb: 'ManualPpoRegisterComponent' }},
 
 ];
 
 
 
 @NgModule({
-  declarations: [ManualPpoRegisterComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule,
-    FormsModule,
-    ButtonModule,
-    InputTextareaModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DialogModule,
-    CalendarModule,
-    InputTextModule,
-    CardModule,
-    SelectButtonModule,
-    PanelModule,
-    FieldsetModule,
-    RadioButtonModule
-  ]
+    declarations: [ManualPpoRegisterComponent],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        FormsModule,
+        ButtonModule,
+        InputTextareaModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        DialogModule,
+        CalendarModule,
+        InputTextModule,
+        CardModule,
+        SelectButtonModule,
+        PanelModule,
+        FieldsetModule,
+        RadioButtonModule
+    ]
 })
 export class ManualPpoRegisterModule { }

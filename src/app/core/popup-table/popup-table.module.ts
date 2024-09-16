@@ -9,16 +9,16 @@ import { FormsModule } from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
-  declarations: [PopupTableComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    DialogModule,
-    TableModule,
-    FormsModule,
-    InputTextModule,
+    declarations: [PopupTableComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        DialogModule,
+        TableModule,
+        FormsModule,
+        InputTextModule,
     
-  ],
-  exports: [PopupTableComponent]
+    ],
+    exports: [PopupTableComponent]
 })
 export class PopupTableModule { }

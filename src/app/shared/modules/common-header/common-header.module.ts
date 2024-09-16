@@ -8,13 +8,13 @@ import { ButtonModule } from 'primeng/button';
 
 
 @NgModule({
-  declarations: [CommonHeaderComponent],
-  imports: [
-    CommonModule,
-    ButtonModule
-  ],
-  exports:[
-    CommonHeaderComponent
-  ]
+    declarations: [CommonHeaderComponent],
+    imports: [
+        CommonModule,
+        ButtonModule
+    ],
+    exports:[
+        CommonHeaderComponent
+    ]
 })
 export class CommonHeaderModule { }

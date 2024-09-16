@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  BaseURL:'http://dotnet:8081/api/',
-  OpenApiBaseURL: 'http://dotnet:8081',
+    production: false,
+    BaseURL:'http://dotnet:8081/api/',
+    OpenApiBaseURL: 'http://dotnet:8081',
 //    BaseURL:'https://localhost:7249/api/',
 };
 

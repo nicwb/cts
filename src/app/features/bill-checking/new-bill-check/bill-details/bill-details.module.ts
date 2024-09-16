@@ -6,11 +6,11 @@ import { TableModule } from 'primeng/table';
 
 
 @NgModule({
-  declarations: [],
-  exports:[RouterModule],
-  imports: [
-    CommonModule,
-    TableModule
-  ]
+    declarations: [],
+    exports:[RouterModule],
+    imports: [
+        CommonModule,
+        TableModule
+    ]
 })
 export class BillDetailsModule { }

@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 
 const routes: Routes = [
-  {path:'',component:DashboardComponent,data: { breadcrumb: 'DashboardComponent' }}
+    {path:'',component:DashboardComponent,data: { breadcrumb: 'DashboardComponent' }}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class DashboardRoutingModule { }

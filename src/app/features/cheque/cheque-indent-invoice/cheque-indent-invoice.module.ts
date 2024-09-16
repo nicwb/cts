@@ -28,30 +28,30 @@ import { MicrModule } from 'src/app/shared/modules/micr/micr.module';
 import { ChequeReceivedComponent } from './cheque-received/cheque-received.component';
 
 @NgModule({
-  declarations: [ChequeIndentInvoiceComponent,ChequeIndentComponent,ChequeInvoiceComponent,NewInvoiceComponent, ChequeReceivedComponent],
-  imports: [
-    CommonModule,
-    ChequeIndentInvoiceRoutingModule,
-    ChequeRoutingModule,
-    CommonHeaderModule,
-    ButtonModule,
-    OptionCardModule,
-    CardModule,
-    CalendarModule,
-    InputTextareaModule,
-    DropdownModule,
-    FormsModule,
-    RippleModule,
-    ReactiveFormsModule,
-    DialogModule,
-    HttpClientModule,
-    ConfirmDialogModule,
-    DynamicTableModule,
-    DividerModule ,
-    MessageModule,
-    TreasuryDropdownModule,
-    MicrModule,
-    NgxPermissionsModule.forChild() 
-  ]
+    declarations: [ChequeIndentInvoiceComponent,ChequeIndentComponent,ChequeInvoiceComponent,NewInvoiceComponent, ChequeReceivedComponent],
+    imports: [
+        CommonModule,
+        ChequeIndentInvoiceRoutingModule,
+        ChequeRoutingModule,
+        CommonHeaderModule,
+        ButtonModule,
+        OptionCardModule,
+        CardModule,
+        CalendarModule,
+        InputTextareaModule,
+        DropdownModule,
+        FormsModule,
+        RippleModule,
+        ReactiveFormsModule,
+        DialogModule,
+        HttpClientModule,
+        ConfirmDialogModule,
+        DynamicTableModule,
+        DividerModule ,
+        MessageModule,
+        TreasuryDropdownModule,
+        MicrModule,
+        NgxPermissionsModule.forChild() 
+    ]
 })
 export class ChequeIndentInvoiceModule { }

@@ -6,12 +6,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormGroup } from '@angular/forms';
 
 @NgModule({
-  declarations: [DiscountDetailsComponent],
-  imports: [
-    CommonModule,
-    DropdownModule,
-    DiscountDetailsRoutingModule,
-    FormGroup
-  ]
+    declarations: [DiscountDetailsComponent],
+    imports: [
+        CommonModule,
+        DropdownModule,
+        DiscountDetailsRoutingModule,
+        FormGroup
+    ]
 })
 export class DiscountDetailsModule { }

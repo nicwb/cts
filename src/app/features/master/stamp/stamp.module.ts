@@ -23,33 +23,33 @@ import { CombinationComponent } from './combination/combination.component';
 import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
-  declarations: [
-    StampComponent,
-    LabelComponent,
-    CategoryComponent,
-    TypeComponent,
-    VendorComponent,
-    DiscountDetailsComponent,
-    VendorTypeDropdownComponent,
-    StampCategoryTypeDropdownComponent,
-    CombinationComponent
-  ],
-  imports: [
-    InputTextModule,
-    DialogModule,
-    CommonModule,
-    StampRoutingModule,
-    OptionCardModule,
-    ButtonModule,
-    CalendarModule,
-    DropdownModule,
-    CommonHeaderModule,
-    DynamicTableModule,
-    ReactiveFormsModule,
-    FormsModule,
-    NgxPermissionsModule.forChild()
+    declarations: [
+        StampComponent,
+        LabelComponent,
+        CategoryComponent,
+        TypeComponent,
+        VendorComponent,
+        DiscountDetailsComponent,
+        VendorTypeDropdownComponent,
+        StampCategoryTypeDropdownComponent,
+        CombinationComponent
+    ],
+    imports: [
+        InputTextModule,
+        DialogModule,
+        CommonModule,
+        StampRoutingModule,
+        OptionCardModule,
+        ButtonModule,
+        CalendarModule,
+        DropdownModule,
+        CommonHeaderModule,
+        DynamicTableModule,
+        ReactiveFormsModule,
+        FormsModule,
+        NgxPermissionsModule.forChild()
 
-  ],
-  providers: [DatePipe]
+    ],
+    providers: [DatePipe]
 })
 export class StampModule { }

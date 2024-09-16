@@ -6,7 +6,7 @@ import { PensionBillResponse} from 'src/app/core/models/pension-bill'
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 
 
 export class PensionBill{

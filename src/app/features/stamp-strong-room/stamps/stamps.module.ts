@@ -20,29 +20,29 @@ import { StampWalletRefillComponent } from './stamp-wallet-refill/stamp-wallet-r
 
 
 @NgModule({
-  declarations: [
-    StampsComponent,
-    IndentCaptureComponent,
-    InvoiceCaptureComponent,
-    InvoiceReceiveComponent,
-    StampCombinationDropdownComponent,
-    StampWalletRefillComponent,
-  ],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    StampsRoutingModule,
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule
-   ]
+    declarations: [
+        StampsComponent,
+        IndentCaptureComponent,
+        InvoiceCaptureComponent,
+        InvoiceReceiveComponent,
+        StampCombinationDropdownComponent,
+        StampWalletRefillComponent,
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        StampsRoutingModule,
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule
+    ]
 })
 export class StampsModule { }

@@ -8,13 +8,13 @@ import { DashboardComponent } from './dashboard.component';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
 @NgModule({
-  declarations: [DashboardComponent],
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
-    OptionCardModule,
-    ButtonModule,
-    NgxPermissionsModule.forChild()
-  ]
+    declarations: [DashboardComponent],
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
+        OptionCardModule,
+        ButtonModule,
+        NgxPermissionsModule.forChild()
+    ]
 })
 export class DashboardModule { }

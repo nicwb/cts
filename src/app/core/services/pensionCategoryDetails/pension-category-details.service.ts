@@ -11,7 +11,7 @@ import { PensionCategoryDetails } from 'src/app/core/models/pension-category-det
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PensionCategoryDetailsService {
 
@@ -21,18 +21,18 @@ export class PensionCategoryDetailsService {
     constructor(private http: HttpClient, private toastService: ToastService) {}
 
     get_all_Pension_details(
-      queryParameters : DynamicTableQueryParameters
+        queryParameters : DynamicTableQueryParameters
     ): Observable<IapiResponce> {
-      return this.http
-        .patch<IapiResponce>(
-          'v1/pension/category',
-          queryParameters
-        )
-        .pipe(
-          catchError((error) => {
-            throw this.toastService.showError(error.message);
-          })
-        );
+        return this.http
+            .patch<IapiResponce>(
+                'v1/pension/category',
+                queryParameters
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastService.showError(error.message);
+                })
+            );
     }
     get_all_primary_details(
         queryParameters: DynamicTableQueryParameters
@@ -63,13 +63,13 @@ export class PensionCategoryDetailsService {
 
     //Add New Pension Category
     add_new_Pension_details(dto: PensionCategoryDetails): Observable<IapiResponce<PensionCategoryDetails>> {
-      return this.http.post<IapiResponce<PensionCategoryDetails>>('v1/pension/category', dto,
-      ).pipe(
-        catchError((error) => {
-            throw  this.toastService.showError(error.message);
+        return this.http.post<IapiResponce<PensionCategoryDetails>>('v1/pension/category', dto,
+        ).pipe(
+            catchError((error) => {
+                throw  this.toastService.showError(error.message);
 
-        })
-      );
+            })
+        );
     }
 
 

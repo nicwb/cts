@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 
 
 @NgModule({
-  imports:      [],
-  declarations: [],
-  exports:      [],
-  providers: []
+    imports:      [],
+    declarations: [],
+    exports:      [],
+    providers: []
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

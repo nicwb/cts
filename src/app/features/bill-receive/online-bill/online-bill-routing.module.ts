@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { OnlineBillComponent } from './online-bill.component';
 
 const routes: Routes = [
-  {path:'', component:OnlineBillComponent}
+    {path:'', component:OnlineBillComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class OnlineBillRoutingModule { }

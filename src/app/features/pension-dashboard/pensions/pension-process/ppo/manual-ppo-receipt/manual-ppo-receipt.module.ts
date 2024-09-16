@@ -29,31 +29,31 @@ import { RatingModule } from 'primeng/rating';
 
 
 @NgModule({
-  declarations: [ManualPpoReceiptComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,    
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule,
-    TableModule,
-    InputTextModule,
-    ToggleButtonModule,
-    RippleModule,
-    MultiSelectModule,
-    ProgressBarModule,
-    ToastModule,
-    SliderModule,
-    RatingModule,
-    MhPrimeDynamicTableModule
-  ]
+    declarations: [ManualPpoReceiptComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,    
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule,
+        TableModule,
+        InputTextModule,
+        ToggleButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        ProgressBarModule,
+        ToastModule,
+        SliderModule,
+        RatingModule,
+        MhPrimeDynamicTableModule
+    ]
 })
 export class ManualPpoReceiptModule { }

@@ -5,11 +5,11 @@ import { OnlineBillReceiveComponent } from './online-bill-receive/online-bill-re
 // import { OnlineBillComponent } from './online-bill/online-bill.component';
 
 const routes: Routes = [{ path: '', component: BillReceiveComponent },
-{ path: 'online', loadChildren: () => import('./online-bill-receive/online-bill-receive.module').then(m => m.OnlineBillReceiveModule)}];
+    { path: 'online', loadChildren: () => import('./online-bill-receive/online-bill-receive.module').then(m => m.OnlineBillReceiveModule)}];
 // { path: 'online', loadChildren: () => import('./online-bill/online-bill.module').then(m => m.OnlineBillModule)}];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class BillReceiveRoutingModule { }

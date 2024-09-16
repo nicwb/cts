@@ -112,8 +112,8 @@ export class PrimaryComponent {
 
         this.route.queryParams.subscribe((params) => {
             (todo = params['todo']),
-                (this.primary = params['primary']),
-                (this.sub = params['sub']);
+            (this.primary = params['primary']),
+            (this.sub = params['sub']);
         });
 
         console.log(todo, this.primary, this.sub);

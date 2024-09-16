@@ -6,12 +6,12 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [TreasuryDropdownComponent],
-  imports: [
-    CommonModule,
-    DropdownModule,
-    FormsModule
-  ],
-  exports:[TreasuryDropdownComponent]
+    declarations: [TreasuryDropdownComponent],
+    imports: [
+        CommonModule,
+        DropdownModule,
+        FormsModule
+    ],
+    exports:[TreasuryDropdownComponent]
 })
 export class TreasuryDropdownModule { }

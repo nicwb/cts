@@ -16,29 +16,29 @@ import { CalendarModule } from 'primeng/calendar';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DividerModule } from 'primeng/divider';
 @NgModule({
-  declarations: [
-    PensionBillComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    RouterModule,
-    ButtonModule,
-    DropdownModule,
-    ChipsModule,
-    ToastModule,
-    RatingModule,
-    TableModule,
-    DialogModule,
-    CalendarModule,
-    PopupTableModule,
-    DividerModule
+    declarations: [
+        PensionBillComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        RouterModule,
+        ButtonModule,
+        DropdownModule,
+        ChipsModule,
+        ToastModule,
+        RatingModule,
+        TableModule,
+        DialogModule,
+        CalendarModule,
+        PopupTableModule,
+        DividerModule
 
-  ],
-  providers: [MessageService],
+    ],
+    providers: [MessageService],
   
-  exports: [RouterModule],
+    exports: [RouterModule],
 })
 export class PensionBillModule { }

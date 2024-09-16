@@ -12,15 +12,15 @@ import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-
 
 
 @NgModule({
-  declarations: [TokenComponent],
-  imports: [
-    CommonModule,
-    TokenRoutingModule,
-    ButtonModule,
-    CardModule,
-    TableModule,
-    TokenListModule,
-    CommonHeaderModule
-  ]
+    declarations: [TokenComponent],
+    imports: [
+        CommonModule,
+        TokenRoutingModule,
+        ButtonModule,
+        CardModule,
+        TableModule,
+        TokenListModule,
+        CommonHeaderModule
+    ]
 })
 export class TokenModule { }

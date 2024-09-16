@@ -24,35 +24,35 @@ import { PensionerStatusModule } from 'src/app/shared/modules/pensioner-status/p
 
 
 const routes: Routes = [
-  {path: "",component: LifeCertificateComponent}
+    {path: "",component: LifeCertificateComponent}
 ];
 
 
 @NgModule({
-  declarations: [LifeCertificateComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CheckboxModule,
-    SelectButtonModule,
-    CardModule,
-    InputTextModule,
-    RadioButtonModule,
-    ButtonModule,
-    InputTextareaModule,
-    DynamicTableModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    TreasuryDropdownModule,
-    FieldsetModule,
-    RouterModule.forChild(routes),
-    PensionerStatusModule
-  ],
-  exports: [LifeCertificateComponent],
+    declarations: [LifeCertificateComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CheckboxModule,
+        SelectButtonModule,
+        CardModule,
+        InputTextModule,
+        RadioButtonModule,
+        ButtonModule,
+        InputTextareaModule,
+        DynamicTableModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        TreasuryDropdownModule,
+        FieldsetModule,
+        RouterModule.forChild(routes),
+        PensionerStatusModule
+    ],
+    exports: [LifeCertificateComponent],
 })
 
 

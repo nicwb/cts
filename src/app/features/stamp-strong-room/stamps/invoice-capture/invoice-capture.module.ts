@@ -7,13 +7,13 @@ import { InvoiceHistoryComponent } from './invoice-history/invoice-history.compo
 
 
 @NgModule({
-  declarations: [
-    InvoiceCaptureComponent,
-    IncomingIndentsComponent,
-    InvoiceHistoryComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+    declarations: [
+        InvoiceCaptureComponent,
+        IncomingIndentsComponent,
+        InvoiceHistoryComponent
+    ],
+    imports: [
+        CommonModule
+    ]
 })
 export class InvoiceCaptureModule { }

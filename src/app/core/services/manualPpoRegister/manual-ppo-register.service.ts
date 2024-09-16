@@ -6,26 +6,26 @@ import { ToastService } from '../toast.service';
 import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ManualPpoRegisterService {
 
-  constructor(private http: HttpClient, private toastservice: ToastService) { }
+    constructor(private http: HttpClient, private toastservice: ToastService) { }
 
   
-  generateManualPpoRegister(data: string): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    generateManualPpoRegister(data: string): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     
-    return this.http
-        .post<any>(
-            'v1/echo', data, { headers }
-        )
-        .pipe(
-            catchError((error) => {
-                throw this.toastservice.showError(error.message);
-            })
-        );
-}
+        return this.http
+            .post<any>(
+                'v1/echo', data, { headers }
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastservice.showError(error.message);
+                })
+            );
+    }
 
   
 }

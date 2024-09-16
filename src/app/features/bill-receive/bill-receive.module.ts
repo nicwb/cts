@@ -27,17 +27,17 @@ import {DialogModule} from 'primeng/dialog';
 import { MessagesModule } from 'primeng/messages';
 import { SharedModule } from 'src/app/shared/modules/shared.module';
 @NgModule({
-  declarations: [BillReceiveComponent, BillReceiveListComponent],
-  imports: [
-    CommonModule,
-    BillReceiveRoutingModule,
-    ButtonModule,
-    TableModule,
-    CardModule,
-    ConfirmPopupModule,
-    DialogModule,
-    MessagesModule,
-    SharedModule
-  ]
+    declarations: [BillReceiveComponent, BillReceiveListComponent],
+    imports: [
+        CommonModule,
+        BillReceiveRoutingModule,
+        ButtonModule,
+        TableModule,
+        CardModule,
+        ConfirmPopupModule,
+        DialogModule,
+        MessagesModule,
+        SharedModule
+    ]
 })
 export class BillReceiveModule { }

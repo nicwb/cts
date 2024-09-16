@@ -9,54 +9,54 @@ import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({
-  providedIn: 'root' 
+    providedIn: 'root' 
 })
 
 export class FirstPensionService {
 
-  apiUrl = "v1/ppo/pension-bill";
+    apiUrl = "v1/ppo/pension-bill";
 
 
-  constructor(private http: HttpClient, private toastService: ToastService) {}
+    constructor(private http: HttpClient, private toastService: ToastService) {}
   
-  getAll(
-    queryParameters: DynamicTableQueryParameters
-  ): Observable<IapiResponce> {
-    return this.http
-      .patch<IapiResponce>(
-        this.apiUrl,
-        queryParameters
-      )
-      .pipe(
-        catchError((error) => {
-          throw this.toastService.showError(error.message);
-        })
-      );
-  }
+    getAll(
+        queryParameters: DynamicTableQueryParameters
+    ): Observable<IapiResponce> {
+        return this.http
+            .patch<IapiResponce>(
+                this.apiUrl,
+                queryParameters
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastService.showError(error.message);
+                })
+            );
+    }
 
 
-  searchAll(queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<DynamicTable<any>>> {
-    return this.http
-      .patch<IapiResponce<DynamicTable<any>>>(
-        'v1/ppo/details',
-        queryParameters
-      )
-      .pipe(
-        catchError((error) => {
-          this.toastService.showError(error.message);
-          return throwError(error);
-        })
-      );
-  }
+    searchAll(queryParameters: DynamicTableQueryParameters): Observable<IapiResponce<DynamicTable<any>>> {
+        return this.http
+            .patch<IapiResponce<DynamicTable<any>>>(
+                'v1/ppo/details',
+                queryParameters
+            )
+            .pipe(
+                catchError((error) => {
+                    this.toastService.showError(error.message);
+                    return throwError(error);
+                })
+            );
+    }
 
-  generatePdf(payload: any): Observable<any> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.patch(this.apiUrl, payload, { headers, responseType: 'json' }).pipe(
-      catchError((error) => {
-        this.toastService.showError(error.message);
-        return throwError(error);
-      })
-    );
-  }
+    generatePdf(payload: any): Observable<any> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this.http.patch(this.apiUrl, payload, { headers, responseType: 'json' }).pipe(
+            catchError((error) => {
+                this.toastService.showError(error.message);
+                return throwError(error);
+            })
+        );
+    }
 
 }

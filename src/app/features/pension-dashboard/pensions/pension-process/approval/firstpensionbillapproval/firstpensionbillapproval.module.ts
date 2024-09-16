@@ -6,14 +6,14 @@ import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.mod
 import { DividerModule } from 'primeng/divider';
 
 @NgModule({
-  declarations: [
-    FirstpensionbillapprovalComponent
-  ],
-  imports: [
-    CommonModule,
-    PopupTableModule,
-    SearchPopupTempModule,
-    DividerModule
-  ]
+    declarations: [
+        FirstpensionbillapprovalComponent
+    ],
+    imports: [
+        CommonModule,
+        PopupTableModule,
+        SearchPopupTempModule,
+        DividerModule
+    ]
 })
 export class FirstpensionbillapprovalModule { }

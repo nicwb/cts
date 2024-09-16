@@ -9,12 +9,12 @@ import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-
 
 
 @NgModule({
-  declarations: [PaymentMandateComponent],
-  imports: [
-    CommonModule,
-    PaymentMandateRoutingModule,
-    OptionCardModule,
-    CommonHeaderModule
-  ]
+    declarations: [PaymentMandateComponent],
+    imports: [
+        CommonModule,
+        PaymentMandateRoutingModule,
+        OptionCardModule,
+        CommonHeaderModule
+    ]
 })
 export class PaymentMandateModule { }

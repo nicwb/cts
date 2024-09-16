@@ -19,30 +19,30 @@ import { PrimaryComponent } from './primary.component';
 
 
 @NgModule({
-  declarations: [PrimaryComponent],
-  imports: [
-    CommonModule,
-    PrimaryRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ButtonModule,
-    DropdownModule,
-    ChipsModule,
-    TableModule,
-    ToastModule,
-    RatingModule,
-    DialogModule,
-    DynamicDialogModule,
-  ],
-  exports: [
-    RouterModule,
+    declarations: [PrimaryComponent],
+    imports: [
+        CommonModule,
+        PrimaryRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        ButtonModule,
+        DropdownModule,
+        ChipsModule,
+        TableModule,
+        ToastModule,
+        RatingModule,
+        DialogModule,
+        DynamicDialogModule,
+    ],
+    exports: [
+        RouterModule,
 
-  ],
-  providers: [
-    MessageService,
-    ConfirmationService,
-    DialogService
-  ]
+    ],
+    providers: [
+        MessageService,
+        ConfirmationService,
+        DialogService
+    ]
 })
 export class PrimaryModule { }

@@ -17,12 +17,12 @@ export class BreadcrumbService {
                 (event) => event instanceof NavigationEnd
             )
         )
-        .pipe(
-            tap(
-                () => this.breadcrumbs 
+            .pipe(
+                tap(
+                    () => this.breadcrumbs 
                 = this.createBreadcrumbs(this.activatedRoute.root)
-            )
-        );
+                )
+            );
     }
     
     private createBreadcrumbs(

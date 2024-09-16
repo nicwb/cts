@@ -37,7 +37,7 @@ export class BillCheckingComponent implements OnInit, OnDestroy {
                 class: '"p-button-raised p-button-rounded',
                 icon: 'pi pi-check-circle',
                 lable: 'Bill Checking',
-              },
+            },
         ];
         this.routeItems = [
             { label: 'Bill Details', routerLink: 'personal' },
@@ -59,7 +59,7 @@ export class BillCheckingComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
     }
     handleRowSelection(event:any){
-      console.log(event);
+        console.log(event);
     }
     handleButtonClick(event: any) {
         console.log(event);

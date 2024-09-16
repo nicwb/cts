@@ -9,16 +9,16 @@ import { FormsModule } from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 
 @NgModule({
-  declarations: [SearchPopupTempComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    DialogModule,
-    TableModule,
-    FormsModule,
-    InputTextModule,
+    declarations: [SearchPopupTempComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        DialogModule,
+        TableModule,
+        FormsModule,
+        InputTextModule,
     
-  ],
-  exports: [SearchPopupTempComponent]
+    ],
+    exports: [SearchPopupTempComponent]
 })
 export class SearchPopupTempModule { }

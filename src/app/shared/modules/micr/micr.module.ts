@@ -9,15 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [MicrComponent],
-  imports: [
-    CommonModule,
-    DialogModule,
-    ButtonModule,
-    DropdownModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  exports:[MicrComponent]
+    declarations: [MicrComponent],
+    imports: [
+        CommonModule,
+        DialogModule,
+        ButtonModule,
+        DropdownModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    exports:[MicrComponent]
 })
 export class MicrModule { }

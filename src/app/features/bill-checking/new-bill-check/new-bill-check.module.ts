@@ -25,38 +25,38 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BadgeModule } from 'primeng/badge';
 @NgModule({
-  declarations: [NewBillCheckComponent, AllotmentComponent,BillDetailsComponent, ListOfObjectionComponent, ByTransferComponent, PlTransferComponent],
-  exports: [RouterModule],
-  imports: [
-    CommonModule,
-    NewBillCheckRoutingModule,
-    StepsModule,
-    TableModule,
-    ListboxModule,
-    ButtonModule,
-    CardModule,
-    PanelModule,
-    DividerModule,
-    OverlayPanelModule,
-    InputTextModule,
-    FormsModule,
-    ConfirmPopupModule,
-    DialogModule,
-    FieldsetModule,
-    InputTextareaModule,
-    BadgeModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: NewBillCheckComponent,
-        children: [
-          { path: '', redirectTo: 'bill-details', pathMatch: 'full' },
-          { path: 'bill-details', component: BillDetailsComponent },
-          { path: 'objection', component: ListOfObjectionComponent },
-          { path: 'allotment', component: AllotmentComponent },
-        ],
-      },
-    ]),
-  ]
+    declarations: [NewBillCheckComponent, AllotmentComponent,BillDetailsComponent, ListOfObjectionComponent, ByTransferComponent, PlTransferComponent],
+    exports: [RouterModule],
+    imports: [
+        CommonModule,
+        NewBillCheckRoutingModule,
+        StepsModule,
+        TableModule,
+        ListboxModule,
+        ButtonModule,
+        CardModule,
+        PanelModule,
+        DividerModule,
+        OverlayPanelModule,
+        InputTextModule,
+        FormsModule,
+        ConfirmPopupModule,
+        DialogModule,
+        FieldsetModule,
+        InputTextareaModule,
+        BadgeModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: NewBillCheckComponent,
+                children: [
+                    { path: '', redirectTo: 'bill-details', pathMatch: 'full' },
+                    { path: 'bill-details', component: BillDetailsComponent },
+                    { path: 'objection', component: ListOfObjectionComponent },
+                    { path: 'allotment', component: AllotmentComponent },
+                ],
+            },
+        ]),
+    ]
 })
 export class NewBillCheckModule { }

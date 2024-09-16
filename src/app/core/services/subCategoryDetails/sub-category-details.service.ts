@@ -14,7 +14,7 @@ import { IapiResponce } from '../../models/iapi-responce';
 import { SubCategoryDetalis } from 'src/app/core/models/sub-category-detalis';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SubCategoryDetailsService {
     apiUrl = 'v1/pension/sub-category';

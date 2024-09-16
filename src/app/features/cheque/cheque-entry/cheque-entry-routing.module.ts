@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChequeEntryComponent } from './cheque-entry.component';
 
 const routes: Routes = [
-  {path:"", component:ChequeEntryComponent}
+    {path:"", component:ChequeEntryComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class ChequeEntryRoutingModule { }

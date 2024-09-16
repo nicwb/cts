@@ -36,51 +36,51 @@ import { DividerModule } from 'primeng/divider';
 
 
 const routes: Routes = [
-  {path: '', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
-  {path: 'ppo-approval', component: PpoApprovalComponent, data: { breadcrumb: 'PpoApprovalComponent' }},
-  {path: 'firstpensionbill-approval', component: FirstpensionbillapprovalComponent, data: {Breadcrumb: 'FirstpensionbillapprovalComponent'}}
+    {path: '', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
+    {path: 'ppo-approval', component: PpoApprovalComponent, data: { breadcrumb: 'PpoApprovalComponent' }},
+    {path: 'firstpensionbill-approval', component: FirstpensionbillapprovalComponent, data: {Breadcrumb: 'FirstpensionbillapprovalComponent'}}
 
 ];
 
 
 
 @NgModule({
-  declarations: [
-    PpoApprovalComponent,
-    FirstpensionbillapprovalComponent,
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    InputTextareaModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DialogModule,
-    CalendarModule,
-    InputTextModule,
-    CardModule,
-    SelectButtonModule,
-    PanelModule,
-    FieldsetModule,
-    RadioButtonModule,
-    TableModule,
-    MhPrimeDynamicTableModule,
-    DynamicTableModule,
-    DropdownModule,
-    TreasuryDropdownModule,
-    ToggleButtonModule,
-    RippleModule,
-    MultiSelectModule,
-    ProgressBarModule,  
-    ToastModule,
-    SliderModule,
-    RatingModule,
-    SearchPopupTempModule,
-    PopupTableModule,
-    DividerModule,
-    RouterModule.forChild(routes),
-  ]
+    declarations: [
+        PpoApprovalComponent,
+        FirstpensionbillapprovalComponent,
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        InputTextareaModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        DialogModule,
+        CalendarModule,
+        InputTextModule,
+        CardModule,
+        SelectButtonModule,
+        PanelModule,
+        FieldsetModule,
+        RadioButtonModule,
+        TableModule,
+        MhPrimeDynamicTableModule,
+        DynamicTableModule,
+        DropdownModule,
+        TreasuryDropdownModule,
+        ToggleButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        ProgressBarModule,  
+        ToastModule,
+        SliderModule,
+        RatingModule,
+        SearchPopupTempModule,
+        PopupTableModule,
+        DividerModule,
+        RouterModule.forChild(routes),
+    ]
 })
 export class ApprovalModule { }

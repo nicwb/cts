@@ -13,17 +13,17 @@ import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-
 import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 
 @NgModule({
-  declarations: [ReturnMemoComponent, GenerateReturnMemoComponent],
-  imports: [
-    CommonModule,
-    ReturnMemoRoutingModule,
-    TokenListModule,
-    CardModule,
-    ButtonModule,
-    DialogModule,
-    DividerModule,
-    CommonHeaderModule,
-    DynamicTableModule
-  ]
+    declarations: [ReturnMemoComponent, GenerateReturnMemoComponent],
+    imports: [
+        CommonModule,
+        ReturnMemoRoutingModule,
+        TokenListModule,
+        CardModule,
+        ButtonModule,
+        DialogModule,
+        DividerModule,
+        CommonHeaderModule,
+        DynamicTableModule
+    ]
 })
 export class ReturnMemoModule { }

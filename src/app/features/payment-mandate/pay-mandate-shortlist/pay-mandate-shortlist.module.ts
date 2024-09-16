@@ -17,20 +17,20 @@ import {CalendarModule} from 'primeng/calendar';
 
 
 @NgModule({
-  declarations: [PayMandateShortlistComponent],
-  imports: [
-    CommonModule,
-    PayMandateShortlistRoutingModule,
-    ToolbarModule,
-    ButtonModule,
-    RippleModule,
-    ToggleButtonModule,
-    SelectButtonModule,
-    FormsModule,
-    TableModule,
-    CommonHeaderModule,
-    InputTextModule,
-    CalendarModule
-  ]
+    declarations: [PayMandateShortlistComponent],
+    imports: [
+        CommonModule,
+        PayMandateShortlistRoutingModule,
+        ToolbarModule,
+        ButtonModule,
+        RippleModule,
+        ToggleButtonModule,
+        SelectButtonModule,
+        FormsModule,
+        TableModule,
+        CommonHeaderModule,
+        InputTextModule,
+        CalendarModule
+    ]
 })
 export class PayMandateShortlistModule { }

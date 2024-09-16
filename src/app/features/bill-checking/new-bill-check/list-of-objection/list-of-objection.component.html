@@ -70,7 +70,7 @@
                         <button *ngIf="selectedObjection.isOverruled && selectedObjection.OverruledBy==='You'" pButton
                             pRipple label="Undo" icon="pi pi-undo" class="p-button-info p-button-text"
                             (click)="undoObjectionOverrule(i)"></button>
-                        <button *ngIf="isRevertButton && selectedObjection.isOverruled  && selectedObjection.OverruledBy!='You'" pButton pRipple label="Revert"
+                        <button *ngIf="isRevertButton && selectedObjection.isOverruled  && selectedObjection.OverruledBy!=='You'" pButton pRipple label="Revert"
                             class="p-button-info p-button-text p-button-sm"
                             (click)="confirmRevert($event,i)"></button>
 

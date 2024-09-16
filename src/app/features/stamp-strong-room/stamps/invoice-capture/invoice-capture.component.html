@@ -9,7 +9,7 @@
                 <div class="transition-colors transition-duration-500 p-3 border-round border-2 cursor-pointer"
                     [ngClass]="{
                     'hover:shadow-2 surface-card border-transparent hover:bg-primary-100 hover:border-primary':listType!== 'indent',
-                    'bg-primary-100 border-primary': listType == 'indent'
+                    'bg-primary-100 border-primary': listType === 'indent'
                   }" (click)="changeDynamicTable('indent')">
                     <!--  -->
                     <div class="flex align-items-center justify-content-between">

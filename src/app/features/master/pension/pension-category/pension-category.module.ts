@@ -5,10 +5,10 @@ import { PensionCategoryRoutingModule } from './pension-category-routing.module'
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    PensionCategoryRoutingModule
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        PensionCategoryRoutingModule
+    ]
 })
 export class PensionCategoryModule { }

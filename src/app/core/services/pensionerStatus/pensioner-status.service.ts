@@ -7,45 +7,45 @@ import { pensionerStatusDTO } from '../../models/pensioner-status';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PensionerStatusService {
 
-  constructor(private http: HttpClient, private toastservice: ToastService) { }
+    constructor(private http: HttpClient, private toastservice: ToastService) { }
 
-  addStatus(pensionerStatus: pensionerStatusDTO): Observable<IapiResponce> {
+    addStatus(pensionerStatus: pensionerStatusDTO): Observable<IapiResponce> {
     
-    return this.http
-        .post<IapiResponce>('v1/ppo/status', pensionerStatus)
-        .pipe(
-            catchError((error) => {
-                throw this.toastservice.showError(error.message);
-            })
-        );
-  }
-  getStatus(ppoId: number, statusFlag: number): Observable<IapiResponce<pensionerStatusDTO>> {
-    return this.http
-        .get<IapiResponce<pensionerStatusDTO>>(
-            'v1/ppo/' + ppoId + '/status/' + statusFlag
-        )
-        .pipe(
-            catchError((error) => {
-                throw this.toastservice.showError(error.message);
-            })
-        );
-  }
+        return this.http
+            .post<IapiResponce>('v1/ppo/status', pensionerStatus)
+            .pipe(
+                catchError((error) => {
+                    throw this.toastservice.showError(error.message);
+                })
+            );
+    }
+    getStatus(ppoId: number, statusFlag: number): Observable<IapiResponce<pensionerStatusDTO>> {
+        return this.http
+            .get<IapiResponce<pensionerStatusDTO>>(
+                'v1/ppo/' + ppoId + '/status/' + statusFlag
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastservice.showError(error.message);
+                })
+            );
+    }
 
-  deleteStatus(ppoId: number, statusFlag: number): Observable<IapiResponce> {
-    return this.http.delete<IapiResponce>('v1/ppo/' + ppoId + '/status/' + statusFlag).pipe(
-      catchError((error) => {
-        throw this.toastservice.showError(error.message);
-      })
-    );
-  }
+    deleteStatus(ppoId: number, statusFlag: number): Observable<IapiResponce> {
+        return this.http.delete<IapiResponce>('v1/ppo/' + ppoId + '/status/' + statusFlag).pipe(
+            catchError((error) => {
+                throw this.toastservice.showError(error.message);
+            })
+        );
+    }
 
 
 

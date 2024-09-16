@@ -9,14 +9,14 @@ import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 
 @NgModule({
-  declarations: [OnlineBillComponent],
-  imports: [
-    CommonModule,
-    OnlineBillRoutingModule,
-    DividerModule,
-    CalendarModule,
-    CardModule,
-    PanelModule
-  ]
+    declarations: [OnlineBillComponent],
+    imports: [
+        CommonModule,
+        OnlineBillRoutingModule,
+        DividerModule,
+        CalendarModule,
+        CardModule,
+        PanelModule
+    ]
 })
 export class OnlineBillModule { }

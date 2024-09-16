@@ -14,16 +14,16 @@ import { PensionerDetailsRoutingModule } from './pensioner-details-routing.modul
 @NgModule({
     declarations: [RevisionofComponentsComponent],
     imports: [
-      CommonModule,
-      FieldsetModule,  //for panel module
-      RadioButtonModule, //for radio button module
-      FormsModule, //for form module
-      ReactiveFormsModule,
-      ButtonModule,
-      PopupTableModule,
-      SelectButtonModule,
-      PensionerDetailsRoutingModule,
-      TableModule
+        CommonModule,
+        FieldsetModule,  //for panel module
+        RadioButtonModule, //for radio button module
+        FormsModule, //for form module
+        ReactiveFormsModule,
+        ButtonModule,
+        PopupTableModule,
+        SelectButtonModule,
+        PensionerDetailsRoutingModule,
+        TableModule
     ],
     exports: [],
 })

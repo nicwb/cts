@@ -5,12 +5,12 @@ import { OptionCardComponent } from './option-card.component';
 
 
 @NgModule({
-  declarations: [OptionCardComponent],
-  imports: [
-    CommonModule
-  ],
-  exports:[
-    OptionCardComponent
-  ]
+    declarations: [OptionCardComponent],
+    imports: [
+        CommonModule
+    ],
+    exports:[
+        OptionCardComponent
+    ]
 })
 export class OptionCardModule { }

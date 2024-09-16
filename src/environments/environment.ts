@@ -3,9 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: process.env["NG_APP_ENV"]?.includes("production") ?? false,
-  BaseURL: process.env["NG_APP_API_BASE_URL"] + '/api/', //'http://api.docker.test/api/',
-  OpenApiBaseURL: process.env["NG_APP_API_BASE_URL"], //'http://api.docker.test',
+    production: process.env["NG_APP_ENV"]?.includes("production") ?? false,
+    BaseURL: process.env["NG_APP_API_BASE_URL"] + '/api/', //'http://api.docker.test/api/',
+    OpenApiBaseURL: process.env["NG_APP_API_BASE_URL"], //'http://api.docker.test',
 //   BaseURL:'https://localhost:7249/api/',
 };
 

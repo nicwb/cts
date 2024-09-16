@@ -14,22 +14,22 @@ import {InputTextModule} from 'primeng/inputtext';
 import {PaginatorModule} from 'primeng/paginator';
 
 @NgModule({
-  declarations: [TokenListComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    CardModule,
-    TableModule,
-    CalendarModule,
-    DataViewModule,
-    DropdownModule,
-    RatingModule,
-    FormsModule,
-    InputTextModule,
-    PaginatorModule
-  ],
-  exports:[
-    TokenListComponent
-  ]
+    declarations: [TokenListComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        CardModule,
+        TableModule,
+        CalendarModule,
+        DataViewModule,
+        DropdownModule,
+        RatingModule,
+        FormsModule,
+        InputTextModule,
+        PaginatorModule
+    ],
+    exports:[
+        TokenListComponent
+    ]
 })
 export class TokenListModule { }

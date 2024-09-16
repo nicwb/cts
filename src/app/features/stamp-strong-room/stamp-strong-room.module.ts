@@ -7,11 +7,11 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
 
 
 @NgModule({
-  declarations: [StampStrongRoomComponent],
-  imports: [
-    CommonModule,
-    OptionCardModule,
-    StampStrongRoomRoutingModule
-  ]
+    declarations: [StampStrongRoomComponent],
+    imports: [
+        CommonModule,
+        OptionCardModule,
+        StampStrongRoomRoutingModule
+    ]
 })
 export class StampStrongRoomModule { }

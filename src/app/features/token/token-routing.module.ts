@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { TokenComponent } from './token.component';
 
 const routes: Routes = [
-  {path:"",component:TokenComponent}
+    {path:"",component:TokenComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class TokenRoutingModule { }

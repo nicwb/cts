@@ -4,11 +4,11 @@ import { PensionBillComponent } from './pension-bill.component';
 // import { PensionBillComponent } from './pension-bill.component';
 
 const routes: Routes = [
-  {path:'', component:PensionBillComponent}
+    {path:'', component:PensionBillComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class PensionBillRoutingModule { }

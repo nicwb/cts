@@ -38,7 +38,7 @@ export interface HoaChain {
     detailHead: string;
     subDetailHead: string;
   }
- export interface subDeatilsHead {
+export interface subDeatilsHead {
     subDeatils: string;
     description: string;
     amount: number;
@@ -90,12 +90,12 @@ export interface HoaChain {
     sanctionNo: string;
     sanctionDate: string
   }
-  export interface IBillDetails {
+export interface IBillDetails {
     tokenDetails: TokenDetails;
     billDetailsDetails: BillDetails;
   }
 
- export interface IBillCheck {
+export interface IBillCheck {
   tokenId: number;
   referenceNo: string;
   billObjections?: {

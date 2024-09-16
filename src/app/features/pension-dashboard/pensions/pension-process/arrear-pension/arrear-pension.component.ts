@@ -5,12 +5,12 @@ import { Table } from 'primeng/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-arrear-pension',
-  templateUrl: './arrear-pension.component.html',
-  styleUrls: ['./arrear-pension.component.scss']
+    selector: 'app-arrear-pension',
+    templateUrl: './arrear-pension.component.html',
+    styleUrls: ['./arrear-pension.component.scss']
 })
 export class ArrearPensionComponent {
 
-  constructor() { }
+    constructor() { }
 
 }

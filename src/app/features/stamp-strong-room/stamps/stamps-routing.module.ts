@@ -7,14 +7,14 @@ import { InvoiceReceiveComponent } from './invoice-receive/invoice-receive.compo
 import { StampWalletRefillComponent } from './stamp-wallet-refill/stamp-wallet-refill.component';
 
 const routes: Routes = [{path: '', component: StampsComponent},
-  {path: 'indent-capture', component: IndentCaptureComponent},
-  {path: 'invoice-capture', component: InvoiceCaptureComponent},
-  {path: 'invoice-receive', component: InvoiceReceiveComponent},
-  {path: 'stamp-wallet-refill', component: StampWalletRefillComponent},
+    {path: 'indent-capture', component: IndentCaptureComponent},
+    {path: 'invoice-capture', component: InvoiceCaptureComponent},
+    {path: 'invoice-receive', component: InvoiceReceiveComponent},
+    {path: 'stamp-wallet-refill', component: StampWalletRefillComponent},
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class StampsRoutingModule { }

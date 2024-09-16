@@ -7,15 +7,15 @@ import { NewInvoiceComponent } from './cheque-invoice/new-invoice/new-invoice.co
 import { ChequeReceivedComponent } from './cheque-received/cheque-received.component';
 
 const routes: Routes = [
-  {path:"",component:ChequeIndentInvoiceComponent},
-  {path:'cheque-indent', component:ChequeIndentComponent},
-  {path:'cheque-invoice', component:ChequeInvoiceComponent},
-  {path:"approved-cheque-indent/:id",component:NewInvoiceComponent},
-  {path:'cheque-received/:id',component: ChequeReceivedComponent}
+    {path:"",component:ChequeIndentInvoiceComponent},
+    {path:'cheque-indent', component:ChequeIndentComponent},
+    {path:'cheque-invoice', component:ChequeInvoiceComponent},
+    {path:"approved-cheque-indent/:id",component:NewInvoiceComponent},
+    {path:'cheque-received/:id',component: ChequeReceivedComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class ChequeIndentInvoiceRoutingModule { }

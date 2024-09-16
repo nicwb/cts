@@ -35,7 +35,7 @@ export class AppTopBarComponent {
             rejectIcon:"none",
             rejectButtonStyleClass:"p-button-text",
             accept: () => {
-               this.logOut();
+                this.logOut();
             },
             reject: () => {
                 

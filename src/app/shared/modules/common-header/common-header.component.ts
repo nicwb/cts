@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-common-header',
-  templateUrl: './common-header.component.html',
-  styleUrls: ['./common-header.component.scss']
+    selector: 'app-common-header',
+    templateUrl: './common-header.component.html',
+    styleUrls: ['./common-header.component.scss']
 })
 export class CommonHeaderComponent {
   @Input() headerName: string = '';

@@ -20,33 +20,33 @@ import { ArrearPensionComponent } from './arrear-pension.component';
 
 
 @NgModule({
-  declarations: [ArrearPensionComponent,
-    SearchPopupComponent],
-  imports: [
-    CommonModule,
-    ArrearPensionRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    RouterModule,
-    ButtonModule,
-    DropdownModule,
-    ChipsModule,
-    TableModule,
-    ToastModule,
-    RatingModule,
-    DialogModule,
-    DynamicDialogModule,
+    declarations: [ArrearPensionComponent,
+        SearchPopupComponent],
+    imports: [
+        CommonModule,
+        ArrearPensionRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        RouterModule,
+        ButtonModule,
+        DropdownModule,
+        ChipsModule,
+        TableModule,
+        ToastModule,
+        RatingModule,
+        DialogModule,
+        DynamicDialogModule,
 
-  ],
-  exports: [
-    RouterModule,
-    SearchPopupComponent
-  ],
-  providers: [
-    MessageService,
-    ConfirmationService,
-    DialogService
-  ]
+    ],
+    exports: [
+        RouterModule,
+        SearchPopupComponent
+    ],
+    providers: [
+        MessageService,
+        ConfirmationService,
+        DialogService
+    ]
 })
 export class ArrearPensionModule { }

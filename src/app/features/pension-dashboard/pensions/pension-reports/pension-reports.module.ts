@@ -5,11 +5,11 @@ import { ManualPpoRegisterComponent } from './manual-ppo-register/manual-ppo-reg
 
 
 @NgModule({
-  declarations: [
-    ManualPpoRegisterComponent
-  ],
-  imports: [
-    CommonModule
-  ]
+    declarations: [
+        ManualPpoRegisterComponent
+    ],
+    imports: [
+        CommonModule
+    ]
 })
 export class PensionReportsModule { }

@@ -21,24 +21,24 @@ import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown
 
 
 @NgModule({
-  declarations: [ChequeEntryComponent],
-  imports: [
-    CommonModule,
-    ChequeEntryRoutingModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    CardModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    InputNumberModule,
-    DynamicTableModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MicrModule,
-    DropdownModule,
-    TreasuryDropdownModule,
-    NgxPermissionsModule.forChild() 
-  ]
+    declarations: [ChequeEntryComponent],
+    imports: [
+        CommonModule,
+        ChequeEntryRoutingModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        CardModule,
+        ButtonModule,
+        DialogModule,
+        InputTextModule,
+        InputNumberModule,
+        DynamicTableModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MicrModule,
+        DropdownModule,
+        TreasuryDropdownModule,
+        NgxPermissionsModule.forChild() 
+    ]
 })
 export class ChequeEntryModule { }

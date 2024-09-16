@@ -13,9 +13,9 @@ interface Chequetype {
 }
 
 @Component({
-  selector: 'app-cheque-indent',
-  templateUrl: './cheque-indent.component.html',
-  styleUrls: ['./cheque-indent.component.scss']
+    selector: 'app-cheque-indent',
+    templateUrl: './cheque-indent.component.html',
+    styleUrls: ['./cheque-indent.component.scss']
 })
 export class ChequeIndentComponent implements OnInit {
   [x: string]: any;
@@ -37,30 +37,30 @@ export class ChequeIndentComponent implements OnInit {
   constructor(private _fb: FormBuilder, private bankServices: BankService, private toastService: ToastService, private chequeindentService: ChequeIndentService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    this.cheques = [
-      { name: 'Treasury Cheque', code: 1 },
-      { name: 'Others', code: 2 },
-    ];
-    this.indentForm = this._fb.group({
-      indent_date: [''],
-      memo_number: [''],
-      memo_date: [''],
-      memo_no: [''],
-      remarks: [''],
-      chequelist: this._fb.array([this.createCheque()])
-    });
-    // this.getBanklist()
+      this.cheques = [
+          { name: 'Treasury Cheque', code: 1 },
+          { name: 'Others', code: 2 },
+      ];
+      this.indentForm = this._fb.group({
+          indent_date: [''],
+          memo_number: [''],
+          memo_date: [''],
+          memo_no: [''],
+          remarks: [''],
+          chequelist: this._fb.array([this.createCheque()])
+      });
+      // this.getBanklist()
   }
   // ___________Fromarray____________
   get chequelist(): FormArray {
-    return this.indentForm.get('chequelist') as FormArray;
+      return this.indentForm.get('chequelist') as FormArray;
   }
 
   createCheque(): FormGroup {
-    return this._fb.group({
-      cheques_type: [''],
-      quantity: ['']
-    });
+      return this._fb.group({
+          cheques_type: [''],
+          quantity: ['']
+      });
   }
 
   // __________add Button_________________
@@ -133,58 +133,58 @@ export class ChequeIndentComponent implements OnInit {
   // }
 
   indentFormSubmit() {
-    let formattedIndentDate: string | null = '';
-    let memoDate: string | null = '';
-    if (this.indentForm) {
-      const indentDateValue = this.indentForm.get('indent_date')?.value;
-      if (indentDateValue !== null && indentDateValue !== undefined) {
-        formattedIndentDate = this.datePipe.transform(indentDateValue, 'yyyy-MM-dd');
-        console.log(formattedIndentDate);
-      }
-      const memoDateValue = this.indentForm.get('memo_date')?.value;
-      if (memoDateValue !== null && memoDateValue !== undefined) {
-        memoDate = this.datePipe.transform(memoDateValue, 'yyyy-MM-dd');
-      }
-      this.chequeIndentFormDetails = {
-        indentDate: formattedIndentDate as string,
-        memoNumber: this.indentForm.get('memo_number')?.value,
-        memoDate: memoDate as string,
-        remarks: this.indentForm.get('remarks')?.value,
-        treasurieCode: this.selectedTreasury,
-        chequeIndentDeatils: this.chequelist.controls.map<ChequeIndentDeatil>(fa => {
-          const formGroup = fa as FormGroup;
-          return {
-            chequeType: formGroup.get("cheques_type")?.value,
-            micrCode: this.selectedmicrCode,
-            quantity: formGroup.get("quantity")?.value,
+      let formattedIndentDate: string | null = '';
+      let memoDate: string | null = '';
+      if (this.indentForm) {
+          const indentDateValue = this.indentForm.get('indent_date')?.value;
+          if (indentDateValue !== null && indentDateValue !== undefined) {
+              formattedIndentDate = this.datePipe.transform(indentDateValue, 'yyyy-MM-dd');
+              console.log(formattedIndentDate);
           }
-        })
-      }
-      console.log('----->>>>',this.chequeIndentFormDetails);
+          const memoDateValue = this.indentForm.get('memo_date')?.value;
+          if (memoDateValue !== null && memoDateValue !== undefined) {
+              memoDate = this.datePipe.transform(memoDateValue, 'yyyy-MM-dd');
+          }
+          this.chequeIndentFormDetails = {
+              indentDate: formattedIndentDate as string,
+              memoNumber: this.indentForm.get('memo_number')?.value,
+              memoDate: memoDate as string,
+              remarks: this.indentForm.get('remarks')?.value,
+              treasurieCode: this.selectedTreasury,
+              chequeIndentDeatils: this.chequelist.controls.map<ChequeIndentDeatil>(fa => {
+                  const formGroup = fa as FormGroup;
+                  return {
+                      chequeType: formGroup.get("cheques_type")?.value,
+                      micrCode: this.selectedmicrCode,
+                      quantity: formGroup.get("quantity")?.value,
+                  }
+              })
+          }
+          console.log('----->>>>',this.chequeIndentFormDetails);
       
-      this.chequeindentService.chqueIndentEntry(this.chequeIndentFormDetails).subscribe((response) => {
-        if (response.apiResponseStatus == 1) {
-          this.indentForm.reset();
-          this.chequelist.reset();
-          this.toastService.showAlert(
-            response.message,
-            response.apiResponseStatus,
-          );
-        } else {
-          this.toastService.showError(response.message);
-        }
-      })
-    }
+          this.chequeindentService.chqueIndentEntry(this.chequeIndentFormDetails).subscribe((response) => {
+              if (response.apiResponseStatus == 1) {
+                  this.indentForm.reset();
+                  this.chequelist.reset();
+                  this.toastService.showAlert(
+                      response.message,
+                      response.apiResponseStatus,
+                  );
+              } else {
+                  this.toastService.showError(response.message);
+              }
+          })
+      }
 
 
   }
 
   onTreasurySelected($event: string) {
-    this.selectedTreasury = $event;
+      this.selectedTreasury = $event;
   }
   handelInputValueChange($event: string) {
-    this.selectedmicrCode = $event;
-    console.log('Selected :', this.selectedmicrCode);
+      this.selectedmicrCode = $event;
+      console.log('Selected :', this.selectedmicrCode);
 
   }
 

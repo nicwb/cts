@@ -85,8 +85,8 @@ export class SubCategoryComponent implements OnInit {
         let todo = null;
         this.route.queryParams.subscribe((params) => {
             (todo = params['todo']),
-                (this.primary = params['primary']),
-                (this.sub = params['sub']);
+            (this.primary = params['primary']),
+            (this.sub = params['sub']);
         });
         console.log(todo);
         if (todo == 'create') {

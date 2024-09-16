@@ -19,19 +19,19 @@ import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 @NgModule({
-  declarations: [BillCheckingComponent],
-  imports: [
-    CommonModule,
-    BillCheckingRoutingModule,
-    StepsModule,
-    TableModule,
-    ListboxModule,
-    TokenListModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DynamicTableModule,
-    MhPrimeDynamicTableModule,
-    NgxPermissionsModule.forChild()
-  ]
+    declarations: [BillCheckingComponent],
+    imports: [
+        CommonModule,
+        BillCheckingRoutingModule,
+        StepsModule,
+        TableModule,
+        ListboxModule,
+        TokenListModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DynamicTableModule,
+        MhPrimeDynamicTableModule,
+        NgxPermissionsModule.forChild()
+    ]
 })
 export class BillCheckingModule { }

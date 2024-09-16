@@ -8,12 +8,12 @@ import { NgxPermissionsModule } from 'ngx-permissions';
 
 
 @NgModule({
-  declarations: [OptionsComponent],
-  imports: [
-    CommonModule,
-    OptionsRoutingModule,
-    OptionCardModule,
-    NgxPermissionsModule.forChild()
-  ]
+    declarations: [OptionsComponent],
+    imports: [
+        CommonModule,
+        OptionsRoutingModule,
+        OptionCardModule,
+        NgxPermissionsModule.forChild()
+    ]
 })
 export class OptionsModule { }

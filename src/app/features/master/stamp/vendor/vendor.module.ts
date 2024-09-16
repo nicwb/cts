@@ -6,10 +6,10 @@ import { VendorRoutingModule } from './vendor-routing.module';
 
 
 @NgModule({
-  declarations: [VendorComponent],
-  imports: [
-    CommonModule,
-    VendorRoutingModule,
-  ]
+    declarations: [VendorComponent],
+    imports: [
+        CommonModule,
+        VendorRoutingModule,
+    ]
 })
 export class VendorModule { }

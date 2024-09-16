@@ -6,29 +6,29 @@ import { IapiResponce } from '../../models/iapi-responce';
 import { catchError, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PpoDetailsService {
-  constructor(
+    constructor(
     private http: HttpClient,
     private toastService: ToastService
-  ) { }
+    ) { }
 
-  /// add a new recode
-  CreatePPODetails(
-    queryParameters: PPOEntryINF
-  ): Observable<IapiResponce> {
-    const apiUrl = "v1/ppo/details";
+    /// add a new recode
+    CreatePPODetails(
+        queryParameters: PPOEntryINF
+    ): Observable<IapiResponce> {
+        const apiUrl = "v1/ppo/details";
 
-    return this.http
-      .post<IapiResponce>(
-        apiUrl,
-        queryParameters
-      )
-      .pipe(
-        catchError((error) => {
-          throw error;
-        })
-      );
-  }
+        return this.http
+            .post<IapiResponce>(
+                apiUrl,
+                queryParameters
+            )
+            .pipe(
+                catchError((error) => {
+                    throw error;
+                })
+            );
+    }
 }

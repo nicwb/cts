@@ -52,6 +52,6 @@ export class AuthTokenService {
         return transformedRoles;
     }
     loadRolesAndPermissions(): Observable<Role[]> {
-      return of(this.getRolesWithPermissions());
+        return of(this.getRolesWithPermissions());
     }
 }

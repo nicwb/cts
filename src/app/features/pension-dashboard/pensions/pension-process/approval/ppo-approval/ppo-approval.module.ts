@@ -6,11 +6,11 @@ import { SearchPopupTempModule } from 'src/app/core/searchpopup/search-popup.mod
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    SearchPopupTempModule,
-    TableModule
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        SearchPopupTempModule,
+        TableModule
+    ]
 })
 export class PpoApprovalModule { }

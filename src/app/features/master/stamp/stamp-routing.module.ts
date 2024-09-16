@@ -9,13 +9,13 @@ import { DiscountDetailsComponent } from './discount-details/discount-details.co
 import { CombinationComponent } from './combination/combination.component';
 
 const routes: Routes = [{ path: '', component: StampComponent },
-{ path: 'label', component: LabelComponent },
-{ path: 'category', component: CategoryComponent }, { path: 'type', component: TypeComponent },
-{ path: 'vendor', component: VendorComponent }, { path: 'discount-details', component: DiscountDetailsComponent },
-{ path: 'combination', component: CombinationComponent}];
+    { path: 'label', component: LabelComponent },
+    { path: 'category', component: CategoryComponent }, { path: 'type', component: TypeComponent },
+    { path: 'vendor', component: VendorComponent }, { path: 'discount-details', component: DiscountDetailsComponent },
+    { path: 'combination', component: CombinationComponent}];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class StampRoutingModule { }

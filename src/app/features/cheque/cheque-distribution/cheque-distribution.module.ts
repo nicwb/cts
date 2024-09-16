@@ -15,21 +15,21 @@ import { CalendarModule } from 'primeng/calendar';
 
 
 @NgModule({
-  declarations: [ChequeDistributionComponent, NewDistributionComponent],
-  imports: [
-    CommonModule,
-    ChequeDistributionRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    ButtonModule,
-    DialogModule,
-    CommonHeaderModule,
-    DynamicTableModule,
-    ListboxModule,
-    TableModule,
-    CalendarModule
+    declarations: [ChequeDistributionComponent, NewDistributionComponent],
+    imports: [
+        CommonModule,
+        ChequeDistributionRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        DropdownModule,
+        ButtonModule,
+        DialogModule,
+        CommonHeaderModule,
+        DynamicTableModule,
+        ListboxModule,
+        TableModule,
+        CalendarModule
 
-  ]
+    ]
 })
 export class ChequeDistributionModule { }

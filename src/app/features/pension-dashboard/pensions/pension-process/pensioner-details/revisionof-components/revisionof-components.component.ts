@@ -19,7 +19,7 @@ export class RevisionofComponentsComponent implements OnInit {
         private fb: FormBuilder,
         private revisionOfComponentsService: PensionComponentRevisionService // injecting service here
     ) {
-       this.initializeForm(); // initializing form on component load
+        this.initializeForm(); // initializing form on component load
     }
 
     // formBuilder create

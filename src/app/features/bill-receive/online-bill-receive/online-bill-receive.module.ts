@@ -23,31 +23,31 @@ import { TableModule } from 'primeng/table';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import {FieldsetModule} from 'primeng/fieldset';
 @NgModule({
-  declarations: [OnlineBillReceiveComponent],
-  imports: [
-    CommonModule,
-    OnlineBillReceiveRoutingModule,
-    FormsModule,
-    AutoCompleteModule,
-    CalendarModule,
-    ChipsModule,
-    DropdownModule,
-    InputMaskModule,
-    InputNumberModule,
-    CascadeSelectModule,
-    MultiSelectModule,
-    InputTextareaModule,
-    InputTextModule,
-    ButtonModule,
-    RippleModule,
-    SplitButtonModule,
-    ToggleButtonModule,
-    ReactiveFormsModule,
-    RadioButtonModule,
-    TableModule,
-    CardModule,
-    FieldsetModule,
+    declarations: [OnlineBillReceiveComponent],
+    imports: [
+        CommonModule,
+        OnlineBillReceiveRoutingModule,
+        FormsModule,
+        AutoCompleteModule,
+        CalendarModule,
+        ChipsModule,
+        DropdownModule,
+        InputMaskModule,
+        InputNumberModule,
+        CascadeSelectModule,
+        MultiSelectModule,
+        InputTextareaModule,
+        InputTextModule,
+        ButtonModule,
+        RippleModule,
+        SplitButtonModule,
+        ToggleButtonModule,
+        ReactiveFormsModule,
+        RadioButtonModule,
+        TableModule,
+        CardModule,
+        FieldsetModule,
     
-  ]
+    ]
 })
 export class OnlineBillReceiveModule { }

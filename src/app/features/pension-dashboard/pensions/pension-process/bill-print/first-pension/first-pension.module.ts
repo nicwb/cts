@@ -10,14 +10,14 @@ import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    DynamicTableModule,
-    MhPrimeDynamicTableModule,
-    TableModule,
-    ButtonModule,
-    PopupTableModule
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        DynamicTableModule,
+        MhPrimeDynamicTableModule,
+        TableModule,
+        ButtonModule,
+        PopupTableModule
+    ]
 })
 export class FirstPensionModule { }

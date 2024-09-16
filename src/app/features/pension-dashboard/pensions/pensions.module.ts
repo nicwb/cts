@@ -20,28 +20,28 @@ import { PensionQueryComponent } from './pension-query/pension-query.component';
 
 
 @NgModule({
-  declarations: [
-    PensionCategoryComponent,
-    PensionBankBranchComponent,    
-    PensionsComponent,
-    PensionReportsComponent,
-    PensionQueryComponent,
-  ],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,
-    PensionsRoutingModule,
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule
-   ]
+    declarations: [
+        PensionCategoryComponent,
+        PensionBankBranchComponent,    
+        PensionsComponent,
+        PensionReportsComponent,
+        PensionQueryComponent,
+    ],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,
+        PensionsRoutingModule,
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule
+    ]
 })
 export class PensionsModule { }

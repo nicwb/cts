@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { PayMandateShortlistComponent } from './pay-mandate-shortlist.component';
 
 const routes: Routes = [
-  {path:"",component:PayMandateShortlistComponent}
+    {path:"",component:PayMandateShortlistComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class PayMandateShortlistRoutingModule { }

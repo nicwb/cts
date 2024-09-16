@@ -6,6 +6,6 @@ import { ToastService } from '../toast.service';
     providedIn: 'root',
 })
 export class ComponentRateService {
-  // http requst service
+    // http requst service
     constructor(private http:HttpClient, private toastService:ToastService) {}
 }

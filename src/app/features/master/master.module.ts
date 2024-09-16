@@ -9,12 +9,12 @@ import { PensionModule } from './pension/pension.module';
 
 
 @NgModule({
-  declarations: [MasterComponent],
-  imports: [
-    CommonModule,
-    MasterRoutingModule,
-    OptionCardModule,
-    PensionModule
-  ]
+    declarations: [MasterComponent],
+    imports: [
+        CommonModule,
+        MasterRoutingModule,
+        OptionCardModule,
+        PensionModule
+    ]
 })
 export class MasterModule { }

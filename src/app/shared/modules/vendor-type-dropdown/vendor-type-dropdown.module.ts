@@ -7,12 +7,12 @@ import { VendorTypeDropdownComponent } from './vendor-type-dropdown.component';
 
 
 @NgModule({
-  declarations: [VendorTypeDropdownComponent],
-  imports: [
-    CommonModule,
+    declarations: [VendorTypeDropdownComponent],
+    imports: [
+        CommonModule,
     // DropdownModule,
     // FormsModule
-  ],
-  exports:[VendorTypeDropdownComponent]
+    ],
+    exports:[VendorTypeDropdownComponent]
 })
 export class VendorTypeDropdownModule { }

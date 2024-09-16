@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { OptionsComponent } from './options.component';
 
 const routes: Routes = [
-  {path:"",component:OptionsComponent}
+    {path:"",component:OptionsComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class OptionsRoutingModule { }

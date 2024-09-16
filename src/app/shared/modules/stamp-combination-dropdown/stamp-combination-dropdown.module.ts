@@ -6,12 +6,12 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [StampCombinationDropdownModule],
-  imports: [
-    CommonModule,
-    DropdownModule,
-    FormsModule
-  ],
-  exports:[StampCombinationDropdownModule]
+    declarations: [StampCombinationDropdownModule],
+    imports: [
+        CommonModule,
+        DropdownModule,
+        FormsModule
+    ],
+    exports:[StampCombinationDropdownModule]
 })
 export class StampCombinationDropdownModule { }

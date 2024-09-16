@@ -9,16 +9,16 @@ import { throwError } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
-  selector: 'app-pensioner-status',
-  templateUrl: './pensioner-status.component.html',
-  styleUrls: ['./pensioner-status.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => PensionerStatusComponent),
-      multi: true
-    }
-  ]
+    selector: 'app-pensioner-status',
+    templateUrl: './pensioner-status.component.html',
+    styleUrls: ['./pensioner-status.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => PensionerStatusComponent),
+            multi: true
+        }
+    ]
 })
 export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
   @Input() approvedText: string = 'Approved';
@@ -41,108 +41,108 @@ export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
   ) {}
 
   ngOnInit(): void {
-    this.statusOptions = [
-      { label: this.approvedText, value: 1 },
-      { label: this.notApprovedText, value: 0 }
-    ];
-    this.getData();
+      this.statusOptions = [
+          { label: this.approvedText, value: 1 },
+          { label: this.notApprovedText, value: 0 }
+      ];
+      this.getData();
   }
 
   getData(): void {
-    this.pensionerStatusService.getStatus(this.ppoId, this.statusFlag)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.toastService.showError('Failed to fetch status: ' + error.message);
-          return throwError(error);
-        })
-      )
-      .subscribe((response) => {
-        console.log('Status response after getData: ', response);    
-        if (response.result && response.result.statusFlag !== undefined) {
-          this.selectedStatus = response.result.statusFlag > 0 ? 1 : 0;
-        } else {
-          this.selectedStatus = 0;
-        }
-        this.previousStatus = this.selectedStatus;
-        console.log('Current status:', this.selectedStatus);
-        this.onChange(this.selectedStatus);
-        this.onTouch();
-      });
+      this.pensionerStatusService.getStatus(this.ppoId, this.statusFlag)
+          .pipe(
+              catchError((error: HttpErrorResponse) => {
+                  this.toastService.showError('Failed to fetch status: ' + error.message);
+                  return throwError(error);
+              })
+          )
+          .subscribe((response) => {
+              console.log('Status response after getData: ', response);    
+              if (response.result && response.result.statusFlag !== undefined) {
+                  this.selectedStatus = response.result.statusFlag > 0 ? 1 : 0;
+              } else {
+                  this.selectedStatus = 0;
+              }
+              this.previousStatus = this.selectedStatus;
+              console.log('Current status:', this.selectedStatus);
+              this.onChange(this.selectedStatus);
+              this.onTouch();
+          });
   }
 
   onStatusChange(event: any): void {
-    if (this.readonly) return;
+      if (this.readonly) return;
 
-    const newStatus = event.value;
-    console.log('Previous status:', this.previousStatus);
-    console.log('New status:', newStatus);
+      const newStatus = event.value;
+      console.log('Previous status:', this.previousStatus);
+      console.log('New status:', newStatus);
 
-    if (newStatus !== this.previousStatus) {
-      if (newStatus === 1) {
-        this.addStatus();
-      } else {
-        this.deleteStatus();
+      if (newStatus !== this.previousStatus) {
+          if (newStatus === 1) {
+              this.addStatus();
+          } else {
+              this.deleteStatus();
+          }
       }
-    }
-    this.onChange(newStatus);
-    this.onTouch();
+      this.onChange(newStatus);
+      this.onTouch();
   }
 
   addStatus(): void {
-    const statusData: pensionerStatusDTO = { statusFlag: this.statusFlag, ppoId: this.ppoId, statusWef: this.statusWef };
-    this.pensionerStatusService.addStatus(statusData).subscribe(
-      (response) => {
-        console.log('Status updated:', response);
-        this.toastService.showSuccess('Status updated to ' + this.approvedText);
-        this.previousStatus = 1;
-      },
-      (error: HttpErrorResponse) => {
-        this.toastService.showError('Failed to update status: ' + error.message);
-        this.selectedStatus = 0; 
-        this.previousStatus = 0;
-      }
-    );
+      const statusData: pensionerStatusDTO = { statusFlag: this.statusFlag, ppoId: this.ppoId, statusWef: this.statusWef };
+      this.pensionerStatusService.addStatus(statusData).subscribe(
+          (response) => {
+              console.log('Status updated:', response);
+              this.toastService.showSuccess('Status updated to ' + this.approvedText);
+              this.previousStatus = 1;
+          },
+          (error: HttpErrorResponse) => {
+              this.toastService.showError('Failed to update status: ' + error.message);
+              this.selectedStatus = 0; 
+              this.previousStatus = 0;
+          }
+      );
   }
 
   deleteStatus(): void {
-    this.pensionerStatusService.deleteStatus(this.ppoId, this.statusFlag).subscribe(
-      (response) => {
-        console.log('Status deleted:', response);
-        this.toastService.showSuccess('Status updated to ' + this.notApprovedText);
-        this.previousStatus = 0;
-      },
-      (error: HttpErrorResponse) => {
-        this.toastService.showError('Failed to update status: ' + error.message);
-        this.selectedStatus = 1; 
-        this.previousStatus = 1;
-      }
-    );
+      this.pensionerStatusService.deleteStatus(this.ppoId, this.statusFlag).subscribe(
+          (response) => {
+              console.log('Status deleted:', response);
+              this.toastService.showSuccess('Status updated to ' + this.notApprovedText);
+              this.previousStatus = 0;
+          },
+          (error: HttpErrorResponse) => {
+              this.toastService.showError('Failed to update status: ' + error.message);
+              this.selectedStatus = 1; 
+              this.previousStatus = 1;
+          }
+      );
   }
 
   getStatusClass(status: number): string {
-    return status === 1 ? 'status-approved' : 'status-not-approved';
+      return status === 1 ? 'status-approved' : 'status-not-approved';
   }
 
   getStatusIcon(): string {
-    return this.selectedStatus === 1 ? 'pi pi-check' : 'pi pi-times';
+      return this.selectedStatus === 1 ? 'pi pi-check' : 'pi pi-times';
   }
 
   // ControlValueAccessor methods
   writeValue(value: any): void {
-    if (value !== undefined) {
-      this.selectedStatus = value;
-    }
+      if (value !== undefined) {
+          this.selectedStatus = value;
+      }
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+      this.onChange = fn;
   }
 
   registerOnTouched(fn: any): void {
-    this.onTouch = fn;
+      this.onTouch = fn;
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    this.readonly = isDisabled;
+      this.readonly = isDisabled;
   }
 }

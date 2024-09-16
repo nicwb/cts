@@ -32,12 +32,12 @@ import { TableModule } from 'primeng/table';
 // import { FloatLabe } ;
 
 const routes: Routes = [
-  { path: 'ppodetails', component: PpodetailsComponent, data: { breadcrumb: 'PpodetailsComponent' } },
-  {
-    path: ':ppoId/bank-account',
-    component: PpodetailsComponent,
-    data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
-  }
+    { path: 'ppodetails', component: PpodetailsComponent, data: { breadcrumb: 'PpodetailsComponent' } },
+    {
+        path: ':ppoId/bank-account',
+        component: PpodetailsComponent,
+        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
+    }
   
 ];
 
@@ -45,43 +45,43 @@ const routes: Routes = [
 
 
 @NgModule({
-  declarations: [PpodetailsComponent, DetailsComponent, BankDetailsComponent],
-  imports: [
-    CommonModule,
-    SanctionModule,
-    ButtonModule,
-    ReactiveFormsModule,    
-    DynamicTableModule,
-    OptionCardModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    TreasuryDropdownModule,
-    FormsModule,
-    InputTextModule,
-    RadioButtonModule,
-    RouterModule,
-    InputTextareaModule,
-    InputTextModule,
-    CalendarModule,
-    DropdownModule,
-    SelectButtonModule,
-    CardModule,
-    FormsModule,
-    DropdownModule,
-    CheckboxModule,
-    InputTextModule,
-    StepsModule,
-    PanelModule,
-    FieldsetModule,
-    FamilyNomineeModule,
-    PopupTableModule,
-    TableModule,
-    RouterModule.forChild(routes)
-  ],
-  providers: [],
-  bootstrap: [PpodetailsComponent],
-  exports: [RouterModule,BankDetailsComponent]
+    declarations: [PpodetailsComponent, DetailsComponent, BankDetailsComponent],
+    imports: [
+        CommonModule,
+        SanctionModule,
+        ButtonModule,
+        ReactiveFormsModule,    
+        DynamicTableModule,
+        OptionCardModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        TreasuryDropdownModule,
+        FormsModule,
+        InputTextModule,
+        RadioButtonModule,
+        RouterModule,
+        InputTextareaModule,
+        InputTextModule,
+        CalendarModule,
+        DropdownModule,
+        SelectButtonModule,
+        CardModule,
+        FormsModule,
+        DropdownModule,
+        CheckboxModule,
+        InputTextModule,
+        StepsModule,
+        PanelModule,
+        FieldsetModule,
+        FamilyNomineeModule,
+        PopupTableModule,
+        TableModule,
+        RouterModule.forChild(routes)
+    ],
+    providers: [],
+    bootstrap: [PpodetailsComponent],
+    exports: [RouterModule,BankDetailsComponent]
 })
 export class PpodetailsModule { }

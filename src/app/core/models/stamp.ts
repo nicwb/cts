@@ -117,7 +117,7 @@ export interface GetStampIndents {
     createdAt: string;
   }
 
-  export interface AddStampIndent {
+export interface AddStampIndent {
     memoNumber: string;
     memoDate: string;
     remarks: string;
@@ -129,7 +129,7 @@ export interface GetStampIndents {
     amount: number;
   }
 
-  export interface GetStampInvoices {
+export interface GetStampInvoices {
     stampIndentId: number;
     memoNumber: string;
     memoDate: string;
@@ -152,7 +152,7 @@ export interface GetStampIndents {
     // createdBy: number;
   }
 
-  export interface AddStampInvoice {
+export interface AddStampInvoice {
     stampIndentId: number;
     sheet: number;
     label: number;
@@ -161,10 +161,10 @@ export interface GetStampIndents {
     amount: number;
     quantity: number;
   }
-  export interface StampWalletGet {
+export interface StampWalletGet {
     clearBalance: number
   }
-  export interface StampWalletRefill {
+export interface StampWalletRefill {
     treasuryCode: string,
     clearBalance: number
   }

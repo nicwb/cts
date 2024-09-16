@@ -36,33 +36,33 @@ export class DynamicTableComponent implements OnInit {
      * large
      */
     @Input()
-    size: string = '';
+        size: string = '';
     @Input()
-    headers: TableHeader[] = [];
+        headers: TableHeader[] = [];
     @Input()
-    data: any;
+        data: any;
     @Input()
-    dataCount: number = 0;
+        dataCount: number = 0;
     @Input()
-    numberRowsShown: number = 10;
+        numberRowsShown: number = 10;
     @Input()
-    rowsPerPageOptions: any[] = [10, 20, 30];
+        rowsPerPageOptions: any[] = [10, 20, 30];
     @Input()
-    actionButtons: ActionButtonConfig[]=[];
+        actionButtons: ActionButtonConfig[]=[];
     /**
      * none
      * single 
      * multiple
      */
     @Input()
-    rowSelectionMode: string = 'none';
+        rowSelectionMode: string = 'none';
 
     @Output()
-    rowSelect = new EventEmitter<any>();
+        rowSelect = new EventEmitter<any>();
     @Output()
-    actionButtonClicked = new EventEmitter<any>();
+        actionButtonClicked = new EventEmitter<any>();
     @Output()
-    queryParameterChange = new EventEmitter<any>();
+        queryParameterChange = new EventEmitter<any>();
     sizes!: any[];
     filterParams: FilterParameter[] = [];
     selectedRows: any;

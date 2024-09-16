@@ -13,8 +13,8 @@
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
-        }       from '@angular/common/http';
+    HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+}       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -36,7 +36,7 @@ import { Configuration }                                     from '../configurat
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PensionFirstBillService {
 
@@ -86,7 +86,7 @@ export class PensionFirstBillService {
                 if (key != null) {
                     httpParams = httpParams.append(key, (value as Date).toISOString().substring(0, 10));
                 } else {
-                   throw Error("key may not be null if value is Date");
+                    throw Error("key may not be null if value is Date");
                 }
             } else {
                 Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
@@ -322,7 +322,7 @@ export class PensionFirstBillService {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (message !== undefined && message !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>message, 'message');
         }
 

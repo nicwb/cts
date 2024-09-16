@@ -5,10 +5,10 @@ import { TypeRoutingModule } from './type-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    TypeRoutingModule
-  ]
+    declarations: [],
+    imports: [
+        CommonModule,
+        TypeRoutingModule
+    ]
 })
 export class TypeModule { }

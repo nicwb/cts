@@ -12,7 +12,7 @@ import { map, catchError } from 'rxjs/operators';
 
 
 @Injectable({ 
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ComponentService {
 
@@ -23,47 +23,47 @@ export class ComponentService {
     constructor(private http: HttpClient, private toastService: ToastService) {}
 
     get_all_component_details(
-      queryParameters: DynamicTableQueryParameters
+        queryParameters: DynamicTableQueryParameters
     ): Observable<IapiResponce> {
-      return this.http
-        .patch<IapiResponce>(
-          'v1/pension/component',
-          queryParameters
-        )
-        .pipe(
-          catchError((error) => {
-            throw this.toastService.showError(error.message);
-          })
-        );
+        return this.http
+            .patch<IapiResponce>(
+                'v1/pension/component',
+                queryParameters
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastService.showError(error.message);
+                })
+            );
     }
 
     //Get Component Details 
     GetAllComponentDetails(id: string): Observable<IapiResponce<Component_interface>> {
-      return this.http.get<IapiResponce<Component_interface>>('v1/pension/component/' + id).pipe(
-        catchError((error) => {
-          throw this.toastService.showError(error.message);
-        })
-      );
+        return this.http.get<IapiResponce<Component_interface>>('v1/pension/component/' + id).pipe(
+            catchError((error) => {
+                throw this.toastService.showError(error.message);
+            })
+        );
     }
 
     //Add New Component Details
     add_new_component_details(dto: Component_interface): Observable<IapiResponce<Component_interface>> {
-      return this.http.post<IapiResponce<Component_interface>>('v1/pension/component', dto).pipe(
-        catchError((error) => {
-          this.toastService.showError(error.message);
-          throw error;
-        })
-      );
+        return this.http.post<IapiResponce<Component_interface>>('v1/pension/component', dto).pipe(
+            catchError((error) => {
+                this.toastService.showError(error.message);
+                throw error;
+            })
+        );
     }
 
     //Update Component Details
     updateComponentDetails(id: string, dto: Component_interface): Observable<IapiResponce> {
-      return this.http.put<IapiResponce>(`v1/pension/component/${id}`, dto).pipe(
-        catchError((error) => {
-          this.toastService.showError(error.message);
-          return throwError(error);
-        })
-      );
+        return this.http.put<IapiResponce>(`v1/pension/component/${id}`, dto).pipe(
+            catchError((error) => {
+                this.toastService.showError(error.message);
+                return throwError(error);
+            })
+        );
     }
 
 }

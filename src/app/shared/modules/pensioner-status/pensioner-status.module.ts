@@ -26,32 +26,32 @@ import { PensionerStatusComponent } from './pensioner-status.component';
 
 
 @NgModule({
-  declarations: [PensionerStatusComponent],
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ReactiveFormsModule,    
-    DynamicTableModule,
-    OptionCardModule,
-    ButtonModule,
-    CommonHeaderModule,
-    DropdownModule,
-    DialogModule,
-    CalendarModule,
-    ReactiveFormsModule,
-    TreasuryDropdownModule,
-    FormsModule,
-    TableModule,
-    InputTextModule,
-    ToggleButtonModule,
-    RippleModule,
-    MultiSelectModule,
-    ProgressBarModule,
-    ToastModule,
-    SliderModule,
-    RatingModule,
-    MhPrimeDynamicTableModule
-  ],
-  exports: [PensionerStatusComponent]
+    declarations: [PensionerStatusComponent],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ReactiveFormsModule,    
+        DynamicTableModule,
+        OptionCardModule,
+        ButtonModule,
+        CommonHeaderModule,
+        DropdownModule,
+        DialogModule,
+        CalendarModule,
+        ReactiveFormsModule,
+        TreasuryDropdownModule,
+        FormsModule,
+        TableModule,
+        InputTextModule,
+        ToggleButtonModule,
+        RippleModule,
+        MultiSelectModule,
+        ProgressBarModule,
+        ToastModule,
+        SliderModule,
+        RatingModule,
+        MhPrimeDynamicTableModule
+    ],
+    exports: [PensionerStatusComponent]
 })
 export class PensionerStatusModule { }

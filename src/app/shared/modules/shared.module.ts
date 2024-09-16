@@ -5,16 +5,16 @@ import { NumberToWordsPipe } from 'src/app/core/pipe/number-to-words.pipe';
 import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
 
 @NgModule({
-  declarations: [
-    FirstLetterPipe,
-    NumberToWordsPipe,
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports:[
-    FirstLetterPipe,
-    NumberToWordsPipe
-  ]
+    declarations: [
+        FirstLetterPipe,
+        NumberToWordsPipe,
+    ],
+    imports: [
+        CommonModule
+    ],
+    exports:[
+        FirstLetterPipe,
+        NumberToWordsPipe
+    ]
 })
 export class SharedModule { }

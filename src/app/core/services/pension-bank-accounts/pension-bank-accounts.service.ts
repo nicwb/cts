@@ -7,34 +7,34 @@ import { PensionBankAccounts } from '../../models/pension-bank-accounts';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class PensionBankAccountsService {
 
-  constructor(private http: HttpClient, private toastService: ToastService) { }
+    constructor(private http: HttpClient, private toastService: ToastService) { }
 
 
-  addPensionBankAccounts(ppoId:number, dto: PensionBankAccounts):Observable<IapiResponce<PensionBankAccounts>>{
-    return this.http.post<IapiResponce>('v1/ppo/'+ ppoId + '/bank-accounts', dto).pipe(
-      catchError((error)=>{
-        throw this.toastService.showError(error.message)
-      })
-    )
-  }
+    addPensionBankAccounts(ppoId:number, dto: PensionBankAccounts):Observable<IapiResponce<PensionBankAccounts>>{
+        return this.http.post<IapiResponce>('v1/ppo/'+ ppoId + '/bank-accounts', dto).pipe(
+            catchError((error)=>{
+                throw this.toastService.showError(error.message)
+            })
+        )
+    }
 
-  updatePensionBankAccounts(ppoId: number, dto: PensionBankAccounts):Observable<IapiResponce<PensionBankAccounts>>{
-    return this.http.put<IapiResponce<PensionBankAccounts>>('v1/ppo/'+ ppoId + '/bank-accounts', dto).pipe(
-      catchError((error)=>{
-        throw this.toastService.showError(error.message)
-      })
-    )
-  }
+    updatePensionBankAccounts(ppoId: number, dto: PensionBankAccounts):Observable<IapiResponce<PensionBankAccounts>>{
+        return this.http.put<IapiResponce<PensionBankAccounts>>('v1/ppo/'+ ppoId + '/bank-accounts', dto).pipe(
+            catchError((error)=>{
+                throw this.toastService.showError(error.message)
+            })
+        )
+    }
 
-  getPensionBankAccounts(ppoId: number):Observable<IapiResponce<PensionBankAccounts>>{
-    return this.http.get<IapiResponce<PensionBankAccounts>>('v1/ppo/'+ ppoId + '/bank-accounts').pipe(
-      catchError((error)=>{
-        throw this.toastService.showError(error.message)
-      })
-    )
-  }
+    getPensionBankAccounts(ppoId: number):Observable<IapiResponce<PensionBankAccounts>>{
+        return this.http.get<IapiResponce<PensionBankAccounts>>('v1/ppo/'+ ppoId + '/bank-accounts').pipe(
+            catchError((error)=>{
+                throw this.toastService.showError(error.message)
+            })
+        )
+    }
 }
