@@ -94,18 +94,6 @@ export class PensionBillComponent implements OnInit {
                 if (this.response.apiResponseStatus === 1) {
                     this.hasSaved = true;
                     this.result = this.response.result;
-                    if (!this.result.pensioner.bankAccounts || 
-            this.result.pensioner.bankAccounts.length === 0 || 
-            this.result.pensioner.bankAccounts[0].bankAcNo === null) {
-                        this.hasSaved = false;
-                        this.isApiResponseStatus1 = false;
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Not found pensioner bank account!",
-                        });
-                    }
-                    else {
                         this.pensionForm.patchValue({
                             ppoNo: this.result.pensioner.ppoNo,
                             pensionerName: this.result.pensioner.pensionerName,
@@ -131,14 +119,13 @@ export class PensionBillComponent implements OnInit {
                                 title: '.swal-custom-title ',
                             }
                         });
-                    }
                 } if (this.response.apiResponseStatus === 3) {
                     this.hasSaved = false;
                     this.isApiResponseStatus1 = false;
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "Not Generate First Pension Bill!",
+                        text: "Not found pensioner bank account!",
                     });
                 }
             } catch (err) {
