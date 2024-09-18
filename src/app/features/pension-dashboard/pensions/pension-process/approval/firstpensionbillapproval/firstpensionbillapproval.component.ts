@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom, Observable } from 'rxjs';
-import { PensionFirstBillService, PensionPPODetailsService, PensionPPOStatusService } from 'src/app/api';
-import { PensionStatusFlag } from 'src/app/shared/modules/pensioner-status/enumsStatus';
+import { APIResponseStatus, PensionFirstBillService, PensionPPODetailsService, PensionPPOStatusService, PensionStatusEntryDTO, PensionStatusFlag } from 'src/app/api';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -50,7 +49,7 @@ export class FirstpensionbillapprovalComponent {
     async getfirstpensionbill(ppoId: number): Promise<void> {
         try {
             this.getpensionbill = await firstValueFrom(this.firstbill.getFirstPensionBillByPpoId(ppoId));
-            if (this.getpensionbill.apiResponseStatus === 3) {
+            if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Error) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -76,17 +75,16 @@ export class FirstpensionbillapprovalComponent {
         }
 
         const ppoId = this.pensionForm.get('ppoId')?.value;
-        const statusFlag = PensionStatusFlag.PpoApproved;
-        const payload = {
-            statusFlag: statusFlag,
+        const payload : PensionStatusEntryDTO = {
+            statusFlag: PensionStatusFlag.PpoApproved,
             statusWef: '2024-08-01',
             ppoId: ppoId
         };
 
         try {
-            if (this.getpensionbill.apiResponseStatus === 1) {
+            if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Success) {
                 const response = await firstValueFrom(this.pensionPPOStatusService.setPpoStatusFlag(payload));
-                if (response.apiResponseStatus === 1) {
+                if (response.apiResponseStatus === APIResponseStatus.Success) {
                     Swal.fire({
                         position: "center",
                         icon: "success",
@@ -100,14 +98,14 @@ export class FirstpensionbillapprovalComponent {
                             title: '.swal-custom-title ',
                         }
                     });
-                } if (response.apiResponseStatus === 3) {
+                } if (response.apiResponseStatus === APIResponseStatus.Error) {
                     Swal.fire({
                         icon: "info",
                         title: "Oops...",
                         text: "" + response.message,
                     });
                 }
-            } if (this.getpensionbill.apiResponseStatus === 3) {
+            } if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Error) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",

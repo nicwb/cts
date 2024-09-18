@@ -18,6 +18,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 import {
+    APIResponseStatus,
     PensionCategoryMasterService,
     PensionFactoryService,
 } from 'src/app/api';
@@ -206,7 +207,7 @@ export class SubCategoryComponent implements OnInit {
                 this.service.createSubCategory(formData)
             );
 
-            if (response.apiResponseStatus === 1) {
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
                     'Sub Category Details added successfully'
@@ -249,7 +250,7 @@ export class SubCategoryComponent implements OnInit {
         const response = await firstValueFrom(
             this.service.getAllSubCategories(data)
         );
-        if (response.apiResponseStatus === 1) {
+        if (response.apiResponseStatus === APIResponseStatus.Success) {
             this.tableData = response.result;
             this.isTableDataLoading = false;
         }

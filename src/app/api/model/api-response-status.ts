@@ -11,12 +11,12 @@
  */
 
 
-export type APIResponseStatus = 1 | 2 | 3 | 4;
+export type APIResponseStatus = 'Success' | 'Warning' | 'Error' | 'Info';
 
 export const APIResponseStatus = {
-    NUMBER_1: 1 as APIResponseStatus,
-    NUMBER_2: 2 as APIResponseStatus,
-    NUMBER_3: 3 as APIResponseStatus,
-    NUMBER_4: 4 as APIResponseStatus
+    Success: 'Success' as APIResponseStatus,
+    Warning: 'Warning' as APIResponseStatus,
+    Error: 'Error' as APIResponseStatus,
+    Info: 'Info' as APIResponseStatus
 };
 

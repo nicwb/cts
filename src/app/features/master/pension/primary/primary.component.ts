@@ -17,6 +17,7 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
 import {
+    APIResponseStatus,
     PensionCategoryMasterService,
     PensionFactoryService,
 } from 'src/app/api';
@@ -159,7 +160,7 @@ export class PrimaryComponent {
                 this.service.createPrimaryCategory(formData)
             );
 
-            if (response.apiResponseStatus === 1) {
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
 
                 this.displayInsertModal = false; // Close the dialog

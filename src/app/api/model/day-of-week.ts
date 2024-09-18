@@ -11,15 +11,15 @@
  */
 
 
-export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type DayOfWeek = 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday';
 
 export const DayOfWeek = {
-    NUMBER_0: 0 as DayOfWeek,
-    NUMBER_1: 1 as DayOfWeek,
-    NUMBER_2: 2 as DayOfWeek,
-    NUMBER_3: 3 as DayOfWeek,
-    NUMBER_4: 4 as DayOfWeek,
-    NUMBER_5: 5 as DayOfWeek,
-    NUMBER_6: 6 as DayOfWeek
+    Sunday: 'Sunday' as DayOfWeek,
+    Monday: 'Monday' as DayOfWeek,
+    Tuesday: 'Tuesday' as DayOfWeek,
+    Wednesday: 'Wednesday' as DayOfWeek,
+    Thursday: 'Thursday' as DayOfWeek,
+    Friday: 'Friday' as DayOfWeek,
+    Saturday: 'Saturday' as DayOfWeek
 };
 

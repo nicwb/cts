@@ -17,7 +17,7 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
-import { PensionComponentService, PensionFactoryService } from 'src/app/api';
+import { APIResponseStatus, PensionComponentService, PensionFactoryService } from 'src/app/api';
 import { firstValueFrom,observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 interface expandedRows {
@@ -200,7 +200,7 @@ export class ComponentComponent implements OnInit {
             let response = await firstValueFrom(
                 this.Service.createComponent(formData)
             );
-            if (response.apiResponseStatus === 1) {
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
                 console.log('Form submitted successfully:', response);
                 this.getData();
@@ -248,7 +248,7 @@ export class ComponentComponent implements OnInit {
         const response = await firstValueFrom(
             this.Service.getAllComponents(data)
         );
-        if (response.apiResponseStatus != 1) {
+        if (response.apiResponseStatus != APIResponseStatus.Success) {
             
             this.toastService.showAlert(
                 'An error occurred while fetching data',

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PensionFirstBillService,BankService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from 'src/app/api'; 
+import { PensionFirstBillService,BankService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, APIResponseStatus } from 'src/app/api'; 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable} from 'rxjs';
@@ -136,7 +136,7 @@ export class FirstPensionComponent implements OnInit {
       }
   
       firstValueFrom(this.pensionFirstBillService.getFirstPensionBillByPpoId(ppoId)).then(response => {
-          if(response.apiResponseStatus !== 1) {
+          if(response.apiResponseStatus !== APIResponseStatus.Success) {
               this.toastService.showError(response.message ?? 'An unknown error occurred');
               return;
           }

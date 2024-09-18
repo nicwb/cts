@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { PensionManualPPOReceiptService, ManualPpoReceiptEntryDTO, ManualPpoReceiptResponseDTO, PensionFactoryService } from 'src/app/api';
+import { PensionManualPPOReceiptService, ManualPpoReceiptEntryDTO, ManualPpoReceiptResponseDTO, PensionFactoryService, APIResponseStatus } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
@@ -136,7 +136,7 @@ export class ManualPpoReceiptComponent implements OnInit {
       this.isDataLoading = true;
       try {
           const response = await firstValueFrom(this.pensionManualPpoReceiptService.getAllPpoReceipts(this.tableQueryParameters));
-          if (response.apiResponseStatus === 1 && response.result) {
+          if (response.apiResponseStatus === APIResponseStatus.Success && response.result) {
               this.tableData = {
                   headers: response.result.headers,
                   data: response.result.data as ManualPpoReceiptResponseDTO[],
@@ -166,7 +166,7 @@ export class ManualPpoReceiptComponent implements OnInit {
       try {
           if (event) {
               const response = await this.pensionManualPpoReceiptService.getPpoReceiptByTreasuryReceiptNo(event).toPromise();
-              if (response && response.apiResponseStatus === 1 && response.result) {
+              if (response && response.apiResponseStatus === APIResponseStatus.Success && response.result) {
                   const updatedData: ManualPpoReceiptResponseDTO[] = [response.result].filter((item): item is ManualPpoReceiptResponseDTO => item !== undefined)
                       .map((item: ManualPpoReceiptResponseDTO) => ({
                           ...item,
@@ -212,7 +212,7 @@ export class ManualPpoReceiptComponent implements OnInit {
   
               const response = await firstValueFrom(apiCall);
   
-              if (response.apiResponseStatus === 1) {
+              if (response.apiResponseStatus === APIResponseStatus.Success) {
                   await this.loadInitialTableData();
                   this.resetAndCloseDialog();
                   this.toastService.showSuccess(`PPO Receipt ${this.selectedRow ? 'updated' : 'added'} successfully`);

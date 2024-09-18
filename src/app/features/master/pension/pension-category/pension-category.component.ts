@@ -1,4 +1,4 @@
-import { PensionCategoryMasterService } from 'src/app/api';
+import { APIResponseStatus, PensionCategoryMasterService } from 'src/app/api';
 import {
     Component,
     OnInit,
@@ -336,7 +336,7 @@ export class PensionCategoryComponent implements OnInit {
             let response = await firstValueFrom(
                 this.service.createCategory(formData)
             );
-            if (response.apiResponseStatus===1) {
+            if (response.apiResponseStatus===APIResponseStatus.Success) {
                 // Assuming 1 means success
                 this.toastService.showSuccess(
                     'Pension Category Details added successfully'
@@ -475,7 +475,7 @@ export class PensionCategoryComponent implements OnInit {
         let response = await firstValueFrom(
             this.service.getAllCategories(data)
         );
-        if (response.apiResponseStatus === 1) {
+        if (response.apiResponseStatus === APIResponseStatus.Success) {
             this.tableData = response.result;
             this.isTableDataLoading = false;
         } else {

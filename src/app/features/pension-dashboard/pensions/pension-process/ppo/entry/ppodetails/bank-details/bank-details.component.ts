@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { PensionBankAccountsService, BankService, PensionFactoryService } from 'src/app/api';
+import { PensionBankAccountsService, BankService, PensionFactoryService, APIResponseStatus } from 'src/app/api';
 import { firstValueFrom, tap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { environment } from 'src/environments/environment';
@@ -200,7 +200,7 @@ export class BankDetailsComponent implements OnInit, OnChanges {
       if (this.isEditing) {
           await firstValueFrom(this.service.updateBankAccountByPpoId(Number(this.ppoId), this.BankDetailsForm.value).pipe(
               tap(response => {
-                  if (response.apiResponseStatus === 1) {
+                  if (response.apiResponseStatus === APIResponseStatus.Success) {
                       this.tostService.showSuccess('Bank account updated successfully');
                   } else {
                       this.tostService.showWarning("Failed saving bank account");
@@ -212,7 +212,7 @@ export class BankDetailsComponent implements OnInit, OnChanges {
 
       await firstValueFrom(this.service.createBankAccount(Number(this.ppoId), this.BankDetailsForm.value).pipe(
           tap(response => {
-              if (response.apiResponseStatus === 1) {
+              if (response.apiResponseStatus === APIResponseStatus.Success) {
                   this.tostService.showSuccess('Bank account saved successfully');
               } else {
                   this.tostService.showWarning("Failed saving bank account");

@@ -69,6 +69,7 @@ model/pension-status-dto-json-api-response.ts
 model/pension-status-dto.ts
 model/pension-status-entry-dto-json-api-response.ts
 model/pension-status-entry-dto.ts
+model/pension-status-flag.ts
 model/pension-sub-category-entry-dto.ts
 model/pension-sub-category-response-dto-json-api-response.ts
 model/pension-sub-category-response-dto.ts

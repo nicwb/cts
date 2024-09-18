@@ -6,6 +6,7 @@ import {
     ComponentRateEntryDTO,
     ComponentRateResponseDTOJsonAPIResponse,
     PensionBreakupResponseDTO,
+    APIResponseStatus,
 } from 'src/app/api';
 import { PensionCategoryMasterService } from 'src/app/api';
 import { PensionComponentService } from 'src/app/api';
@@ -203,7 +204,7 @@ export class ComponentRateComponent implements OnInit {
                 ).pipe(
                     tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
                         if (response.message) {
-                            if (response.apiResponseStatus === 1) {
+                            if (response.apiResponseStatus === APIResponseStatus.Success) {
                                 this.fetchAllDetails();
                                 this.toastService.showSuccess(response.message);
                             } else {

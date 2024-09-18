@@ -9,11 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PensionStatusFlag } from './pension-status-flag';
 
 
 export interface PensionStatusDTO { 
     dataSource?: { [key: string]: any; } | null;
-    statusFlag: number;
+    statusFlag: PensionStatusFlag;
     statusWef: string;
 }
+export namespace PensionStatusDTO {
+}
+
 

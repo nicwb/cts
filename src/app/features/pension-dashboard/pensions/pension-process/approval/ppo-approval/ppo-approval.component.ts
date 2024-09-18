@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, firstValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse } from 'src/app/api';
-import { PensionStatusFlag } from 'src/app/shared/modules/pensioner-status/enumsStatus';
+import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { Router } from '@angular/router';
 
@@ -70,7 +69,7 @@ export class PpoApprovalComponent implements OnInit {
         this.isTableDataLoading = true;
         try {
             const response: PensionerResponseDTOJsonAPIResponse = await firstValueFrom(this.pensionPPODetailsService.getPensionerByPpoId(this.ApprovalForm.get('ppoId')?.value));
-            if (response.apiResponseStatus === 1 && response.result) {
+            if (response.apiResponseStatus === APIResponseStatus.Success && response.result) {
                 const ppoId = this.ApprovalForm.get('ppoId')?.value;
                 const bankAccounts = response.result.bankAccounts;
                 const branchCode = bankAccounts && bankAccounts[0] && bankAccounts[0].branchCode;

@@ -5,7 +5,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { Validators } from '@angular/forms';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
-import { PensionManualPPOReceiptService, PensionPPODetailsService, PensionCategoryMasterService } from 'src/app/api';
+import { PensionManualPPOReceiptService, PensionPPODetailsService, PensionCategoryMasterService, APIResponseStatus } from 'src/app/api';
 import { catchError, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PensionFactoryService } from 'src/app/api';
@@ -151,7 +151,7 @@ export class DetailsComponent implements OnInit, OnChanges {
           await firstValueFrom(
               this.PensionPPODetailsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
                   tap((res)=>{
-                      if(res.apiResponseStatus == 1 && res.result){
+                      if(res.apiResponseStatus == APIResponseStatus.Success && res.result){
                           this.patchData(res.result);
                       }
                       else{
@@ -228,7 +228,7 @@ export class DetailsComponent implements OnInit, OnChanges {
               await firstValueFrom(
                   this.PensionPPODetailsService.createPensioner(this.ppoFormDetails.value).pipe(
                       tap((res) => {
-                          if (res.apiResponseStatus == 1) {
+                          if (res.apiResponseStatus == APIResponseStatus.Success) {
                               if (res.message) {
                                   this.tostService.showSuccess(res.message);
                               }
@@ -256,7 +256,7 @@ export class DetailsComponent implements OnInit, OnChanges {
           await firstValueFrom(
               this.PensionPPODetailsService.updatePensionerByPpoId(Number(this.ppoId),this.ppoFormDetails.value).pipe(
                   tap((res) => {
-                      if (res.apiResponseStatus == 1) {
+                      if (res.apiResponseStatus == APIResponseStatus.Success) {
                           if (res.message) {
                               this.tostService.showSuccess(res.message);
                           }

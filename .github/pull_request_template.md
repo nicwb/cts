@@ -6,7 +6,7 @@
 ## The guidelines are followed when sending PR
 
 - [ ] PR has a single commit only.
-- [ ] Commit Message is same as the task title
+- [ ] Commit Message is same as the task title.
 - [ ] Commit doesn't contain any console log statement.
 - [ ] Files added/changed are actually required for this task.
 - [ ] This task contains routing and breadcrumbs has been added.
