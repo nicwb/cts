@@ -117,7 +117,7 @@ export class BillPrintComponent implements OnInit {
                 default:
                     throw new Error('Invalid choice selected');
                 }
-                this.fileGeneration.generatePdf(reportData);
+                //this.fileGeneration.generatePdf(reportData);
             } catch (error) {
                 console.error('Error generating report', error);
             } finally {
