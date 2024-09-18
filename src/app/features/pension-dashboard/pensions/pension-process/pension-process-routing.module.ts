@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PensionProcessComponent } from './pension-process.component';
 import { PpoComponent } from './ppo/ppo.component';
-import { EntryComponent } from './ppo/entry/entry.component';
 import { PensionerDetailsComponent } from './pensioner-details/pensioner-details.component';
 import {PensionBillComponent} from './pension-bill/pension-bill.component'
 import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';

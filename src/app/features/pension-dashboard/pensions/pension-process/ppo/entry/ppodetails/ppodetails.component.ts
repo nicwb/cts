@@ -4,7 +4,7 @@ import { firstValueFrom, Observable, tap, catchError, EMPTY } from 'rxjs';
 import { PensionPPODetailsService } from 'src/app/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-
+import {Location} from '@angular/common';
 // Define the interface for the records
 interface PPORecord {
   [key: string]: any;
@@ -52,7 +52,8 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
     private ppoDetialsService: PensionPPODetailsService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
     ) {
         this.detectRoutes();
     }
@@ -70,7 +71,6 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
             if (routePpoId) {
                 this.ppoId = routePpoId;
                 this.viewChange(false);
-
             }
         });
     
@@ -84,9 +84,12 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
                 case 'bank-account':
                     this.currentStepIndex = 1;
                     break;
-  
-                    // Add additional cases if necessary
-  
+                case 'new':
+                    this.newPPOEntry();
+                    break;
+                case 'edit':
+                    this.cdr.detectChanges();
+                    break;
                 default:
                     break;
                 }
@@ -163,12 +166,32 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
     }
 
     next(): void {
-        if (this.ppoId) {
-            this.currentStepIndex++;
+        if (!this.ppoId) {
+            return;
+        }
+        switch(this.currentStepIndex){
+        case 0:
+            this.currentStepIndex=1;
+            this.router.navigate(['/pension/modules/pension-process/ppo/entry/',this.ppoId,'bank-account']);
+            break;
+        case 1:
+            this.currentStepIndex=2;
+            break;
+        case 2:
+            this.currentStepIndex=3;
+            break;
+        case 3:
+            this.currentStepIndex=0;
+            break;
+        default:
+            this.currentStepIndex=0;
+            this.viewChange(true);
+            break;
         }
     }
 
     prev(): void {
+        this.location.back();
         if (this.currentStepIndex > 0) {
             this.currentStepIndex--;
         } else {
@@ -188,6 +211,10 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
         this.ppoId = undefined;
         this.viewMode = false;
         this.cdr.detectChanges();
+    }
+
+    addNewEntry(){
+        this.router.navigate(['/pension/modules/pension-process/ppo/entry/new']);
     }
 
     search(): void {
@@ -215,11 +242,8 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
 
     editThisRecord(record: PPORecord): void {
         if (record['ppoId']) {
-            this.ppoId = record['ppoId'];
-            this.pensionerName = record['pensionerName'];
-            this.cdr.detectChanges();
+            this.router.navigate(['/pension/modules/pension-process/ppo/entry/',record['ppoId'],'edit']);
         }
-        this.viewChange(false);
     }
 
     setPpoId(id: any) {

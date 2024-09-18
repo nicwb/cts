@@ -29,8 +29,8 @@ const routes: Routes = [
     },
     {
         path: 'modules/pension-process/ppo/entry',
-        loadChildren: () => import('./pensions/pension-process/ppo/entry/entry.module').then(m => m.EntryModule),
-        data: { breadcrumb: 'EntryModule' }
+        loadChildren: () => import('./pensions/pension-process/ppo/entry/ppodetails/ppodetails.module').then(m => m.PpodetailsModule),
+        data: { breadcrumb: 'PpodetailsModule' }
     },
   
     {
