@@ -9,3 +9,5 @@
 - [ ] Commit Message is same as the task title
 - [ ] Commit doesn't contain any console log statement.
 - [ ] Files added/changed are actually required for this task.
+- [ ] This task contains routing and breadcrumbs has been added.
+- [ ] This task adds new component with deep-link support implemented.
