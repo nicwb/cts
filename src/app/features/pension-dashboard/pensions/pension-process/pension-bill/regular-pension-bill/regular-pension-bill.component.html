@@ -1,0 +1,96 @@
+<div class="container">
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <!-- Form section -->
+                <div class="flex flex-column gap-4 mt-4 px-4">
+                    <form [formGroup]="billPrintForm">
+                        <div class="formgroup-inline grid align-items-center">
+                            <!-- Month Label & Dropdown -->
+                            <label for="month" class="col-12 mb-2 md:col-2 md:mb-0">Month:</label>
+                            <div class="field col-12 mb-2 md:col-3 md:mb-0">
+                                <p-dropdown [options]="months" formControlName="months" placeholder="Select a Month" [showClear]="true"></p-dropdown>
+                            </div>
+
+                            <!-- Year Label & Calendar -->
+                            <label for="year" class="col-12 mb-2 md:col-2 md:mb-0">Year:</label>
+                            <div class="field col-12 mb-2 md:col-3 md:mb-0">
+                                <p-calendar formControlName="year" view="year" dateFormat="yy" [showIcon]="true" (onSelect)="onYearSelect($event)"></p-calendar>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Progress and PPO Count Display -->
+                <div class="mt-4 px-4 text-center" *ngIf="isGenerating || ppoCount !== null">
+                    <p-progressBar [value]="progress"></p-progressBar>
+                    <p class="mt-2">{{progressMessage}}</p>
+                    <p *ngIf="ppoCount !== null" class="mt-2">PPOs Available: {{ppoCount}}</p>
+                </div>
+
+                 <!-- Detailed Error Message Display -->
+                 <div *ngIf="failedMessages.length > 0" class="mt-4 px-4">
+                    <div class="error-container">
+                        <div class="error-title">Failed PPOs</div>
+                        <ul class="error-list">
+                            <li *ngFor="let message of failedMessages">
+                                {{message}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Button Group -->
+                <div class="flex flex-column mt-4 align-items-center justify-content-center">
+                    <div class="flex flex-wrap gap-2 justify-content-center">
+                        <button pButton pRipple (click)="onFetchPPOBills()" type="button" class="p-button-raised p-button-info" [disabled]="isGenerating || !billPrintForm.valid">
+                            Fetch Bills
+                        </button>
+                        
+                        <button pButton pRipple (click)="onGenerate()" type="button" class="p-button-raised p-button-info"
+                            [disabled]="isGenerating || ppoCount === null">
+                            Generate {{ ppoCount }} Bill{{ ppoCount && ppoCount > 1 ? 's' : '' }}
+                        </button>
+                        <button pButton pRipple (click)="onRefresh()" type="button" class="p-button-raised p-button-info" [disabled]="isGenerating">
+                            Refresh
+                        </button>
+                        <button pButton pRipple type="button" label="Print"
+                            class="p-button-secondary px-4" (click)="billprint()">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-container {
+    border: 1px solid #f44336;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.error-title {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.error-list {
+    list-style-type: none;
+    padding: 15px;
+    margin: 0;
+}
+
+.error-list li {
+    color: #f44336;
+    margin-bottom: 5px;
+}
+
+.error-list li:last-child {
+    margin-bottom: 0;
+}
+</style>

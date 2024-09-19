@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LayoutService } from './service/app.layout.service';
+import { LayoutService } from '../service/app.layout.service';
 
 @Component({
     selector: 'app-sidebar-pension',   //app-app.sidebar.pension
@@ -75,7 +75,7 @@ export class AppSidebarPensionComponent implements OnInit {
 
                                         ]
                                     },
-                                    // { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark' },
+                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/regular-pension-bill']},
                                     //  { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'Money Pension', icon: 'pi pi-fw pi-bookmark' },

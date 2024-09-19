@@ -25,7 +25,7 @@ import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { SharedModule } from '../shared/modules/shared.module';
-import { AppSidebarPensionComponent } from './app.sidebar.pension.component';
+import { AppSidebarPensionComponent } from './app.sidebar.pension/app.sidebar.pension.component';
 
 @NgModule({
     declarations: [

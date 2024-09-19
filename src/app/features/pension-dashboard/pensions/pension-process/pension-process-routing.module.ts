@@ -8,6 +8,7 @@ import {PensionBillComponent} from './pension-bill/pension-bill.component'
 import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';
 import { BillPrintComponent } from './bill-print/bill-print.component';
 import { ApprovalComponent } from './approval/approval.component';
+import { RegularPensionBillComponent } from './pension-bill/regular-pension-bill/regular-pension-bill.component';
 
 const routes: Routes = [
 
@@ -19,6 +20,11 @@ const routes: Routes = [
     {path:'app-arrear-pension',component:ArrearPensionComponent, data: { breadcrumb: 'ArrearPensionComponent' }},
     {path: 'bill-print', component: BillPrintComponent, data: { breadcrumb: 'BillPrintComponent' }},
     {path: 'approval', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' }},
+    {
+        path: 'regular-pension-bill',
+        component: RegularPensionBillComponent,
+        data: { breadcrumb: 'RegularPensionBillComponent' }
+    }
 
 ];
 

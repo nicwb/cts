@@ -15,16 +15,18 @@ import { MessageService } from 'primeng/api';
 import { CalendarModule } from 'primeng/calendar';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DividerModule } from 'primeng/divider';
+import { RegularPensionBillComponent } from './regular-pension-bill/regular-pension-bill.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 @NgModule({
     declarations: [
         PensionBillComponent,
+        RegularPensionBillComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
-        RouterModule,
         ButtonModule,
         DropdownModule,
         ChipsModule,
@@ -34,11 +36,12 @@ import { DividerModule } from 'primeng/divider';
         DialogModule,
         CalendarModule,
         PopupTableModule,
-        DividerModule
+        DividerModule,
+        ProgressBarModule,
 
     ],
     providers: [MessageService],
   
-    exports: [RouterModule],
+    exports: [],
 })
 export class PensionBillModule { }
