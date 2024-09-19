@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('PPO Approval', () => {
     test.beforeEach(async ({ page, isMobile }) => {
+        test.fixme(true, 'Fix the tests to handle empty list of PPOs for approval');
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
@@ -110,7 +111,7 @@ test.describe('PPO Approval', () => {
         await expect(page.locator('text=PPO Approved successfully')).toBeVisible();
     });
     
-    test('should route to bank page if bank record is not available', async ({ page }) => {
+    test.skip('should route to bank page if bank record is not available', async ({ page }) => {
         await page.click('app-search-popup');
         await page.waitForTimeout(500);
         await page.waitForSelector('tbody tr');

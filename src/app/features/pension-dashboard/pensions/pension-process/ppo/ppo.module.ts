@@ -21,7 +21,7 @@ import { PpodetailsComponent } from './entry/ppodetails/ppodetails.component';
 
 const routes: Routes = [
     {path: '', component: PpoComponent, data: { breadcrumb: 'PpoComponent' }},
-    {path: 'entry', component: PpodetailsComponent, data: { breadcrumb: 'EntryComponent' }},
+    {path: 'entry', component: PpodetailsComponent, data: { breadcrumb: 'PpodetailsComponent' }},
     {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent, data: { breadcrumb: 'ManualPpoReceiptComponent' }},
     {path: 'sanction', component: SanctionComponent, data: { breadcrumb: 'SanctionComponent' }},
     {
