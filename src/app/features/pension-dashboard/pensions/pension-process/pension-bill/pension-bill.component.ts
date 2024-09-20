@@ -8,9 +8,12 @@ import {
     PpoBillEntryDTO,
     PensionPPODetailsService,
     PensionComponentRevisionService,
+    APIResponseStatus,
+    InitiateFirstPensionBillResponseDTOJsonAPIResponse,
+    PpoPaymentListItemDTO,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 @Component({
     selector: 'app-pension-bill',
@@ -18,10 +21,9 @@ import { Router } from '@angular/router';
     styleUrls: ['./pension-bill.component.scss'],
     providers: [MessageService],
 })
-
 export class PensionBillComponent implements OnInit {
     ppoId?: number;
-    payments: any[] = [];
+    payments: PpoPaymentListItemDTO[] = [];
     pensioncategory: any = {};
     period: string = '';
     pensionForm: FormGroup = this.fb.group({});
@@ -29,8 +31,7 @@ export class PensionBillComponent implements OnInit {
     isDataLoaded: boolean = false;
     billdate = new Date().toISOString().split('T')[0];
     ppoList$: Observable<any>;
-    result?: any;
-    response: any;
+    response!: InitiateFirstPensionBillResponseDTOJsonAPIResponse;
     hasGenerated: boolean = true;
     hasSaved: boolean = false;
     res: any;
@@ -38,17 +39,21 @@ export class PensionBillComponent implements OnInit {
     today: Date = new Date();
     check: any;
     validppid: boolean = true;
-    endOfMonth: Date = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 0); // Initialized directly
+    endOfMonth: Date = new Date(
+        this.today.getFullYear(),
+        this.today.getMonth() + 1,
+        0
+    ); // Initialized directly
     isApiResponseStatus1: boolean = false;
 
     // Define all constractor
     constructor(
-    private fb: FormBuilder,
-    private service: PensionFirstBillService,
-    private ppoListService: PensionPPODetailsService,
-    private revisionService: PensionComponentRevisionService,
-    private toastService: ToastService,
-    private router: Router
+        private fb: FormBuilder,
+        private service: PensionFirstBillService,
+        private ppoListService: PensionPPODetailsService,
+        private revisionService: PensionComponentRevisionService,
+        private toastService: ToastService,
+        private router: Router
     ) {
         const payload = {
             listType: 'type1',
@@ -63,13 +68,17 @@ export class PensionBillComponent implements OnInit {
         this.ppoList$ = this.ppoListService.getAllPensioners(payload);
     }
 
-    //select data 
+    //select data
     onDateSelect(event: Date) {
         this.period = this.formatDate(event);
     }
-    // all from control 
+    // all from control
     ngOnInit(): void {
-        this.endOfMonth = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 0);
+        this.endOfMonth = new Date(
+            this.today.getFullYear(),
+            this.today.getMonth() + 1,
+            0
+        );
         this.pensionForm = this.fb.group({
             ppoId: ['', Validators.required],
             ppoNo: ['', Validators.required],
@@ -89,63 +98,53 @@ export class PensionBillComponent implements OnInit {
         };
         if (this.ppoId && this.period) {
             try {
-                this.response = await firstValueFrom(this.service.generateFirstPensionBill(payload2));
-                this.isApiResponseStatus1 = this.response.apiResponseStatus === 1;
-                if (this.response.apiResponseStatus === 1) {
+                this.response = await firstValueFrom(
+                    this.service.generateFirstPensionBill(payload2)
+                );
+                this.isApiResponseStatus1 =
+                    this.response.apiResponseStatus ===
+                    APIResponseStatus.Success;
+                if (
+                    this.response.apiResponseStatus ===
+                    APIResponseStatus.Success
+                ) {
+                    this.pensionForm.patchValue({
+                        ppoNo: this.response.result?.pensioner?.ppoNo,
+                        pensionerName:
+                            this.response.result?.pensioner?.pensionerName,
+                        periodFrom:
+                            this.response.result?.pensioner?.dateOfRetirement,
+                        accountNo:
+                            this.response?.result?.pensioner?.bankAccounts?.[0]
+                                ?.bankAcNo,
+
+                        bankName:
+                            this.response.result?.pensioner?.bankAccounts?.[0]
+                                ?.bankCode,
+                    });
+                    this.payments =
+                        this.response?.result?.pensionerPayments || [];
+                    this.pensioncategory =
+                        this.response?.result?.pensioner?.category;
+                    this.calculateTotalDueAmount();
+                    this.isDataLoaded = true;
                     this.hasSaved = true;
-                    this.result = this.response.result;
-                    if (!this.result.pensioner.bankAccounts || 
-            this.result.pensioner.bankAccounts.length === 0 || 
-            this.result.pensioner.bankAccounts[0].bankAcNo === null) {
-                        this.hasSaved = false;
-                        this.isApiResponseStatus1 = false;
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Not found pensioner bank account!",
-                        });
-                    }
-                    else {
-                        this.pensionForm.patchValue({
-                            ppoNo: this.result.pensioner.ppoNo,
-                            pensionerName: this.result.pensioner.pensionerName,
-                            periodFrom: this.result.pensioner.dateOfRetirement,
-                            accountNo: this.result.pensioner.bankAccounts[0].bankAcNo,
-                            bankName: this.result.pensioner.bankAccounts[0].bankCode,
-                        });
-                        this.payments = this.result.pensionerPayments;
-                        this.pensioncategory = this.result.pensioner.category;
-                        this.calculateTotalDueAmount();
-                        this.isDataLoaded = true;
-                        this.massage = '';
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: "Success",
-                            text: "First bill generate",
-                            showConfirmButton: false,
-                            timer: 1300,
-                            width: '500px',
-                            padding: '3em',
-                            customClass: {
-                                title: '.swal-custom-title ',
-                            }
-                        });
-                    }
-                } if (this.response.apiResponseStatus === 3) {
+                    this.massage = '';
+                    this.toastService.showSuccess('First bill generate'); 
+                } 
+                else if (
+                    this.response.apiResponseStatus === APIResponseStatus.Error
+                ) {
                     this.hasSaved = false;
                     this.isApiResponseStatus1 = false;
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Not Generate First Pension Bill!",
-                    });
+                    this.toastService.showError('First Pension Bill not found');
                 }
             } catch (err) {
+                this.toastService.showError('Something Went wrong!');
                 Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something Went wrong!",
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something Went wrong!',
                 });
                 this.hasSaved = false;
                 this.isApiResponseStatus1 = false;
@@ -153,70 +152,62 @@ export class PensionBillComponent implements OnInit {
         }
     }
 
-    // save function 
+    // save function
     async save() {
         try {
-            if (this.result) {
-                if(this.response.apiResponseStatus === 1){
-                    await  this.saveFirstBill();
+            if (this.response.result) {
+                if (
+                    this.response.apiResponseStatus ===
+                    APIResponseStatus.Success
+                ) {
+                    await this.saveFirstBill();
                 }
             }
         } catch (error: unknown) {
-            const errorMessage = (error instanceof Error) ? error.message : 'An unexpected error occurred.';
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : 'An unexpected error occurred.';
             this.toastService.showError(errorMessage);
         }
     }
 
     // save first bill
-  
+
     async saveFirstBill() {
         const saveFirstBill: PpoBillEntryDTO = {
-            ppoId: this.result.pensioner.ppoId,
-            toDate: this.result.billDate,
+            ppoId: this.response?.result?.pensioner?.ppoId ?? 0, // Default to 0 if undefined or null
+            toDate: this.response?.result?.billDate || '', // Assuming toDate is a string or valid date type
         };
         try {
-            this.res = await firstValueFrom(this.service.saveFirstPensionBill(saveFirstBill));
-            if (this.res?.apiResponseStatus === 1) {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Success",
-                    text: "First bill saved",
-                    showConfirmButton: false,
-                    timer: 2500,
-                    width: '500px',
-                    padding: '3em',
-                    customClass: {
-                        title: '.swal-custom-title ',
-                    }
-                });
+            this.res = await firstValueFrom(
+                this.service.saveFirstPensionBill(saveFirstBill)
+            );
+            if (this.res?.apiResponseStatus === APIResponseStatus.Success) {
+                this.toastService.showSuccess('First bill saved');
                 this.hasSaved = false;
-            } if(this.res.apiResponseStatus === 3){
+            }
+            if (this.res.apiResponseStatus === APIResponseStatus.Error) {
                 Swal.fire({
-                    title: "Are you sure?",
-                    text: "The first pension bill is already saved!",
-                    icon: "warning",
+                    title: 'Are you sure?',
+                    text: 'The first pension bill is already saved!',
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Swal.fire({
-                            title: "Deleted!",
-                            text: "Your file has been deleted.",
-                            icon: "success"
+                            title: 'Deleted!',
+                            text: 'Your file has been deleted.',
+                            icon: 'success',
                         });
                     }
                 });
             }
         } catch (billError) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                width: '500px',
-                text: "Failed to save the first pension bill!",
-            });
+            this.toastService.showError('Failed to save the first pension bill!');
         }
     }
 
@@ -224,17 +215,20 @@ export class PensionBillComponent implements OnInit {
     massageColor: string = '';
     async onInputBlur() {
         if (this.ppoId) {
-            this.check = await firstValueFrom(this.ppoListService.getPensionerByPpoId(this.ppoId));
-            if (this.check.apiResponseStatus === 3) {
-                this.massage = "Invalid ppoId!";
+            this.check = await firstValueFrom(
+                this.ppoListService.getPensionerByPpoId(this.ppoId)
+            );
+            if (this.check.apiResponseStatus === APIResponseStatus.Error) {
+                this.massage = 'Invalid ppoId!';
                 this.massageColor = 'text-red-600';
                 this.validppid = false;
-            } else if (this.check.apiResponseStatus === 1) {
+            } else if (
+                this.check.apiResponseStatus === APIResponseStatus.Success
+            ) {
                 this.massage = '';
                 this.validppid = true;
             }
-        }
-        else {
+        } else {
             this.massage = '';
             this.massageColor = '';
         }
@@ -249,12 +243,22 @@ export class PensionBillComponent implements OnInit {
 
     // calculate total value
     calculateTotalDueAmount() {
-        this.totalDueAmount = this.payments.reduce((acc, payment) => acc + payment.dueAmount, 0);
+        this.totalDueAmount = this.payments?.reduce(
+            (acc, payment) => acc + (payment?.dueAmount || 0), // Ensure payment and dueAmount are valid
+            0
+        ) || 0; // Fallback to 0 if payments is undefined
     }
+    
 
     // generate button cuntrol
     get isgenerate(): boolean {
-        return !!this.ppoId && !!this.period && this.validppid && this.hasGenerated && !this.isApiResponseStatus1;
+        return (
+            !!this.ppoId &&
+            !!this.period &&
+            this.validppid &&
+            this.hasGenerated &&
+            !this.isApiResponseStatus1
+        );
     }
 
     // refresh to clear all value
@@ -273,7 +277,7 @@ export class PensionBillComponent implements OnInit {
         }
     }
 
-    // date calculate in p-calendar html propaty 
+    // date calculate in p-calendar html propaty
     formatDate(date: Date): string {
         const year = date.getFullYear();
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -282,12 +286,15 @@ export class PensionBillComponent implements OnInit {
     }
 
     // Print bill
-    billprint(): void{
+    billprint(): void {
         this.router.navigate(
-            this.ppoId 
-                ? ['/pension/modules/pension-process/bill-print', this.ppoId, 'first-pension']
+            this.ppoId
+                ? [
+                    '/pension/modules/pension-process/bill-print',
+                    this.ppoId,
+                    'first-pension',
+                ]
                 : ['/pension/modules/pension-process/bill-print/first-pension']
         );
     }
 }
-
