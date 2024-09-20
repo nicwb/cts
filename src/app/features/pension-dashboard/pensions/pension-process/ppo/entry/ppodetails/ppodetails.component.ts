@@ -47,6 +47,7 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
     routeOb: any;
     pathOb: any;
 
+    tbleShow:boolean = false;
     constructor(
     private toastService: ToastService,
     private ppoDetialsService: PensionPPODetailsService,
@@ -114,9 +115,7 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
         }
     }
 
-    ngOnInit(): void {
-        this.loadPPOData();
-    }
+    ngOnInit(): void {}
 
     private getLastPathSegment(url: string): string | null {
         const segments = url.split('/').filter(segment => segment.length > 0);
@@ -259,5 +258,10 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
             // Optionally navigate to the next step
             // this.next();
         }
+    }
+
+    loadPPOs(){
+        this.loadPPOData();
+        this.tbleShow = true;
     }
 }
