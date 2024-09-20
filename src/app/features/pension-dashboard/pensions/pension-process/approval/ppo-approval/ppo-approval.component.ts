@@ -4,7 +4,8 @@ import { catchError, firstValueFrom, map, Observable, of, switchMap } from 'rxjs
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-ppo-approval',
@@ -19,7 +20,8 @@ export class PpoApprovalComponent implements OnInit {
     isTableDataLoading = false;
     selectedRow: any;
     showTable = false;
-    tableData: Array<{ response: any, branchName: string }> = [];
+    tableData: Array<{ response: any, branchName: string, bankName: string }> = [];
+    allowApproval:boolean=true;
 
 
 
@@ -29,31 +31,40 @@ export class PpoApprovalComponent implements OnInit {
     private pensionPPODetailsService: PensionPPODetailsService,
     private pensionPPOStatusService: PensionPPOStatusService,
     private bankService: BankService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
+        const id = this.route.snapshot.paramMap.get('ppoId') ?? '';
         this.ApprovalForm = this.fb.group({
-            ppoId: ['', Validators.required]
+            ppoId: [id, Validators.required]
         })
-
         this.idList$ = this.pensionPPODetailsService.getAllNotApprovedPensioners();
-    
+        if (this.ApprovalForm.valid) {
+            this.showTable = true;
+            this.loadTableData();
+        }
     }
 
     navigateToBankAccountDetails(): void {
         const ppoId = this.ApprovalForm.get('ppoId')!.value;
-        this.router.navigate(['/pension/modules/pension-process/ppo/entry', ppoId, 'bank-account']);
+        this.router.navigate(
+            ['/pension/modules/pension-process/ppo/entry', ppoId, 'bank-account'],
+            { queryParams: { returnUri: '/pension/modules/pension-process/approval/ppo-approval/' + this.ApprovalForm.value['ppoId'] }}
+        );
     }
 
     handlePpoSearchEvent(event: any) {
         this.showTable = true;
-        console.log("",event);
+        // console.log("",event);
         this.ApprovalForm.controls['ppoId'].setValue(event.ppoId);
-    
-        this.loadTableData();
+        this.askApproval();
     }
 
+    askApproval(){
+        this.router.navigate(['/pension/modules/pension-process/approval/ppo-approval/', this.ApprovalForm.value['ppoId']]);
+    }
 
     async loadTableData(): Promise<void> {
         this.isTableDataLoading = true;
@@ -65,15 +76,21 @@ export class PpoApprovalComponent implements OnInit {
                 const branchCode = bankAccounts && bankAccounts[0] && bankAccounts[0].branchCode;
                 if (branchCode) {
                     const branchResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
-                    this.tableData = [{
-                        response: response.result,
-                        branchName: branchResponse.result?.branchName ?? ''
-                    }];
+                    if (branchResponse) {
+                        this.tableData = [{
+                            response: response.result,
+                            branchName: branchResponse.result?.branchName ?? '',
+                            bankName: branchResponse.result?.bankName ?? ''
+                        }];
+                        this.allowApproval=false;
+                    }
+                    
                 } else {
                     console.warn('Branch code is missing, skipping branch details');
                     this.tableData = [{
                         response: response.result,
-                        branchName: ''
+                        branchName: '',
+                        bankName: ''
                     }];
                 }
             } else {
@@ -83,20 +100,22 @@ export class PpoApprovalComponent implements OnInit {
             this.toastService.showError('An error occurred while fetching initial data.');
         } finally {
             this.isTableDataLoading = false;
-            console.log("Table Data: ", this.tableData);
+            // console.log("Table Data: ", this.tableData);
         }
     }
-
-
-
- 
 
     onRefresh(): void {
         this.ApprovalForm.reset();
     }
 
-    async approve(): Promise<void> {
-        console.log('Approve Button is clicked');
+    onDialogClose(){
+        this.router.navigate(['/pension/modules/pension-process/approval/ppo-approval']);
+    }
+
+    async approve(askApproval:boolean): Promise<void> {
+        if (askApproval) {
+            return;
+        }
         const ppoId = this.ApprovalForm.value.ppoId;
         const statusFlag = PensionStatusFlag.PpoApproved;
         const payload ={
@@ -106,17 +125,18 @@ export class PpoApprovalComponent implements OnInit {
         }
         if (ppoId) {
             try {
-                console.log("Approve PPO", payload);
                 const response = await firstValueFrom(
                     this.pensionPPOStatusService.setPpoStatusFlag(payload)
                 );
-                console.log('Approval successful', response);
-                this.toastService.showSuccess('PPO Approved successfully');
+                this.toastService.showSuccess(response.message ?? 'Server Dont give any msg');
+                this.showTable=false;
             } catch (error) {
                 console.error('Approval failed', error);
                 this.toastService.showError('Approval failed');
             }
+            this.ApprovalForm.reset();
         }
+        this.router.navigate(['/pension/modules/pension-process/approval/ppo-approval']);
     }
 
 

@@ -18,12 +18,12 @@
                         formControlName="ppoId"
                         placeholder="PPO ID"
                       />
-                      <app-search-popup
+                      <app-popup-table
                         name=""
                         [service$]="idList$"
                         (return)="handlePpoSearchEvent($event)"
                         [buttonStyle]="{ width: '200%', height: '50px' }"
-                      ></app-search-popup>
+                      ></app-popup-table>
                     </div>
                   </div>
                 </p-fieldset>
@@ -36,6 +36,7 @@
               [(visible)]="showTable"
               [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
               [modal]="true"
+              (onHide)="onDialogClose()"
             >
               <div class="col-12">
                 <table class="table p-datatable p-component">
@@ -46,6 +47,7 @@
                       <th>Pensioner's Name</th>
                       <th>Payment Mode</th>
                       <th>Account Holder</th>
+                      <th>Bank Name</th>
                       <th>Bank Branch Name</th>
                       <th>IFSC Code</th>
                       <th>Bank Account Number</th>
@@ -63,6 +65,7 @@
                         <td>{{ item.response.pensionerName }}</td>
                         <td>{{ item.response.bankAccounts[0].payMode }}</td>
                         <td>{{ item.response.bankAccounts[0].accountHolderName }}</td>
+                        <td>{{ item.bankName }}</td>
                         <td>{{ item.branchName }}</td>
                         <td>{{ item.response.bankAccounts[0].ifscCode }}</td>
                         <td>{{ item.response.bankAccounts[0].bankAcNo }}</td>
@@ -74,7 +77,7 @@
                         </td>
                       </ng-container>
                       <ng-template #noRecords>
-                        <td colspan="10">
+                        <td colspan="11">
                           <p>Pensioner bank account not updated</p>
                           <button
                             pButton
@@ -91,21 +94,24 @@
                   </tbody>
                 </table>
               </div>
+              <div class="flex flex-wrap gap-2 w-full justify-content-center">
+                <button
+                  [disabled]="allowApproval"
+                  pButton
+                  pRipple
+                  (click)="approve(allowApproval)"
+                  type="button"
+                  class="p-button-raised p-button-info pi pi-check"
+                >
+                  Approve
+                </button>
+              </div>
             </p-dialog>
           </div>
         </div>
 
         <div class="flex flex-col mt-1 align-items-center justify-content-center">
           <div class="flex flex-wrap gap-2">
-            <button
-              pButton
-              pRipple
-              (click)="approve()"
-              type="button"
-              class="p-button-raised p-button-info"
-            >
-              Approve
-            </button>
             <button
               pButton
               pRipple

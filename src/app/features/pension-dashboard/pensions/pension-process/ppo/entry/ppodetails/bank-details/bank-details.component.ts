@@ -1,10 +1,12 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PensionBankAccountsService, BankService, PensionFactoryService, APIResponseStatus } from 'src/app/api';
-import { firstValueFrom, tap } from 'rxjs';
+import { firstValueFrom, Subscription, tap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { environment } from 'src/environments/environment';
 import { log } from 'console';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 
@@ -13,7 +15,7 @@ import { log } from 'console';
     templateUrl: './bank-details.component.html',
     styleUrls: ['./bank-details.component.scss']
 })
-export class BankDetailsComponent implements OnInit, OnChanges {
+export class BankDetailsComponent implements OnInit, OnChanges, OnDestroy {
     BankDetailsForm: FormGroup = new FormGroup({});
     @Input() ppoId?: string;
     @Input() pensionerName?: string;
@@ -23,15 +25,22 @@ export class BankDetailsComponent implements OnInit, OnChanges {
     legend: string = "Bank Details";
     selectedBank: any = null;
     saveButton: boolean = false;
+    returnUri: string | null = null;
 
+    routeQuerySubscription!: Subscription;
     constructor(
         private fb: FormBuilder,
         private service: PensionBankAccountsService,
         private banksService: BankService,
         private pensionFactoryService: PensionFactoryService,
         private tostService: ToastService,
+        private route: ActivatedRoute,
+        private router: Router
     ) {
         this.initializeForm();
+    }
+    ngOnDestroy(): void {
+        this.routeQuerySubscription.unsubscribe();
     }
 
     initializeForm() {
@@ -48,6 +57,13 @@ export class BankDetailsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
+        this.routeQuerySubscription = this.route.queryParamMap.subscribe(params => {
+            this.returnUri = params.get('returnUri');
+            const routePpoId = params.get('ppoId');
+            if (routePpoId) {
+                this.ppoId = routePpoId;
+            }
+        });
         if (!environment.production) {
             this.fillFactoryData();
         }
@@ -207,6 +223,7 @@ export class BankDetailsComponent implements OnInit, OnChanges {
                 tap(response => {
                     if (response.apiResponseStatus === APIResponseStatus.Success) {
                         this.tostService.showSuccess('Bank account updated successfully');
+                        this.returnToUri();
                     } else {
                         this.tostService.showWarning("Failed saving bank account");
                     }
@@ -220,11 +237,29 @@ export class BankDetailsComponent implements OnInit, OnChanges {
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.tostService.showSuccess('Bank account saved successfully');
                     this.isEditing=this.saveButton=true;
-                    
+                    this.returnToUri();
                 } else {
                     this.tostService.showWarning("Failed saving bank account");
                 }
+                
             })
         ));
+    }
+
+    async returnToUri(){
+        console.log("PPO ID: " + this.ppoId);
+        if (this.returnUri) {
+            await Swal.fire({
+                title: 'Bank account updated. Do you want to go back to approval form?',
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.router.navigate([this.returnUri]);
+                }
+            });
+        }
     }
 }

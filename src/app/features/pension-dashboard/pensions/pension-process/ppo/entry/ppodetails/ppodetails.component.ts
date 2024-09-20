@@ -80,7 +80,7 @@ export class PpodetailsComponent implements OnInit,OnDestroy {
             if (event instanceof NavigationEnd) {
                 this.lastPathSegment = this.getLastPathSegment(event.urlAfterRedirects);
   
-                switch (this.lastPathSegment) {
+                switch (this.lastPathSegment?.split('?')[0]) {
                 case 'bank-account':
                     this.currentStepIndex = 1;
                     break;
