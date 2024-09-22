@@ -28,8 +28,7 @@ import { SanctionModule } from './sanction/sanction.module';
 import { FamilyNomineeModule } from './family-nominee/family-nominee.module';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { TableModule } from 'primeng/table';
-// md - 50
-// import { FloatLabe } ;
+import { DividerModule } from 'primeng/divider';
 
 const routes: Routes = [
     {
@@ -87,6 +86,7 @@ const routes: Routes = [
         FamilyNomineeModule,
         PopupTableModule,
         TableModule,
+        DividerModule,
         RouterModule.forChild(routes)
     ],
     providers: [],
