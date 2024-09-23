@@ -117,6 +117,7 @@ test.describe('First Pension Bill', () => {
 
         const toastLocator = page.locator('.swal2-popup');
         await expect(toastLocator).toBeVisible({ timeout: 10000 });
+        await page.getByRole('button', { name: 'OK' }).click();
 
 
         const isErrorToast = await toastLocator.evaluate((el) =>
