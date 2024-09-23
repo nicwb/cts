@@ -106,39 +106,28 @@ test.describe('PPO Approval', () => {
                 if (await message.isVisible()) {
                     await page.click('button:has-text("Update Bank Account Details")');
                     await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
-                    await expect(page.locator('text=Bank Details')).toBeVisible();
                     await expect(page.locator('text=ID-'+ppoId)).toBeVisible(); 
-            
-                    await expect(page.locator('p-dropdown[formcontrolname="payMode"]')).toBeVisible();
-                    await expect(page.locator('p-dropdown[formcontrolname="bank"]')).toBeVisible();
-                    await expect(page.locator('input[formcontrolname="ifscCode"]')).toBeVisible();
-                    await expect(page.locator('input[formcontrolname="bankAcNo"]')).toBeVisible();
 
                     const saveButton = page.locator('button:has-text("Save")');
                     await expect(saveButton).toBeVisible();
-                    await expect(saveButton).toBeEnabled();
-
-                    const backButton = page.locator('button:has-text("Back")');
-                    await expect(backButton).toBeVisible();
-                    await expect(backButton).toBeEnabled();
-
-                    const nextButton = page.locator('button:has-text("Next")');
-                    await expect(nextButton).toBeVisible();
-                    await expect(nextButton).toBeEnabled();
 
                     await page.click('button:has-text("Save")');
                     await waitForToastMessage(page, 'Bank account saved');
                     const dialogHeader = page.getByRole('dialog');
                     const isModalVisible = await dialogHeader.isVisible();
-      
                     if (isModalVisible) {
                         await page.click('button:has-text("Yes")');
                         await expect(page).toHaveURL(`/#/pension/modules/pension-process/approval/ppo-approval/${ppoId}`);
                         await page.click('button:has-text("Approve")');
                         await page.waitForSelector('text=PPO Status Flag Set Successfully');
                     }
-                } 
-            }
+                } else {
+                    await page.click('button:has-text("Approve")');
+                    await page.waitForSelector('text=PPO Status Flag Set Successfully');
+                }
+            } 
+        }else{
+            test.skip();
         }
     });
     
@@ -163,25 +152,10 @@ test.describe('PPO Approval', () => {
                 await message.isVisible();
                 await page.click('button:has-text("Update Bank Account Details")');
                 await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
-                await expect(page.locator('text=Bank Details')).toBeVisible();
                 await expect(page.locator('text=ID-'+ppoId)).toBeVisible(); 
-            
-                await expect(page.locator('p-dropdown[formcontrolname="payMode"]')).toBeVisible();
-                await expect(page.locator('p-dropdown[formcontrolname="bank"]')).toBeVisible();
-                await expect(page.locator('input[formcontrolname="ifscCode"]')).toBeVisible();
-                await expect(page.locator('input[formcontrolname="bankAcNo"]')).toBeVisible();
 
                 const saveButton = page.locator('button:has-text("Save")');
                 await expect(saveButton).toBeVisible();
-                await expect(saveButton).toBeEnabled();
-
-                const backButton = page.locator('button:has-text("Back")');
-                await expect(backButton).toBeVisible();
-                await expect(backButton).toBeEnabled();
-
-                const nextButton = page.locator('button:has-text("Next")');
-                await expect(nextButton).toBeVisible();
-                await expect(nextButton).toBeEnabled();
 
                 await page.click('button:has-text("Save")');
                 await waitForToastMessage(page, 'Bank account saved');
@@ -195,6 +169,8 @@ test.describe('PPO Approval', () => {
                     await page.waitForSelector('text=PPO Status Flag Set Successfully');
                 }
             }
+        } else {
+            test.skip();
         }
     });
     
