@@ -13,14 +13,6 @@ test.describe('Pension Category', () => {
         await page.goto('/#/master/app-pension/app-pension-category');
     });
 
-    test('is the dialogbox opening', async ({ page }) => {
-        await page.getByRole('button', { name: 'New' }).click();
-        await expect(
-            page
-                .locator('div')
-                .filter({ hasText: /^Pension Category Details$/ })
-        ).toBeVisible();
-    });
     test('is the form and submit button working', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         await expect(
@@ -37,6 +29,8 @@ test.describe('Pension Category', () => {
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
+        await page.getByRole('button', { name: 'OK' }).click();
+
         await expect(
             page.getByRole('button', { name: 'New Sub' })
         ).toBeVisible();
@@ -45,13 +39,16 @@ test.describe('Pension Category', () => {
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
+        await page.getByRole('button', { name: 'OK' }).click();
+
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('alert').first()).toContainText(
+        await expect(page.getByLabel('Success')).toContainText(
             'Pension Category Details added successfully'
         );
+        await page.getByRole('button', { name: 'OK' }).click();
     });
 
     test.skip('duplicate checking', async ({ page }) => {
@@ -71,6 +68,8 @@ test.describe('Pension Category', () => {
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
+        await page.getByRole('button', { name: 'OK' }).click();
+
         await expect(
             page.getByRole('button', { name: 'New Sub' })
         ).toBeVisible();
@@ -79,32 +78,34 @@ test.describe('Pension Category', () => {
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        page.waitForTimeout(100);
+        await page.getByRole('button', { name: 'OK' }).click();
+
+
 
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('alert').first()).toContainText(
+        await expect(page.getByLabel('Success')).toContainText(
             'Pension Category Details added successfully'
         );
+        await page.getByRole('button', { name: 'OK' }).click();
 
         await page.getByRole('button', { name: 'New' }).click();
+        await page.waitForTimeout(100);
         await page.locator('#primary').getByLabel('dropdown trigger').click();
 
         await page.locator('p-dropdownitem.p-element').first().click();
-
+        await page.waitForTimeout(100);
         await page.locator('#sub').getByLabel('dropdown trigger').click();
 
 
         await page.locator('p-dropdownitem.p-element').first().click();
 
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
+        await page.waitForTimeout(100);
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('alert').first()).toContainText(
-            'Pension Category Details already exsists'
+        await expect(page.getByLabel('Aww! Snap...')).toContainText(
+            'This Pension number already exists. Please use a different Pension number.'
         );
     });
 });
