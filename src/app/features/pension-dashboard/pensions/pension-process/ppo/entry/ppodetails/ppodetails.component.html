@@ -1,11 +1,14 @@
 <div class="container">
     <div class="grid">
-        <!-- Step Navigation and Action Buttons -->
-        <div class="card px-0 py-4 mt-2" *ngIf="!viewMode">
+        <div class="card px-0 py-4 mt-4 col-12" *ngIf="!viewMode">
             <p-steps
                 [model]="steps"
                 [(activeIndex)]="currentStepIndex"
             ></p-steps>
+        </div>
+        <!-- Step Navigation and Action Buttons -->
+        <div class=" px-0 py-4 mt-2" *ngIf="!viewMode">
+            
             <div class="my-4 px-0">
                 <!-- PPO and OtherDetails -->
                 <div

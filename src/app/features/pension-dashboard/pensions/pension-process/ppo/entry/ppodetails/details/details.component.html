@@ -1,225 +1,325 @@
 <style>
-    .h-45px{
+    .h-45px {
         height: 45px;
     }
 
-    .h-full{
+    .h-full {
         height: 100%;
     }
-    .h-50{
+    .h-50 {
         height: 50%;
     }
-    .w-100{
-        width: 100%!important;
+    .w-100 {
+        width: 100% !important;
     }
-    .w-50{
+    .w-50 {
         width: 50%;
     }
-    .mb-2{
+    .mb-2 {
         margin-bottom: 2px;
     }
 </style>
 
-<div class="col-12 md:col-12">
-    <!-- Search PPO ID -->
+<div class="card py-2">
+    <div class="row">
+        <!-- Search PPO ID -->
 
-    <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
-            <span class="p-float-label absolute" style="right: 29px;">
-                <input style="width: 80%;" type="text" pInputText [(ngModel)]="eppoid"  (ngModelChange)="MEDetailsSearch();">
-                <label for="float-input">e-PPO Application No/TRID</label>
-                <app-popup-table [service$]="allManualPPOReceipt$" (return)="handelManualEntrySelect($event);"></app-popup-table>
-            </span>
-    </div>
+        <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
+            <div class="p-float-label absolute" style="right: 29px">
+                <input
+                    style="width: 80%"
+                    type="text"
+                    pInputText
+                    [(ngModel)]="eppoid"
+                    (ngModelChange)="MEDetailsSearch()"
+                    class="bg-cyan-100"
+                />
+                <label for="float-input"
+                    ><b>e-PPO Application No/TRID</b></label
+                >
+                <app-popup-table
+                    [service$]="allManualPPOReceipt$"
+                    (return)="handelManualEntrySelect($event)"
+                ></app-popup-table>
+            </div>
+        </div>
 
+        <div>
+            <form [formGroup]="ppoFormDetails">
+                <!-- <p-fieldset [legend]="legend" class="line-height-3 m-0"> -->
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>PPO Details:</b>
+                    </div>
+                </p-divider>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-2">
+                        <label><b>PPO No. :</b></label>
 
-    <form [formGroup]="ppoFormDetails">
-        <!-- <p-fieldset [legend]="legend" class="line-height-3 m-0"> -->
-            <p-divider align="left" type="solid">
-                <div class="inline-flex align-items-center mb-2">
-                    <i class="pi pi-clone mr-2"></i>
-                    <b>PPO Bill:</b>
-                </div>
-            </p-divider>
-            <div class="p-formgrid grid">
-                <div class="col-12 md:col-6">
-                    <div class="p-float-label m-3 h-45px">
-                        <input class="h-full" type="text" pInputText formControlName="ppoNo">
-                        <label for="float-input"><b>PPO No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            type="text"
+                            pInputText
+                            formControlName="ppoNo"
+                            class="w-full p-2 bg-cyan-100"
+                        />
                     </div>
-                </div>
-    
-                <div class="col-12 md:col-6">
-                    <div class="p-float-label m-3 h-45px">
-                        <input class="h-full" id="pensionerName"  type="text" pInputText formControlName="pensionerName">
-                        <label for="float-input"><b>Pensioner Name :</b></label>
+                    <div class="field col-12 md:col-3">
+                        <label><b>Pensioner Name :</b></label>
+
+                        <input
+                            class="w-full p-3 border-inherit"
+                            id="pensionerName"
+                            type="text"
+                            pInputText
+                            formControlName="pensionerName"
+                            class="w-full p-2 "
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="dateOfBirth" class="col-12 mb-2 md:col-2 md:mb-0"><b>Date of Birth :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <p-calendar [style]="{height: '45px',width:'100%'}" formControlName="dateOfBirth" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+
+                    <div class="field col-12 md:col-3">
+                        <label for="dateOfBirth"><b>Date of Birth :</b></label>
+                        <p-calendar
+                            
+                            formControlName="dateOfBirth"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="type" class="col-12 mb-2 md:col-2 md:mb-0  w-100 h-50"><b>Gender :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                    <div class="field col-12 md:col-2">
+                        <label for="type"><b>Gender :</b></label>
                         <p-dropdown
-                            [style]="{height: '45px',width:'100%'}"
+                            
                             [options]="[
-                            {label: 'Male', value: 'M'},
-                            {label: 'Female', value: 'F'},
-                            {label: 'Other', value: 'O'}]"
-                            formControlName="gender"></p-dropdown>
+                                { label: 'Male', value: 'M' },
+                                { label: 'Female', value: 'F' },
+                                { label: 'Other', value: 'O' }
+                            ]"
+                            formControlName="gender"
+                        ></p-dropdown>
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="religion" class="col-12 mb-2 md:col-2 md:mb-0"><b>Religion :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-full">
-                        <p-dropdown [style]="{height:'45px',width:'100%'}" [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
+                    <div class="field col-12 md:col-2">
+                        <label for="religion"><b>Religion :</b></label>
+                        <p-dropdown
+                            
+                            [options]="religionOptions"
+                            dataKey="Hindu"
+                            formControlName="religion"
+                        ></p-dropdown>
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="mobileNumber" class="col-12 mb-2 md:col-2 md:mb-0"><b>Mobile No. :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="mobileNumber" />
+                    <div class="field col-12 md:col-3">
+                        <label for="mobileNumber"><b>Mobile No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="mobileNumber"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="emailId" class="col-12 mb-2 md:col-2 md:mb-0"><b>Email :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="emailId" />
+                    <div class="field col-12 md:col-4">
+                        <label for="emailId"><b>Email :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="emailId"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="pensionerAddress" class="col-12 mb-2 md:col-2 md:mb-0"><b>Address :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="pensionerAddress" />
+                    <div class="field col-12 md:col-5">
+                        <label for="pensionerAddress"><b>Address :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="pensionerAddress"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="aadharNo" class="col-12 mb-2 md:col-2 md:mb-0"><b>Aadhar No. :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="aadhaarNo" />
+                    <div class="field col-12 md:col-4">
+                        <label for="aadharNo"><b>Aadhar No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="aadhaarNo"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="panNo" class="col-12 mb-2 md:col-2 md:mb-0"><b>PAN No. :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="panNo" />
+                    <div class="field col-12 md:col-4">
+                        <label for="panNo"><b>PAN No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="panNo"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                
-                <div class="col-12 md:col-4">
-                    <label for="remarks" class="col-12 mb-2 md:col-2 md:mb-0"><b>IdentificationMark :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="identificationMark" />
+                    <div class="field col-12 md:col-4">
+                        <label for="remarks"><b>IdentificationMark :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="identificationMark"
+                            class="w-full p-2"
+                        />
                     </div>
-                </div>
-                <div class="col-12 md:col-6">
-                        <label for="type" class="col-12 mb-2 md:col-2 md:mb-0"><b>Type :</b></label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0 h-full w-100">
-                            <p-dropdown [style]="{width: '100%',height: '47px'}" dataKey="Pension"
-                                [options]="[
-                                {label: 'Pension', value: 'P'},
-                                {label: 'Bank', value: 'F'},
-                                {label: 'CPF', value: 'C'}]"
-                                formControlName="ppoType"></p-dropdown>
-                        </div>
-                </div>
-    
-                <div class="col-12 md:col-6">
-                    <label for="subType" class="col-12 mb-2 md:col-2 md:mb-0"><b>Sub Type :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 h-full w-100">
-                        <p-dropdown [style]="{width: '100%',height: '47px'}" dataKey="Employed"
+                    <div class="field col-12 md:col-4">
+                        <label for="type"><b>Type :</b></label>
+                        <p-dropdown
+                            
+                            dataKey="Pension"
                             [options]="[
-                            { label: 'Employed', value: 'E' },
-                            { label: 'Widow Daughter', value: 'L' },
-                            { label: 'Unmarried Daughter', value: 'U' },
-                            { label: 'Divorced Daughter', value: 'V' },
-                            { label: 'Minor Son', value: 'N' },
-                            { label: 'Minor Daughter', value: 'R' },
-                            { label: 'Handicapped Son', value: 'P' },
-                            { label: 'Handicapped Daughter', value: 'G' },
-                            { label: 'Dependent Father', value: 'J' },
-                            { label: 'Dependent Mother', value: 'K' },
-                            { label: 'Husband', value: 'H' },
-                            { label: 'Wife', value: 'W' }]"
-                            formControlName="ppoSubType"></p-dropdown>
+                                { label: 'Pension', value: 'P' },
+                                { label: 'Bank', value: 'F' },
+                                { label: 'CPF', value: 'C' }
+                            ]"
+                            formControlName="ppoType"
+                            class="w-full p-2"
+                        ></p-dropdown>
                     </div>
-                </div>
-    
-                <div class="col-12 md:col-6">
-                    <label  for="categoryDescription" class="col-12 mb-2 md:col-2 md:mb-0"><b>Cat Description :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-45px">
-                        <input class="h-45px" style="width: 80%;" pInputText formControlName="categoryDescription" (ngModelChange)="fetchCatDescription()"/>
-                        <app-popup-table [service$]="catDescription$" [buttonStyle]="sechButtonStyle" (return)="handelCategoryDescription($event)"></app-popup-table>
+                    <div class="field col-12 md:col-4">
+                        <label for="subType"><b>Sub Type :</b></label>
+                        <p-dropdown
+                            
+                            dataKey="Employed"
+                            [options]="[
+                                { label: 'Employed', value: 'E' },
+                                { label: 'Widow Daughter', value: 'L' },
+                                { label: 'Unmarried Daughter', value: 'U' },
+                                { label: 'Divorced Daughter', value: 'V' },
+                                { label: 'Minor Son', value: 'N' },
+                                { label: 'Minor Daughter', value: 'R' },
+                                { label: 'Handicapped Son', value: 'P' },
+                                {
+                                    label: 'Handicapped Daughter',
+                                    value: 'G'
+                                },
+                                { label: 'Dependent Father', value: 'J' },
+                                { label: 'Dependent Mother', value: 'K' },
+                                { label: 'Husband', value: 'H' },
+                                { label: 'Wife', value: 'W' }
+                            ]"
+                            formControlName="ppoSubType"
+                            class="w-full p-2"
+                        ></p-dropdown>
                     </div>
-                </div>
-    
-                <div class="col-12 md:col-6">
-                    <label for="catSubCatid" class="col-12 mb-2 md:col-2 md:mb-0"><b>Cat-SubCatID :</b></label>
-                    <div class="flex mt-1">
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-50">
-                            <input class="h-45px" pInputText formControlName="categoryIdShow" />
+                    <div class="field col-12 md:col-4"></div>
+                    <div class="field col-12 md:col-3">
+                        <label for="catSubCatid"><b>Cat-SubCatID :</b></label>
+                        <div class="w-full flex gap-1">
+                            <input
+                                class="w-full p-3 border-inherit"
+                                pInputText
+                                formControlName="categoryIdShow"
+                                class="w-full p-2"
+                            />
+                            <input
+                                class="w-full p-3 border-inherit"
+                                pInputText
+                                formControlName="subCatDesc"
+                                class="w-full p-2"
+                            />
                         </div>
-    
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-50">
-                            <input class="h-45px" pInputText formControlName="subCatDesc" />
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label for="categoryDescription"
+                            ><b>Cat Description :</b></label
+                        >
+                        <div class="w-full flex gap-1">
+                            <input
+                                class="w-full p-3 border-inherit"
+                                pInputText
+                                formControlName="categoryDescription"
+                                (ngModelChange)="fetchCatDescription()"
+                                class="w-full p-2"
+                            />
+                            <app-popup-table
+                                [service$]="catDescription$"
+                                (return)="handelCategoryDescription($event)"
+                            ></app-popup-table>
                         </div>
                     </div>
-                </div>
-    
-                <div class="col-12 md:col-4">
-                    <label for="dateOfRetirement" class="col-12 mb-2 md:col-2 md:mb-0"><b>Retirement Date :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                        <p-calendar [style]="{height: '47px'}" formControlName="dateOfRetirement" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
-                    </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="dateOfCommencement" class="col-12 mb-2 md:col-2 md:mb-0"><b>Commencement Date :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50" style="width: 300px;">
-                        <p-calendar [style]="{height: '47px'}" formControlName="dateOfCommencement"  dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
-                    </div>
-                </div>
-                <div class="col-12 md:col-4">
-                    <label for="effectiveDate" class="col-12 mb-2 md:col-2 md:mb-0"><b>Effective Date :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <p-calendar [style]="{height:'45px'}" formControlName="effectiveDate" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
-                    </div>
-                </div>
 
-                <div class="col-12 md:col-4">
-                    <label for="basicPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0"><b>Basic :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="basicPensionAmount" />
+                    <div class="field col-12 md:col-4">
+                        <label for="dateOfRetirement"
+                            ><b>Retirement Date :</b></label
+                        >
+                        <p-calendar
+                            
+                            formControlName="dateOfRetirement"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
-                </div>
-    
-                <div class="col-12 md:col-4">
-                    <label for="commutedPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0"><b>Commuted Pension :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <input pInputText class="h-45px" formControlName="commutedPensionAmount" />
+                    <div class="field col-12 md:col-4">
+                        <label for="dateOfCommencement"
+                            ><b>Commencement Date :</b></label
+                        >
+                        <p-calendar
+                           
+                            formControlName="dateOfCommencement"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
-                </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="effectiveDate"
+                            ><b>Effective Date :</b></label
+                        >
+                        <p-calendar
+                            
+                            formControlName="effectiveDate"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="basicPensionAmount"><b>Basic :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="basicPensionAmount"
+                            class="w-full p-2"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="commutedPensionAmount"
+                            ><b>Commuted Pension :</b></label
+                        >
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="commutedPensionAmount"
+                            class="w-full p-2"
+                        />
+                    </div>
 
-                <div class="col-12 md:col-4">
-                    <label for="reducedPensionAmount" class="col-12 mb-2 md:col-2 md:mb-0"><b>Reduced Pension :</b></label>
-                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                        <input class="h-45px" pInputText formControlName="reducedPensionAmount" />
+                    <div class="field col-12 md:col-4">
+                        <label for="reducedPensionAmount"
+                            ><b>Reduced Pension :</b></label
+                        >
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="reducedPensionAmount"
+                            class="w-full p-2"
+                        />
                     </div>
                 </div>
-    
-            </div>
-            <div class="w-100" style="display: flex; justify-content: center;">
-                <p-button
-                    label="Save"
-                    icon="pi pi-bookmark"
-                    [disabled]="saveButton"
-                    styleClass="p-button-raised"
-                    (click)="saveData()">
-                  </p-button>
-            </div>
-            <!-- </p-fieldset> -->
-    </form>
-
+                <div
+                    class="w-100"
+                    style="display: flex; justify-content: center"
+                >
+                    <p-button
+                        label="Save"
+                        icon="pi pi-bookmark"
+                        [disabled]="saveButton"
+                        styleClass="p-button-raised"
+                        (click)="saveData()"
+                    >
+                    </p-button>
+                </div>
+                <!-- </p-fieldset> -->
+            </form>
+        </div>
+    </div>
 </div>
