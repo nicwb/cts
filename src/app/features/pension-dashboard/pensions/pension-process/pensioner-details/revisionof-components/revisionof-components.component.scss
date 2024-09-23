@@ -1,0 +1,102 @@
+.bg-color {
+    background-color: #a7c7e3;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  label{
+    color: #0e0e10;
+    font-weight: bold;
+  }
+  .fixed-width {
+    width: 6rem;
+  }
+
+  label{
+    color: #0e0e10;
+    font-weight: bold;
+  }
+
+  b{
+    color: #0e0e10;
+    font-weight: bold;
+  }
+
+/* General styles for mobile and desktop view */
+.button-group {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 10px;
+}
+
+/* Ensure button cell aligns content to the right */
+.button-cell {
+  text-align: right; 
+}
+
+/* Mobile view adjustments */
+@media only screen and (max-width: 768px) {
+  .overflow-x-auto {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  p-table {
+    min-width: 400px; 
+    overflow-x: auto; 
+  }
+
+  th, td {
+    white-space: nowrap;
+  }
+
+  /* Button group adjustments for mobile */
+  .button-group {
+    flex-wrap: wrap; 
+    justify-content: flex-end; 
+    gap: 10px;
+  }
+
+  .p-button-rounded {
+    padding: 0.5em 0.75em; /* Smaller padding on mobile */
+    font-size: 14px; /* Smaller font size */
+  }
+
+  td.fixed-width {
+    width: 100%; /* Full-width cells on smaller screens */
+  }
+}
+
+/* Table block display for screens under 900px */
+@media only screen and (max-width: 900px) {
+  p-table {
+    display: block;
+  }
+
+  tr {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  td, th {
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+
+  th {
+    display: none; /* Hide table headers */
+  }
+
+  td:before {
+    content: attr(data-label); /* Display label before each td value */
+    font-weight: bold;
+    display: block;
+  }
+
+  .fixed-width {
+    width: 100%; /* Full-width cells for small screens */
+  }
+}

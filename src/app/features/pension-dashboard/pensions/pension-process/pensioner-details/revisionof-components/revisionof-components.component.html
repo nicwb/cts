@@ -1,114 +1,231 @@
-<style>
-    .h-36px{
-        height: 45px;
-    }
+<h2 class="bg-color text-xl"><b> Revision of Component </b></h2>
 
-    .h-full{
-        height: 100%;
-    }
-    .h-50{
-        height: 50%;
-    }
-    .w-100{
-        width: 100%!important;
-    }
-    .w-50{
-        width: 50%;
-    }
-    .mb-2{
-        margin-bottom: 2px;
-    }
-</style>
-<div class="container">
-    <div class="grid">
-      <div class="col-12">
-            <div class="card">
-                <form [formGroup]="revisionOfComponentsForm">
-                    <p-fieldset legend="Revision Component">
-                        <div class="p-formgrid grid mb-6">
-                            <div class="field col-12 md:col-6 h-36px mt-4">
-                                <label htmlFor="selectPensionProperty" class="text-lg">PPO Id</label>
-                               <div class="flex gap-2 w-full">
-                                <input  class="h-36px h-50%" style="width: 45%;" pInputText type="text" formControlName="ppoId"/>
-                                <input  class="h-36px h-50%" style="width: 45%;" pInputText type="text" formControlName="slNo"/>
-                                <app-popup-table [buttonStyle]="{height:'100%'}" [service$]="allPensionPPOIds$" (return)="handleSelectedRowByPensionPPDetails($event);"></app-popup-table>
-                               </div>
-                            </div>
+<p-dialog header="Component Rate" [(visible)]="isInsertModalVisible" [style]="{'width': '700px'}"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true">
+    <form [formGroup]="componentForm" class="flex flex-column gap-4">
+        <div class="field col-12 md:col p-0">
+            <label><b>
+                    Select Component:
+                </b></label>
+            <div class="w-full flex gap-1">
+                <input type="text" pInputText formControlName="componentname" class="w-full p-2 p-inputtext"
+                    placeholder="" (keydown)="allowOnlyNumbers($event)" inputmode="numeric" />
 
-                            <div class="field col-12 md:col-6 h-36px mt-4">
-                                <label htmlFor="selectPensionProperty" class="text-lg">PPO Number</label>
-                                <input  class="h-36px w-full" pInputText type="text" formControlName="ppoNumber"/>
-                            </div>
-
-                            <div class="field col-12 md:col-6 h-36px mt-4">
-                                <label htmlFor="selectPensionProperty" class="text-lg">Pensioner Name</label>
-                                <input  class="h-36px w-full" pInputText type="text" formControlName="pensionerName"/>
-                            </div>
-
-                            <div class="field col-12 md:col-6 h-36px mt-4">
-                                <label htmlFor="selectPensionProperty" class="text-lg">Category Description</label>
-                                <input  class="h-36px w-full" pInputText type="text" formControlName="categoryDescription"/>
-                            </div>
-
-                            <div class="field col-12 md:col-6 h-36px mt-4">
-                                <label htmlFor="selectPensionProperty" class="text-lg">Bank</label>
-                                <input  class="h-36px w-full" pInputText type="text" formControlName="bank"/>
-                            </div>                            
-                        </div>
-                        <div class="flex justify-content-end align-items-center" >
-                            <p-selectButton [options]="paymentOptions" formControlName="radioButton" optionLabel="name"  class="h-full"></p-selectButton>
-                        </div>
-                        <!-- table -->
-                        <div *ngIf="showTable" class="p-formgrid grid mb-6">
-                            <p-table [columns]="cols" [value]="products" [tableStyle]="{'min-width': '50rem'}">
-                                <ng-template pTemplate="header" let-columns>
-                                    <tr>
-                                        <th *ngFor="let col of columns">
-                                            {{col.header}}
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                                    <tr>
-                                        <td *ngFor="let col of columns">
-                                            {{rowData[col.field]}}
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                            
-                        </div>
-                        <!-- Buttons -->
-                        <div class="w-full flex gap-2 justify-content-center align-items-center" style="height: 80px;">
-                          <button pButton label="Search" 
-                          icon="pi pi-search"
-                            style="height: 45px"></button>
-
-                            <button pButton label="Insert" 
-                            icon="pi pi-plus"
-                            disabled="true"
-                              style="height: 45px"></button>
-
-                          <button pButton label="Modify" 
-                          icon="pi pi-upload"
-                          class="p-button-warning"
-                          style="height: 45px;"></button>
-                        
-                          <button pButton label="Save" 
-                            disabled="true"
-                            icon="pi pi-bookmark"
-                              style="height: 45px" class="p-button-success"></button>
-                              
-                          <button pButton label="Reset" 
-                          icon="pi pi-refresh"
-                          class="p-button-success"
-                          style="height: 45px;"
-                          (click)="revisionOfComponentsForm.reset(); tableDisable();"></button>
-                        </div>
-                    </p-fieldset>
-               </form>
+                <app-popup-table name="" [service$]="pensionComponent$"
+                    (return)="handleSelectedRowByPensionComponent($event)"></app-popup-table>
             </div>
+        </div>
+
+        <div class="flex gap-2 xl:flex-row flex-column">
+            <div class="flex-auto">
+                <label for="pensionerName" class="block mb-1 text-color text-lg">Form Date:</label>
+                <p-calendar formControlName="fromDate" placeholder="dd/mm/yyyy" appendTo="body"></p-calendar>
+                <!-- <input type="text" pInputText  placeholder="Pensioner's Name" formControlName="fromDate"
+                    class="w-full"> -->
+            </div>
+            <div class="flex-auto">
+                <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Amount / Month</label>
+                <input type="text" pInputText placeholder="" formControlName="amount" class="w-full p-2">
+            </div>
+        </div>
+
+    </form>
+    <div class="flex gap-2 justify-content-end pt-3">
+        <button pButton label="Submit" (click)="saveComponent()" class="p-button-rounded" [disabled]=""></button>
+
+        <button pButton label="Cancel" (click)="resetAndCloseDialog()" class="p-button-rounded"></button>
+
+    </div>
+</p-dialog>
+<div class="card py-2">
+    <div class="row">
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Pensioner's Details :</b>
+            </div>
+        </p-divider>
+        <div>
+            <form [formGroup]="pensionForm">
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col">
+                        <label for="PpoId"><b>
+                                PPO ID
+                            </b></label>
+                        <div class="w-full flex gap-1">
+                            <input type="text" pInputText formControlName="ppoId" class="w-full p-2 border-inherit"
+                                (keydown)="allowOnlyNumbers($event)" placeholder="PPO ID" (blur)="getppoDetails()"
+                                [ngClass]="{'bg-cyan-400':ppoColor }" [readonly]="ppoColor" />
+                            <app-popup-table name="" [service$]="ppoList$"
+                                (return)="handleSelectedRow($event)"></app-popup-table>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label for=""><b>
+                                PPO Number
+                            </b></label>
+                        <div class="w-full flex gap-1">
+                            <input type="text" pInputText class="w-full p-2 bg-cyan-400" formControlName="ppono"
+                                [readonly]="true" />
+                        </div>
+                    </div>
+
+                    <div class="field col-12 md:col">
+                        <label htmlFor="pensionerName"><b>Pensioner Name</b></label>
+                        <input pInputText id="pensionerName" type="text" [readonly]="true"
+                            formControlName="pensionerName" class="w-full p-2 bg-cyan-400" />
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="pensionerName"><b>Category Description </b></label>
+                        <input pInputText id="Category Description" type="text" formControlName="category"
+                            [readonly]="true" class="w-full p-2 bg-cyan-400" />
+                    </div>
+                    <div class="field col-12 md:col">
+                        <label htmlFor="bankName"><b>Bank</b></label>
+                        <input pInputText id="bankName" type="text" [readonly]="true" formControlName="bankcode"
+                            class="w-full p-2 bg-cyan-400" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="showTable">
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Details :</b>
+            </div>
+        </p-divider>
+
+        <div class="overflow-x-auto">
+            <p-table [value]="revisions.controls" responsiveLayout="scroll">
+                <ng-template pTemplate="header">
+                    <tr *ngIf="!isMobileView">
+                        <th>Id</th>
+                        <th>Breakup ID</th>
+                        <th>Component Description</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Amount</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                        <th *ngIf="isAnyRowEditing()">Save</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-revision let-i="rowIndex">
+                    <tr [formGroup]="revision">
+                        <td>{{ revision.get('id')?.value }}</td>
+
+                        <td class="fixed-width">
+                            <input pInputText type="text" formControlName="breakupId" class="fixed-width bg-cyan-400"
+                                readonly />
+                        </td>
+
+                        <td>
+                            <input pInputText type="text" formControlName="componentName" class="w-full p-2 bg-cyan-400"
+                                readonly />
+                        </td>
+
+                        <td>
+                            <!-- Displaying the date when not editing -->
+                            <input pInputText type="text" formControlName="fromDate" class="w-full p-2 bg-cyan-400"
+                                [value]="revision.get('fromDate')?.value | date:'yyyy-MM-dd'" [readonly]="true"
+                                *ngIf="!isRowEditing(revision.get('id')?.value)" />
+
+                            <!-- Input for editing the date -->
+                            <input pInputText type="date" formControlName="fromDate" class="w-full p-2"
+                                *ngIf="isRowEditing(revision.get('id')?.value)"
+                                [ngModel]="revision.get('fromDate')?.value | date:'yyyy-MM-dd'"
+                                (ngModelChange)="revision.get('fromDate').setValue($event)" />
+                        </td>
+
+                        <td>
+                            <input pInputText type="text" formControlName="toDate" class="w-full p-2 bg-cyan-400"
+                                readonly />
+                        </td>
+
+                        <td class="fixed-width">
+                            <input pInputText type="number" formControlName="amountPerMonth" class="fixed-width"
+                                [readonly]="!isRowEditing(revision.get('id')?.value)"
+                                [ngClass]="{'bg-cyan-400': !isRowEditing(revision.get('id')?.value)}" />
+                        </td>
+
+                        <td class="fixed-width" *ngIf="!isMobileView">
+                            <button *ngIf="!isRowEditing(revision.get('id')?.value)" pButton pRipple type="button"
+                                icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                                (click)="enableEdit(revision.get('id')?.value)">
+                            </button>
+                            <button *ngIf="isRowEditing(revision.get('id')?.value)" pButton pRipple type="button"
+                                icon="pi pi-times" class="p-button-rounded p-button"
+                                (click)="cancelEdit(revision.get('id')?.value)">
+                            </button>
+                        </td>
+
+                        <td class="fixed-width" *ngIf="!isMobileView">
+                            <button pButton pRipple type="button" icon="pi pi-trash"
+                                class="p-button-rounded p-button-danger"
+                                (click)="delete(revision.get('id')?.value)"></button>
+                        </td>
+
+                        <td *ngIf="isAnyRowEditing() && !isMobileView">
+                            <button *ngIf="isRowEditing(revision.get('id')?.value)" pButton pRipple type="button"
+                                icon="pi pi-save" class="p-button-rounded p-button-success"
+                                (click)="saveRow(revision.get('id')?.value)">
+                            </button>
+                        </td>
+
+                        <!-- mobile view -->
+                        <div class="mobile-view mt-2" *ngIf="isMobileView">
+                            <div class="button-group">
+                                <button *ngIf="!isRowEditing(revision.get('id')?.value)" pButton pRipple type="button"
+                                    icon="pi pi-pencil" class="p-button-rounded p-button-warning" label="Edit"
+                                    (click)="enableEdit(revision.get('id')?.value)">
+                                </button>
+                                <button *ngIf="isRowEditing(revision.get('id')?.value)" pButton pRipple type="button"
+                                    icon="pi pi-times" class="p-button-rounded p-button"
+                                    (click)="cancelEdit(revision.get('id')?.value)">
+                                </button>
+                                <button pButton pRipple type="button" *ngIf="isRowEditing(revision.get('id')?.value)"
+                                    icon="pi pi-save" class="p-button-rounded p-button-success" label="Save"
+                                    (click)="saveRow(revision.get('id')?.value)">
+                                </button>
+                                <button pButton pRipple type="button" icon="pi pi-trash"
+                                    class="p-button-rounded p-button-danger" label="Delete"
+                                    (click)="delete(revision.get('id')?.value)">
+                                </button>
+
+                            </div>
+                        </div>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p *ngIf="responce?.length === 0">No data available</p>
+    </div>
+
+    <div class="flex flex-col mt-2 align-items-center justify-content-center">
+        <!-- Save Button -->
+        <div class="flex flex-wrap gap-2 mx-2" *ngIf="showTable">
+            <button type="submit" pButton pRipple (click)="addcomponent()" label="Add"
+                class="px-5 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                <i class="pi pi-plus mr-2"></i>
+            </button>
+        </div>
+        <!-- Refresh Button -->
+        <div class="flex flex-wrap gap-2 mx-2" *ngIf="!showTable">
+            <button type="button" pButton pRipple (click)="SearchComponent()" [disabled]="!isSearch"
+                class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                <i class="pi pi-search mr-2"></i>Search
+            </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2 ">
+            <button pButton pRipple type="button" label="Refresh" (click)="refresh()" class="p-button-secondary ">
+                <i class="pi pi-replay mr-1"></i>
+            </button>
         </div>
     </div>
 </div>
-
