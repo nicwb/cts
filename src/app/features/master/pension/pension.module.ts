@@ -44,13 +44,17 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { DividerModule } from 'primeng/divider';
+import { ComponentRateRevisionsComponent } from './component-rate-revisions/component-rate-revisions.component';
 
 const routes: Routes = [
-    {path: "",component:PensionComponent},
-    {path: "pension",component:PensionComponent},
+    {path: "",component:PensionComponent, data: { breadcrumb: 'PensionComponent' }},
+    {path: "pension",component:PensionComponent, data: { breadcrumb: 'PensionComponent' }},
+    {path: "component-rate-revisions",component:ComponentRateRevisionsComponent, data: { breadcrumb: 'ComponentRateRevisionsComponent' }},
 ];
 @NgModule({
-    declarations: [PensionComponent,PrimaryComponent, PensionCategoryComponent,SubCategoryComponent],
+    declarations: [PensionComponent,PrimaryComponent, PensionCategoryComponent,SubCategoryComponent, ComponentRateRevisionsComponent],
     imports: [
         CommonModule,
         PensionRoutingModule,
@@ -98,6 +102,8 @@ const routes: Routes = [
         InputSwitchModule,
         RadioButtonModule,
         ColorPickerModule,
+        PopupTableModule,
+        DividerModule
 
     ],
     exports: [PensionComponent],

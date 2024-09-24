@@ -5,6 +5,7 @@ import { ComponentComponent } from './component/component.component';
 import { PrimaryComponent } from './primary/primary.component';
 import { PensionCategoryComponent } from './pension-category/pension-category.component';
 import { SubCategoryComponent } from './sub-category/sub-category.component';
+import { ComponentRateRevisionsComponent } from './component-rate-revisions/component-rate-revisions.component';
 
 const routes: Routes = [
     {
@@ -37,6 +38,11 @@ const routes: Routes = [
         component: SubCategoryComponent,
         data: { breadcrumb: 'SubCategoryComponent' }
     },
+    {
+        path: 'component-rate-revisions',
+        component: ComponentRateRevisionsComponent,
+        data: { breadcrumb: 'ComponentRateRevisionsComponent' }
+    }
 ];
 
 @NgModule({

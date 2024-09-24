@@ -47,7 +47,7 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                         path:'master/app-pension/component-rate',
                         loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
                         data: { breadcrumb: 'ComponentRateModule' }                    
-                    },
+                    }
 
                 ],
                 data: { breadcrumb: 'CTS AppLayoutComponent' }
