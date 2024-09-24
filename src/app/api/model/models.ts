@@ -1,6 +1,6 @@
 export * from './api-response-status';
 export * from './branch-deatils-dto';
-export * from './branch-deatils-dtoapi-response';
+export * from './branch-deatils-dto-json-api-response';
 export * from './component-rate-entry-dto';
 export * from './component-rate-response-dto';
 export * from './component-rate-response-dtoi-enumerable-dynamic-list-result';

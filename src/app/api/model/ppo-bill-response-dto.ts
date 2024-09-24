@@ -23,6 +23,7 @@ export interface PpoBillResponseDTO {
     bankAccountId?: number;
     fromDate?: string;
     billType?: string;
+    billNo?: number;
     billDate?: string;
     grossAmount?: number;
     byTransferAmount?: number;

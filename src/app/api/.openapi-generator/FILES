@@ -20,8 +20,8 @@ configuration.ts
 encoder.ts
 index.ts
 model/api-response-status.ts
+model/branch-deatils-dto-json-api-response.ts
 model/branch-deatils-dto.ts
-model/branch-deatils-dtoapi-response.ts
 model/component-rate-entry-dto.ts
 model/component-rate-response-dto-json-api-response.ts
 model/component-rate-response-dto.ts

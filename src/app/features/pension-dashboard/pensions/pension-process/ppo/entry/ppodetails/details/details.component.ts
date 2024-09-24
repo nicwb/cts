@@ -411,15 +411,15 @@ export class DetailsComponent implements OnInit, OnChanges {
         const CatDescription = this.ppoFormDetails.get(
             'categoryDescription'
         )?.value;
-        if (CatDescription) {
-            payload.filterParameters = [
-                {
-                    field: 'primaryCategoryId',
-                    value: CatDescription,
-                    operator: 'contains',
-                },
-            ];
-        }
+        // if (CatDescription) {
+        //     payload.filterParameters = [
+        //         {
+        //             field: 'primaryCategoryId',
+        //             value: CatDescription,
+        //             operator: 'contains',
+        //         },
+        //     ];
+        // }
         this.catDescription$ =
             this.ppoCategoryService.getAllCategories(payload);
     }
@@ -445,29 +445,29 @@ export class DetailsComponent implements OnInit, OnChanges {
         if (data.dateOfRetirement) {
             data.dateOfRetirement = this.parseDate(data.dateOfRetirement);
         }
-    
+
         if (data.dateOfCommencement) {
             data.dateOfCommencement = this.parseDate(data.dateOfCommencement);
         }
-    
+
         if (data.dateOfBirth) {
             data.dateOfBirth = this.parseDate(data.dateOfBirth);
         }
-    
+
         this.ppoFormDetails.patchValue(data);
-    
+
         // Example of setting other values like receiptId
         if (data.receipt) {
-            this.ppoFormDetails.controls['receiptId'].setValue(data.receipt.id);   
+            this.ppoFormDetails.controls['receiptId'].setValue(data.receipt.id);
         }
     }
-    
+
 
     getFirstDateOfCurrentMonth() {
         const now = new Date();
         return new Date(now.getFullYear(), now.getMonth(), 1);
     }
-    
+
     // fetchAll cat dep
     async   setCat(){
         if (this.ppoFormDetails.get('categoryId')?.value) {
@@ -485,5 +485,5 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
     }
 
-    
+
 }

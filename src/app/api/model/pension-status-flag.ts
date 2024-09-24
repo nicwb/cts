@@ -11,13 +11,13 @@
  */
 
 
-export type PensionStatusFlag = 'PpoApproved' | 'FirstPensionBillApproved' | 'PpoRunning' | 'PpoSuspended' | 'PpoBankAccountApproved';
+export type PensionStatusFlag = 'PpoSuspended' | 'PpoRunning' | 'PpoApproved' | 'PpoBankAccountApproved' | 'FirstPensionBillApproved';
 
 export const PensionStatusFlag = {
-    PpoApproved: 'PpoApproved' as PensionStatusFlag,
-    FirstPensionBillApproved: 'FirstPensionBillApproved' as PensionStatusFlag,
-    PpoRunning: 'PpoRunning' as PensionStatusFlag,
     PpoSuspended: 'PpoSuspended' as PensionStatusFlag,
-    PpoBankAccountApproved: 'PpoBankAccountApproved' as PensionStatusFlag
+    PpoRunning: 'PpoRunning' as PensionStatusFlag,
+    PpoApproved: 'PpoApproved' as PensionStatusFlag,
+    PpoBankAccountApproved: 'PpoBankAccountApproved' as PensionStatusFlag,
+    FirstPensionBillApproved: 'FirstPensionBillApproved' as PensionStatusFlag
 };
 

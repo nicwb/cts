@@ -19,7 +19,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { BranchDeatilsDTOAPIResponse } from '../model/branch-deatils-dtoapi-response';
+import { BranchDeatilsDTOJsonAPIResponse } from '../model/branch-deatils-dto-json-api-response';
 // @ts-ignore
 import { DropdownDTOIEnumerableAPIResponse } from '../model/dropdown-dtoi-enumerable-api-response';
 
@@ -161,9 +161,9 @@ export class BankService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getBranchByBranchCode(branchCode?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BranchDeatilsDTOAPIResponse>;
-    public getBranchByBranchCode(branchCode?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BranchDeatilsDTOAPIResponse>>;
-    public getBranchByBranchCode(branchCode?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BranchDeatilsDTOAPIResponse>>;
+    public getBranchByBranchCode(branchCode?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BranchDeatilsDTOJsonAPIResponse>;
+    public getBranchByBranchCode(branchCode?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BranchDeatilsDTOJsonAPIResponse>>;
+    public getBranchByBranchCode(branchCode?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BranchDeatilsDTOJsonAPIResponse>>;
     public getBranchByBranchCode(branchCode?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -213,7 +213,7 @@ export class BankService {
         }
 
         let localVarPath = `/api/v1/Bank/get-branch`;
-        return this.httpClient.request<BranchDeatilsDTOAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<BranchDeatilsDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
