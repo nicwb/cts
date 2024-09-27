@@ -250,7 +250,7 @@ export class BankDetailsComponent implements OnInit, OnChanges, OnDestroy {
         console.log("PPO ID: " + this.ppoId);
         if (this.returnUri) {
             await Swal.fire({
-                title: 'Bank account updated. Do you want to go back to approval form?',
+                title: 'Bank account updated. Do you want to go back to the previous form?',
                 icon: 'success',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',

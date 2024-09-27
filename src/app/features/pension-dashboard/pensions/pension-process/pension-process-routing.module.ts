@@ -23,6 +23,16 @@ const routes: Routes = [
         path: 'regular-pension-bill',
         component: RegularPensionBillComponent,
         data: { breadcrumb: 'RegularPensionBillComponent' }
+    },
+    {
+        path: 'pension-bill',
+        component: PensionBillComponent,
+        data: { breadcrumb: 'PensionBillModule' }
+    },
+    {
+        path: 'pension-bill/:ppoId',
+        component: PensionBillComponent,
+        data: { breadcrumb: 'PensionBillModule[:ppoId]' }
     }
 
 ];

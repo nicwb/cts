@@ -5,6 +5,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class PpoApprovalComponent implements OnInit {
     showTable = false;
     tableData: Array<{ response: any, branchName: string, bankName: string }> = [];
     allowApproval:boolean=true;
+    returnUri: string | null = null;
 
 
 
@@ -37,6 +39,7 @@ export class PpoApprovalComponent implements OnInit {
 
     ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('ppoId') ?? '';
+        this.returnUri = this.route.snapshot.queryParamMap.get('returnUri');
         this.ApprovalForm = this.fb.group({
             ppoId: [id, Validators.required]
         })
@@ -112,13 +115,13 @@ export class PpoApprovalComponent implements OnInit {
         this.router.navigate(['/pension/modules/pension-process/approval/ppo-approval']);
     }
 
-    async approve(askApproval:boolean): Promise<void> {
+    async approve(askApproval: boolean): Promise<void> {
         if (askApproval) {
             return;
         }
         const ppoId = this.ApprovalForm.value.ppoId;
         const statusFlag = PensionStatusFlag.PpoApproved;
-        const payload ={
+        const payload = {
             statusFlag: statusFlag,
             statusWef: "2024-08-01",
             ppoId: ppoId
@@ -129,13 +132,30 @@ export class PpoApprovalComponent implements OnInit {
                     this.pensionPPOStatusService.setPpoStatusFlag(payload)
                 );
                 this.toastService.showSuccess(response.message ?? 'Server Dont give any msg');
-                this.showTable=false;
+                this.showTable = false;
+
+                if (this.returnUri) {
+                    const result = await Swal.fire({
+                        title: 'PPO approved. Do you want to go back to the previous form?',
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    });
+
+                    if (result.isConfirmed) {
+                        this.router.navigate([this.returnUri]);
+                        return; // Exit the method early if navigating back
+                    }
+                }
             } catch (error) {
                 console.error('Approval failed', error);
                 this.toastService.showError('Approval failed');
             }
             this.ApprovalForm.reset();
         }
+        
+        // If not returning to the previous form, navigate to the default route
         this.router.navigate(['/pension/modules/pension-process/approval/ppo-approval']);
     }
 
