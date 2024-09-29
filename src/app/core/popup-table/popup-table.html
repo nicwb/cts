@@ -8,7 +8,7 @@
     <label for="float-input">Search data</label>
 </span>
 
-<p-table #searchPopupDIT [value]="data.data" selectionMode="single" [scrollable]="true" [loading]="isLoading" (onLazyLoad)="loadMore($event)" [totalRecords]="totalRecords">
+<p-table #searchPopupDIT [value]="data.data" selectionMode="single" [scrollable]="true" [loading]="isLoading" [paginator]="true" [rows]="10" [totalRecords]="totalRecords" (onLazyLoad)="loadMore($event)" (onPage)="onPage($event)">
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of cols">{{ col.header }}</th>

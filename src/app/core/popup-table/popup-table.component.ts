@@ -111,4 +111,26 @@ export class PopupTableComponent{
   loadMore(event: any) {
       this.debug(this.totalRecords);
   }
+
+  async onPage(event: any) {
+      this.debug(event);
+      const pageIndex = event.page; // Current page index
+      const rowsPerPage = event.rows; // Rows per page
+
+      // Update your service call to fetch data based on the current page and rows per page
+      this.totalRecords = event.rows * (event.page + 1);
+      if (this.service$) {
+          const response = await firstValueFrom(this.service$.pipe(
+              tap(response => {
+                  this.debug(["serviceSearchPopUp", response]);
+                  if (response && response.result) {
+                      this.data = response.result; // Update data for the current page
+                  } else {
+                      this.debug(response);
+                  }
+              })
+          ));
+      }
+  }
+
 }

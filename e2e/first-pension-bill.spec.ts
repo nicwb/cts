@@ -7,15 +7,36 @@ test.beforeEach(async ({ pensionPage }) => {
 test('can generate first pension bill and save', async ({ pensionPage, page }) => {
     // Arrange
     const ppoId = await pensionPage.savePpoDetailsAndApprove();
+    await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded" });
+    await page.locator('p-button').getByRole('button', { name: "Open" }).click();
+    
+    let found = false;
 
     // Act
-    await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded"});
-    await page.locator('p-button').getByRole('button', {name: "Open"}).click();
-    await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
+    while (true) {
+        if (await page.getByRole('cell', { name: '' + ppoId, exact: true }).isVisible()) {
+            await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
+            found = true;
+            break; 
+        }
+        const nextButton = page.locator('p-paginator button.p-paginator-next');
+        if (await nextButton.isVisible() && !(await nextButton.isDisabled())) {
+            await nextButton.click();
+            await page.waitForTimeout(1000); 
+        } else {
+            break; 
+        }
+    }
+
+    // Assert
+    if (!found) {
+        throw new Error(`PPO ID ${ppoId} not found after searching through all available pages.`);
+    }
+
     await page.getByRole('textbox', { name: 'Select a date' }).click();
     await page.locator('.p-datepicker-today').click();
     await expect(page.getByRole('textbox', { name: 'Select a date' })).not.toBeEmpty();
-    
+
     await page.getByRole('button', { name: 'Generate' }).click();
     await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
     await page.getByRole('button', { name: 'OK' }).click();
@@ -23,8 +44,8 @@ test('can generate first pension bill and save', async ({ pensionPage, page }) =
     await page.getByRole('button', { name: 'Save' }).click();
     await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
     await page.getByRole('button', { name: 'OK' }).click();
-    
-    // Assert
+
+    // Final Assert
     await expect(page.getByText('Component Detail:Component')).toBeVisible();
     await expect(page.getByText('Bill Details:Bill')).toBeVisible();
     await expect(page.getByText('Pension Details:PPO')).toBeVisible();
