@@ -4,7 +4,7 @@ import { PensionBankAccountsService, BankService, PensionFactoryService, APIResp
 import { firstValueFrom, Subscription, tap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { environment } from 'src/environments/environment';
-import { log } from 'console';
+import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -35,6 +35,7 @@ export class BankDetailsComponent implements OnInit, OnChanges, OnDestroy {
         private pensionFactoryService: PensionFactoryService,
         private tostService: ToastService,
         private route: ActivatedRoute,
+        private navigationService: NavigationService,
         private router: Router
     ) {
         this.initializeForm();
@@ -223,7 +224,7 @@ export class BankDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 tap(response => {
                     if (response.apiResponseStatus === APIResponseStatus.Success) {
                         this.tostService.showSuccess('Bank account updated successfully');
-                        this.returnToUri();
+                        this.navigationService.confirmReturnToCaller();
                     } else {
                         this.tostService.showWarning("Failed saving bank account");
                     }
@@ -237,29 +238,12 @@ export class BankDetailsComponent implements OnInit, OnChanges, OnDestroy {
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.tostService.showSuccess('Bank account saved successfully');
                     this.isEditing=this.saveButton=true;
-                    this.returnToUri();
+                    this.navigationService.confirmReturnToCaller();
                 } else {
                     this.tostService.showWarning("Failed saving bank account");
                 }
                 
             })
         ));
-    }
-
-    async returnToUri(){
-        console.log("PPO ID: " + this.ppoId);
-        if (this.returnUri) {
-            await Swal.fire({
-                title: 'Bank account updated. Do you want to go back to the previous form?',
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.router.navigate([this.returnUri]);
-                }
-            });
-        }
     }
 }

@@ -6,8 +6,7 @@ test.beforeEach(async ({ pensionPage }) => {
 
 test('can generate first pension bill and save', async ({ pensionPage, page }) => {
     // Arrange
-    const ppoId = await pensionPage.savePpoDetails();
-    await pensionPage.approvePpo(ppoId);
+    const ppoId = await pensionPage.savePpoDetailsAndApprove();
 
     // Act
     await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded"});

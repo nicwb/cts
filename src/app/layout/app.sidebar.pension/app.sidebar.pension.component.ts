@@ -36,7 +36,7 @@ export class AppSidebarPensionComponent implements OnInit {
                     },
 
                     { label: 'Component', icon: 'pi pi-fw pi-box', routerLink: ['/master/app-pension/component'] },
-                    { label: 'Component Rate', icon: 'pi pi-fw pi-box', routerLink: ['master/app-pension/component-rate'] },
+                    { label: 'Component Rate', icon: 'pi pi-fw pi-box', routerLink: ['master/app-pension/component-rate-revisions'] },
 
                     // { label: 'Classification', icon: 'pi pi-fw pi-box' },
                     // { label: 'Classification type', icon: 'pi pi-fw pi-box' },

@@ -105,7 +105,7 @@ async function waitForToastMessage(page: Page, expectedText: string, timeout = 5
                 const message = table.locator('td:has-text("Pensioner bank account not updated")');
                 if (await message.isVisible()) {
                     await page.click('button:has-text("Update Bank Account Details")');
-                    await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
+                    await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?return-uri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}&ask=Do%20you%20want%20go%20back%20to%20approval%20form%3F`);
                     await expect(page.locator('text=Bank Details')).toBeVisible();
                     await expect(page.locator('text=ID-'+ppoId)).toBeVisible();
 
@@ -162,7 +162,7 @@ async function waitForToastMessage(page: Page, expectedText: string, timeout = 5
                 const message = page.locator('td:has-text("Pensioner bank account not updated")');
                 await message.isVisible();
                 await page.click('button:has-text("Update Bank Account Details")');
-                await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?returnUri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}`);
+                await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?return-uri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}&ask=Do%20you%20want%20go%20back%20to%20approval%20form%3F`);
                 await expect(page.locator('text=Bank Details')).toBeVisible();
                 await expect(page.locator('text=ID-'+ppoId)).toBeVisible();
 

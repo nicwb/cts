@@ -90,6 +90,10 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
                 case 'edit':
                     this.cdr.detectChanges();
                     break;
+                case 'step':
+                    this.currentStepIndex = Number(this.route.snapshot.paramMap.get('stepNo'))-1;
+                    this.viewChange(false);
+                    break;
                 default:
                     break;
                 }

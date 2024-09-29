@@ -47,7 +47,7 @@ export class PensionModule {
     await this.page.getByRole('button', { name: 'OK' }).click();
   }
 
-  async savePpoDetails() {
+  async savePpoDetailsWithoutBankAccount() {
     await this.savePpoReceipt();
     await this.page.goto('/#/pension/modules/pension-process/ppo/entry', { waitUntil: "domcontentloaded"});
     const addNewButton = this.page.getByRole('button', { name: 'Add New PPO' });
@@ -61,6 +61,11 @@ export class PensionModule {
     await this.page.getByRole('button', { name: 'Save' }).click();
     await this.page.getByRole('button', { name: 'OK' }).click();
     const ppoId = await this.page.locator('input[formcontrolname="ppoId"]').inputValue();
+    return ppoId;
+  }
+  
+  async savePpoDetails() {
+    const ppoId = await this.savePpoDetailsWithoutBankAccount();
     await this.page.getByRole('button', { name: 'Next' }).click();
     await expect(this.page.getByLabel('Account No', { exact: true })).not.toBeEmpty();
     await this.page.getByRole('button', { name: 'Save' }).click();
@@ -68,5 +73,10 @@ export class PensionModule {
     return ppoId;
   }
 
+  async savePpoDetailsAndApprove() {
+    const ppoId = await this.savePpoDetails();
+    await this.approvePpo(ppoId);
+    return ppoId;
+  }
 
 }

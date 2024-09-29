@@ -46,6 +46,11 @@ const routes: Routes = [
         path: ':ppoId/edit',
         component: PpodetailsComponent,
         data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
+    },
+    {
+        path: ':stepNo/step',
+        component: PpodetailsComponent,
+        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
     }
   
 ];

@@ -181,8 +181,9 @@
                             <td class="p-2">{{ payment.componentName }}</td>
                             <td class="p-2">{{ payment.fromDate }}</td>
                             <td class="p-2">{{ payment.toDate }}</td>
-                            <td class="p-2">{{ payment.basicPensionAmount }}
-                                {{ payment.rateType === 'P' ? '%' : '₹' }}
+                            <td class="p-2">
+                                {{ payment.rateType === 'P' ? '' : '₹' + (payment.rateAmount === 0 ? payment.baseAmount : payment.rateAmount) }}
+                                {{ payment.rateType === 'P' ? '' + payment.rateAmount + '%' : '' }}
                             </td>
                             <td>₹ {{ payment.dueAmount }}</td>
                             <td><input pInputText type="text" class="w-full" /></td>

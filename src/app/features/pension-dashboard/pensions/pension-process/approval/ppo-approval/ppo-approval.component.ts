@@ -5,6 +5,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
 import Swal from 'sweetalert2';
 
 
@@ -34,7 +35,8 @@ export class PpoApprovalComponent implements OnInit {
     private pensionPPOStatusService: PensionPPOStatusService,
     private bankService: BankService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigationService : NavigationService
     ) { }
 
     ngOnInit(): void {
@@ -52,10 +54,7 @@ export class PpoApprovalComponent implements OnInit {
 
     navigateToBankAccountDetails(): void {
         const ppoId = this.ApprovalForm.get('ppoId')!.value;
-        this.router.navigate(
-            ['/pension/modules/pension-process/ppo/entry', ppoId, 'bank-account'],
-            { queryParams: { returnUri: '/pension/modules/pension-process/approval/ppo-approval/' + this.ApprovalForm.value['ppoId'] }}
-        );
+        this.navigationService.navigateTo(`/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account`, `/pension/modules/pension-process/approval/ppo-approval/${this.ApprovalForm.value['ppoId']}`, "Do you want go back to approval form?");
     }
 
     handlePpoSearchEvent(event: any) {
