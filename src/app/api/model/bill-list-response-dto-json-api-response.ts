@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { PensionSubCategoryResponseDTO } from './pension-sub-category-response-dto';
+import { BillListResponseDTO } from './bill-list-response-dto';
 
 
-export interface PensionSubCategoryResponseDTOJsonAPIResponse { 
-    result?: PensionSubCategoryResponseDTO;
+export interface BillListResponseDTOJsonAPIResponse { 
+    result?: BillListResponseDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace PensionSubCategoryResponseDTOJsonAPIResponse {
+export namespace BillListResponseDTOJsonAPIResponse {
 }
 
 

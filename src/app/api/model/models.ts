@@ -1,4 +1,7 @@
 export * from './api-response-status';
+export * from './bill-list-response-dto';
+export * from './bill-list-response-dto-json-api-response';
+export * from './bill-response-dto';
 export * from './branch-deatils-dto';
 export * from './branch-deatils-dto-json-api-response';
 export * from './component-rate-entry-dto';
@@ -65,8 +68,6 @@ export * from './pensioner-response-dto-json-api-response';
 export * from './ppo-bill-breakup-entry-dto';
 export * from './ppo-bill-breakup-response-dto';
 export * from './ppo-bill-entry-dto';
-export * from './ppo-bill-list-response-dto';
-export * from './ppo-bill-list-response-dto-json-api-response';
 export * from './ppo-bill-response-dto';
 export * from './ppo-bill-response-dto-json-api-response';
 export * from './ppo-bill-save-response-dto';

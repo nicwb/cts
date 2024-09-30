@@ -21,7 +21,7 @@ interface PPOData {
     templateUrl: './ppodetails.component.html',
     styleUrls: ['./ppodetails.component.scss'],
 })
-export class PpodetailsComponent implements OnInit, OnDestroy {
+export class PpodetailsComponent implements OnDestroy {
     currentStepIndex = 0;
     steps = [
         { label: 'PPO Details' },
@@ -118,9 +118,9 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnInit(): void {
-        this.loadPPOData();
-    }
+    // ngOnInit(): void {
+    //     this.loadPPOData();
+    // }
 
     private getLastPathSegment(url: string): string | null {
         const segments = url.split('/').filter(segment => segment.length > 0);

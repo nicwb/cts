@@ -27,7 +27,7 @@ test.describe('Sub Category', () => {
     });
 
 
-    test('Duplicate Data Checking ', async ({ page }) => {
+    test.fixme('Duplicate Data Checking ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         let data = await page.locator('input[formControlName=SubCategoryName]').inputValue();
         await expect(

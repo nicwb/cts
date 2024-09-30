@@ -7,12 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BillResponseDTO } from './bill-response-dto';
 
 
-export interface PensionPrimaryCategoryResponseDTO { 
+export interface BillListResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    hoaId: string;
-    primaryCategoryName: string;
-    id?: number;
+    bills?: Array<BillResponseDTO> | null;
+    readonly billCount?: number;
+    preparedBy?: string | null;
+    preparedOn?: string;
 }
 

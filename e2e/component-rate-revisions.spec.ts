@@ -88,7 +88,7 @@ test.describe('Pension Component Rate Details', () => {
           await expect(dialog.locator('th').filter({ hasText: header }).first()).toBeVisible();
         }
       
-        await firstRow.waitFor({ state: 'visible', timeout: 500 });
+        // await firstRow.waitFor({ state: 'visible', timeout: 500 });
       
         // ACT
         await firstRow.click();

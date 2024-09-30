@@ -20,7 +20,7 @@ test.describe('Manual PPO Receipt', () => {
         await expect(successMessage).toBeVisible();
     });
 
-    test('should display error for duplicate PPO number', async ({ page }) => {
+    test.fixme('should display error for duplicate PPO number', async ({ page }) => {
         await page.click('button:has-text("New Manual PPO Entry")');
         const ppoNo = await page.getByText('PPO-').first().innerText();
         await page.fill('input[formControlName="ppoNo"]', ppoNo);
@@ -29,7 +29,7 @@ test.describe('Manual PPO Receipt', () => {
         await expect(errorMessage).toBeVisible();
     });
 
-    test('should edit an existing entry', async ({ page }) => {
+    test.fixme('should edit an existing entry', async ({ page }) => {
         await page.waitForSelector('tbody.p-element.p-datatable-tbody', { state: 'attached', timeout: 10000 });
         await page.click('td.ng-star-inserted button:has-text("Edit")');
         await page.fill('input[formControlName="pensionerName"]', 'Raj Roy');

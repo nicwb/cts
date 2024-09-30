@@ -58,7 +58,7 @@ export class ManualPpoReceiptComponent implements OnInit {
 
   ngOnInit(): void {
       this.actionButtons = this.getActionButtonConfig();
-      this.loadInitialTableData();
+      //   this.loadInitialTableData();
       this.route.queryParamMap.subscribe(params => {
           this.returnUri = params.get('returnUri');
       });
@@ -217,7 +217,7 @@ export class ManualPpoReceiptComponent implements OnInit {
               const response = await firstValueFrom(apiCall);
 
               if (response.apiResponseStatus === APIResponseStatus.Success) {
-                  await this.loadInitialTableData();
+                  //   await this.loadInitialTableData();
                   this.resetAndCloseDialog();
                   this.toastService.showSuccess(`PPO Receipt ${this.selectedRow ? 'updated' : 'added'} successfully`);
                 

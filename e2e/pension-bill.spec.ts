@@ -81,9 +81,9 @@ test.describe('First Pension Bill', () => {
 
     test('should refresh page and clear PPO ID', async ({ page }) => {
         await page.click('app-popup-table');
-        await page.waitForTimeout(5000);
-        await page.waitForSelector('tbody tr');
-        await page.waitForTimeout(5000);
+        // await page.waitForTimeout(5000);
+        // await page.waitForSelector('tbody tr');
+        // await page.waitForTimeout(5000);
         await page.locator('tbody tr:first-child').click();
         await page.click('button:has-text("Refresh")');
         await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');

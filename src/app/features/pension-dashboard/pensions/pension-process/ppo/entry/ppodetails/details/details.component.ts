@@ -17,6 +17,8 @@ import {
     PensionManualPPOReceiptService,
     PensionPPODetailsService,
     PensionCategoryMasterService,
+    ListAllPpoReceiptsResponseDTO,
+    APIResponseStatus,
 } from 'src/app/api';
 import {
     firstValueFrom,
@@ -84,20 +86,24 @@ export class DetailsComponent implements OnInit, OnChanges {
         if (!environment.production && !this.ppoId) {
             await this.factory();
         }
-        this.fetchCatDescription();
-        this.setCat();
     }
 
-    async factory() {
+    async getFakePensionerData(ppoReceipt: ListAllPpoReceiptsResponseDTO){
         await firstValueFrom(
             this.factoryService.createFake('PensionerEntryDTO').pipe(
                 tap((res) => {
                     if (res.result) {
                         this.patchData(res.result);
+                        this.handelManualEntrySelect(ppoReceipt);
+                        this.fetchCatDescription();
+                        this.setCat();
                     }
                 })
             )
         );
+    }
+
+    async factory() {
         await firstValueFrom(this.PensionManualPPOReceiptService.getAllUnusedPpoReceipts().pipe(
             tap(
                 res => {
@@ -121,7 +127,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                         return;
                     }
                     if (res.result?.data) {
-                        this.handelManualEntrySelect(res.result?.data[0]);
+                        this.getFakePensionerData(res.result?.data[0]);
                     }
                 }
             )
@@ -131,7 +137,6 @@ export class DetailsComponent implements OnInit, OnChanges {
     ngOnChanges(): void {
         if (this.ppoId) {
             this.legend = 'ID-' + this.ppoId;
-            this.fetchPpoDetails();
         }
     }
 
@@ -316,7 +321,6 @@ export class DetailsComponent implements OnInit, OnChanges {
             this.ppoFormDetails.removeControl('retirementDate');
             this.ppoFormDetails.removeControl('reducedPensionAmount');
         }
-        this.removeNotrequiredField();
         if (this.ppoFormDetails.valid || this.ppoId) {
             if (!this.ppoId) {
                 await firstValueFrom(
@@ -325,7 +329,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                     ).pipe(
                         tap(
                             (res) => {
-                                if (res.apiResponseStatus == "Success") {
+                                if (res.apiResponseStatus == APIResponseStatus.Success) {
                                     if (res.message) {
                                         this.tostService.showSuccess(
                                             res.message
@@ -333,6 +337,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                                     }
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);
+                                        this.ppoFormDetails.controls['ppoId'].setValue(this.ppoId);
                                         this.pensionerName = String(
                                             res.result.pensionerName
                                         );

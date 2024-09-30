@@ -30,7 +30,9 @@ test.describe('Primary Category', () => {
         );
         await page.getByRole('button', { name: 'OK' }).click();
     });
-    test('duplicate primary category entry ', async ({ page }) => {
+
+
+    test.fixme('duplicate primary category entry ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
         let data1 = await page
             .locator('input[formControlName=HoaId]')

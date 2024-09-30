@@ -20,6 +20,9 @@ configuration.ts
 encoder.ts
 index.ts
 model/api-response-status.ts
+model/bill-list-response-dto-json-api-response.ts
+model/bill-list-response-dto.ts
+model/bill-response-dto.ts
 model/branch-deatils-dto-json-api-response.ts
 model/branch-deatils-dto.ts
 model/component-rate-entry-dto.ts
@@ -87,8 +90,6 @@ model/pensioner-response-dto.ts
 model/ppo-bill-breakup-entry-dto.ts
 model/ppo-bill-breakup-response-dto.ts
 model/ppo-bill-entry-dto.ts
-model/ppo-bill-list-response-dto-json-api-response.ts
-model/ppo-bill-list-response-dto.ts
 model/ppo-bill-response-dto-json-api-response.ts
 model/ppo-bill-response-dto.ts
 model/ppo-bill-save-response-dto-json-api-response.ts
