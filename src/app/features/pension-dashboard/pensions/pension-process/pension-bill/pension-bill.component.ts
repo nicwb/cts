@@ -63,17 +63,7 @@ export class PensionBillComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute
     ) {
-        const payload = {
-            listType: 'type1',
-            pageSize: 200,
-            pageIndex: 0,
-            filterParameters: [],
-            sortParameters: {
-                field: 'ppoNo',
-                order: 'asc',
-            },
-        };
-        this.ppoList$ = this.ppoListService.getAllPensioners(payload);
+        this.ppoList$ = this.service.getAllPposForFirstBill();
     }
 
     //select data

@@ -13,5 +13,6 @@ import { PensionerListItemDTO } from './pensioner-list-item-dto';
 export interface PpoListResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     ppoList?: Array<PensionerListItemDTO> | null;
+    readonly ppoCount?: number;
 }
 
