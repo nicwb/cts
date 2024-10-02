@@ -174,6 +174,8 @@ export class DetailsComponent implements OnInit, OnChanges {
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
+            effectFrom : [null, []],
+            uptoDate: [null, []],
             reducedPensionAmount: [
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],

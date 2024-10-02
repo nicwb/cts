@@ -91,6 +91,15 @@
                                 </span>
                             </div>
 
+                            <!-- Search Button -->
+                            <button
+                                label="Search"
+                                pButton
+                                icon="pi pi-search"
+                                class="p-button-secondary"
+                                (click)="toggleTableVisibility()"
+                            ></button>
+                            <div style="margin: 10px;"></div>
                             <!-- Add New PPO Button -->
                             <div class="add-button">
                                 <button
@@ -104,8 +113,8 @@
                         </div>
 
                         <!-- Table Container with Scroll -->
-                        <div class="table-wrapper">
-                            <!-- <p-table
+                        <div class="table-wrapper" *ngIf="tableVisible">
+                            <p-table
                                 [value]="data.data"
                                 selectionMode="single"
                                 [scrollable]="true"
@@ -135,8 +144,11 @@
                                         </td>
                                     </tr>
                                 </ng-template>
-                            </p-table> -->
+                            </p-table>
                         </div>
+
+                        
+
 
                         <!-- Table Message -->
                         <div class="m-4 text-center">

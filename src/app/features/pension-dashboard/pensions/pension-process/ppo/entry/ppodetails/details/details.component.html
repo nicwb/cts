@@ -23,14 +23,16 @@
 <div class="col-12 md:col-12">
     <!-- Search PPO D -->
 
-    <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
+    <p-fieldset legend="Manual/E-PPO Search Details">
+        <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
             <span class="p-float-label absolute" style="right: 29px;">
                 <input style="width: 80%;" type="text" pInputText [(ngModel)]="eppoid"  (ngModelChange)="MEDetailsSearch();">
                 <label for="float-input">e-PPO Application No/TRID</label>
                 <app-popup-table [service$]="allManualPPOReceipt$" (return)="handelManualEntrySelect($event);"></app-popup-table>
             </span>
-    </div>
-
+        </div>
+    </p-fieldset>
+    <div style="margin-bottom: 1rem;"></div>
 
     <form [formGroup]="ppoFormDetails">
         <p-fieldset [legend]="legend" class="line-height-3 m-0">
@@ -137,6 +139,20 @@
             </div>
 
             <div class="col-12 md:col-6">
+                <label for="effectFrom" class="col-12 mb-2 md:col-2 md:mb-0">Effect From:</label>
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                    <p-calendar [style]="{height:'45px'}" formControlName="effectFrom" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+                <label for="uptoDate" class="col-12 mb-2 md:col-2 md:mb-0">Upto Date:</label>
+                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                    <p-calendar [style]="{height:'45px'}" formControlName="uptoDate" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6">
                 <label for="effectiveDate" class="col-12 mb-2 md:col-2 md:mb-0">Effective Date:</label>
                 <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
                     <p-calendar [style]="{height:'45px'}" formControlName="effectiveDate" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
@@ -149,70 +165,76 @@
                     <input class="h-45px" pInputText formControlName="reducedPensionAmount" />
                 </div>
             </div>
-
-            <div class="col-12 md:col-6">
-                <label for="religion" class="col-12 mb-2 md:col-2 md:mb-0">Religion:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-full">
-                    <p-dropdown [style]="{height:'45px',width:'100%'}" [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
-                </div>
-            </div>
-
-            <div class="col-12 md:col-6">
-                <label for="type" class="col-12 mb-2 md:col-2 md:mb-0  w-100 h-50">Gender:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                    <p-dropdown
-                        [style]="{height: '45px',width:'100%'}"
-                        [options]="[
-                        {label: 'Male', value: 'M'},
-                        {label: 'Female', value: 'F'},
-                        {label: 'Other', value: 'O'}]"
-                        formControlName="gender"></p-dropdown>
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="mobileNumber" class="col-12 mb-2 md:col-2 md:mb-0">Mobile No.:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="mobileNumber" />
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="emailId" class="col-12 mb-2 md:col-2 md:mb-0">Email:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="emailId" />
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="dateOfBirth" class="col-12 mb-2 md:col-2 md:mb-0">Birth date:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
-                    <p-calendar [style]="{height: '45px',width:'100%'}" formControlName="dateOfBirth" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="aadharNo" class="col-12 mb-2 md:col-2 md:mb-0">Aadhar No.:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="aadhaarNo" />
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="panNo" class="col-12 mb-2 md:col-2 md:mb-0">PAN No.:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="panNo" />
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="pensionerAddress" class="col-12 mb-2 md:col-2 md:mb-0">Address:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="pensionerAddress" />
-                </div>
-            </div>
-            <div class="col-12 md:col-6">
-                <label for="remarks" class="col-12 mb-2 md:col-2 md:mb-0">IdentificationMark:</label>
-                <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
-                    <input class="h-45px" pInputText formControlName="identificationMark" />
-                </div>
-            </div>
-
         </div>
+        </p-fieldset>
+        <div style="margin-bottom: 1rem;"></div>
+        <p-fieldset legend="Other Details" class="line-height-3 m-0">
+            <div class="p-formgrid grid">
+
+                <div class="col-12 md:col-6">
+                    <label for="religion" class="col-12 mb-2 md:col-2 md:mb-0">Religion:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-full">
+                        <p-dropdown [style]="{height:'45px',width:'100%'}" [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-12 md:col-6">
+                    <label for="type" class="col-12 mb-2 md:col-2 md:mb-0  w-100 h-50">Gender:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                        <p-dropdown
+                            [style]="{height: '45px',width:'100%'}"
+                            [options]="[
+                            {label: 'Male', value: 'M'},
+                            {label: 'Female', value: 'F'},
+                            {label: 'Other', value: 'O'}]"
+                            formControlName="gender"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="mobileNumber" class="col-12 mb-2 md:col-2 md:mb-0">Mobile No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="mobileNumber" />
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="emailId" class="col-12 mb-2 md:col-2 md:mb-0">Email:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="emailId" />
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="dateOfBirth" class="col-12 mb-2 md:col-2 md:mb-0">Birth date:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
+                        <p-calendar [style]="{height: '45px',width:'100%'}" formControlName="dateOfBirth" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="aadharNo" class="col-12 mb-2 md:col-2 md:mb-0">Aadhar No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="aadhaarNo" />
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="panNo" class="col-12 mb-2 md:col-2 md:mb-0">PAN No.:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="panNo" />
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="pensionerAddress" class="col-12 mb-2 md:col-2 md:mb-0">Address:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="pensionerAddress" />
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <label for="remarks" class="col-12 mb-2 md:col-2 md:mb-0">IdentificationMark:</label>
+                    <div class="field col-12 mb-2 lg:col-4 lg:mb-0 w-100 h-50">
+                        <input class="h-45px" pInputText formControlName="identificationMark" />
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+        <div style="margin-bottom: 1rem;"></div>
         <div class="w-100" style="display: flex; justify-content: center;">
             <p-button
                 label="Save"
@@ -222,7 +244,6 @@
                 (click)="saveData()">
               </p-button>
         </div>
-        </p-fieldset>
     </form>
 
 </div>

@@ -38,6 +38,7 @@ export class PpodetailsComponent implements OnDestroy {
     data: PPOData = { headers: [], data: [] };
     tableMsg = '';
     isLoading = false;
+    tableVisible = false;
 
     // component data
     ppoId?: any;
@@ -61,6 +62,13 @@ export class PpodetailsComponent implements OnDestroy {
         if (this.routeOb && this.pathOb) {
             this.routeOb.unsubscribe();
             this.pathOb.unsubscribe();
+        }
+    }
+
+    toggleTableVisibility(): void {
+        this.tableVisible = !this.tableVisible;
+        if (this.tableVisible) {
+            this.loadPPOData();
         }
     }
 

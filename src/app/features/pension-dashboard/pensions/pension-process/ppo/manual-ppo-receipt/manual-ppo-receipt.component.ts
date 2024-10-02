@@ -27,6 +27,7 @@ export class ManualPpoReceiptComponent implements OnInit {
     selectedRow: any;
   @Input () receiptId?: number;
   isFetchUserInfo = false;
+  isTableVisible = false;
 
   maxDate = new Date();
 
@@ -70,6 +71,11 @@ export class ManualPpoReceiptComponent implements OnInit {
               this.fetchUserInfo();
           }
       });
+  }
+
+  loadPpoReceipts(): void {
+      this.isTableVisible = true;
+      this.loadInitialTableData(); 
   }
 
   initializePpoReceiptForm(): void {
