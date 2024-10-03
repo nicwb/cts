@@ -131,6 +131,8 @@ export class RegularPensionBillComponent implements OnInit {
     
                     const ppoBillEntryDTO: PpoBillEntryDTO = {
                         ppoId: ppo.ppoId,
+                        month: this.billPrintForm.controls['months'].value,
+                        year: this.billPrintForm.controls['year'].value,
                         toDate: new Date().toISOString().split('T')[0]
                     };
     

@@ -91,7 +91,7 @@ export class RevisionofComponentsComponent implements OnInit {
                 this.getpensionbill = await firstValueFrom(this.firstbill.getFirstPensionBillByPpoId(this.ppoId));
                 if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess("" + this.getpensionbill.message);
-                    const bankcode = this.getpensionbill.result?.pensioner?.bankAccounts?.[0].bankCode;
+                    const bankcode = this.getpensionbill.result?.pensioner?.branch?.bankId;
                     const data = await firstValueFrom(this.bank.getAllBanks());
                     for (let i = 0; i < (data.result?.length || 0); i++) {
                         if (data.result?.[i]?.code === bankcode) {

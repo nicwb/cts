@@ -7,14 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BillResponseDTO } from './bill-response-dto';
 
 
-export interface BillListResponseDTO { 
+export interface BankResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    bills?: Array<BillResponseDTO> | null;
-    readonly billCount?: number;
-    preparedBy?: string | null;
-    preparedOn?: string;
+    id?: number;
+    bankName?: string | null;
 }
 

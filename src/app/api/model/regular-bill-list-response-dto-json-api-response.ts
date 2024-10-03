@@ -7,16 +7,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RegularBillListResponseDTO } from './regular-bill-list-response-dto';
 import { APIResponseStatus } from './api-response-status';
-import { PensionerBankAcResponseDTO } from './pensioner-bank-ac-response-dto';
 
 
-export interface PensionerBankAcResponseDTOJsonAPIResponse { 
-    result?: PensionerBankAcResponseDTO;
+export interface RegularBillListResponseDTOJsonAPIResponse { 
+    result?: RegularBillListResponseDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace PensionerBankAcResponseDTOJsonAPIResponse {
+export namespace RegularBillListResponseDTOJsonAPIResponse {
 }
 
 

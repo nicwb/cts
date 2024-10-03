@@ -8,15 +8,15 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { BillListResponseDTO } from './bill-list-response-dto';
+import { BankListResponseDTO } from './bank-list-response-dto';
 
 
-export interface BillListResponseDTOJsonAPIResponse { 
-    result?: BillListResponseDTO;
+export interface BankListResponseDTOJsonAPIResponse { 
+    result?: BankListResponseDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace BillListResponseDTOJsonAPIResponse {
+export namespace BankListResponseDTOJsonAPIResponse {
 }
 
 

@@ -7,13 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BranchResponseDTO } from './branch-response-dto';
 
 
-export interface PpoBillEntryDTO { 
+export interface BranchListResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    ppoId: number;
-    month: number;
-    year: number;
-    toDate: string;
+    readonly branchCount?: number;
+    branches?: Array<BranchResponseDTO> | null;
 }
 

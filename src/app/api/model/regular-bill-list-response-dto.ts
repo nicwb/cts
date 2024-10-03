@@ -7,15 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RegularBillResponseDTO } from './regular-bill-response-dto';
 
 
-export interface PensionerBankAcEntryDTO { 
+export interface RegularBillListResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    payMode: string;
-    accountHolderName: string;
-    bankAcNo: string;
-    ifscCode: string;
-    bankCode: number;
-    branchCode: number;
+    readonly regularBillCount?: number;
+    regularBills?: Array<RegularBillResponseDTO> | null;
 }
 

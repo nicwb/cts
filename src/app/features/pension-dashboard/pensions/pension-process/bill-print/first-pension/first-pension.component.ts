@@ -163,12 +163,6 @@ export class FirstPensionComponent implements OnInit {
           case !response?.result?.pensioner?.receipt:
               this.toastService.showError('Receipt information is missing');
               break;
-          case !response?.result?.pensioner?.bankAccounts:
-              this.toastService.showError('Bank account information is missing');
-              break;
-          case !response?.result?.pensioner?.bankAccounts || !response?.result?.pensioner?.bankAccounts.length:
-              this.toastService.showError('Bank account information is missing');
-              break;
           case !response?.result?.pensioner?.dateOfCommencement:
               this.toastService.showError('Date of commencement is missing');
               break;
@@ -212,34 +206,7 @@ export class FirstPensionComponent implements OnInit {
           //   return;
         
           // }
-          const bankAccounts = response?.result?.pensioner?.bankAccounts;
-          const branchCode = bankAccounts && bankAccounts[0] && bankAccounts[0].branchCode;
-          if (!branchCode) {
-              this.toastService.showError('Branch code is missing, cannot generate PDF');
-              return;
-          }
   
-          firstValueFrom(this.bankService.getAllBanks()).then(bankResponse => {
-              this.pdfData.bankName = bankResponse.result;
-  
-              firstValueFrom(this.bankService.getBranchByBranchCode(branchCode)).then(branchResponse => {
-                  this.pdfData.branchAddress = branchResponse.result?.branchAddress;
-                  this.pdfData.branchName = branchResponse.result?.branchName;
-                  if (this.pdfData.bankName && this.pdfData.branchName && this.pdfData.branchAddress) {
-                      this.pdfGenerationService.generatePdf(this.pdfData);
-                      this.toastService.showSuccess('PDF generated successfully!');
-                  } else {
-                      console.error('Not all data is available, cannot generate PDF. Please check if bank name, branch name, and branch address are available.');
-                      this.toastService.showError('Not all data is available, cannot generate PDF');
-                  }
-              }).catch(branchError => {
-                  console.error('Error fetching branch name:', branchError);
-                  this.toastService.showError('Error fetching branch address');
-              });
-          }).catch(bankError => {
-              console.error('Error fetching bank name:', bankError);
-              this.toastService.showError('Error fetching bank name');
-          });
       }).catch(error => {
           console.error('Error generating PDF:', error);
           this.toastService.showError('Error generating PDF: ' + (error.message || 'Unknown error'));

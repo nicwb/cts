@@ -14,11 +14,9 @@ import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 
 export interface PpoBillResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    ppoId: number;
-    toDate: string;
     id?: number;
     pensionerId?: number;
-    bankAccountId?: number;
+    bankBranchName?: string | null;
     fromDate?: string;
     billType?: string;
     billNo?: number;

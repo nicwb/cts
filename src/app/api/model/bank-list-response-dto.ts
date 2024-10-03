@@ -7,16 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BankResponseDTO } from './bank-response-dto';
 
 
-export interface PensionerBankAcResponseDTO { 
+export interface BankListResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    payMode: string;
-    accountHolderName: string;
-    bankAcNo: string;
-    ifscCode: string;
-    bankCode: number;
-    branchCode: number;
-    id?: number;
+    readonly bankCount?: number;
+    banks?: Array<BankResponseDTO> | null;
 }
 

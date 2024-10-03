@@ -4,7 +4,7 @@ api.module.ts
 api/api.ts
 api/bank.service.ts
 api/message-queue-worker.service.ts
-api/pension-bank-accounts.service.ts
+api/pension-bank-branch.service.ts
 api/pension-category-master.service.ts
 api/pension-component-rate.service.ts
 api/pension-component-revision.service.ts
@@ -20,11 +20,14 @@ configuration.ts
 encoder.ts
 index.ts
 model/api-response-status.ts
-model/bill-list-response-dto-json-api-response.ts
-model/bill-list-response-dto.ts
-model/bill-response-dto.ts
+model/bank-list-response-dto-json-api-response.ts
+model/bank-list-response-dto.ts
+model/bank-response-dto.ts
 model/branch-deatils-dto-json-api-response.ts
 model/branch-deatils-dto.ts
+model/branch-list-response-dto-json-api-response.ts
+model/branch-list-response-dto.ts
+model/branch-response-dto.ts
 model/component-rate-entry-dto.ts
 model/component-rate-response-dto-json-api-response.ts
 model/component-rate-response-dto.ts
@@ -38,6 +41,7 @@ model/day-of-week.ts
 model/dropdown-dto.ts
 model/dropdown-dtoi-enumerable-api-response.ts
 model/dynamic-list-query-parameters.ts
+model/factory-entity-enum.ts
 model/filter-enum.ts
 model/filter-parameter.ts
 model/initiate-first-pension-bill-dto.ts
@@ -78,9 +82,6 @@ model/pension-sub-category-response-dto-json-api-response.ts
 model/pension-sub-category-response-dto.ts
 model/pension-sub-category-response-dtoi-enumerable-dynamic-list-result-json-api-response.ts
 model/pension-sub-category-response-dtoi-enumerable-dynamic-list-result.ts
-model/pensioner-bank-ac-entry-dto.ts
-model/pensioner-bank-ac-response-dto-json-api-response.ts
-model/pensioner-bank-ac-response-dto.ts
 model/pensioner-entry-dto.ts
 model/pensioner-list-item-dto.ts
 model/pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-api-response.ts
@@ -103,6 +104,10 @@ model/ppo-component-revision-update-dto.ts
 model/ppo-list-response-dto-json-api-response.ts
 model/ppo-list-response-dto.ts
 model/ppo-payment-list-item-dto.ts
+model/ppo-regular-bill-details-dto.ts
+model/regular-bill-list-response-dto-json-api-response.ts
+model/regular-bill-list-response-dto.ts
+model/regular-bill-response-dto.ts
 model/sort-parameter.ts
 model/string-json-api-response.ts
 param.ts

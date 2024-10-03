@@ -187,15 +187,11 @@ export class PensionBillComponent implements OnInit {
                 ) {
                     this.isSearch = true;
                     this.ppoInput = true;
-                    const branchCode = this.response.result?.pensioner?.bankAccounts?.[0]?.branchCode;
-                    if (branchCode) {
-                        await this.getBankName(branchCode);
-                    }
                     this.pensionForm.patchValue({
                         ppoNo: this.response.result?.pensioner?.ppoNo,
                         pensionerName: this.response.result?.pensioner?.pensionerName,
                         periodFrom: this.response.result?.pensioner?.dateOfRetirement,
-                        accountNo: this.response?.result?.pensioner?.bankAccounts?.[0]?.bankAcNo,
+                        accountNo: this.response?.result?.pensioner?.bankAcNo,
                         bankName: this.bankName, // Use the retrieved bank name
                         periodTo: this.response.result?.toDate,
                         billDate: this.response.result?.billDate,
@@ -281,6 +277,8 @@ export class PensionBillComponent implements OnInit {
     async saveFirstBill() {
         const saveFirstBill: PpoBillEntryDTO = {
             ppoId: this.response?.result?.pensioner?.ppoId ?? 0,
+            month: 0,
+            year: 0,
             toDate: this.response?.result?.billDate || '',
         };
         try {

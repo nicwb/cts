@@ -26,6 +26,7 @@ export interface InitiateFirstPensionBillResponseDTO {
     treasuryVoucherNo?: string | null;
     treasuryVoucherId?: number;
     treasuryVoucherDate?: string;
+    branchId?: number;
     grossAmount?: number;
     netAmount?: number;
     preparedBy?: string | null;

@@ -15,6 +15,10 @@ export interface PensionerEntryDTO {
     ppoType: string;
     ppoSubType: string;
     categoryId: number;
+    branchId: number;
+    accountHolderName: string;
+    payMode: string;
+    bankAcNo: string;
     pensionerName: string;
     gender?: string | null;
     dateOfBirth: string;

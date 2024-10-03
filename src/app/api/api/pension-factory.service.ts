@@ -17,6 +17,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { FactoryEntityEnum } from '../model/factory-entity-enum';
+// @ts-ignore
 import { ObjectJsonAPIResponse } from '../model/object-json-api-response';
 
 // @ts-ignore
@@ -95,10 +97,10 @@ export class PensionFactoryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createFake(dtoName: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ObjectJsonAPIResponse>;
-    public createFake(dtoName: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ObjectJsonAPIResponse>>;
-    public createFake(dtoName: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ObjectJsonAPIResponse>>;
-    public createFake(dtoName: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public createFake(dtoName: FactoryEntityEnum, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ObjectJsonAPIResponse>;
+    public createFake(dtoName: FactoryEntityEnum, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ObjectJsonAPIResponse>>;
+    public createFake(dtoName: FactoryEntityEnum, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ObjectJsonAPIResponse>>;
+    public createFake(dtoName: FactoryEntityEnum, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (dtoName === null || dtoName === undefined) {
             throw new Error('Required parameter dtoName was null or undefined when calling createFake.');
         }
@@ -141,7 +143,7 @@ export class PensionFactoryService {
             }
         }
 
-        let localVarPath = `/api/v1/factory/${this.configuration.encodeParam({name: "dtoName", value: dtoName, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/v1/factory/${this.configuration.encodeParam({name: "dtoName", value: dtoName, in: "path", style: "simple", explode: false, dataType: "FactoryEntityEnum", dataFormat: undefined})}`;
         return this.httpClient.request<ObjectJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

@@ -17,13 +17,13 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { BillListResponseDTOJsonAPIResponse } from '../model/bill-list-response-dto-json-api-response';
-// @ts-ignore
 import { PpoBillEntryDTO } from '../model/ppo-bill-entry-dto';
 // @ts-ignore
 import { PpoBillSaveResponseDTOJsonAPIResponse } from '../model/ppo-bill-save-response-dto-json-api-response';
 // @ts-ignore
 import { PpoListResponseDTOJsonAPIResponse } from '../model/ppo-list-response-dto-json-api-response';
+// @ts-ignore
+import { RegularBillListResponseDTOJsonAPIResponse } from '../model/regular-bill-list-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -172,9 +172,9 @@ export class PensionRegularBillService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<BillListResponseDTOJsonAPIResponse>;
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<BillListResponseDTOJsonAPIResponse>>;
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<BillListResponseDTOJsonAPIResponse>>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RegularBillListResponseDTOJsonAPIResponse>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RegularBillListResponseDTOJsonAPIResponse>>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RegularBillListResponseDTOJsonAPIResponse>>;
     public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (year === null || year === undefined) {
             throw new Error('Required parameter year was null or undefined when calling getAllRegularPensionBills.');
@@ -232,7 +232,7 @@ export class PensionRegularBillService {
         }
 
         let localVarPath = `/api/v1/ppo/pension-bill/${this.configuration.encodeParam({name: "year", value: year, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "month", value: month, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/regular-bills`;
-        return this.httpClient.request<BillListResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<RegularBillListResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

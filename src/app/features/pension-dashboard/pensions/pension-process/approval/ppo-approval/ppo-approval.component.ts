@@ -74,8 +74,7 @@ export class PpoApprovalComponent implements OnInit {
             const response: PensionerResponseDTOJsonAPIResponse = await firstValueFrom(this.pensionPPODetailsService.getPensionerByPpoId(this.ApprovalForm.get('ppoId')?.value));
             if (response.apiResponseStatus === APIResponseStatus.Success && response.result) {
                 const ppoId = this.ApprovalForm.get('ppoId')?.value;
-                const bankAccounts = response.result.bankAccounts;
-                const branchCode = bankAccounts && bankAccounts[0] && bankAccounts[0].branchCode;
+                const branchCode = response.result.branchId;
                 if (branchCode) {
                     const branchResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
                     if (branchResponse) {

@@ -17,9 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { BranchDeatilsDTOJsonAPIResponse } from '../model/branch-deatils-dto-json-api-response';
+import { BankListResponseDTOJsonAPIResponse } from '../model/bank-list-response-dto-json-api-response';
 // @ts-ignore
-import { DropdownDTOIEnumerableAPIResponse } from '../model/dropdown-dtoi-enumerable-api-response';
+import { BranchListResponseDTOJsonAPIResponse } from '../model/branch-list-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -30,7 +30,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
     providedIn: 'root'
 })
-export class BankService {
+export class PensionBankBranchService {
 
     protected basePath = 'http://api.docker.test';
     public defaultHeaders = new HttpHeaders();
@@ -95,12 +95,11 @@ export class BankService {
     /**
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
-     * @deprecated
      */
-    public getAllBanks(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DropdownDTOIEnumerableAPIResponse>;
-    public getAllBanks(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DropdownDTOIEnumerableAPIResponse>>;
-    public getAllBanks(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DropdownDTOIEnumerableAPIResponse>>;
-    public getAllBanks(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public getBanks(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<BankListResponseDTOJsonAPIResponse>;
+    public getBanks(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<BankListResponseDTOJsonAPIResponse>>;
+    public getBanks(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<BankListResponseDTOJsonAPIResponse>>;
+    public getBanks(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -115,9 +114,7 @@ export class BankService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -142,8 +139,8 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/v1/Bank/get-banks`;
-        return this.httpClient.request<DropdownDTOIEnumerableAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/banks`;
+        return this.httpClient.request<BankListResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -156,20 +153,16 @@ export class BankService {
     }
 
     /**
-     * @param branchCode 
+     * @param bankId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
-     * @deprecated
      */
-    public getBranchByBranchCode(branchCode?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BranchDeatilsDTOJsonAPIResponse>;
-    public getBranchByBranchCode(branchCode?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BranchDeatilsDTOJsonAPIResponse>>;
-    public getBranchByBranchCode(branchCode?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BranchDeatilsDTOJsonAPIResponse>>;
-    public getBranchByBranchCode(branchCode?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (branchCode !== undefined && branchCode !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>branchCode, 'branchCode');
+    public getBranchesByBankId(bankId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<BranchListResponseDTOJsonAPIResponse>;
+    public getBranchesByBankId(bankId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<BranchListResponseDTOJsonAPIResponse>>;
+    public getBranchesByBankId(bankId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<BranchListResponseDTOJsonAPIResponse>>;
+    public getBranchesByBankId(bankId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (bankId === null || bankId === undefined) {
+            throw new Error('Required parameter bankId was null or undefined when calling getBranchesByBankId.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -185,9 +178,7 @@ export class BankService {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
+                'application/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -212,82 +203,10 @@ export class BankService {
             }
         }
 
-        let localVarPath = `/api/v1/Bank/get-branch`;
-        return this.httpClient.request<BranchDeatilsDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/branches/${this.configuration.encodeParam({name: "bankId", value: bankId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        return this.httpClient.request<BranchListResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param bankCode 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getBranchesByBankCode(bankCode?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<DropdownDTOIEnumerableAPIResponse>;
-    public getBranchesByBankCode(bankCode?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<DropdownDTOIEnumerableAPIResponse>>;
-    public getBranchesByBankCode(bankCode?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<DropdownDTOIEnumerableAPIResponse>>;
-    public getBranchesByBankCode(bankCode?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (bankCode !== undefined && bankCode !== null) {
-            localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>bankCode, 'bankCode');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/Bank/get-bank-branchs`;
-        return this.httpClient.request<DropdownDTOIEnumerableAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
