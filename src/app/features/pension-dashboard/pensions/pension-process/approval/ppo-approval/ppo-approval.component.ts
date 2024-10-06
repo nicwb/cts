@@ -33,10 +33,8 @@ export class PpoApprovalComponent implements OnInit {
     private toastService: ToastService,
     private pensionPPODetailsService: PensionPPODetailsService,
     private pensionPPOStatusService: PensionPPOStatusService,
-    private bankService: BankService,
     private router: Router,
-    private route: ActivatedRoute,
-    private navigationService : NavigationService
+    private route: ActivatedRoute
     ) { }
 
     ngOnInit(): void {
@@ -50,11 +48,6 @@ export class PpoApprovalComponent implements OnInit {
             this.showTable = true;
             this.loadTableData();
         }
-    }
-
-    navigateToBankAccountDetails(): void {
-        const ppoId = this.ApprovalForm.get('ppoId')!.value;
-        this.navigationService.navigateTo(`/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account`, `/pension/modules/pension-process/approval/ppo-approval/${this.ApprovalForm.value['ppoId']}`, "Do you want go back to approval form?");
     }
 
     handlePpoSearchEvent(event: any) {
@@ -73,27 +66,12 @@ export class PpoApprovalComponent implements OnInit {
         try {
             const response: PensionerResponseDTOJsonAPIResponse = await firstValueFrom(this.pensionPPODetailsService.getPensionerByPpoId(this.ApprovalForm.get('ppoId')?.value));
             if (response.apiResponseStatus === APIResponseStatus.Success && response.result) {
-                const ppoId = this.ApprovalForm.get('ppoId')?.value;
-                const branchCode = response.result.branchId;
-                if (branchCode) {
-                    const branchResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
-                    if (branchResponse) {
-                        this.tableData = [{
-                            response: response.result,
-                            branchName: branchResponse.result?.branchName ?? '',
-                            bankName: branchResponse.result?.bankName ?? ''
-                        }];
-                        this.allowApproval=false;
-                    }
-                    
-                } else {
-                    console.warn('Branch code is missing, skipping branch details');
-                    this.tableData = [{
-                        response: response.result,
-                        branchName: '',
-                        bankName: ''
-                    }];
-                }
+                this.tableData = [{
+                    response: response.result,
+                    branchName: response.result?.branch?.branchName ?? '',
+                    bankName: response.result?.branch?.bank?.bankName ?? ''
+                }];
+                this.allowApproval=false;
             } else {
                 this.toastService.showError('Failed to fetch initial data.');
             }
@@ -129,7 +107,7 @@ export class PpoApprovalComponent implements OnInit {
                 const response = await firstValueFrom(
                     this.pensionPPOStatusService.setPpoStatusFlag(payload)
                 );
-                this.toastService.showSuccess(response.message ?? 'Server Dont give any msg');
+                this.toastService.showSuccess(response.message ?? '');
                 this.showTable = false;
 
                 if (this.returnUri) {

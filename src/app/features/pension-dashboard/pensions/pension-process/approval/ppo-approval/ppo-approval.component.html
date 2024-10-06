@@ -51,45 +51,26 @@
                       <th>Bank Branch Name</th>
                       <th>IFSC Code</th>
                       <th>Bank Account Number</th>
-                      <th>Expiry Date</th>
+                      <!-- <th>Expiry Date</th> -->
                       <th>Commencement Date</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of tableData">
-                      <ng-container
-                        *ngIf="item.response.bankAccounts.length > 0; else noRecords"
-                      >
+                      <ng-container>
                         <td>{{ item.response.ppoId }}</td>
                         <td>{{ item.response.ppoNo }}</td>
                         <td>{{ item.response.pensionerName }}</td>
-                        <td>{{ item.response.bankAccounts[0].payMode }}</td>
-                        <td>{{ item.response.bankAccounts[0].accountHolderName }}</td>
+                        <td>{{ item.response.payMode == 'Q' ? "Treasury":"Bank" }}</td>
+                        <td>{{ item.response.accountHolderName }}</td>
                         <td>{{ item.bankName }}</td>
                         <td>{{ item.branchName }}</td>
-                        <td>{{ item.response.bankAccounts[0].ifscCode }}</td>
-                        <td>{{ item.response.bankAccounts[0].bankAcNo }}</td>
-                        <td>
-                          {{ item.response.bankAccounts[0].expiryDate | date: 'dd-MM-yyyy' }}
-                        </td>
+                        <td>{{ item.response.branch.ifscCode }}</td>
+                        <td>{{ item.response.bankAcNo }}</td>
                         <td>
                           {{ item.response.dateOfCommencement | date: 'dd-MM-yyyy' }}
                         </td>
                       </ng-container>
-                      <ng-template #noRecords>
-                        <td colspan="11">
-                          <p>Pensioner bank account not updated</p>
-                          <button
-                            pButton
-                            pRipple
-                            type="button"
-                            class="p-button-raised p-button-info"
-                            (click)="navigateToBankAccountDetails()"
-                          >
-                            Update Bank Account Details
-                          </button>
-                        </td>
-                      </ng-template>
                     </tr>
                   </tbody>
                 </table>

@@ -4,115 +4,35 @@
             <button pButton pRipple (click)="openNewPpoReceiptForm()" type="button" icon="pi pi-plus" label="New Manual PPO Entry"
                 class="p-button-rounded p-button-raised"></button>
         </app-common-header>
-        <div class="col-12">
-            <!-- Load PPO Receipt Button -->
-            <button pButton pRipple (click)="loadPpoReceipts()" type="button" icon="pi pi-download" label="Load PPO Receipt"
-                class="p-button-rounded p-button-raised"></button>
-        </div>
     </div>
-
+    
     <!-- PPO Table and Placeholder -->
     <div class="col-12">
         <!-- Dynamic Table Component -->
         <mh-prime-dynamic-table *ngIf="isTableVisible"
-            size="small"
-            [data]="tableData"
-            [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10, 30, 50]"
-            [showTopMenubar]="true"
-            [isLoading]="isDataLoading"
-            [actionButtons]="actionButtons"
-            (actionButtonClicked)="onActionButtonClick($event)"
-            (queryParameterChange)="onQueryParametersChange($event)"
-            (searchKeyChange)="onSearchKeyChange($event)">
-        </mh-prime-dynamic-table>
-
-        <!-- Placeholder when table is not visible -->
+        size="small"
+        [data]="tableData"
+        [numberRowsShown]="10"
+        [rowsPerPageOptions]="[10, 30, 50]"
+        [showTopMenubar]="true"
+        [isLoading]="isDataLoading"
+        [actionButtons]="actionButtons"
+        (actionButtonClicked)="onActionButtonClick($event)"
+        (queryParameterChange)="onQueryParametersChange($event)"
+        (searchKeyChange)="onSearchKeyChange($event)">
+    </mh-prime-dynamic-table>
+    
+    <!-- Placeholder when table is not visible -->
         <div class="svg-placeholder-container" *ngIf="!isTableVisible" style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
-            <svg
-                width="250"
-                height="250"
-                viewBox="0 0 100 100"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <!-- Document Outline -->
-                <rect
-                    x="15"
-                    y="10"
-                    width="70"
-                    height="80"
-                    rx="5"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    fill="white"
-                />
-                <!-- Lines representing text -->
-                <line
-                    x1="20"
-                    y1="25"
-                    x2="80"
-                    y2="25"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-                <line
-                    x1="20"
-                    y1="35"
-                    x2="80"
-                    y2="35"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-                <line
-                    x1="20"
-                    y1="45"
-                    x2="75"
-                    y2="45"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-                <line
-                    x1="20"
-                    y1="55"
-                    x2="80"
-                    y2="55"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-                <line
-                    x1="20"
-                    y1="65"
-                    x2="60"
-                    y2="65"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                />
-                <!-- Dotted line for processing animation -->
-                <line
-                    x1="20"
-                    y1="75"
-                    x2="70"
-                    y2="75"
-                    stroke="#8B9DA6"
-                    stroke-width="2"
-                    stroke-dasharray="5, 5"
-                    stroke-linecap="round"
-                >
-                    <animate
-                        attributeName="stroke-dashoffset"
-                        values="10;0"
-                        dur="1s"
-                        repeatCount="indefinite"
-                    />
-                </line>
-            </svg>
-            <p style="color: #5A6C7D; font-weight: bold; font-size: 18px; margin-top: 20px;">Fetching PPO Receipts... Please wait.</p>
+            <div class="col-12 h-full text-center bg-constellation">
+                <!-- Load PPO Receipt Button -->
+                <button pButton pRipple (click)="loadPpoReceipts()" type="button" icon="pi pi-download" label="Load PPO Receipts"
+                    class="p-button-rounded p-button-raised">
+                </button>
+                <div class="mt-8">
+                </div>
+                <p class="text-gray-600">A diamond with a flaw is better than a common stone that is perfect...</p>
+            </div>
         </div>
     </div>
 </div>
