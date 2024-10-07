@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PensionCategoryComponent } from './pension-category/pension-category.component';
-import { PensionBankBranchComponent } from './pension-bank-branch/pension-bank-branch.component';
-
 import { PensionsComponent } from './pensions.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,17 +12,12 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { PensionReportsComponent } from './pension-reports/pension-reports.component';
-import { PensionQueryComponent } from './pension-query/pension-query.component';
-
 
 
 @NgModule({
     declarations: [
-        PensionCategoryComponent,
-        PensionBankBranchComponent,    
         PensionsComponent,
         PensionReportsComponent,
-        PensionQueryComponent,
     ],
     imports: [
         CommonModule,

@@ -55,6 +55,7 @@ export class PensionCategoryComponent implements OnInit {
     };
     primary_table = false;
     sub_table = false;
+    isTableVisible: boolean = false;
 
     primary_from_url!: String;
     sub_from_url!: string;
@@ -77,14 +78,12 @@ export class PensionCategoryComponent implements OnInit {
             pageSize: 10,
             pageIndex: 0,
         };
-        this.get_id_from_primary_category();
-        this.get_id_from_sub_category();
-        this.getData();
         this.check_for_data();
     }
 
     showInsertDialog() {
         this.displayInsertModal = true;
+        this.isTableVisible = false;
     }
 
     handleRowSelection($event: any) {
@@ -115,7 +114,7 @@ export class PensionCategoryComponent implements OnInit {
             };
         }
 
-        this.getData();
+        // this.getData();
     }
     async check_for_data() {
         let primary;
@@ -351,9 +350,6 @@ export class PensionCategoryComponent implements OnInit {
                 );
                 this.handleErrorResponse(response);
             }
-            this.getData();
-            console.log(response);
-
         }
     }
     async find_extra_primary_id(filterValue: any) {
@@ -471,6 +467,7 @@ export class PensionCategoryComponent implements OnInit {
 
     async getData() {
         const data = this.tableQueryParameters;
+        this.isTableVisible = true;
         this.isTableDataLoading = true;
         let response = await firstValueFrom(
             this.service.getAllCategories(data)
@@ -483,55 +480,100 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
 
-    //get id from  primary
+    // get id from  primary
     async get_id_from_primary_category() {
+        const cacheKey = 'primaryCategoryData';
+        const cacheExpiryKey = 'primaryCategoryExpiry';
+        const cachedData = sessionStorage.getItem(cacheKey);
+        const cacheExpiry = sessionStorage.getItem(cacheExpiryKey);
+        const currentTime = new Date().getTime();
+    
+        // Check if cached data is still valid (within 10 minutes)
+        if (cachedData && cacheExpiry && currentTime < Number(cacheExpiry)) {
+            // Use the cached data
+            const value = JSON.parse(cachedData);
+            this.populatePrimaryIdSelect(value);
+            this.primary_table = true;
+            return;
+        }
+    
+        // If no valid cache, make the API call
         let data = this.tableQueryParameters;
         data.pageSize = 10;
-        let response = await firstValueFrom(
-            this.service.getAllPrimaryCategories(data)
-        );
+        let response = await firstValueFrom(this.service.getAllPrimaryCategories(data));
         this.isTableDataLoading = false;
-
+    
         if (response.result && response.result.data) {
             let value = response.result.data;
-            let len_val = value.length;
-
-            for (let i = 0; i < len_val; i++) {
-                this.primary_id_select.push({
-                    label: `${value[i].id}-${value[i].primaryCategoryName}`,
-                    value: value[i].id,
-                });
-            }
+            // Store the response in sessionStorage with a 10-minute expiry
+            sessionStorage.setItem(cacheKey, JSON.stringify(value));
+            sessionStorage.setItem(cacheExpiryKey, (currentTime + 10 * 60 * 1000).toString());
+    
+            this.populatePrimaryIdSelect(value);
             this.primary_table = true;
         } else {
             console.error('Invalid response from API');
         }
     }
-    //get id from  sub
+    
+    populatePrimaryIdSelect(value: any[]) {
+        let len_val = value.length;
+        this.primary_id_select = [];
+        for (let i = 0; i < len_val; i++) {
+            this.primary_id_select.push({
+                label: `${value[i].id}-${value[i].primaryCategoryName}`,
+                value: value[i].id,
+            });
+        }
+    }
+    
+    // get id from  sub
     async get_id_from_sub_category() {
+        const cacheKey = 'subCategoryData';
+        const cacheExpiryKey = 'subCategoryExpiry';
+        const cachedData = sessionStorage.getItem(cacheKey);
+        const cacheExpiry = sessionStorage.getItem(cacheExpiryKey);
+        const currentTime = new Date().getTime();
+    
+        // Check if cached data is still valid (within 10 minutes)
+        if (cachedData && cacheExpiry && currentTime < Number(cacheExpiry)) {
+            // Use the cached data
+            const value = JSON.parse(cachedData);
+            this.populateSubIdSelect(value);
+            this.sub_table = true;
+            return;
+        }
+    
+        // If no valid cache, make the API call
         let data = this.tableQueryParameters;
         data.pageSize = 10;
-        let response = await firstValueFrom(
-            this.service.getAllSubCategories(data)
-        );
+        let response = await firstValueFrom(this.service.getAllSubCategories(data));
         this.isTableDataLoading = false;
-
+    
         if (response.result && response.result.data) {
             let value = response.result.data;
-            let len_val = value.length;
-
-            for (let i = 0; i < len_val; i++) {
-                this.sub_id_select.push({
-                    label: `${value[i].id}-${value[i].subCategoryName}`,
-                    value: value[i].id,
-                });
-            }
+            // Store the response in sessionStorage with a 10-minute expiry
+            sessionStorage.setItem(cacheKey, JSON.stringify(value));
+            sessionStorage.setItem(cacheExpiryKey, (currentTime + 10 * 60 * 1000).toString());
+    
+            this.populateSubIdSelect(value);
             this.sub_table = true;
         } else {
             console.error('Invalid response from API');
         }
     }
-
+    
+    populateSubIdSelect(value: any[]) {
+        let len_val = value.length;
+        this.sub_id_select = [];
+        for (let i = 0; i < len_val; i++) {
+            this.sub_id_select.push({
+                label: `${value[i].id}-${value[i].subCategoryName}`,
+                value: value[i].id,
+            });
+        }
+    }
+    
 
     async findById(id: any) {
         let payload = this.tableQueryParameters;
@@ -606,4 +648,15 @@ export class PensionCategoryComponent implements OnInit {
         this.PensionForm.reset();
         this.displayInsertModal = false;
     }
+
+    getDialogHeight(): string {
+        const width = window.innerWidth;
+    
+        if (width >= 1200) {
+            return '400px';  // Set height for larger screens
+        } else {
+            return '400px';  // Set height for extra-small screens
+        }
+    }
+    
 }

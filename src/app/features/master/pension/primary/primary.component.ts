@@ -53,6 +53,8 @@ export class PrimaryComponent {
     called_from_pension = false;
     primary!:string;
     sub!:string;
+    isTableVisible: boolean = false;
+
 
     constructor(
         private toastService: ToastService,
@@ -74,12 +76,13 @@ export class PrimaryComponent {
             pageIndex: 0,
         };
         // this.tableData = sd;
-        this.getData();
+        // this.getData();
         this.check_if_called();
     }
 
     showInsertDialog() {
         this.displayInsertModal = true;
+        this.isTableVisible = false;
         this.primaryForm.reset();
         if (!environment.production) {
             this.generateData();
@@ -176,8 +179,6 @@ export class PrimaryComponent {
             } else {
                 this.handleErrorResponse(response);
             }
-
-            this.getData();
         } else {
             this.toastService.showError(
                 'Please fill all required fields correctly.'
@@ -227,6 +228,7 @@ export class PrimaryComponent {
         );
 
         this.tableData = response.result;
+        this.isTableVisible = true;
         this.isTableDataLoading = false;
     }
     async findById(data: any) {
@@ -247,15 +249,6 @@ export class PrimaryComponent {
         }
 
         this.isTableDataLoading = false;
-    }
-
-    fun_refresh() {
-        this.refresh_b = false;
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
-        this.getData();
     }
 
     emitPrimaryCategory(): void {

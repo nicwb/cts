@@ -55,6 +55,7 @@ export class SubCategoryComponent implements OnInit {
         val: false,
         data: null,
     };
+    isTableVisible: boolean = false;
     primary!:string;
     sub !:string;
     called_from_pension = false;
@@ -77,9 +78,6 @@ export class SubCategoryComponent implements OnInit {
             pageSize: 10,
             pageIndex: 0,
         };
-
-        this.getData();
-        // this.showVAL();
         this.check_if_called();
     }
     check_if_called() {
@@ -101,6 +99,7 @@ export class SubCategoryComponent implements OnInit {
         this.displayInsertModal = true;
         this.SubForm.reset();
         if (!environment.production) {
+            this.isTableVisible= false;
             this.generateNewData();
         }
     }
@@ -219,7 +218,6 @@ export class SubCategoryComponent implements OnInit {
             } else {
                 this.handleErrorResponse(response);
             }
-            this.getData();
         }
     }
 
@@ -252,19 +250,9 @@ export class SubCategoryComponent implements OnInit {
         );
         if (response.apiResponseStatus === APIResponseStatus.Success) {
             this.tableData = response.result;
+            this.isTableVisible = true;
             this.isTableDataLoading = false;
         }
-    }
-
-    fun_refresh() {
-        this.refresh_b = false;
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
-        this.searching.val = false;
-        this.searching.data = null;
-        this.getData();
     }
 
     emitSubCategory(): void {
