@@ -6,7 +6,7 @@ test.describe('Pension Component', () => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
@@ -22,7 +22,7 @@ test.describe('Pension Component', () => {
 
     test('Duplicate data Checking', async ({ page }) => {
         await page.getByRole('button', { name: 'New Entry' }).click();
-        let data1= await page.locator('input[formControlName=componentName]').inputValue();
+        const data1= await page.locator('input[formControlName=componentName]').inputValue();
         await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();

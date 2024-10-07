@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { DotEnv } from "utils/env"
 
 test.describe('Manual PPO Receipt', () => {
     test.beforeEach(async ({ page, isMobile }) => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();

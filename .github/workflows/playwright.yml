@@ -46,8 +46,8 @@ jobs:
       - run: cp .env.playwright .env
       - name: Install dependencies
         run: npm ci
-      # - name: Start Angular 14 Frontend
-      #   run: npm run start
+      - name: Run Eslint Check
+        run: npx eslint e2e
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Changed Playwright tests

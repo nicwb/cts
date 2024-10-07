@@ -28,7 +28,7 @@ test.describe('Static Login', () =>{
             async ({page, isMobile}) => {
                 await page.getByRole('link', { name: `${role}` }).click();
                 if(isMobile) {
-                    page.locator('button.layout-topbar-menu-button').click()
+                    await page.locator('button.layout-topbar-menu-button').click()
                 }
                 const dashboard = page.getByText(`CCTS${displayName}`);
                 await expect(dashboard).toBeVisible();

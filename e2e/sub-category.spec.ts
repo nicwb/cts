@@ -6,7 +6,7 @@ test.describe('Sub Category', () => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
@@ -29,7 +29,7 @@ test.describe('Sub Category', () => {
 
     test.fixme('Duplicate Data Checking ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
-        let data = await page.locator('input[formControlName=SubCategoryName]').inputValue();
+        const data = await page.locator('input[formControlName=SubCategoryName]').inputValue();
         await expect(
             page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();

@@ -5,7 +5,7 @@ test.describe('Primary Category', () => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
@@ -34,11 +34,11 @@ test.describe('Primary Category', () => {
 
     test.fixme('duplicate primary category entry ', async ({ page }) => {
         await page.getByRole('button', { name: 'New' }).click();
-        let data1 = await page
+        const data1 = await page
             .locator('input[formControlName=HoaId]')
             .inputValue();
 
-        let data2 = await page
+        const data2 = await page
             .locator('input[formControlName=PrimaryCategoryName]')
             .inputValue();
         await expect(

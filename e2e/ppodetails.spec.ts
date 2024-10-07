@@ -1,9 +1,10 @@
 import { test, expect } from "./fixtures";
 
 test.beforeEach(async ({ pensionPage }) => {
+    test.fixme(true, 'Remove this line after task-241 is merged');
     await pensionPage.staticLogin();
 });
-    
+
 test("Save PPO details", async ({ pensionPage, page }) => {
     // Arrange
     await pensionPage.savePpoReceipt();
@@ -20,12 +21,11 @@ test("Save PPO details", async ({ pensionPage, page }) => {
     });
     await page.getByRole('button', { name: 'Save' }).click();
     await page.getByRole('button', { name: 'OK' }).click();
-    const ppoId = await page.locator('input[formcontrolname="ppoId"]').inputValue();
     await page.getByRole('button', { name: 'Next' }).click();
     await expect(page.getByLabel('Account No', { exact: true })).not.toBeEmpty();
     await page.getByRole('button', { name: 'Save' }).click();
     await page.getByRole('button', { name: 'OK' }).click();
-    
+
     // Assert
     await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
 });

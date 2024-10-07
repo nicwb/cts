@@ -7,7 +7,7 @@ test.describe('Regular pension bill', () => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if (isMobile) {
-            page.locator('button.layout-topbar-menu-button').click();
+            await page.locator('button.layout-topbar-menu-button').click();
         }
         const dashboard = page.getByText('CCTSCLERK');
         await expect(dashboard).toBeVisible();

@@ -9,27 +9,27 @@ test('can generate first pension bill and save', async ({ pensionPage, page }) =
     const ppoId = await pensionPage.savePpoDetailsAndApprove();
     await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded" });
     await page.locator('p-button').getByRole('button', { name: "Open" }).click();
-    
-    let found = false;
+
+    let notFound = true;
 
     // Act
-    while (true) {
+    while (notFound) {
         if (await page.getByRole('cell', { name: '' + ppoId, exact: true }).isVisible()) {
             await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
-            found = true;
-            break; 
+            notFound = false;
+            break;
         }
         const nextButton = page.locator('p-paginator button.p-paginator-next');
         if (await nextButton.isVisible() && !(await nextButton.isDisabled())) {
             await nextButton.click();
-            await page.waitForTimeout(1000); 
+            await page.waitForTimeout(1000);
         } else {
-            break; 
+            break;
         }
     }
 
     // Assert
-    if (!found) {
+    if (notFound) {
         throw new Error(`PPO ID ${ppoId} not found after searching through all available pages.`);
     }
 

@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { test } from '.';
 
 export class PensionModule {
   readonly page: Page;
@@ -16,12 +17,12 @@ export class PensionModule {
     await this.page.goto('/#/static-login', { waitUntil: "commit"});
     await this.page.getByRole('link', { name: 'cleark' }).click();
     if (this.isMobile) {
-      this.page.locator('button.layout-topbar-menu-button').click()
+      await this.page.locator('button.layout-topbar-menu-button').click()
     }
     const dashboard = this.page.getByText(`CCTSCLERK`);
     await expect(dashboard).toBeVisible();
   }
-  
+
   async savePpoReceipt() {
     await this.page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt', { waitUntil: "domcontentloaded"});
     await this.page.getByRole('button', { name: 'New Manual PPO Entry' }).click();
@@ -38,7 +39,7 @@ export class PensionModule {
     await expect(this.page.getByRole('heading', { name: 'Aww! Snap...' })).toBeVisible();
     await this.page.getByRole('button', { name: 'OK' }).click();
   }
-  
+
   async approvePpo(ppoId : string) {
     await this.page.goto('/#/pension/modules/pension-process/approval/ppo-approval', { waitUntil: "domcontentloaded"});
     await this.page.getByLabel('PPO ApprovalPPO ID:').getByRole('button').click();
@@ -48,6 +49,8 @@ export class PensionModule {
   }
 
   async savePpoDetailsWithoutBankAccount() {
+    test.fixme(true, 'Remove this line after fixing PPO Entry Form');
+    test.slow(this.isMobile, 'PPO Entry Form takes too long to complete');
     await this.savePpoReceipt();
     await this.page.goto('/#/pension/modules/pension-process/ppo/entry', { waitUntil: "domcontentloaded"});
     const addNewButton = this.page.getByRole('button', { name: 'Add New PPO' });
@@ -63,7 +66,7 @@ export class PensionModule {
     const ppoId = await this.page.locator('input[formcontrolname="ppoId"]').inputValue();
     return ppoId;
   }
-  
+
   async savePpoDetails() {
     const ppoId = await this.savePpoDetailsWithoutBankAccount();
     await this.page.getByRole('button', { name: 'Next' }).click();

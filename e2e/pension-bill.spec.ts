@@ -5,7 +5,7 @@ test.describe('First Pension Bill', () => {
         await page.goto('/#/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
-            page.locator('button.layout-topbar-menu-button').click()
+            await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
@@ -123,9 +123,7 @@ test.describe('First Pension Bill', () => {
             el.classList.contains('.swal2-icon-error') || el.classList.contains('.swal2-popup ')
     );
 
-    if (isErrorToast) {
-        const toastMessage = await toastLocator.locator('.swal2-popup').textContent();
-    } else {
+    if (!isErrorToast) {
         const pdfBuffer = await page.pdf();
         expect(pdfBuffer).not.toBeNull();
     }
