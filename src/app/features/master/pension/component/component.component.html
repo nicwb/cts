@@ -26,7 +26,7 @@
         </app-common-header>
     </div>
     <div class="col-12">
-        <mh-prime-dynamic-table
+        <mh-prime-dynamic-table *ngIf="isTableVisible"
             size="small"
             [data]="tableData"
             [numberRowsShown]="10"
@@ -39,6 +39,20 @@
             (queryParameterChange)="handQueryParameterChange($event)"
             (searchKeyChange)="handsearchKeyChange($event)"
         ></mh-prime-dynamic-table>
+
+        <!-- Placeholder when table is not visible -->
+        <div class="svg-placeholder-container" *ngIf="!isTableVisible"
+            style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
+            <div class="col-12 h-full text-center bg-constellation">
+                <!-- Load PPO Receipt Button -->
+                <button pButton pRipple (click)="getData()" type="button" icon="pi pi-download"
+                    label="Load Component Details" class="p-button-rounded p-button-raised">
+                </button>
+                <div class="mt-8">
+                </div>
+                <p class="text-gray-600">A journey of thousand miles begins with a single step...</p>
+            </div>
+        </div>
     </div>
 </div>
 

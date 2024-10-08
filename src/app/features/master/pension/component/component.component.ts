@@ -49,6 +49,7 @@ export class ComponentComponent implements OnInit {
     Payment: boolean = false;
     Deduction: boolean = false;
     refresh_val = false;
+    isTableVisible: boolean = false;
     search_button={
         val:false,
         data:null
@@ -75,16 +76,13 @@ export class ComponentComponent implements OnInit {
         this.tableQueryParameters = {
             pageSize: 10,
             pageIndex: 0,
-        };
-
-        
-        this.getData();
-        
+        };        
     }
 
 
     showInsertDialog() {
         this.displayInsertModal = true;
+        this.isTableVisible = false;
         this.ComponentForm.reset();
         this.ComponentForm.patchValue({reliefFlag : false});
         if(!environment.production){
@@ -203,7 +201,6 @@ export class ComponentComponent implements OnInit {
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
                 console.log('Form submitted successfully:', response);
-                this.getData();
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
                     'Component Details added successfully'
@@ -257,6 +254,7 @@ export class ComponentComponent implements OnInit {
             return;
         }
         this.tableData = response.result;
+        this.isTableVisible = true;
         this.isTableDataLoading = false;
     }
 
