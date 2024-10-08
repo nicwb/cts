@@ -12,6 +12,7 @@ import {
     InitiateFirstPensionBillResponseDTOJsonAPIResponse,
     PpoPaymentListItemDTO,
     ObjectJsonAPIResponse,
+    PensionBankBranchService
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
@@ -58,6 +59,7 @@ export class PensionBillComponent implements OnInit {
         private ppoListService: PensionPPODetailsService,
         private revisionService: PensionComponentRevisionService,
         private toastService: ToastService,
+        private bankService: PensionBankBranchService,
         private router: Router,
         private route: ActivatedRoute
     ) {
@@ -223,20 +225,6 @@ export class PensionBillComponent implements OnInit {
             }
         }
     }
-
-    // private async getBankName(branchCode: number): Promise<void> {
-    //     try {
-    //         const bankResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
-    //         if (bankResponse && bankResponse.result) {
-    //             this.bankName = bankResponse.result?.bankName || 'Unknown Bank';
-    //         } else {
-    //             this.bankName = 'Unknown Bank';
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching bank details:', error);
-    //         this.bankName = 'Error fetching bank name';
-    //     }
-    // }
 
     // save function
     async save() {

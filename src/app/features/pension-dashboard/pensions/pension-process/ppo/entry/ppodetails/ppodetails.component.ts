@@ -25,7 +25,6 @@ export class PpodetailsComponent implements OnDestroy {
     currentStepIndex = 0;
     steps = [
         { label: 'PPO Details' },
-        { label: 'Bank Details' },
         { label: 'Sanction Details' },
         { label: 'Family Nominee' },
     ];
@@ -81,13 +80,13 @@ export class PpodetailsComponent implements OnDestroy {
                 this.viewChange(false);
             }
         });
-    
+
         this.loadById();
         // Subscribe to router events to get the current URL and extract the last segment
         this.pathOb =  this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.lastPathSegment = this.getLastPathSegment(event.urlAfterRedirects);
-  
+
                 switch (this.lastPathSegment?.split('?')[0]) {
                 case 'bank-account':
                     this.currentStepIndex = 1;
@@ -204,7 +203,7 @@ export class PpodetailsComponent implements OnDestroy {
 
     prev(): void {
         if(this.ppoId){
-            this.router.navigate(['/pension/modules/pension-process/ppo/entry/',this.ppoId,'edit']); 
+            this.router.navigate(['/pension/modules/pension-process/ppo/entry/',this.ppoId,'edit']);
         }
         else{
             this.location.back()

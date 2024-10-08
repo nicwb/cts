@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { filter, Observable, Subscription, take } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionManualPPOReceiptService, ManualPpoReceiptEntryDTO, ManualPpoReceiptResponseDTO, PensionFactoryService, APIResponseStatus } from 'src/app/api';
@@ -8,9 +8,10 @@ import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynami
 import { SelectItem } from 'primeng/api';
 import { DatePipe, Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
+import { ReturnUriService } from 'src/app/core/services/return-uri-service';
 
 
 @Component({
@@ -18,8 +19,8 @@ import { NavigationService } from 'src/app/core/services/navigation/navigation.s
     templateUrl: './ppo-receipt.component.html',
     styleUrls: ['./ppo-receipt.component.scss']
 })
-export class PpoReceiptComponent implements OnInit {
-    returnUri: string | null = null;
+export class PpoReceiptComponent implements OnInit, OnDestroy {
+    private navigationSubscription: Subscription;
     isInsertModalVisible = false;
     manualPpoForm!: FormGroup;
     tableQueryParameters: DynamicTableQueryParameters = { pageSize: 10, pageIndex: 0, filterParameters: [], sortParameters: { field: '', order: '' } };
@@ -55,36 +56,57 @@ export class PpoReceiptComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private navc: NavigationService,
-    private location: Location
+    private location: Location,
+    private returnUriService: ReturnUriService
   ) {
       this.initializePpoReceiptForm();
+      this.navigationSubscription = this.router.events.pipe(
+          filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+          this.initializeComponent();
+      });
   }
 
-  ngOnInit(): void {
-      // endpint
+  initializeComponent() {
       const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
-      if(endpoint == 'receipt/new'){
+      if (endpoint == 'receipt/new') {
           this.openNewPpoReceiptForm();
       }
       this.actionButtons = this.getActionButtonConfig();
-      //   this.loadInitialTableData();
-      this.route.queryParamMap.subscribe(params => {
-          this.returnUri = params.get('returnUri');
+
+      // Set the initial returnUri only if it hasn't been set before
+      this.route.queryParamMap.pipe(take(1)).subscribe(params => {
+          const returnUri = params.get('returnUri');
+          if (returnUri && !this.returnUriService.getReturnUri()) {
+              this.returnUriService.setReturnUri(returnUri);
+              console.log('Initial returnUri set:', returnUri);
+          }
       });
+
       // Check if receiptId is provided via route parameters
-      this.route.paramMap.subscribe(params => {
+      this.route.paramMap.pipe(take(1)).subscribe(params => {
           const routeReceiptId = params.get('receiptId');
           if (routeReceiptId) {
-              this.receiptId = this.route.snapshot.params['receiptId'] as number;
+              this.receiptId = +routeReceiptId;
               this.fetchUserInfo();
           }
       });
   }
 
+  ngOnInit() {
+      this.initializeComponent();
+  }
+
+  ngOnDestroy() {
+      if (this.navigationSubscription) {
+          this.navigationSubscription.unsubscribe();
+      }
+  }
+
   loadPpoReceipts(): void {
       // this.router.navigate(['/pension/modules/pension-process/ppo/manualPpoReceipt/new']);
       this.isTableVisible = true;
-      this.loadInitialTableData(); 
+      this.loadInitialTableData();
   }
 
   initializePpoReceiptForm(): void {
@@ -136,7 +158,7 @@ export class PpoReceiptComponent implements OnInit {
               psaCode: this.manualPpoForm.get('psaCode')?.value,
               ppoType: this.manualPpoForm.get('ppoType')?.value
           };
-  
+
           const response = await firstValueFrom(this.pensionManualPpoReceiptService.updatePpoReceipt(this.receiptId, formData));
           this.isFetchUserInfo = false;
       } else {
@@ -172,7 +194,7 @@ export class PpoReceiptComponent implements OnInit {
           this.isDataLoading = false;
       }
   }
-  
+
 
   openNewPpoReceiptForm(): void {
       if(!environment.production){
@@ -180,7 +202,7 @@ export class PpoReceiptComponent implements OnInit {
       }
       this.isInsertModalVisible = true;
   }
-  
+
 
   async onSearchKeyChange(event: string): Promise<void> {
       this.isDataLoading = true;
@@ -193,10 +215,10 @@ export class PpoReceiptComponent implements OnInit {
                           ...item,
                           receiptDate: this.formatDateToString(item.receiptDate) ?? ''
                       }));
-                  this.tableData = { 
-                      headers: this.tableData?.headers ?? [], 
-                      data: updatedData, 
-                      dataCount: updatedData.length 
+                  this.tableData = {
+                      headers: this.tableData?.headers ?? [],
+                      data: updatedData,
+                      dataCount: updatedData.length
                   };
               } else {
                   this.toastService.showError(response?.message || 'An error occurred');
@@ -223,20 +245,21 @@ export class PpoReceiptComponent implements OnInit {
               psaCode: this.manualPpoForm.get('psaCode')?.value,
               ppoType: this.manualPpoForm.get('ppoType')?.value
           };
-  
+
           try {
-              const apiCall = this.selectedRow 
+              const apiCall = this.selectedRow
                   ? this.pensionManualPpoReceiptService.updatePpoReceiptByTreasuryReceiptNo(this.selectedRow.treasuryReceiptNo, formData)
                   : this.pensionManualPpoReceiptService.createPpoReceipt(formData);
 
               const response = await firstValueFrom(apiCall);
 
               if (response.apiResponseStatus === APIResponseStatus.Success) {
-                  //   await this.loadInitialTableData();
                   this.resetAndCloseDialog();
                   this.toastService.showSuccess(`PPO Receipt ${this.selectedRow ? 'updated' : 'added'} successfully`);
-                
-                  if (this.returnUri) {
+
+                  const returnUri = this.returnUriService.getReturnUri();
+                  console.log('returnUri in submitPpoReceipt:', returnUri);
+                  if (returnUri) {
                       await Swal.fire({
                           title: 'Manual PPO receipt is created. Do you want to go back to entry form?',
                           icon: 'question',
@@ -245,7 +268,7 @@ export class PpoReceiptComponent implements OnInit {
                           cancelButtonText: 'No'
                       }).then((result) => {
                           if (result.isConfirmed) {
-                              this.router.navigate([this.returnUri]);
+                              this.router.navigate([returnUri]);
                           }
                       });
                   }
@@ -259,7 +282,7 @@ export class PpoReceiptComponent implements OnInit {
           this.toastService.showError('Please fill all required fields correctly.');
       }
   }
-  
+
   handleErrorResponse(response: any): void {
       if (response.message?.includes('duplicate key value')) {
           this.manualPpoForm.get('ppoNo')?.setErrors({ 'duplicate': true });
@@ -268,24 +291,24 @@ export class PpoReceiptComponent implements OnInit {
           this.toastService.showError(response.message || 'An unexpected error occurred.');
       }
   }
-  
+
   formatDateToString(date: any): string | null {
       return date ? this.datePipe.transform(date, 'yyyy-MM-dd') : null;
   }
-  
+
   resetAndCloseDialog(): void {
       this.manualPpoForm.reset();
       this.isInsertModalVisible = false;
       this.selectedRow = null;
   }
-  
+
   parseToDate(dateOnly: any): Date | null {
       if (!dateOnly) return null;
       if (dateOnly instanceof Date) return dateOnly;
       const parsedDate = new Date(dateOnly);
       return isNaN(parsedDate.getTime()) ? null : parsedDate;
   }
-  
+
   onActionButtonClick(event: any) {
       if (event.buttonIdentifier === 'edit') {
           this.initializeEditForm(event.rowData);
@@ -301,7 +324,7 @@ export class PpoReceiptComponent implements OnInit {
       }
       this.loadInitialTableData();
   }
-  
+
   async initializeEditForm(rowData: ManualPpoReceiptResponseDTO): Promise<void> {
       this.selectedRow = rowData;
       try {
@@ -347,7 +370,7 @@ export class PpoReceiptComponent implements OnInit {
 
   createNewMnualresipt(){
       //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
-      this.router.navigate(['/pension/modules/pension-process/ppo/receipt/new']); 
+      this.router.navigate(['/pension/modules/pension-process/ppo/receipt/new']);
 
   }
   onDialogClose(){

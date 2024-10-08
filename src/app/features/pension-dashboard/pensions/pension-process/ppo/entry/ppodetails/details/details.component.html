@@ -23,7 +23,7 @@
 <div class="col-12 md:col-12">
     <!-- Search PPO D -->
 
-    <p-fieldset legend="Manual/E-PPO Search Details">
+    <p-fieldset legend="Manual/E-PPO Search Details" class="line-height-3 m-0" styleClass="p-fieldset-sm">
         <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
             <span class="p-float-label absolute" style="right: 29px;">
                 <input style="width: 80%;" type="text" pInputText [(ngModel)]="eppoid"  (ngModelChange)="MEDetailsSearch();">
@@ -35,7 +35,7 @@
     <div style="margin-bottom: 1rem;"></div>
 
     <form [formGroup]="ppoFormDetails">
-        <p-fieldset [legend]="legend" class="line-height-3 m-0">
+        <p-fieldset [legend]="legend" class="line-height-3 m-0" class="line-height-3 m-0" styleClass="p-fieldset-sm">
         <div class="p-formgrid grid">
             <div class="col-12 md:col-6">
                 <span class="p-float-label m-3 h-45px">
@@ -60,7 +60,7 @@
             <div class="col-12 md:col-6">
                     <label for="type" class="col-12 mb-2 md:col-2 md:mb-0">Type:</label>
                     <div class="field col-12 mb-2 lg:col-4 lg:mb-0 h-full w-100">
-                        <p-dropdown [style]="{width: '100%',height: '47px'}" dataKey="Pension"
+                        <p-dropdown [style]="{width: '100%',height: '47px'}" styleClass="p-dropdown-sm" dataKey="Pension"
                             [options]="[
                             {label: 'Pension', value: 'P'},
                             {label: 'Bank', value: 'F'},
@@ -72,7 +72,7 @@
             <div class="col-12 md:col-6">
                 <label for="subType" class="col-12 mb-2 md:col-2 md:mb-0">Sub Type:</label>
                 <div class="field col-12 mb-2 lg:col-4 lg:mb-0 h-full w-100">
-                    <p-dropdown [style]="{width: '100%',height: '47px'}" dataKey="Employed"
+                    <p-dropdown [style]="{width: '100%',height: '47px'}" styleClass="p-dropdown-sm" dataKey="Employed"
                         [options]="[
                         { label: 'Employed', value: 'E' },
                         { label: 'Widow Daughter', value: 'L' },
@@ -168,13 +168,73 @@
         </div>
         </p-fieldset>
         <div style="margin-bottom: 1rem;"></div>
-        <p-fieldset legend="Other Details" class="line-height-3 m-0">
+        <p-fieldset legend="Bank Details" class="line-height-3 m-0" class="line-height-3 m-0" styleClass="p-fieldset-sm">
+            <div class="p-formgrid grid">
+                <div class="col-12 md:col-6">
+                    <p-dropdown [style]="{width: '100%', height: '45px'}" styleClass="p-dropdown-sm"
+                        [options]="[{label: 'Treasury', value: 'Q'}, {label: 'Bank', value: 'B'}]"
+                        formControlName="payMode" placeholder="Pay Mode"></p-dropdown>
+                </div>
+                <div class="col-12 md:col-6">
+                    <p-dropdown
+                        [style]="{width: '100%', height: '45px'}"
+                        styleClass="p-dropdown-sm"
+                        [options]="banks"
+                        optionLabel="label"
+                        optionValue="value"
+                        [filter]="true"
+                        filterBy="label"
+                        [showClear]="true"
+                        (onChange)="onChangeBank($event)"
+                        formControlName="bank"
+                        placeholder="Bank Name">
+                        <ng-template pTemplate="selectedItem" let-selectedOption>
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ selectedOption.label }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                  </div>
+
+                  <div class="col-12 md:col-6" *ngIf="hasBranches">
+                    <p-dropdown
+                        [style]="{width: '100%', height: '45px'}"
+                        styleClass="p-dropdown-sm"
+                        [options]="banksBranch"
+                        optionLabel="label"
+                        optionValue="id"
+                        [filter]="true"
+                        filterBy="label"
+                        [showClear]="true"
+                        (onChange)="onChangeBankBranch($event)"
+                        formControlName="bankBranch"
+                        placeholder="Bank-Branch">
+                    </p-dropdown>
+                  </div>
+
+                <div class="col-12 md:col-6">
+                    <span class="p-float-label h-45px w-100">
+                        <input class="h-full w-100" id="float-input" type="text" pInputText formControlName="bankAcNo">
+                        <label for="float-input">Account No</label>
+                    </span>
+                </div>
+
+                <div class="col-12 md:col-6">
+                    <span class="p-float-label h-45px w-100">
+                        <input class="h-full w-100" id="float-input" type="text" pInputText [readonly]="true"formControlName="ifscCode">
+                        <label for="float-input">IFSC Code</label>
+                    </span>
+                </div>
+            </div>
+         </p-fieldset>
+        <div style="margin-bottom: 1rem;"></div>
+        <p-fieldset legend="Other Details" class="line-height-3 m-0" class="line-height-3 m-0" styleClass="p-fieldset-sm">
             <div class="p-formgrid grid">
 
                 <div class="col-12 md:col-6">
                     <label for="religion" class="col-12 mb-2 md:col-2 md:mb-0">Religion:</label>
                     <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-full">
-                        <p-dropdown [style]="{height:'45px',width:'100%'}" [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
+                        <p-dropdown [style]="{height:'45px',width:'100%'}" styleClass="p-dropdown-sm" [options]="religionOptions"  dataKey="Hindu" formControlName="religion"></p-dropdown>
                     </div>
                 </div>
 
@@ -183,6 +243,7 @@
                     <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
                         <p-dropdown
                             [style]="{height: '45px',width:'100%'}"
+                            styleClass="p-dropdown-sm"
                             [options]="[
                             {label: 'Male', value: 'M'},
                             {label: 'Female', value: 'F'},

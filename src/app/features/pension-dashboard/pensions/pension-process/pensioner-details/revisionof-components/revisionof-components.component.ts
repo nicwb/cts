@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';  // Import debounceTime and distinctUntilChanged
-import { APIResponseStatus, PensionComponentRevisionService, PensionComponentService, PensionFirstBillService, PensionPPODetailsService, PpoBillResponseDTOJsonAPIResponse, PpoComponentRevisionEntryDTO, } from 'src/app/api';
+import { APIResponseStatus, PensionComponentRevisionService, PensionComponentService, PensionFirstBillService, PensionPPODetailsService, PpoBillResponseDTOJsonAPIResponse, PpoComponentRevisionEntryDTO, PensionBankBranchService } from 'src/app/api';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -46,6 +46,7 @@ export class RevisionofComponentsComponent implements OnInit {
         private pensionComponentService: PensionComponentService,
         private datePipe: DatePipe,
         private toastService: ToastService,
+        private bank: PensionBankBranchService
 
     ) {
         const payload = {
@@ -90,14 +91,14 @@ export class RevisionofComponentsComponent implements OnInit {
                 if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess("" + this.getpensionbill.message);
                     const bankcode = this.getpensionbill.result?.pensioner?.branch?.bankId;
-                    // const data = await firstValueFrom(this.bank.getAllBanks());
-                    // for (let i = 0; i < (data.result?.length || 0); i++) {
-                    //     if (data.result?.[i]?.code === bankcode) {
-                    //         this.pensionForm.patchValue({
-                    //             bankcode: data.result?.[i]?.name
-                    //         })
-                    //     }
-                    // }
+                    const data = await firstValueFrom(this.bank.getBanks());
+                    for (let i = 0; i < (data.result?.banks?.length || 0); i++) {
+                        if ((data.result?.banks?.[i] as any).code === bankcode) {
+                            this.pensionForm.patchValue({
+                                bankcode: data.result?.banks?.[i]?.bankName
+                            })
+                        }
+                    }
                     this.pensionForm.patchValue({
                         ppono: this.getpensionbill.result?.pensioner?.ppoNo,
                         pensionerName: this.getpensionbill.result?.pensioner?.pensionerName,

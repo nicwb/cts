@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import {
     PensionCategoryMasterService,
     ListAllPpoReceiptsResponseDTO,
     APIResponseStatus,
+    PensionBankBranchService
 } from 'src/app/api';
 import {
     firstValueFrom,
@@ -50,6 +51,12 @@ export class DetailsComponent implements OnInit, OnChanges {
     legend: string = 'PPO Details';
     sechButtonStyle = { height: '267%' };
     pensionerName: any;
+    banks: any = [];
+    banksBranch: any[] = [];
+    hasBranches: boolean = false;
+    isEditing: boolean = false;
+    selectedBank: any = null;
+    returnUri: string | null = null;
     saveButton: boolean = false;
 
     constructor(
@@ -59,6 +66,7 @@ export class DetailsComponent implements OnInit, OnChanges {
         private PensionPPODetailsService: PensionPPODetailsService,
         private tostService: ToastService,
         private factoryService: PensionFactoryService,
+        private pensionBankBranchService: PensionBankBranchService,
         private router: Router
     ) {
         this.ininalizer();
@@ -88,15 +96,28 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
     }
 
-    async getFakePensionerData(ppoReceipt: ListAllPpoReceiptsResponseDTO){
+    async getFakePensionerData(ppoReceipt: ListAllPpoReceiptsResponseDTO) {
         await firstValueFrom(
             this.factoryService.createFake('PensionerEntryDTO').pipe(
-                tap((res) => {
+                tap(async (res) => {
                     if (res.result) {
-                        this.patchData(res.result);
+                        this.patchData(res.result); // Patch the pensioner data to the form
                         this.handelManualEntrySelect(ppoReceipt);
                         this.fetchCatDescription();
                         this.setCat();
+
+                        // Fetch branches for the bank using bankId
+                        const bankId = res.result.bankId;// Fetch branches based on bankId
+
+                        // Set the selected branch using branchId from the pensioner data
+                        const branchId = res.result.branchId;
+                        const selectedBranch = this.banksBranch.find((branch: { id: number }) => branch.id === branchId);
+                        if (selectedBranch) {
+                            this.ppoFormDetails.patchValue({
+                                bankBranch: selectedBranch.id, // Set the branch ID
+                                ifscCode: selectedBranch.ifscCode // Set the IFSC code
+                            });
+                        }
                     }
                 })
             )
@@ -117,8 +138,9 @@ export class DetailsComponent implements OnInit, OnChanges {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                this.router.navigate(["/pension/modules/pension-process/ppo/PpoReceipt"], {
-                                    queryParams: { returnUri: '/pension/modules/pension-process/ppo/entry/new' }
+                                this.router.navigate(["/pension/modules/pension-process/ppo/receipt/new"], {
+                                    queryParams: { returnUri: '/pension/modules/pension-process/ppo/entry/new' },
+                                    queryParamsHandling: 'merge'
                                 });
                             }else{
                                 this.router.navigate(["/pension/modules/pension-process/ppo/entry"]);
@@ -132,6 +154,23 @@ export class DetailsComponent implements OnInit, OnChanges {
                 }
             )
         ))
+    }
+
+    async fetchBanks() {
+        try {
+            const response = await firstValueFrom(this.pensionBankBranchService.getBanks());
+            if (response.apiResponseStatus === 'Success' && response.result) {
+                this.banks = response.result.banks?.map((bank: any) => ({
+                    label: bank.bankName,
+                    value: bank.id,
+                }));
+            } else {
+                this.tostService.showError(response.message || 'Failed to fetch banks');
+            }
+        } catch (error) {
+            console.error('Error fetching banks:', error);
+            this.tostService.showError('An error occurred while fetching banks');
+        }
     }
 
     ngOnChanges(): void {
@@ -205,7 +244,63 @@ export class DetailsComponent implements OnInit, OnChanges {
 
             //
             effectiveDate: [this.getFirstDateOfCurrentMonth()],
+            payMode: ['Q'],
+            bankAcNo: ['', [Validators.required]],
+            accountHolderName: [''],
+            ifscCode: ['', [Validators.required]],
+            bank: ['', Validators.required],
+            bankBranch: [null, Validators.required]
         });
+    }
+
+
+    onChangeBankBranch(event: any): void {
+        const selectedBranch = event.value;
+        if (selectedBranch) {
+            const branch = this.banksBranch.find((b: any) => b.id === selectedBranch.id);
+            if (branch) {
+                this.ppoFormDetails.patchValue({
+                    bankBranch: branch.id,
+                    ifscCode: branch.ifscCode
+                });
+            } else {
+                console.error('Selected branch not found in branches list');
+                this.tostService.showError('Error selecting branch');
+            }
+        } else {
+            this.ppoFormDetails.patchValue({
+                bankBranch: { id: null, label: null },
+                ifscCode: null
+            });
+        }
+    }
+
+
+    async fetchBankDetails(branchId: number): Promise<any> {
+        try {
+            const response = await firstValueFrom(
+                this.pensionBankBranchService.getBranchesByBankId(branchId)
+            );
+            if (response.apiResponseStatus === 'Success' && response.result) {
+                const branch = response.result?.branches?.[0];
+                if (branch) {
+                    return {
+                        ifscCode: branch.ifscCode
+                    };
+                } else {
+                    console.error('No valid branch found for branchId:', branchId);
+                    this.tostService.showError('Bank branch details not found');
+                    return null;
+                }
+            }
+            console.error('Failed to fetch bank details for branchId:', branchId);
+            this.tostService.showError('Failed to fetch bank details');
+            return null;
+        } catch (error) {
+            console.error('Error fetching bank details:', error);
+            this.tostService.showError('An error occurred while fetching bank details');
+            throw error;
+        }
     }
 
     panValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -323,11 +418,33 @@ export class DetailsComponent implements OnInit, OnChanges {
             this.ppoFormDetails.removeControl('retirementDate');
             this.ppoFormDetails.removeControl('reducedPensionAmount');
         }
+
+        const selectedBankBranch = this.ppoFormDetails.get('bankBranch')?.value;
+        const selectedBank = this.ppoFormDetails.get('bank')?.value;
+
+        if (selectedBankBranch) {
+            const branchId = selectedBankBranch.value;
+            this.ppoFormDetails.patchValue({ branchId });
+        }
+
+        if (selectedBank) {
+            const bankId = selectedBank.value;
+            this.ppoFormDetails.patchValue({ bankId });
+        }
+        if (this.ppoFormDetails.invalid) {
+            Object.keys(this.ppoFormDetails.controls).forEach(key => {
+                const control = this.ppoFormDetails.get(key);
+                if (control && control.invalid) {
+                }
+            });
+        }
         if (this.ppoFormDetails.valid || this.ppoId) {
+            const formValue = this.ppoFormDetails.value;
+            formValue.branchId = formValue.bankBranch;
             if (!this.ppoId) {
                 await firstValueFrom(
                     this.PensionPPODetailsService.createPensioner(
-                        this.ppoFormDetails.value
+                        formValue
                     ).pipe(
                         tap(
                             (res) => {
@@ -359,14 +476,14 @@ export class DetailsComponent implements OnInit, OnChanges {
                     )
                 );
                 return;
-            }else{
+            } else {
                 this.formateDate();
             }
             // when it want update
             await firstValueFrom(
                 this.PensionPPODetailsService.updatePensionerByPpoId(
                     Number(this.ppoId),
-                    this.ppoFormDetails.value
+                    formValue
                 ).pipe(
                     tap(
                         (res) => {
@@ -385,6 +502,7 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
         this.tostService.showError('Please fill all required fields');
     }
+
 
     // manual PPO entry search
     MEDetailsSearch(): void {
@@ -447,28 +565,93 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
     }
 
-    patchData(data: any) {
-        // Convert date strings to Date objects before patching the values
-        if (data.dateOfRetirement) {
-            data.dateOfRetirement = this.parseDate(data.dateOfRetirement);
-        }
-
-        if (data.dateOfCommencement) {
-            data.dateOfCommencement = this.parseDate(data.dateOfCommencement);
-        }
-
-        if (data.dateOfBirth) {
-            data.dateOfBirth = this.parseDate(data.dateOfBirth);
-        }
+    async patchData(data: any) {
+        // Convert date strings to Date objects
+        ['dateOfRetirement', 'dateOfCommencement', 'dateOfBirth'].forEach(dateField => {
+            if (data[dateField]) {
+                data[dateField] = this.parseDate(data[dateField]);
+            }
+        });
 
         this.ppoFormDetails.patchValue(data);
 
-        // Example of setting other values like receiptId
-        if (data.receipt) {
-            this.ppoFormDetails.controls['receiptId'].setValue(data.receipt.id);
+        // Fetch banks and select the correct one
+        await this.fetchBanks();
+        if (data.bankId) {
+            this.ppoFormDetails.patchValue({ bank: data.bankId });
+            await this.onChangeBank({ value: data.bankId });
+
+            // Find the branch with the ID that matches the bankBranch field
+            const branch = this.banksBranch.find((b: any) => b.id === data.branchId);
+            if (branch) {
+
+                this.ppoFormDetails.patchValue({
+                    bankBranch: branch.id, // Update the correct form control
+                    ifscCode: branch.ifscCode,
+                    branchName: branch.label // Set the branch name
+                });
+
+            } else {
+                console.error('No valid branch found for branchId:', data.branchId);
+                this.tostService.showError('Bank branch details not found');
+            }
         }
     }
 
+    async onChangeBank(event: any): Promise<void> {
+        const selectedBank = event.value;
+        if (selectedBank) {
+            await this.fetchBranchesByBankId(selectedBank);
+
+            // If we have a branchId from the initial data, select it
+            const initialBranchId = this.ppoFormDetails.get('bankBranch')?.value;
+            if (initialBranchId) {
+                const branch = this.banksBranch.find((b: any) => b.id === initialBranchId);
+                if (branch) {
+                    this.ppoFormDetails.patchValue({
+                        bankBranch: branch.id, // Update the correct form control
+                        ifscCode: branch.ifscCode
+                    });
+                } else {
+                    console.error('No valid branch found for branchId:', initialBranchId);
+                    this.tostService.showError('Bank branch details not found');
+                }
+            } else {
+                // If no initial branchId is found, set the first branch as default
+                if (this.banksBranch.length > 0) {
+                    const defaultBranch = this.banksBranch[0];
+                    this.ppoFormDetails.patchValue({
+                        bankBranch: defaultBranch.id,
+                        ifscCode: defaultBranch.ifscCode
+                    });
+                }
+            }
+            this.hasBranches = this.banksBranch.length > 0; // Update the hasBranches flag
+        } else {
+            this.banksBranch = [];
+            this.hasBranches = false; // Update the hasBranches flag
+        }
+    }
+
+    async fetchBranchesByBankId(bankId: number): Promise<void> {
+        try {
+            const response = await firstValueFrom(this.pensionBankBranchService.getBranchesByBankId(bankId));
+            if (response.apiResponseStatus === 'Success' && response.result && response.result.branches) {
+                this.banksBranch = response.result.branches.map((branch: any) => ({
+                    id: branch.id,
+                    label: branch.branchName, // Use branchName as the label
+                    ifscCode: branch.ifscCode,
+                }));
+                this.hasBranches = this.banksBranch.length > 0; // Update the hasBranches flag
+            } else {
+                this.banksBranch = []; // or some other default value
+                this.hasBranches = false; // Update the hasBranches flag
+            }
+        } catch (error) {
+            console.error('Error fetching branches:', error);
+            this.tostService.showError('An error occurred while fetching branches');
+        }
+    }
 
     getFirstDateOfCurrentMonth() {
         const now = new Date();

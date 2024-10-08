@@ -19,19 +19,8 @@
                             ></app-details>
                         </div>
 
-                        <!-- BankDetails -->
                         <div
                             *ngIf="currentStepIndex === 1"
-                            class="flex flex-column p-0 m-0 gap-3"
-                        >
-                            <app-bank-details
-                                [ppoId]="ppoId"
-                                [pensionerName]="pensionerName"
-                            ></app-bank-details>
-                        </div>
-
-                        <div
-                            *ngIf="currentStepIndex === 2"
                             class="flex flex-column p-0 m-0 gap-3"
                         >
                             <!-- add from for sanction -->
@@ -39,7 +28,7 @@
                         </div>
 
                         <div
-                            *ngIf="currentStepIndex === 3"
+                            *ngIf="currentStepIndex === 2"
                             class="flex flex-column p-0 m-0 gap-3"
                         >
                             <app-family-nominee></app-family-nominee>
@@ -147,7 +136,7 @@
                             </p-table>
                         </div>
 
-                        
+
 
 
                         <!-- Table Message -->
