@@ -44,7 +44,6 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { PensionProcessRoutingModule } from './pension-process-routing.module';
 import { PensionProcessComponent } from './pension-process.component';
-import { ArrearPensionComponent } from './arrear-pension/arrear-pension.component';
 import { PensionerDetailsComponent } from './pensioner-details/pensioner-details.component';
 import { BillPrintComponent } from './bill-print/bill-print.component';
 // import { BillPrintComponent } from './bill-print/bill-print.component';
@@ -58,7 +57,6 @@ import { ApprovalComponent } from './approval/approval.component';
 @NgModule({
     declarations: [
         PensionProcessComponent,
-        ArrearPensionComponent,
         PensionerDetailsComponent,
         BillPrintComponent,
         ApprovalComponent

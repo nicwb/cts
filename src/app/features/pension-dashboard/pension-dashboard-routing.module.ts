@@ -6,7 +6,7 @@ import { PensionDashboardComponent } from './pension-dashboard.component';
 
 
 const routes: Routes = [
-    { 
+    {
         path: '',
         component: PensionDashboardComponent,
         data: { breadcrumb: 'PensionDashboardComponent' }
@@ -32,14 +32,14 @@ const routes: Routes = [
         loadChildren: () => import('./pensions/pension-process/ppo/entry/ppodetails/ppodetails.module').then(m => m.PpodetailsModule),
         data: { breadcrumb: 'PpodetailsModule' }
     },
-  
+
     {
         path: 'modules/pension-process/ppo/manual-ppo-receipt',
         loadChildren: () =>
             import('./pensions/pension-process/ppo/manual-ppo-receipt/manual-ppo-receipt.module').then(m => m.ManualPpoReceiptModule),
         data: { breadcrumb: 'ManualPpoReceiptModule' }
     },
-  
+
     {
         path: 'modules/pension-process/ppo/entry/sanction',
         loadChildren: () => import('./pensions/pension-process/ppo/entry/ppodetails/sanction/sanction.module').then(m => m.SanctionModule),
@@ -55,11 +55,6 @@ const routes: Routes = [
         path: 'modules/pension-process/pension-bill',
         loadChildren: () => import('./pensions/pension-process/pension-bill/pension-bill.module').then(m => m.PensionBillModule),
         data: { breadcrumb: 'PensionBillModule' }
-    },
-    {
-        path: 'modules/pension-process/ppo/convert-to-family-pension',
-        loadChildren: () => import('./pensions/pension-process/ppo/convert-to-family-pension/convert-to-family-pension.module').then(m => m.ConvertToFamilyPensionModule),
-        data: { breadcrumb: 'ConvertToFamilyPensionModule' }
     },
     {
         path: 'modules/pension-process/ppo/life-certificate',
@@ -95,7 +90,7 @@ const routes: Routes = [
         path : 'master/pension/component-rate',
         loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
         data: { breadcrumb: 'ComponentRateModule' }
-    
+
     },
     {
         path : 'modules/pension-process/approval',
@@ -107,10 +102,10 @@ const routes: Routes = [
         loadChildren: () => import('./pensions/pension-process/approval/ppo-approval/ppo-approval.module').then(m => m.PpoApprovalModule),
         data: { breadcrumb: 'PpoApprovalModule' }
     }
-   
-  
-  
-  
+
+
+
+
 ];
 
 @NgModule({

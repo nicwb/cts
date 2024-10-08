@@ -1,6 +1,5 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { ServerDownComponent } from './shared/components/server-down/server-down.component';
 import { LoginComponent } from './features/login/login.component';
@@ -17,27 +16,14 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                 children: [
                     {
                         path: '',
-                        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
-                        data: { breadcrumb: 'DashboardModule' }
+                        loadChildren: () => import('./features/pension-dashboard/pensions/pensions.module').then(m => m.PensionsModule),
+                        data: { breadcrumb: 'PensionsModule' }
                     },
-                    { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
-                    { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
-                    { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
-                    { path: 'blocks', loadChildren: () => import('./demo/components/primeblocks/primeblocks.module').then(m => m.PrimeBlocksModule) },
-                    { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
-                    { path: 'bill-receive', canActivate: [NgxPermissionsGuard],data: {permissions: {only: 'can-receive-bill',redirectTo: '/notfound'}}, loadChildren: () => import('./features/bill-receive/bill-receive.module').then(m => m.BillReceiveModule) },
-                    { path: 'token', loadChildren: () => import('./features/token/token.module').then(m => m.TokenModule) },
-                    { path: 'option', loadChildren: () => import('./features/options/options.module').then(m => m.OptionsModule) },
-                    {path:'bill-checking', canActivate: [NgxPermissionsGuard],data: {permissions: {only: 'can-bill-check',redirectTo: '/notfound'}},loadChildren: () => import('./features/bill-checking/bill-checking.module').then(m => m.BillCheckingModule)},
-                    {path:'return-memo',canActivate: [NgxPermissionsGuard],data: {permissions: {only: 'can-generate-return-memo',redirectTo: '/notfound'}},loadChildren: () => import('./features/return-memo/return-memo.module').then(m => m.ReturnMemoModule)},
-                    {path:'payment-mandate',loadChildren:()=>import('./features/payment-mandate/payment-mandate.module').then(m=>m.PaymentMandateModule)},
-                    {path:'cheque',loadChildren: () => import('./features/cheque/cheque.module').then(m => m.ChequeModule)},
                     {
                         path:'master',
                         loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule),
                         data: { breadcrumb: 'MasterModule' }
                     },
-                    {path:'stamp-strong-room',loadChildren: () => import('./features/stamp-strong-room/stamp-strong-room.module').then(m => m.StampStrongRoomModule)},
                     {
                         path:'pension',
                         loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule),
@@ -46,7 +32,7 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                     {
                         path:'master/app-pension/component-rate',
                         loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
-                        data: { breadcrumb: 'ComponentRateModule' }                    
+                        data: { breadcrumb: 'ComponentRateModule' }
                     }
 
                 ],
@@ -54,8 +40,6 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
             },
             {path:'login',component:LoginComponent, data: { breadcrumb: 'LoginComponent' }},
             {path:'static-login',component:StaticLoginComponent, data: { breadcrumb: 'StaticLoginComponent' }},
-            { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
-            { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'notfound', component: NotFoundComponent },
             { path: 'server-down', component: ServerDownComponent },
             // { path: '**', redirectTo: '/notfound' },

@@ -11,12 +11,6 @@ const routes: Routes = [
         data: { breadcrumb: 'MasterComponent' }
     },
     {
-        path: 'stamp',
-        loadChildren: () => import('./stamp/stamp.module').then(m => m.StampModule),
-        data: { breadcrumb: 'StampModule' }
-        
-    },
-    {
         path: 'pension',
         loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule),
         data: { breadcrumb: 'PensionModule' }
@@ -25,13 +19,13 @@ const routes: Routes = [
         path: 'app-pension',
         component: PensionComponent,
         data: { breadcrumb: 'PensionComponent' }
-    }, 
+    },
     {
         path: 'app-pension',
         loadChildren: () => import('./pension/pension.module').then(m => m.PensionModule),
         data: { breadcrumb: 'PensionModule' }
     },
-    
+
 ];
 
 @NgModule({
