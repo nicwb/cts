@@ -34,10 +34,10 @@ const routes: Routes = [
     },
 
     {
-        path: 'modules/pension-process/ppo/manual-ppo-receipt',
+        path: 'modules/pension-process/ppo/ppo-receipt',
         loadChildren: () =>
-            import('./pensions/pension-process/ppo/manual-ppo-receipt/manual-ppo-receipt.module').then(m => m.ManualPpoReceiptModule),
-        data: { breadcrumb: 'ManualPpoReceiptModule' }
+            import('./pensions/pension-process/ppo/ppo-receipt/ppo-receipt.module').then(m => m.PpoReceiptModule),
+        data: { breadcrumb: 'PpoReceiptModule' }
     },
 
     {

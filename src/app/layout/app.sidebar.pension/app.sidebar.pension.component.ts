@@ -52,7 +52,7 @@ export class AppSidebarPensionComponent implements OnInit {
                                 label: 'PPO', icon: 'pi pi-fw pi-bookmark',
                                 items: [
                                     { label: 'Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/entry'] },
-                                    { label: 'Manual PPO Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/manualPpoReceipt'] },
+                                    { label: 'PPO Receipt', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/ppo-receipt'] },
                                     { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
                                     { label: 'Life Certificate', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/life-certificate'] },
                                 ]

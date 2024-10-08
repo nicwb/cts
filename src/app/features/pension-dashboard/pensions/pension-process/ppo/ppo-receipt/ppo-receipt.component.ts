@@ -6,17 +6,19 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { PensionManualPPOReceiptService, ManualPpoReceiptEntryDTO, ManualPpoReceiptResponseDTO, PensionFactoryService, APIResponseStatus } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { SelectItem } from 'primeng/api';
-import { DatePipe } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
+
 
 @Component({
     selector: 'app-manual-ppo-receipt',
-    templateUrl: './manual-ppo-receipt.component.html',
-    styleUrls: ['./manual-ppo-receipt.component.scss']
+    templateUrl: './ppo-receipt.component.html',
+    styleUrls: ['./ppo-receipt.component.scss']
 })
-export class ManualPpoReceiptComponent implements OnInit {
+export class PpoReceiptComponent implements OnInit {
     returnUri: string | null = null;
     isInsertModalVisible = false;
     manualPpoForm!: FormGroup;
@@ -28,7 +30,6 @@ export class ManualPpoReceiptComponent implements OnInit {
   @Input () receiptId?: number;
   isFetchUserInfo = false;
   isTableVisible = false;
-
   maxDate = new Date();
 
   ppoIssuedBy: SelectItem[] = [
@@ -52,12 +53,19 @@ export class ManualPpoReceiptComponent implements OnInit {
     private pensionFactoryService: PensionFactoryService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private navc: NavigationService,
+    private location: Location
   ) {
       this.initializePpoReceiptForm();
   }
 
   ngOnInit(): void {
+      // endpint
+      const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+      if(endpoint == 'receipt/new'){
+          this.openNewPpoReceiptForm();
+      }
       this.actionButtons = this.getActionButtonConfig();
       //   this.loadInitialTableData();
       this.route.queryParamMap.subscribe(params => {
@@ -74,6 +82,7 @@ export class ManualPpoReceiptComponent implements OnInit {
   }
 
   loadPpoReceipts(): void {
+      // this.router.navigate(['/pension/modules/pension-process/ppo/manualPpoReceipt/new']);
       this.isTableVisible = true;
       this.loadInitialTableData(); 
   }
@@ -334,5 +343,14 @@ export class ManualPpoReceiptComponent implements OnInit {
       } catch (error) {
           this.toastService.showError('Failed to fetch PPO receipt details.');
       }
+  }
+
+  createNewMnualresipt(){
+      //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
+      this.router.navigate(['/pension/modules/pension-process/ppo/receipt/new']); 
+
+  }
+  onDialogClose(){
+      this.location.back();
   }
 }

@@ -1,26 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
-test.describe('Manual PPO Receipt', () => {
-    test.beforeEach(async ({ page, isMobile }) => {
-        await page.goto('/#/static-login');
-        await page.getByRole('link', { name: 'cleark' }).click();
-        if(isMobile) {
-            await page.locator('button.layout-topbar-menu-button').click()
-        }
-        const dashboard = page.getByText(`CCTSCLERK`);
-        await expect(dashboard).toBeVisible();
-        await page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt');
+test.describe('PPO Receipt', () => {
+    test.beforeEach(async ({ page, pensionPage }) => {
+        await pensionPage.staticLogin();
+        await page.goto('/#/pension/modules/pension-process/ppo/receipt');
     });
 
     test('should fill out the form and submit successfully', async ({ page }) => {
-        await page.click('button:has-text("New Manual PPO Entry")');
+        await page.click('button:has-text("PPO Receipt Entry")');
         await page.click('button:has-text("Submit")');
         const successMessage = page.locator('text=PPO Receipt added successfully');
         await expect(successMessage).toBeVisible();
     });
 
     test.fixme('should display error for duplicate PPO number', async ({ page }) => {
-        await page.click('button:has-text("New Manual PPO Entry")');
+        await page.click('button:has-text("PPO Receipt Entry")');
         const ppoNo = await page.getByText('PPO-').first().innerText();
         await page.fill('input[formControlName="ppoNo"]', ppoNo);
         await page.click('button:has-text("Submit")');

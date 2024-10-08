@@ -12,7 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
-import { ManualPpoReceiptComponent } from './manual-ppo-receipt.component';
+import { PpoReceiptComponent } from './ppo-receipt.component';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToggleButtonModule } from 'primeng/togglebutton';
@@ -29,7 +29,7 @@ import { RatingModule } from 'primeng/rating';
 
 
 @NgModule({
-    declarations: [ManualPpoReceiptComponent],
+    declarations: [PpoReceiptComponent],
     imports: [
         CommonModule,
         ButtonModule,
@@ -56,4 +56,4 @@ import { RatingModule } from 'primeng/rating';
         MhPrimeDynamicTableModule
     ]
 })
-export class ManualPpoReceiptModule { }
+export class PpoReceiptModule { }

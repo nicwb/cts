@@ -117,7 +117,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                this.router.navigate(["/pension/modules/pension-process/ppo/manualPpoReceipt"], {
+                                this.router.navigate(["/pension/modules/pension-process/ppo/PpoReceipt"], {
                                     queryParams: { returnUri: '/pension/modules/pension-process/ppo/entry/new' }
                                 });
                             }else{

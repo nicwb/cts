@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManualPpoReceiptComponent } from './manual-ppo-receipt.component';
+import { PpoReceiptComponent } from './ppo-receipt.component';
 
 describe('ManualPpoReceiptComponent', () => {
-    let component: ManualPpoReceiptComponent;
-    let fixture: ComponentFixture<ManualPpoReceiptComponent>;
+    let component: PpoReceiptComponent;
+    let fixture: ComponentFixture<PpoReceiptComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ ManualPpoReceiptComponent ]
+            declarations: [ PpoReceiptComponent ]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(ManualPpoReceiptComponent);
+        fixture = TestBed.createComponent(PpoReceiptComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

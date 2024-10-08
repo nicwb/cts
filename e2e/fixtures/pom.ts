@@ -24,7 +24,7 @@ export class PensionModule {
   }
 
   async savePpoReceipt() {
-    await this.page.goto('/#/pension/modules/pension-process/ppo/manualPpoReceipt', { waitUntil: "domcontentloaded"});
+    await this.page.goto('/#/pension/modules/pension-process/ppo/receipt', { waitUntil: "domcontentloaded"});
     await this.page.getByRole('button', { name: 'New Manual PPO Entry' }).click();
     await this.page.getByRole('button', { name: 'Submit' }).click();
     await this.page.getByRole('button', { name: 'OK' }).click();

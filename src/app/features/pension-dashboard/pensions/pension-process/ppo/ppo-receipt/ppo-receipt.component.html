@@ -1,7 +1,7 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Manual PPO Receipt'" [imgSrc]="'assets/layout/images/icons/ppo-receipt.png'">
-            <button pButton pRipple (click)="openNewPpoReceiptForm()" type="button" icon="pi pi-plus" label="New Manual PPO Entry"
+        <app-common-header [headerName]="'PPO Receipt'" [imgSrc]="'assets/layout/images/icons/ppo-receipt.png'">
+            <button pButton pRipple (click)="createNewMnualresipt()" type="button" icon="pi pi-plus" label="PPO Receipt Entry"
                 class="p-button-rounded p-button-raised"></button>
         </app-common-header>
     </div>
@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<p-dialog header="Manual PPO Receipt" [(visible)]="isInsertModalVisible" [modal]="true"
+<p-dialog (onHide)="onDialogClose()" header="Manual PPO Receipt" [(visible)]="isInsertModalVisible" [modal]="true"
     [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
     [baseZIndex]="10000">
     <form [formGroup]="manualPpoForm" class="flex flex-column gap-4 mt-3">

@@ -13,7 +13,7 @@ import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { SanctionComponent } from './entry/ppodetails/sanction/sanction.component';
-import { ManualPpoReceiptComponent } from './manual-ppo-receipt/manual-ppo-receipt.component';
+import { PpoReceiptComponent } from './ppo-receipt/ppo-receipt.component';
 import { PpoComponent } from './ppo.component';
 import { PpodetailsComponent } from './entry/ppodetails/ppodetails.component';
 
@@ -22,12 +22,13 @@ import { PpodetailsComponent } from './entry/ppodetails/ppodetails.component';
 const routes: Routes = [
     {path: '', component: PpoComponent, data: { breadcrumb: 'PpoComponent' }},
     {path: 'entry', component: PpodetailsComponent, data: { breadcrumb: 'PpodetailsComponent' }},
-    {path: 'manualPpoReceipt', component: ManualPpoReceiptComponent, data: { breadcrumb: 'ManualPpoReceiptComponent' }},
+    {path: 'receipt', component: PpoReceiptComponent, data: { breadcrumb: 'PpoReceiptComponent' }},
+    {path: 'receipt/new', component: PpoReceiptComponent, data: { breadcrumb: 'PpoReceiptComponent' }},
     {path: 'sanction', component: SanctionComponent, data: { breadcrumb: 'SanctionComponent' }},
     {
         path: ':receiptId/receipt',
-        component: ManualPpoReceiptComponent,
-        data: { breadcrumb: 'ManualPpoReceiptComponent' }
+        component: PpoReceiptComponent,
+        data: { breadcrumb: 'PpoReceiptComponent' }
     }
 ];
 
@@ -37,7 +38,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         ButtonModule,
-        ReactiveFormsModule,    
+        ReactiveFormsModule,
         DynamicTableModule,
         OptionCardModule,
         ButtonModule,
