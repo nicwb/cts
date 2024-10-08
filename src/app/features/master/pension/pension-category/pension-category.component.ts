@@ -19,6 +19,7 @@ import { PensionCategoryDetails } from 'src/app/core/models/pension-category-det
 import { Observable, filter, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { pathToFileURL } from 'url';
+import {Location} from '@angular/common';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -66,7 +67,8 @@ export class PensionCategoryComponent implements OnInit {
         private toastService: ToastService,
         private service: PensionCategoryMasterService,
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private location: Location
     ) {}
 
     @Output() PensionCategorySelected = new EventEmitter<any>();
@@ -79,6 +81,10 @@ export class PensionCategoryComponent implements OnInit {
             pageIndex: 0,
         };
         this.check_for_data();
+        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+        if(endpoint == 'app-pension-category/new'){
+            this.showInsertDialog();
+        }
     }
 
     showInsertDialog() {
@@ -658,5 +664,13 @@ export class PensionCategoryComponent implements OnInit {
             return '400px';  // Set height for extra-small screens
         }
     }
-    
+
+    createpensioncategory(){
+        //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
+        this.router.navigate(['/master/app-pension/app-pension-category/new']); 
+  
+    }
+    onDialogClose(){
+        this.location.back();
+    }
 }

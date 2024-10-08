@@ -23,7 +23,7 @@ import {
 } from 'src/app/api';
 import { firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -62,7 +62,8 @@ export class PrimaryComponent {
         private service: PensionCategoryMasterService,
         private generate: PensionFactoryService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private location: Location
     ) {}
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
@@ -70,14 +71,17 @@ export class PrimaryComponent {
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
         this.initializeForm();
-
         this.tableQueryParameters = {
             pageSize: 10,
             pageIndex: 0,
         };
-        // this.tableData = sd;
-        // this.getData();
         this.check_if_called();
+
+        // add deplenk 
+        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+        if(endpoint == 'app-primary/new'){
+            this.showInsertDialog();
+        }
     }
 
     showInsertDialog() {
@@ -259,4 +263,12 @@ export class PrimaryComponent {
         this.primaryForm.reset();
         this.displayInsertModal = false;
     }
+
+    newPrimarycategory(){
+        this.router.navigate(['/master/app-pension/app-primary/new']);
+    }
+    onDialogClose(){
+        this.location.back();
+    }
+    
 }

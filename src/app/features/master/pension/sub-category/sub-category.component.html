@@ -1,13 +1,13 @@
 <div class="grid">
     <div class="col-12">
         <app-common-header
-            [headerName]="'Sub-Caregory Details'"
+            [headerName]="'Sub-Category Details'"
             [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
         >
             <button
                 pButton
                 pRipple
-                (click)="showInsertDialog()"
+                (click)="newSubcategory()"
                 type="button"
                 icon="pi pi-plus"
                 label="New"
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<p-dialog
+<p-dialog (onHide) = "onDialogClose()"
     header="Sub-Caregory Details"
     [(visible)]="displayInsertModal"
     [modal]="true"

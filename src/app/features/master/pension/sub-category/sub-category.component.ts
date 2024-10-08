@@ -24,7 +24,7 @@ import {
 } from 'src/app/api';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { Location } from '@angular/common';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -65,7 +65,8 @@ export class SubCategoryComponent implements OnInit {
         private service: PensionCategoryMasterService,
         private pensionFactoryService: PensionFactoryService,
         private route: ActivatedRoute,
-        private router: Router
+        private router: Router,
+        private location: Location
     ) {}
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
@@ -79,6 +80,10 @@ export class SubCategoryComponent implements OnInit {
             pageIndex: 0,
         };
         this.check_if_called();
+        const endpoint = this.route.snapshot.url.map( segment => segment.path).join('/');
+        if(endpoint == 'app-sub-category/new'){
+            this.showInsertDialog();
+        }
     }
     check_if_called() {
         let todo = null;
@@ -262,5 +267,11 @@ export class SubCategoryComponent implements OnInit {
     cancelSubCategory() {
         this.SubForm.reset();
         this.displayInsertModal = false;
+    }
+    newSubcategory(){
+        this.router.navigate(['/master/app-pension/app-sub-category/new']);
+    }
+    onDialogClose(){
+        this.location.back()
     }
 }

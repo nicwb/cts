@@ -1,8 +1,8 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Pension Caregory Details'"
+        <app-common-header [headerName]="'Pension Category Details'"
             [imgSrc]="'assets/layout/images/icons/indent-entry.png'">
-            <button pButton pRipple (click)="showInsertDialog()" type="button" icon="pi pi-plus" label="New"
+            <button pButton pRipple (click)="createpensioncategory()" type="button" icon="pi pi-plus" label="New"
                 class="p-button-rounded p-button-raised"></button>
             <button pButton pRipple (click)="fun_refresh()" *ngIf="refresh_b" type="button" icon="pi pi-refresh"
                 label="Reset" class="p-button-rounded p-button-raised"></button>
@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<p-dialog header="Pension Category Details" [(visible)]="displayInsertModal" [modal]="true"  [style]="{ height: getDialogHeight() }"
+<p-dialog (onHide)="onDialogClose()" header="Pension Category Details" [(visible)]="displayInsertModal" [modal]="true"  [style]="{ height: getDialogHeight() }"
     [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true" [baseZIndex]="10000">
     <div class="flex gap-4 xl:flex-row flex-column">
         <div class="flex-auto w-full">
