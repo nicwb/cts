@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { PpoComponentRevisionEntryDTO } from '../model/ppo-component-revision-entry-dto';
 // @ts-ignore
+import { PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-ppo-list-item-dto-table-response-dto-json-api-response';
+// @ts-ignore
 import { PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse } from '../model/ppo-component-revision-response-dtoi-enumerable-json-api-response';
 // @ts-ignore
 import { PpoComponentRevisionResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-response-dto-json-api-response';
@@ -306,6 +308,66 @@ export class PensionComponentRevisionService {
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "revisionId", value: revisionId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}/component-revision`;
         return this.httpClient.request<PpoComponentRevisionResponseDTOJsonAPIResponse>('delete', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAllPposForComponentRevisions(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>;
+    public getAllPposForComponentRevisions(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>>;
+    public getAllPposForComponentRevisions(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>>;
+    public getAllPposForComponentRevisions(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/component-revision/ppos`;
+        return this.httpClient.request<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

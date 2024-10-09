@@ -1,5 +1,3 @@
-export * from './bank.service';
-import { BankService } from './bank.service';
 export * from './message-queue-worker.service';
 import { MessageQueueWorkerService } from './message-queue-worker.service';
 export * from './pension.service';
@@ -26,4 +24,4 @@ export * from './pension-ppo-status.service';
 import { PensionPPOStatusService } from './pension-ppo-status.service';
 export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
-export const APIS = [BankService, MessageQueueWorkerService, PensionService, PensionBankBranchService, PensionCategoryMasterService, PensionComponentService, PensionComponentRateService, PensionComponentRevisionService, PensionFactoryService, PensionFirstBillService, PensionManualPPOReceiptService, PensionPPODetailsService, PensionPPOStatusService, PensionRegularBillService];
+export const APIS = [MessageQueueWorkerService, PensionService, PensionBankBranchService, PensionCategoryMasterService, PensionComponentService, PensionComponentRateService, PensionComponentRevisionService, PensionFactoryService, PensionFirstBillService, PensionManualPPOReceiptService, PensionPPODetailsService, PensionPPOStatusService, PensionRegularBillService];

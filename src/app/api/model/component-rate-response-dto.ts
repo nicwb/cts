@@ -18,6 +18,10 @@ export interface ComponentRateResponseDTO {
     rateAmount: number;
     rateType: string;
     id?: number;
+    readonly componentName?: string | null;
+    readonly componentRate?: string | null;
+    readonly componentType?: string | null;
+    readonly withEffectFrom?: string | null;
     breakup?: PensionBreakupResponseDTO;
 }
 

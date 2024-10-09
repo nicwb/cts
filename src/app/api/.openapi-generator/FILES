@@ -2,7 +2,6 @@
 README.md
 api.module.ts
 api/api.ts
-api/bank.service.ts
 api/message-queue-worker.service.ts
 api/pension-bank-branch.service.ts
 api/pension-category-master.service.ts
@@ -23,8 +22,6 @@ model/api-response-status.ts
 model/bank-list-response-dto-json-api-response.ts
 model/bank-list-response-dto.ts
 model/bank-response-dto.ts
-model/branch-deatils-dto-json-api-response.ts
-model/branch-deatils-dto.ts
 model/branch-list-response-dto-json-api-response.ts
 model/branch-list-response-dto.ts
 model/branch-response-dto.ts
@@ -38,8 +35,6 @@ model/date-only-dto.ts
 model/date-only-json-api-response.ts
 model/date-only.ts
 model/day-of-week.ts
-model/dropdown-dto.ts
-model/dropdown-dtoi-enumerable-api-response.ts
 model/dynamic-list-query-parameters.ts
 model/factory-entity-enum.ts
 model/filter-enum.ts
@@ -96,6 +91,9 @@ model/ppo-bill-response-dto.ts
 model/ppo-bill-save-response-dto-json-api-response.ts
 model/ppo-bill-save-response-dto.ts
 model/ppo-component-revision-entry-dto.ts
+model/ppo-component-revision-ppo-list-item-dto-table-response-dto-json-api-response.ts
+model/ppo-component-revision-ppo-list-item-dto-table-response-dto.ts
+model/ppo-component-revision-ppo-list-item-dto.ts
 model/ppo-component-revision-response-dto-json-api-response.ts
 model/ppo-component-revision-response-dto-list-json-api-response.ts
 model/ppo-component-revision-response-dto.ts
@@ -110,5 +108,6 @@ model/regular-bill-list-response-dto.ts
 model/regular-bill-response-dto.ts
 model/sort-parameter.ts
 model/string-json-api-response.ts
+model/table-header.ts
 param.ts
 variables.ts
