@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, firstValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { PensionPPODetailsService, PensionPPOStatusService, BankService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
+import { PensionPPODetailsService, PensionPPOStatusService, PensionerResponseDTOJsonAPIResponse, APIResponseStatus, PensionStatusFlag } from 'src/app/api';
 import { ActionButtonConfig, DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationService } from 'src/app/core/services/navigation/navigation.service';

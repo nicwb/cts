@@ -12,7 +12,6 @@ import {
     InitiateFirstPensionBillResponseDTOJsonAPIResponse,
     PpoPaymentListItemDTO,
     ObjectJsonAPIResponse,
-    BankService
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
@@ -59,7 +58,6 @@ export class PensionBillComponent implements OnInit {
         private ppoListService: PensionPPODetailsService,
         private revisionService: PensionComponentRevisionService,
         private toastService: ToastService,
-        private bankService: BankService,
         private router: Router,
         private route: ActivatedRoute
     ) {
@@ -84,7 +82,7 @@ export class PensionBillComponent implements OnInit {
             pensionerName: ['', Validators.required],
             periodFrom: ['', Validators.required],
             periodTo: [null, [Validators.required]],
-            bankName: ['', Validators.required],
+            // bankName: ['', Validators.required],
             accountNo: ['', Validators.required],
             billDate: [this.billdate, Validators.required],
         });
@@ -192,7 +190,7 @@ export class PensionBillComponent implements OnInit {
                         pensionerName: this.response.result?.pensioner?.pensionerName,
                         periodFrom: this.response.result?.pensioner?.dateOfRetirement,
                         accountNo: this.response?.result?.pensioner?.bankAcNo,
-                        bankName: this.bankName, // Use the retrieved bank name
+                        // bankName: this.bankName, // Use the retrieved bank name
                         periodTo: this.response.result?.toDate,
                         billDate: this.response.result?.billDate,
                     });
@@ -226,19 +224,19 @@ export class PensionBillComponent implements OnInit {
         }
     }
 
-    private async getBankName(branchCode: number): Promise<void> {
-        try {
-            const bankResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
-            if (bankResponse && bankResponse.result) {
-                this.bankName = bankResponse.result?.bankName || 'Unknown Bank';
-            } else {
-                this.bankName = 'Unknown Bank';
-            }
-        } catch (error) {
-            console.error('Error fetching bank details:', error);
-            this.bankName = 'Error fetching bank name';
-        }
-    }
+    // private async getBankName(branchCode: number): Promise<void> {
+    //     try {
+    //         const bankResponse = await firstValueFrom(this.bankService.getBranchByBranchCode(branchCode));
+    //         if (bankResponse && bankResponse.result) {
+    //             this.bankName = bankResponse.result?.bankName || 'Unknown Bank';
+    //         } else {
+    //             this.bankName = 'Unknown Bank';
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching bank details:', error);
+    //         this.bankName = 'Error fetching bank name';
+    //     }
+    // }
 
     // save function
     async save() {

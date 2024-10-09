@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PensionFirstBillService,BankService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, APIResponseStatus } from 'src/app/api'; 
+import { PensionFirstBillService,PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, APIResponseStatus } from 'src/app/api'; 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable} from 'rxjs';
@@ -26,9 +26,7 @@ export class FirstPensionComponent implements OnInit {
     private fb: FormBuilder, 
     private toastService: ToastService, 
     private pensionFirstBillService: PensionFirstBillService,
-    private pdfGenerationService: PdfGenerationService,
     private pensionPPODetailsService: PensionPPODetailsService,
-    private bankService: BankService,
     private route: ActivatedRoute
   ) {}
 

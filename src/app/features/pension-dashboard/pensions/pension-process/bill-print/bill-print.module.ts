@@ -64,7 +64,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         RegularPensionComponent,
-        FirstPensionComponent
+        // FirstPensionComponent
     ],
     imports: [
         CommonModule,
@@ -111,6 +111,7 @@ const routes: Routes = [
         MhPrimeDynamicTableModule,
         PopupTableModule,
         RouterModule.forChild(routes),
+        
     ]
 })
 export class BillPrintModule { }

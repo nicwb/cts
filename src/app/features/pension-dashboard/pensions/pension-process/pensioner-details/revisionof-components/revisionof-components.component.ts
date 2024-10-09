@@ -3,12 +3,11 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';  // Import debounceTime and distinctUntilChanged
-import { APIResponseStatus, PensionComponentRevisionService, PensionComponentService, PensionFirstBillService, PensionPPODetailsService, PpoBillResponseDTOJsonAPIResponse, PpoComponentRevisionEntryDTO, BankService, DropdownDTOIEnumerableAPIResponse } from 'src/app/api';
+import { APIResponseStatus, PensionComponentRevisionService, PensionComponentService, PensionFirstBillService, PensionPPODetailsService, PpoBillResponseDTOJsonAPIResponse, PpoComponentRevisionEntryDTO, } from 'src/app/api';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
-
 @Component({
     selector: 'app-revisionof-components',
     templateUrl: './revisionof-components.component.html',
@@ -47,7 +46,6 @@ export class RevisionofComponentsComponent implements OnInit {
         private pensionComponentService: PensionComponentService,
         private datePipe: DatePipe,
         private toastService: ToastService,
-        private bank: BankService
 
     ) {
         const payload = {
@@ -92,14 +90,14 @@ export class RevisionofComponentsComponent implements OnInit {
                 if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess("" + this.getpensionbill.message);
                     const bankcode = this.getpensionbill.result?.pensioner?.branch?.bankId;
-                    const data = await firstValueFrom(this.bank.getAllBanks());
-                    for (let i = 0; i < (data.result?.length || 0); i++) {
-                        if (data.result?.[i]?.code === bankcode) {
-                            this.pensionForm.patchValue({
-                                bankcode: data.result?.[i]?.name
-                            })
-                        }
-                    }
+                    // const data = await firstValueFrom(this.bank.getAllBanks());
+                    // for (let i = 0; i < (data.result?.length || 0); i++) {
+                    //     if (data.result?.[i]?.code === bankcode) {
+                    //         this.pensionForm.patchValue({
+                    //             bankcode: data.result?.[i]?.name
+                    //         })
+                    //     }
+                    // }
                     this.pensionForm.patchValue({
                         ppono: this.getpensionbill.result?.pensioner?.ppoNo,
                         pensionerName: this.getpensionbill.result?.pensioner?.pensionerName,
