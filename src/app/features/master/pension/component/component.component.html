@@ -4,10 +4,10 @@
             [headerName]="'Pension Component Details'"
             [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
         >
-            <button
+            <button 
                 pButton
                 pRipple
-                (click)="showInsertDialog()"
+                (click)="createNewcomponent()"
                 type="button"
                 icon="pi pi-plus"
                 label="New Entry"
@@ -56,7 +56,7 @@
     </div>
 </div>
 
-<p-dialog
+<p-dialog (onHide)="onDiloagclose()"
     header="Pension Components Details"
     [(visible)]="displayInsertModal"
     [modal]="true"

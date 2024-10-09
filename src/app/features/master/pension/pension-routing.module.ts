@@ -15,6 +15,11 @@ const routes: Routes = [
         data: { breadcrumb: 'ComponentComponent' }
     },
     {
+        path: 'component/new',
+        component: ComponentComponent,
+        data: { breadcrumb: 'ComponentComponent' }
+    },
+    {
         path: 'component',
         loadChildren: () => import('./component/component.module').then(m => m.ComponentModule),
         data: { breadcrumb: 'ComponentModule' }

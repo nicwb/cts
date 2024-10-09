@@ -20,6 +20,8 @@ import { SelectItem } from 'primeng/api';
 import { APIResponseStatus, PensionComponentService, PensionFactoryService } from 'src/app/api';
 import { firstValueFrom,observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute,Router } from '@angular/router';
+import { Location } from '@angular/common';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -61,7 +63,10 @@ export class ComponentComponent implements OnInit {
         private fb: FormBuilder,
         private cd: ChangeDetectorRef,
         private Service: PensionComponentService,
-        private pensionFactoryService : PensionFactoryService
+        private pensionFactoryService : PensionFactoryService,
+        private route:ActivatedRoute,
+        private router: Router,
+        private location: Location
     ) {}
 
     @Output() ComponentSelected = new EventEmitter<any>();
@@ -76,7 +81,11 @@ export class ComponentComponent implements OnInit {
         this.tableQueryParameters = {
             pageSize: 10,
             pageIndex: 0,
-        };        
+        };
+        const url = this.route.snapshot.url.map(sagment => sagment.path).join('/');
+        if(url == 'component/new'){
+            this.showInsertDialog();
+        }
     }
 
 
@@ -266,4 +275,11 @@ export class ComponentComponent implements OnInit {
         this.ComponentForm.reset();
         this.displayInsertModal = false; 
     }
+    createNewcomponent(){
+        this.router.navigate(['/master/app-pension/component/new']);
+    }
+    onDiloagclose(){
+        this.location.back();
+    }
+
 }
