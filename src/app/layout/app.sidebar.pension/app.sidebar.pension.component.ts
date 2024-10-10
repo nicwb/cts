@@ -22,28 +22,45 @@ export class AppSidebarPensionComponent implements OnInit {
                 ]
             },
             {
-                label: 'Master',
                 items: [
                     {
-                        label: 'Pension', icon: 'pi pi-fw pi-box',
+                        label: 'Master', icon: 'pi pi-fw pi-box',
                         items: [
-                            { label: 'Pension Category', icon: 'pi pi-fw pi-bookmark', routerLink: ['/master/app-pension/app-pension-category'] },
-                            { label: 'Primary', icon: 'pi pi-fw pi-bookmark', routerLink: ['/master/app-pension/app-primary'] },
-                            { label: 'Sub Category', icon: 'pi pi-fw pi-bookmark', routerLink: ['/master/app-pension/app-sub-category'] },
-
+                            {
+                                label: 'Pension Category',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/pension-category']  // Ensure leading slash for absolute path
+                            },
+                            {
+                                label: 'Primary',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/primary']  // Absolute path
+                            },
+                            {
+                                label: 'Sub Category',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/sub-category']  // Absolute path
+                            },
+                            {
+                                label: 'Component',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/component']  // Absolute path
+                            },
+                            {
+                                label: 'Component Rate',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/component-rate']  // Absolute path
+                            },
+                            {
+                                label: 'Component Rate Revision',
+                                icon: 'pi pi-fw pi-bookmark',
+                                routerLink: ['/master/component-rate-revision']  // Absolute path
+                            }
                         ]
-
-                    },
-
-                    { label: 'Component', icon: 'pi pi-fw pi-box', routerLink: ['/master/app-pension/component'] },
-                    { label: 'Component Rate', icon: 'pi pi-fw pi-box', routerLink: ['master/app-pension/component-rate-revisions'] },
-
-                    // { label: 'Classification', icon: 'pi pi-fw pi-box' },
-                    // { label: 'Classification type', icon: 'pi pi-fw pi-box' },
+                    }
                 ]
             },
             {
-                label: 'Pension',
                 items: [
                     {
                         label: 'Pension Process', icon: 'pi pi-fw pi-box',
@@ -51,16 +68,16 @@ export class AppSidebarPensionComponent implements OnInit {
                             {
                                 label: 'PPO', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/entry'] },
-                                    { label: 'PPO Receipt', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/receipt'] },
-                                    { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
-                                    { label: 'Life Certificate', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/life-certificate'] },
+                                    { label: 'Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo'] },
+                                    { label: 'PPO Receipt', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/ppo-receipt'] },
+                                    // { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
+                                    { label: 'Life Certificate', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/life-certificate'] },
                                 ]
                             },
                             {
                                 label: 'Pension Details', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/pensioner-details/revision']},
+                                    { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-process/pension-details/revision'] },
                                     // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
                                 ]
@@ -69,64 +86,71 @@ export class AppSidebarPensionComponent implements OnInit {
                                 label: 'Pension Bill', icon: 'pi pi-fw pi-bookmark',
                                 items: [
                                     {
-                                        label: 'First Pension', icon: 'pi pi-fw pi-bookmark',
-                                        items: [
-                                            { label: 'General', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/pension-bill'] },
-
-                                        ]
+                                        label: 'first pension bill',
+                                        icon: 'pi pi-fw pi-bookmark',
+                                        routerLink: ['pension-process/pension-bill/first-pension-bill']
                                     },
-                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/regular-pension-bill']},
-                                    //  { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'Money Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'Transfer', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'Extragia Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'DA Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
-                                    // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
+                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/pension-bill/regular-pension-bill'] },
+
                                 ]
                             },
-                            // {
-                            //     label: 'Approval', icon: 'pi pi-fw pi-bookmark',
-                            //     items: [
-                            //         { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
-                            //         { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
-                            //         { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                            //     ]
-                            // },
                             {
                                 label: 'Approval', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'PPO', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/approval/ppo-approval'] },
-                                    { label: 'First pension Bill', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/approval/firstpensionbill-approval'] },
-                                    // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                    { label: 'PPO', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-process/approval/ppo-approval'] },
+                                    { label: 'First pension Bill', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/approval/firstpensionbill-approval'] },
+                                // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ]
-                            },
-
-                            {
+                            },{
                                 label: 'Bill Print', icon: 'pi pi-fw pi-bookmark',
                                 items: [
-                                    { label: 'First Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/bill-print/first-pension'] },
-                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/bill-print/regular-pension'] },
-                                    // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                    { label: 'First Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/bill-print/first-pension-bill-print'] },
+                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/bill-print/regular-pension-bill-print'] },
+                                // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ]
-                            },
-                            // {
-                            //     label: 'File Upload', icon: 'pi pi-fw pi-bookmark',
-                            //     items: [
-                            //         { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
-                            //     ]
-                            // },
-                            // {
-                            //     label: 'Send to Epradan', icon: 'pi pi-fw pi-bookmark',
 
-                            // },
-                            // {
+                            }
 
-                            //     label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
-
-                            // },
+                            //  { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'Money Pension', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'Transfer', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'Extragia Pension', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'DA Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
+                            // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
                         ]
-                    },
+                    },{
+                        label: 'Report', icon: 'pi pi-fw pi-box',
+                        items: [
+                            { label: 'Pension Report', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-report'] },
+
+                        ]
+                    }
+                    // {
+                    //     label: 'Approval', icon: 'pi pi-fw pi-bookmark',
+                    //     items: [
+                    //         { label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark' },
+                    //         { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'File Upload', icon: 'pi pi-fw pi-bookmark',
+                    //     items: [
+                    //         { label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark' }
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Send to Epradan', icon: 'pi pi-fw pi-bookmark',
+
+                    // },
+                    // {
+
+                    //     label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
+
+                    // },
+
+
                     // {
                     //     label: 'Reports', icon: 'pi pi-fw pi-box',
                     //     items: [

@@ -10,7 +10,7 @@ import { AppTopBarComponent } from './app.topbar.component';
     templateUrl: './app.layout.component.html'
 })
 export class AppLayoutComponent implements OnDestroy {
-
+    showCard: boolean = true;
     overlayMenuOpenSubscription: Subscription;
 
     menuOutsideClickListener: any;

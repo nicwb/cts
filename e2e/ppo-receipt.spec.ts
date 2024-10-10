@@ -3,7 +3,7 @@ import { test, expect } from './fixtures';
 test.describe('PPO Receipt', () => {
     test.beforeEach(async ({ page, pensionPage }) => {
         await pensionPage.staticLogin();
-        await page.goto('/#/pension/modules/pension-process/ppo/receipt');
+        await page.goto('pension-process/ppo/ppo-receipt');
     });
 
     test('should fill out the form and submit successfully', async ({ page }) => {

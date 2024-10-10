@@ -7,7 +7,7 @@ test.beforeEach(async ({ pensionPage }) => {
 test('can generate first pension bill and save', async ({ pensionPage, page }) => {
     // Arrange
     const ppoId = await pensionPage.savePpoDetailsAndApprove();
-    await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded" });
+    await page.goto('/pension-process/pension-bill/first-pension-bill', { waitUntil: "domcontentloaded" });
     await page.locator('p-button').getByRole('button', { name: "Open" }).click();
 
     let notFound = true;

@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test';
 
 test.describe('First Pension Bill', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        await page.goto('/#/static-login');
+        await page.goto('/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
             await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
-        await page.goto('/#/pension/modules/pension-process/bill-print/first-pension');
+        await page.goto('/pension-process/bill-print/first-pension-bill-print');
     });
 
     test('should display static UI elements correctly', async ({ page }) => {

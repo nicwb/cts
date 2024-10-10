@@ -3,14 +3,14 @@ import { test, expect } from '@playwright/test';
 test.describe('Sub Category', () => {
     test.beforeEach(async ({ page, isMobile }) => {
         // Navigate to the static login page containing user roles
-        await page.goto('/#/static-login');
+        await page.goto('/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
             await page.locator('button.layout-topbar-menu-button').click()
         }
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
-        await page.goto('/#/master/app-pension/app-sub-category');
+        await page.goto('/master/sub-category');
     });
 
     test('Check the input box is visible and working or not and submit it successfully', async ({

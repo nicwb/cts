@@ -6,7 +6,7 @@ test.describe('Static Login', () =>{
 
     test.beforeEach(async ({ page }) => {
         // Navigate to the static login page containing user roles
-        await page.goto('/#/static-login', { waitUntil: "commit" });
+        await page.goto('/static-login', { waitUntil: "commit" });
     });
 
     test('should display the "Static Login" page', async ({ page }) => {

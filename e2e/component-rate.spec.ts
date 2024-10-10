@@ -4,7 +4,7 @@ import {test,expect} from "./fixtures";
         test.fixme(true, 'Remove this line after task-241 is merged');
         await pensionPage.staticLogin();
         // Navigate to the page containing your component
-        await page.goto('/#/master/app-pension/component-rate');
+        await page.goto('/master/component-rate');
     });
 
     test('should display the "Component Rate" page', async ({ page }) => {

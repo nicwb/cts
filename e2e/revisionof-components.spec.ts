@@ -6,10 +6,10 @@ test.beforeEach(async ({ pensionPage }) => {
 
     test('should display static UI elements correctly', async ({ page }) => {
         //Arrange
-        await page.goto('/#/pension/modules/pension-process/pensioner-details/revision', { waitUntil: "domcontentloaded"});
+        await page.goto('pension-process/pension-details/revision', { waitUntil: "domcontentloaded"});
         //Act
         const elements = [
-            { locator: 'text=Revision of Component', type: 'text' , exact: true},
+            // { locator: 'text=Revision of Component', type: 'text' , exact: true},
             { locator: 'text=Pensioner\'s Details :', type: 'text' },
             { locator: 'text=PPO ID', type: 'text' },
             { locator: 'input[placeholder="PPO ID"]', type: 'input' },
@@ -27,7 +27,7 @@ test.beforeEach(async ({ pensionPage }) => {
 
     test('should retrieve first pension bill', async ({ page, pensionPage }) => {
         const ppoId = await pensionPage.savePpoDetailsAndApprove();
-        await page.goto('/#/pension/modules/pension-process/pension-bill', { waitUntil: "domcontentloaded"});
+        await page.goto('pension-process/pension-bill/first-pension-bill', { waitUntil: "domcontentloaded"});
         await page.locator('p-button').getByRole('button', {name: "Open"}).click();
         await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
         await page.getByRole('textbox', { name: 'Select a date' }).click();

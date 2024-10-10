@@ -4,14 +4,14 @@ import * as path from 'path';
 
 test.describe('Regular pension bill', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        await page.goto('/#/static-login');
+        await page.goto('/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if (isMobile) {
             await page.locator('button.layout-topbar-menu-button').click();
         }
         const dashboard = page.getByText('CCTSCLERK');
         await expect(dashboard).toBeVisible();
-        await page.goto('/#/pension/modules/pension-process/bill-print/regular-pension');
+        await page.goto('/pension-process/bill-print/regular-pension-bill-print');
     });
 
     test('bill printing', async ({ page }) => {

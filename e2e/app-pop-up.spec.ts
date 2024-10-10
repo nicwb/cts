@@ -7,7 +7,7 @@ test.beforeEach(async ({ pensionPage }) => {
 
 test('should open the popup and display correct content', async ({ page }) => {
   //Arrange
-  await page.goto('/#/master/app-pension/component-rate-revisions');
+  await page.goto('/master/component-rate-revision');
   //Act
   await page.click('app-popup-table');
   const dialog = page.locator('.p-dialog');
@@ -20,7 +20,7 @@ test('should open the popup and display correct content', async ({ page }) => {
 
 test('should display correct number of records per page', async ({ page }) => {
   // Arrange
-  await page.goto('/#/master/app-pension/component-rate-revisions');
+  await page.goto('/master/component-rate-revision');
   await page.click('app-popup-table');
   // Act
   const dialog = page.locator('.p-dialog');
@@ -35,7 +35,7 @@ test('should display correct number of records per page', async ({ page }) => {
 
 test('should navigate to next page and display different records if pagination is possible', async ({ page }) => {
   // Arrange
-  await page.goto('/#/master/app-pension/component-rate-revisions');
+  await page.goto('/master/component-rate-revision');
   await page.click('app-popup-table');
   const dialog = page.locator('.p-dialog');
   // Assert
@@ -61,7 +61,7 @@ test('should navigate to next page and display different records if pagination i
 
 test('should navigate to previous page if pagination is possible', async ({ page }) => {
   // Arrange
-  await page.goto('/#/master/app-pension/component-rate-revisions');
+  await page.goto('/master/component-rate-revision');
   await page.click('app-popup-table');
   const dialog = page.locator('.p-dialog');
 
@@ -99,7 +99,7 @@ test('should navigate to previous page if pagination is possible', async ({ page
 
 test('should jump to last page if pagination is possible', async ({ page }) => {
   // Arrange
-  await page.goto('/#/master/app-pension/component-rate-revisions');
+  await page.goto('/master/component-rate-revision');
   await page.click('app-popup-table');
   const dialog = page.locator('.p-dialog');
 

@@ -3,10 +3,22 @@
     <app-topbar></app-topbar>
     <div class="layout-sidebar">
         <app-sidebar-pension></app-sidebar-pension>
-        <app-sidebar></app-sidebar>
+        <!-- <app-sidebar></app-sidebar> -->
     </div>
     <div class="layout-main-container">
         <div class="layout-main">
+            <app-option-card logo='work-in-progress' optionName="Master" class="col-12 lg:col-6 xl:col-3"
+                [routerLink]="['master']"
+                *ngIf="!router.url.startsWith('/master') && !router.url.startsWith('/pension-process') && !router.url.startsWith('/pension-report')">
+            </app-option-card>
+            <app-option-card logo='work-in-progress' optionName="pension-process" class="col-12 lg:col-6 xl:col-3"
+                [routerLink]="['pension-process']"
+                *ngIf="!router.url.startsWith('/pension-process') && !router.url.startsWith('/master') && !router.url.startsWith('/pension-report')">
+            </app-option-card>
+            <app-option-card logo='work-in-progress' optionName="pension-reports" class="col-12 lg:col-6 xl:col-3"
+                [routerLink]="['pension-report']"
+                *ngIf="!router.url.startsWith('/pension-report') && !router.url.startsWith('/master') && !router.url.startsWith('/pension-process') ">
+            </app-option-card>
             <router-outlet></router-outlet>
         </div>
         <app-footer></app-footer>

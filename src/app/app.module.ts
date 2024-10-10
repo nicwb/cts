@@ -1,7 +1,7 @@
 import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { ApiModule, BASE_PATH } from './api';
 import { environment } from 'src/environments/environment';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -26,7 +26,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
-
+import { PensionerStatusModule } from './shared/modules/pensioner-status/pensioner-status.module';
 @NgModule({
     declarations: [
         AppComponent, ServerDownComponent, LoginComponent, NotFoundComponent, StaticLoginComponent,
@@ -44,10 +44,11 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         ButtonModule,
         BrowserModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        PensionerStatusModule
     ],
     providers: [
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
         { provide: BASE_PATH, useValue: environment.OpenApiBaseURL},
         {

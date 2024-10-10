@@ -45,7 +45,7 @@ export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
           { label: this.approvedText, value: 1 },
           { label: this.notApprovedText, value: 0 }
       ];
-      this.getData();
+      //   this.getData();
   }
 
   getData(): void {
@@ -57,7 +57,7 @@ export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
               })
           )
           .subscribe((response) => {
-              console.log('Status response after getData: ', response);    
+              console.log('Status response after getData: ', response);
               if (response.result && response.result.statusFlag !== undefined) {
                   this.selectedStatus = response.result.statusFlag > 0 ? 1 : 0;
               } else {
@@ -98,7 +98,7 @@ export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
           },
           (error: HttpErrorResponse) => {
               this.toastService.showError('Failed to update status: ' + error.message);
-              this.selectedStatus = 0; 
+              this.selectedStatus = 0;
               this.previousStatus = 0;
           }
       );
@@ -113,7 +113,7 @@ export class PensionerStatusComponent implements OnInit, ControlValueAccessor {
           },
           (error: HttpErrorResponse) => {
               this.toastService.showError('Failed to update status: ' + error.message);
-              this.selectedStatus = 1; 
+              this.selectedStatus = 1;
               this.previousStatus = 1;
           }
       );

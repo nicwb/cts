@@ -15,26 +15,20 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                 path: '', component: AppLayoutComponent,
                 children: [
                     {
-                        path: '',
-                        loadChildren: () => import('./features/pension-dashboard/pensions/pensions.module').then(m => m.PensionsModule),
-                        data: { breadcrumb: 'PensionsModule' }
-                    },
-                    {
-                        path:'master',
+                        path: 'master',
                         loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule),
                         data: { breadcrumb: 'MasterModule' }
                     },
                     {
-                        path:'pension',
-                        loadChildren: () => import('./features/pension-dashboard/pension-dashboard.module').then(m => m.PensionDashboardModule),
-                        data: { breadcrumb: 'PensionDashboardModule' }
+                        path: 'pension-process',
+                        loadChildren: () => import('./features/pensions-process/pensions-process.module').then(m => m.PensionsProcessModule),
+                        data: {breadcrumb: 'PensionsProcessModule'}
                     },
                     {
-                        path:'master/app-pension/component-rate',
-                        loadChildren: () => import('src/app/features/master/pension/component-rate/component-rate.module').then(m => m.ComponentRateModule),
-                        data: { breadcrumb: 'ComponentRateModule' }
-                    }
-
+                        path: 'pension-report',
+                        loadChildren: () => import('./features/pension-reports/pension-reports.module').then(m => m.PensionReportsModule),
+                        data: {breadcrumb: 'PensionReportsModule'}
+                    },
                 ],
                 data: { breadcrumb: 'CTS AppLayoutComponent' }
             },

@@ -3,7 +3,7 @@ import {test,expect} from "@playwright/test";
 test.describe('Pension Component', () => {
     test.beforeEach(async ({ page, isMobile }) => {
         // Navigate to the static login page containing user roles
-        await page.goto('/#/static-login');
+        await page.goto('/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if(isMobile) {
             await page.locator('button.layout-topbar-menu-button').click()
@@ -11,7 +11,7 @@ test.describe('Pension Component', () => {
         const dashboard = page.getByText(`CCTSCLERK`);
         await expect(dashboard).toBeVisible();
         // Navigate to the page containing your component
-        await page.goto('/#/master/app-pension/component');
+        await page.goto('/master/component');
     });
 
     test('Pension component can be saved', async ({ page }) => {

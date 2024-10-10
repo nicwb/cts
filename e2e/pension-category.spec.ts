@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Pension Category', () => {
     test.beforeEach(async ({ page, isMobile }) => {
-        await page.goto('/#/static-login');
+        await page.goto('/static-login');
         await page.getByRole('link', { name: 'cleark' }).click();
         if (isMobile) {
             await page.locator('button.layout-topbar-menu-button').click();
         }
         const dashboard = page.getByText('CCTSCLERK');
         await expect(dashboard).toBeVisible();
-        await page.goto('/#/master/app-pension/app-pension-category');
+        await page.goto('/master/pension-category');
     });
 
     test('is the form and submit button working', async ({ page }) => {
