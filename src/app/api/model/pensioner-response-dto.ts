@@ -18,6 +18,7 @@ export interface PensionerResponseDTO {
     ppoType: string;
     ppoSubType: string;
     categoryId: number;
+    bankId?: number;
     branchId: number;
     accountHolderName: string;
     payMode: string;
