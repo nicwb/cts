@@ -27,6 +27,8 @@ model/branch-list-response-dto.ts
 model/branch-response-dto.ts
 model/component-rate-entry-dto.ts
 model/component-rate-response-dto-json-api-response.ts
+model/component-rate-response-dto-table-response-dto-json-api-response.ts
+model/component-rate-response-dto-table-response-dto.ts
 model/component-rate-response-dto.ts
 model/component-rate-response-dtoi-enumerable-dynamic-list-result-json-api-response.ts
 model/component-rate-response-dtoi-enumerable-dynamic-list-result.ts

@@ -10,6 +10,8 @@ export * from './component-rate-response-dto';
 export * from './component-rate-response-dtoi-enumerable-dynamic-list-result';
 export * from './component-rate-response-dtoi-enumerable-dynamic-list-result-json-api-response';
 export * from './component-rate-response-dto-json-api-response';
+export * from './component-rate-response-dto-table-response-dto';
+export * from './component-rate-response-dto-table-response-dto-json-api-response';
 export * from './date-only';
 export * from './date-only-dto';
 export * from './date-only-dto-json-api-response';

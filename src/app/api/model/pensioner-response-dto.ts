@@ -18,7 +18,6 @@ export interface PensionerResponseDTO {
     ppoType: string;
     ppoSubType: string;
     categoryId: number;
-    bankId?: number;
     branchId: number;
     accountHolderName: string;
     payMode: string;
@@ -46,5 +45,6 @@ export interface PensionerResponseDTO {
     category?: PensionCategoryResponseDTO;
     receipt?: ManualPpoReceiptResponseDTO;
     branch?: BranchResponseDTO;
+    readonly bankId?: number;
 }
 

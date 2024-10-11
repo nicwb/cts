@@ -21,8 +21,8 @@ export class ApiInterceptor implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         const token = localStorage.getItem('jwtToken');
         // this.loadingIndeterminate.showLoading();
-        // this.spinner.show();
-        var baseURL = environment.BaseURL;
+        this.spinner.show();
+        let baseURL = environment.BaseURL;
         if(request.url.startsWith("http")) {
             baseURL = "";
         }
@@ -54,10 +54,10 @@ export class ApiInterceptor implements HttpInterceptor {
                 //     }
                 // }
             ),
-            // finalize(() => {
-            //     // this.loadingIndeterminate.hideLoading();
-            //     this.spinner.hide();
-            // })
+            finalize(() => {
+                // this.loadingIndeterminate.hideLoading();
+                this.spinner.hide();
+            })
         );
     }
 }
