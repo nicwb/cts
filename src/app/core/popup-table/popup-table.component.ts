@@ -38,7 +38,7 @@ export class PopupTableComponent{
       this.debug("Showing SearchDialog...");
       this.isLoading = true;
       await this.callService();
-    
+
 
       if (this.data) {
           const { headers, data } = this.data;

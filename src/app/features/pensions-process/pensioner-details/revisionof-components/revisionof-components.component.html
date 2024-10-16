@@ -9,7 +9,7 @@
                 </b></label>
             <div class="w-full flex gap-1">
                 <input type="text" pInputText formControlName="componentname" class="w-full p-2 p-inputtext"
-                    placeholder="" (keydown)="allowOnlyNumbers($event)" inputmode="numeric" />
+                    placeholder="" inputmode="numeric" />
 
                 <app-popup-table name="" [service$]="pensionComponent$"
                     (return)="handleSelectedRowByPensionComponent($event)"></app-popup-table>
@@ -55,8 +55,7 @@
                             </b></label>
                         <div class="w-full flex gap-1">
                             <input type="text" pInputText formControlName="ppoId" class="w-full p-2 border-inherit"
-                                (keydown)="allowOnlyNumbers($event)" placeholder="PPO ID" (blur)="getppoDetails()"
-                                [ngClass]="{'bg-cyan-400':ppoColor }" [readonly]="ppoColor" />
+                                placeholder="PPO ID" [readonly]="true" class="w-full p-2 bg-cyan-400" />
                             <app-popup-table name="" [service$]="ppoList$"
                                 (return)="handleSelectedRow($event)"></app-popup-table>
                         </div>
@@ -211,7 +210,7 @@
         <div class="flex flex-wrap gap-2 mx-2" *ngIf="showTable">
             <button type="submit" pButton pRipple (click)="addcomponent()" label="Add"
                 class="px-5 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-                <i class="pi pi-plus mr-2"></i>
+                <i class="pi pi-plus mr-1"></i>
             </button>
         </div>
         <!-- Refresh Button -->
@@ -223,8 +222,8 @@
         </div>
 
         <div class="flex flex-wrap gap-2 ">
-            <button pButton pRipple type="button" label="Refresh" (click)="refresh()" class="p-button-secondary ">
-                <i class="pi pi-replay mr-1"></i>
+            <button pButton pRipple type="button" label="Reset" (click)="refresh()" class="p-button-secondary px-3">
+                <i class="pi pi-replay mr-2"></i>
             </button>
         </div>
     </div>
