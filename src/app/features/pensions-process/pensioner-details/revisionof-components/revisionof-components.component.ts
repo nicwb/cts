@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -23,7 +23,6 @@ export class RevisionofComponentsComponent implements OnInit {
     showTable: boolean = false;
     getpensionbill!: PpoBillResponseDTOJsonAPIResponse;
     ppoId?: number;
-    ppoColor: boolean = false;
     responce: any;
     isEditing: boolean = false;
     isSearch: boolean = false;
@@ -32,6 +31,8 @@ export class RevisionofComponentsComponent implements OnInit {
     hasPpoDetailsFetched = false;
     rateid: any;
     isMobileView: boolean = false;
+    disableButton: boolean = false;
+    isPopupTableDisabled = true;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
@@ -55,7 +56,7 @@ export class RevisionofComponentsComponent implements OnInit {
             pageIndex: 0,
             filterParameters: [],
         };
-        this.ppoList$ = this.ppoListService.getAllPensioners(payload);
+        this.ppoList$ = this.revisionOfComponentsService.getAllPposForComponentRevisions();
 
         this.pensionComponent$ = this.pensionComponentService.getAllComponents(payload);
 
@@ -64,10 +65,10 @@ export class RevisionofComponentsComponent implements OnInit {
     ngOnInit(): void {
         this.pensionForm = this.fb.group({
             ppoId: ['', [Validators.required, Validators.pattern("^[0-9]*$")]], // PPO ID must be a number
-            ppono: [''],
-            pensionerName: [''],
-            category: [''],
-            bankcode: ['']
+            ppono: ['',Validators.required],
+            pensionerName: ['',Validators.required],
+            category: ['',Validators.required],
+            bankcode: ['',Validators.required]
         });
         this.componentForm = this.fb.group({
             componentname: ['', Validators.required],
@@ -83,40 +84,23 @@ export class RevisionofComponentsComponent implements OnInit {
         this.isMobileView = window.innerWidth <= 900; // Set on init
     }
 
-    // Method to fetch PPO details when a valid PPO ID is entered
-    async getppoDetails() {
-        if (this.ppoId && !this.hasPpoDetailsFetched) {
-            try {
-                this.getpensionbill = await firstValueFrom(this.firstbill.getFirstPensionBillByPpoId(this.ppoId));
-                if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Success) {
-                    this.toastService.showSuccess("" + this.getpensionbill.message);
-                    const bankcode = this.getpensionbill.result?.pensioner?.branch?.bankId;
-                    const data = await firstValueFrom(this.bank.getBanks());
-                    for (let i = 0; i < (data.result?.banks?.length || 0); i++) {
-                        if ((data.result?.banks?.[i] as any).code === bankcode) {
-                            this.pensionForm.patchValue({
-                                bankcode: data.result?.banks?.[i]?.bankName
-                            })
-                        }
-                    }
-                    this.pensionForm.patchValue({
-                        ppono: this.getpensionbill.result?.pensioner?.ppoNo,
-                        pensionerName: this.getpensionbill.result?.pensioner?.pensionerName,
-                        category: this.getpensionbill.result?.pensioner?.category?.categoryName,
-                    })
-                    this.hasPpoDetailsFetched = true;
-                    this.isSearch = true;
-                } else if (this.getpensionbill.apiResponseStatus === APIResponseStatus.Error) {
-                    this.toastService.showError('' + this.getpensionbill.message);
-                    this.hasPpoDetailsFetched = false;
-                    this.refresh();
-                }
-            } catch (error) {
-                this.toastService.showError(''+APIResponseStatus.Error);
-                this.showTable = false;
-            }
+    handleSelectedRow(event: any) {
+        this.pensionForm.patchValue({
+            ppoId: event.ppoId,
+            bankcode: event.bankBranchName,
+            ppono: event.ppoNo,
+            pensionerName: event.pensionerName,
+            category: event.categoryDescription,
+        });
+
+        if(this.pensionForm.valid){
+            this.hasPpoDetailsFetched = true;
+            this.isSearch = true;
         }
     }
+
+    // Method to fetch PPO details when a valid PPO ID is entered
+
 
     get revisions() {
         return this.tableForm.get('revisions') as FormArray;
@@ -130,8 +114,8 @@ export class RevisionofComponentsComponent implements OnInit {
                 if (Array.isArray(responce.result)) {
                     this.responce = responce.result.sort((a: any, b: any) => new Date(a.fromDate).getTime() - new Date(b.fromDate).getTime());
                 }
-                this.ppoColor = true;
                 this.showTable = true;
+                this.isPopupTableDisabled = !this.pensionForm.valid;
                 this.patchFormValues(this.responce);
 
             }
@@ -153,7 +137,7 @@ export class RevisionofComponentsComponent implements OnInit {
             }));
         });
     }
-    
+
 
     // Enable edit for specific row by id
     enableEdit(rowId: number) {
@@ -183,7 +167,7 @@ export class RevisionofComponentsComponent implements OnInit {
                     this.editRowId = null;
                 }
             } catch (error) {
-                this.toastService.showError(''+APIResponseStatus.Error);
+                this.toastService.showError('' + APIResponseStatus.Error);
             }
         }
     }
@@ -236,7 +220,7 @@ export class RevisionofComponentsComponent implements OnInit {
                     this.toastService.showSuccess('' + response.message);
                 }
             } catch (error) {
-                this.toastService.showError(''+APIResponseStatus.Error);
+                this.toastService.showError('' + APIResponseStatus.Error);
             }
         }
     }
@@ -246,18 +230,11 @@ export class RevisionofComponentsComponent implements OnInit {
         this.showTable = false;
         this.isSearch = false;
         this.hasPpoDetailsFetched = false;
-        this.ppoColor = false;
+        this.isPopupTableDisabled = true;
 
     }
-    // Select row 
-    handleSelectedRow(event: any) {
-        this.pensionForm.patchValue({
-            ppoId: event.ppoId,
-        });
-        if (this.pensionForm.get('ppoId')?.value) {
-            this.getppoDetails();
-        }
-    }
+    // Select row
+
 
     handleSelectedRowByPensionComponent(event: any) {
         this.rateid = event.id
@@ -281,7 +258,7 @@ export class RevisionofComponentsComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    this.toastService.showError(''+APIResponseStatus.Error);
+                    this.toastService.showError('' + APIResponseStatus.Error);
                 }
             );
         }
@@ -310,18 +287,5 @@ export class RevisionofComponentsComponent implements OnInit {
     // Check if any row is in editing mode
     isAnyRowEditing(): boolean {
         return this.editRowId !== null;
-    }
-
-    allowOnlyNumbers(event: KeyboardEvent): void {
-        const key = event.key;
-        // Allow only digits (0-9), Backspace, Tab, Delete, Enter, and Arrow keys
-        if (!/^\d$/.test(key) &&
-            key !== 'Backspace' &&
-            key !== 'Tab' &&
-            key !== 'Delete' &&
-            key !== 'Enter' &&
-            !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) {
-            event.preventDefault();
-        }
     }
 }
