@@ -5,7 +5,7 @@
                 class="p-button-rounded p-button-raised"></button>
         </app-common-header>
     </div>
-    
+
     <!-- PPO Table and Placeholder -->
     <div class="col-12">
         <!-- Dynamic Table Component -->
@@ -21,13 +21,42 @@
         (queryParameterChange)="onQueryParametersChange($event)"
         (searchKeyChange)="onSearchKeyChange($event)">
     </mh-prime-dynamic-table>
-    
+    <div *ngIf="e_PPO_div" class="col-12 card">
+        <div>
+            <label>E-PPO ID:</label><input pInputText (input)="eppo_input()" id="eppoinput" placeholder="E-PPO ID" >
+            <button pButton pRipple (click)="search_ePPO()" [disabled]="!ePpoEntry"  type="button" icon="pi pi-search"
+                    class=" p-button-raised">
+        </button>
+        </div>
+
+        <div *ngIf="src" class="flex " style="align-items: end;" >
+            <div id="image_div" class="m-2">
+                <p>image</p>
+                <img [src]="image_src" width="400px" *ngIf="image_src"  >
+
+            </div>
+            <div id="singature_div" class="m-2">
+                <img [src]="signature_src" width="200px" *ngIf="signature_src"  >
+            </div>
+            <div id="pdf_div" class="m-2">
+                pdf:
+                <button pButton pRipple (click)="download_pdf()" label="download" type="button" icon="pi pi-download"
+                    class="p-button-rounded p-button-raised">
+                </button>
+            </div>
+        </div>
+
+
+    </div>
     <!-- Placeholder when table is not visible -->
-        <div class="svg-placeholder-container" *ngIf="!isTableVisible" style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
+        <div class="svg-placeholder-container" *ngIf="placeholder_div" style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
             <div class="col-12 h-full text-center bg-constellation">
                 <!-- Load PPO Receipt Button -->
                 <button pButton pRipple (click)="loadPpoReceipts()" type="button" icon="pi pi-download" label="Load PPO Receipts"
-                    class="p-button-rounded p-button-raised">
+                    class="p-button-rounded p-button-raised m-2">
+                </button>
+                <button pButton pRipple (click)="loadE_PpoReceipts()" type="button" icon="pi pi-download" label="Load E-PPO Receipts"
+                    class="p-button-rounded p-button-raised m-2">
                 </button>
                 <div class="mt-8">
                 </div>
