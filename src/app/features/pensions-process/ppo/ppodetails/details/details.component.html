@@ -43,14 +43,14 @@
                     <label for="float-input">PPO ID</label>
                 </span>
             </div>
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-6" style="pointer-events: none; user-select: none;">
                 <span class="p-float-label m-3 h-45px">
-                    <input class="h-full" type="text" pInputText formControlName="ppoNo">
+                    <input class="h-full" type="text" pInputText  formControlName="ppoNo">
                     <label for="float-input">PPO No.</label>
                 </span>
             </div>
 
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-6" style="pointer-events: none; user-select: none;">
                 <span class="p-float-label m-3 h-45px">
                     <input class="h-full" id="pensionerName"  type="text" pInputText formControlName="pensionerName">
                     <label for="float-input">Pensioner Name</label>
@@ -117,7 +117,7 @@
                     <p-calendar [style]="{height: '47px'}" formControlName="dateOfRetirement" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
                 </div>
             </div>
-            <div class="col-12 md:col-6">
+            <div class="col-12 md:col-6" style="pointer-events: none; user-select: none;">
                 <label for="dateOfCommencement" class="col-12 mb-2 md:col-2 md:mb-0">Commencement Date:</label>
                 <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50" style="width: 300px;">
                     <p-calendar [style]="{height: '47px'}" formControlName="dateOfCommencement"  dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
@@ -251,7 +251,7 @@
                             formControlName="gender"></p-dropdown>
                     </div>
                 </div>
-                <div class="col-12 md:col-6">
+                <div class="col-12 md:col-6" style="pointer-events: none; user-select: none;">
                     <label for="mobileNumber" class="col-12 mb-2 md:col-2 md:mb-0">Mobile No.:</label>
                     <div class="field col-12 mb-2 lg:col-4 lg:mb-0  w-100 h-50">
                         <input class="h-45px" pInputText formControlName="mobileNumber" />
