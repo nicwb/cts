@@ -15,6 +15,8 @@ import {
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
+import { SessionStorageService } from 'src/app/core/services/session-storage.service';
+
 import { SelectItem } from 'primeng/api';
 import {
     APIResponseStatus,
@@ -63,7 +65,8 @@ export class PrimaryComponent {
         private generate: PensionFactoryService,
         private route: ActivatedRoute,
         private router: Router,
-        private location: Location
+        private location: Location,
+        private sessionStorageService: SessionStorageService
     ) {}
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
@@ -169,10 +172,10 @@ export class PrimaryComponent {
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
-
+                this.sessionStorageService.remove('','','PensionCategoryComponent_primaryCategories');
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
-                    'Primary Category Details added successfully'
+                    ''+response.message
                 );
                 if (this.called_from_pension == true) {
                     this.router.navigate(

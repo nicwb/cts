@@ -15,6 +15,7 @@ import {
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
+import { SessionStorageService } from 'src/app/core/services/session-storage.service'
 import { SelectItem } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 import {
@@ -56,9 +57,11 @@ export class SubCategoryComponent implements OnInit {
         data: null,
     };
     isTableVisible: boolean = false;
-    primary!:string;
-    sub !:string;
+    primary!: string;
+    sub !: string;
     called_from_pension = false;
+
+
     constructor(
         private toastService: ToastService,
         private fb: FormBuilder,
@@ -66,8 +69,9 @@ export class SubCategoryComponent implements OnInit {
         private pensionFactoryService: PensionFactoryService,
         private route: ActivatedRoute,
         private router: Router,
-        private location: Location
-    ) {}
+        private location: Location,
+        private SessionStorageService: SessionStorageService
+    ) { }
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
 
@@ -80,8 +84,8 @@ export class SubCategoryComponent implements OnInit {
             pageIndex: 0,
         };
         this.check_if_called();
-        const endpoint = this.route.snapshot.url.map( segment => segment.path).join('/');
-        if(endpoint == 'sub-category/new'){
+        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+        if (endpoint == 'sub-category/new') {
             this.showInsertDialog();
         }
     }
@@ -104,7 +108,7 @@ export class SubCategoryComponent implements OnInit {
         this.displayInsertModal = true;
         this.SubForm.reset();
         if (!environment.production) {
-            this.isTableVisible= false;
+            this.isTableVisible = false;
             this.generateNewData();
         }
     }
@@ -206,18 +210,19 @@ export class SubCategoryComponent implements OnInit {
     async add_Sub_category() {
         if (this.SubForm.valid) {
             const formData = this.SubForm.value;
-            let name=this.SubForm.value.SubCategoryName;
+            let name = this.SubForm.value.SubCategoryName;
             const response = await firstValueFrom(
                 this.service.createSubCategory(formData)
             );
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 this.displayInsertModal = false; // Close the dialog
+                this.SessionStorageService.remove('', '', 'PensionCategoryComponent_subCategoryCacheKey')
                 this.toastService.showSuccess(
-                    'Sub Category Details added successfully'
+                    '' + response.message
                 );
-                if (this.called_from_pension==true){
-                    this.router.navigate(["master/pension-category"],{ queryParams: { primary: this.primary, sub: name } });
+                if (this.called_from_pension == true) {
+                    this.router.navigate(["master/pension-category"], { queryParams: { primary: this.primary, sub: name } });
                 }
 
             } else {
@@ -238,7 +243,7 @@ export class SubCategoryComponent implements OnInit {
         } else {
             this.toastService.showError(
                 response.message ||
-                    'An unexpected error occurred. Please try again.'
+                'An unexpected error occurred. Please try again.'
             );
         }
     }
@@ -268,10 +273,10 @@ export class SubCategoryComponent implements OnInit {
         this.SubForm.reset();
         this.displayInsertModal = false;
     }
-    newSubcategory(){
+    newSubcategory() {
         this.router.navigate(['/master/sub-category/new']);
     }
-    onDialogClose(){
+    onDialogClose() {
         this.location.back()
     }
 }

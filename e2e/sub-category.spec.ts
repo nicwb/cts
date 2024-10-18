@@ -22,7 +22,7 @@ test.describe('Sub Category', () => {
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
-            'Sub Category Details added successfully'
+            'SubCategory saved sucessfully!'
         );
     });
 
