@@ -14,6 +14,7 @@ api/pension-manual-ppo-receipt.service.ts
 api/pension-ppo-details.service.ts
 api/pension-ppo-status.service.ts
 api/pension-regular-bill.service.ts
+api/pension-sanction-details.service.ts
 api/pension.service.ts
 configuration.ts
 encoder.ts
@@ -105,6 +106,9 @@ model/ppo-list-response-dto-json-api-response.ts
 model/ppo-list-response-dto.ts
 model/ppo-payment-list-item-dto.ts
 model/ppo-regular-bill-details-dto.ts
+model/ppo-sanction-details-entry-dto.ts
+model/ppo-sanction-details-response-dto-json-api-response.ts
+model/ppo-sanction-details-response-dto.ts
 model/regular-bill-list-response-dto-json-api-response.ts
 model/regular-bill-list-response-dto.ts
 model/regular-bill-response-dto.ts
