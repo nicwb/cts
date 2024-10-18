@@ -26,7 +26,7 @@ test.describe('Primary Category', () => {
         ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
-            'Primary Category Details added successfully'
+            'PrimaryCategory saved sucessfully!'
         );
         await page.getByRole('button', { name: 'OK' }).click();
     });
