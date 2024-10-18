@@ -24,4 +24,6 @@ export * from './pension-ppo-status.service';
 import { PensionPPOStatusService } from './pension-ppo-status.service';
 export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
-export const APIS = [MessageQueueWorkerService, PensionService, PensionBankBranchService, PensionCategoryMasterService, PensionComponentService, PensionComponentRateService, PensionComponentRevisionService, PensionFactoryService, PensionFirstBillService, PensionManualPPOReceiptService, PensionPPODetailsService, PensionPPOStatusService, PensionRegularBillService];
+export * from './pension-sanction-details.service';
+import { PensionSanctionDetailsService } from './pension-sanction-details.service';
+export const APIS = [MessageQueueWorkerService, PensionService, PensionBankBranchService, PensionCategoryMasterService, PensionComponentService, PensionComponentRateService, PensionComponentRevisionService, PensionFactoryService, PensionFirstBillService, PensionManualPPOReceiptService, PensionPPODetailsService, PensionPPOStatusService, PensionRegularBillService, PensionSanctionDetailsService];
