@@ -1,114 +1,67 @@
 <div class="container">
     <div class="grid">
+        <div class="card px-0 py-4 mt-4 col-12" *ngIf="!viewMode">
+            <p-steps [model]="steps" [(activeIndex)]="currentStepIndex"></p-steps>
+        </div>
 
-                <!-- Step Navigation and Action Buttons -->
-                <div class="card px-0 py-4 mt-2" *ngIf="!viewMode">
-                    <p-steps
-                        [model]="steps"
-                        [(activeIndex)]="currentStepIndex"
-                    ></p-steps>
-                    <div class="my-4 px-0">
-                        <!-- PPO and OtherDetails -->
-                        <div
-                            *ngIf="currentStepIndex === 0"
-                            class="flex flex-column p-0 m-0 gap-3"
-                        >
-                            <app-details
-                                [ppoId]="ppoId"
-                                (return)="setPpoId($event)"
-                            ></app-details>
-                        </div>
-
-                        <div
-                            *ngIf="currentStepIndex === 1"
-                            class="flex flex-column p-0 m-0 gap-3"
-                        >
-                            <!-- add from for sanction -->
-                            <app-sanction></app-sanction>
-                        </div>
-
-                        <div
-                            *ngIf="currentStepIndex === 2"
-                            class="flex flex-column p-0 m-0 gap-3"
-                        >
-                            <app-family-nominee></app-family-nominee>
-                        </div>
-                    </div>
-                    <div
-                        class="flex flex-col mt-1 align-items-center justify-content-center"
-                        style="column-gap: 10px"
-                    >
-                        <p-button
-                            label="Back"
-                            icon="pi pi-step-backward"
-                            styleClass="p-button-warning"
-                            (click)="prev()"
-                        >
-                        </p-button>
-                        <p-button
-                            label="Next"
-                            *ngIf="currentStepIndex < 3"
-                            [disabled]="!ppoId"
-                            icon="pi pi-step-forward"
-                            styleClass="p-button-success"
-                            (click)="next()"
-                        >
-                        </p-button>
-                    </div>
+        <!-- Step Navigation and Action Buttons -->
+        <div class="px-0 py-4 mt-2" *ngIf="!viewMode">
+            <!-- <p-steps [model]="steps" [(activeIndex)]="currentStepIndex"></p-steps> -->
+            <div class="my-4 px-0">
+                <!-- PPO and OtherDetails -->
+                <div *ngIf="currentStepIndex === 0" class="flex flex-column p-0 m-0 gap-3">
+                    <app-details [ppoId]="ppoId" (return)="setPpoId($event)"></app-details>
                 </div>
 
-                <!-- Table View -->
-                <div class="col-12">
-                    <div class="card" *ngIf="viewMode">
-                <div
+                <div *ngIf="currentStepIndex === 1" class="flex flex-column p-0 m-0 gap-3">
+                    <!-- add from for sanction -->
+                    <app-sanction></app-sanction>
+                </div>
 
-                    class="flex flex-column  ppo-container"
-                >
+                <div *ngIf="currentStepIndex === 2" class="flex flex-column p-0 m-0 gap-3">
+                    <app-family-nominee></app-family-nominee>
+                </div>
+            </div>
+            <div class="flex flex-col mt-1  justify-content-end" style="column-gap: 10px">
+                <p-button label="Back" icon="pi pi-step-backward" styleClass="p-button-warning" *ngIf="currentStepIndex > 0" (click)="prev()">
+                </p-button>
+                <p-button label="Next" *ngIf="currentStepIndex < 2" [disabled]="!ppoId" icon="pi pi-step-forward"
+                    styleClass="p-button-success" (click)="next()">
+                </p-button>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div class="col-12">
+            <div class="card" *ngIf="viewMode">
+                <div class="flex flex-column  ppo-container">
                     <p-fieldset legend="All PPO" class="line-height-3 m-0">
                         <!-- Responsive Search Input and Button -->
                         <div class="relative mb-2 search-button-container">
                             <!-- Search Input -->
                             <div class="search-input">
                                 <span class="p-float-label">
-                                    <input
-                                        [(ngModel)]="ppoSearchField"
-                                        id="inputtext"
-                                        pInputText
-                                        (ngModelChange)="search()"
-                                    />
+                                    <input [(ngModel)]="ppoSearchField" id="inputtext" pInputText
+                                        (ngModelChange)="search()" />
                                     <label for="inputtext">Search</label>
                                 </span>
                             </div>
 
                             <!-- Search Button -->
-                            <button
-                                label="Search"
-                                pButton
-                                icon="pi pi-search"
-                                class="p-button-secondary"
-                                (click)="toggleTableVisibility()"
-                            ></button>
+                            <button label="Search" pButton icon="pi pi-search" class="p-button-secondary"
+                                (click)="toggleTableVisibility()"></button>
                             <div style="margin: 10px;"></div>
                             <!-- Add New PPO Button -->
                             <div class="add-button">
-                                <button
-                                    label="Add New PPO"
-                                    pButton
-                                    pRipple
-                                    icon="pi pi-plus"
-                                    (click)="addNewEntry()"
-                                ></button>
+                                <button label="Add New PPO" pButton pRipple icon="pi pi-plus"
+                                    (click)="addNewEntry()"></button>
                             </div>
                         </div>
 
                         <!-- Table Container with Scroll -->
                         <div class="table-wrapper" *ngIf="tableVisible">
-                            <p-table
-                                [value]="data.data"
-                                selectionMode="single"
-                                [scrollable]="true"
-                                [loading]="isLoading"
-                            >
+                            <p-table [value]="data.data" selectionMode="single" [scrollable]="true"
+                                [loading]="isLoading">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th *ngFor="let col of cols">
@@ -124,12 +77,8 @@
                                             {{ record[col.field] }}
                                         </td>
                                         <td>
-                                            <p-button
-                                                label="Edit"
-                                                icon="pi pi-pencil"
-                                                class="p-button-text"
-                                                (click)="editThisRecord(record)"
-                                            ></p-button>
+                                            <p-button label="Edit" icon="pi pi-pencil" class="p-button-text"
+                                                (click)="editThisRecord(record)"></p-button>
                                         </td>
                                     </tr>
                                 </ng-template>

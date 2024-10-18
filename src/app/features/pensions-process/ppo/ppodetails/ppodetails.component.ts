@@ -1,19 +1,19 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { firstValueFrom, Observable, tap, catchError, EMPTY } from 'rxjs';
-import { PensionPPODetailsService } from 'src/app/api';
+import { APIResponseStatus, PensionPPODetailsService } from 'src/app/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 // Define the interface for the records
 interface PPORecord {
-  [key: string]: any;
+    [key: string]: any;
 }
 
 // Define the interface for the data
 interface PPOData {
-  headers: Array<{ fieldName: string; name: string }>;
-  data: PPORecord[];
+    headers: Array<{ fieldName: string; name: string }>;
+    data: PPORecord[];
 }
 
 @Component({
@@ -39,7 +39,6 @@ export class PpodetailsComponent implements OnDestroy {
     isLoading = false;
     tableVisible = false;
 
-    // component data
     ppoId?: any;
     pensionerName?: string;
     lastPathSegment: string | null = null;  // Change type to include null
@@ -48,12 +47,12 @@ export class PpodetailsComponent implements OnDestroy {
     pathOb: any;
 
     constructor(
-    private toastService: ToastService,
-    private ppoDetialsService: PensionPPODetailsService,
-    private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
+        private toastService: ToastService,
+        private ppoDetialsService: PensionPPODetailsService,
+        private cdr: ChangeDetectorRef,
+        private route: ActivatedRoute,
+        private router: Router,
+        private location: Location
     ) {
         this.detectRoutes();
     }
@@ -72,7 +71,7 @@ export class PpodetailsComponent implements OnDestroy {
     }
 
     detectRoutes(): void {
-    // Subscribe to route paramMap to get the ppoId
+        // Subscribe to route paramMap to get the ppoId
         this.routeOb = this.route.paramMap.subscribe(params => {
             const routePpoId = params.get('ppoId');
             if (routePpoId) {
@@ -80,35 +79,19 @@ export class PpodetailsComponent implements OnDestroy {
                 this.viewChange(false);
             }
         });
-
         this.loadById();
         // Subscribe to router events to get the current URL and extract the last segment
-        this.pathOb =  this.router.events.subscribe(event => {
+        this.pathOb = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
-                this.lastPathSegment = this.getLastPathSegment(event.urlAfterRedirects);
+                const stepParam = this.route.snapshot.queryParamMap.get('step'); // Get 'step' query param
+                const lastSegment = this.route.snapshot.url.slice(-1)[0].path;
 
-                switch (this.lastPathSegment?.split('?')[0]) {
-                case 'bank-account':
-                    this.currentStepIndex = 1;
-                    break;
-                case 'new':
-                    this.newPPOEntry();
-                    break;
-                case 'edit':
-                    this.cdr.detectChanges();
-                    break;
-                case 'step':
-                    this.currentStepIndex = Number(this.route.snapshot.paramMap.get('stepNo'))-1;
-                    this.viewChange(false);
-                    break;
-                default:
-                    break;
-                }
+                if (lastSegment === 'new') { this.newPPOEntry(); return };
             }
         });
     }
 
-    async loadById(){
+    async loadById() {
         if (this.ppoId) {
             await firstValueFrom(this.ppoDetialsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
                 tap(
@@ -125,9 +108,42 @@ export class PpodetailsComponent implements OnDestroy {
         }
     }
 
-    // ngOnInit(): void {
-    //     this.loadPPOData();
-    // }
+    ngOnInit(): void {
+        // Extract `ppoId` from the route params if needed
+        this.ppoId = Number(this.route.snapshot.paramMap.get('ppoId'));
+
+        // Read the `step` query parameter and set the current step index.
+        const stepParam = this.route.snapshot.queryParamMap.get('step');
+        this.currentStepIndex = stepParam ? parseInt(stepParam, 10) : 0;
+
+        console.log(`Initialized at step ${this.currentStepIndex}`);
+    }
+
+    next(): void {
+        if (!this.ppoId) {
+            console.warn('PPO ID is missing. Cannot proceed to the next step.');
+            return;
+        }
+
+        const nextStep = this.currentStepIndex + 1;
+        const maxStep = 3; // Adjust as needed.
+
+        if (nextStep > maxStep) {
+            console.log('All steps completed.');
+            return;
+        }
+
+        // Navigate to the next step.
+        this.router.navigate(
+            ['pension-process/ppo', this.ppoId, 'edit'],
+            { queryParams: { step: nextStep } }
+        ).then(() => {
+            this.currentStepIndex = nextStep;
+            console.log(`Navigated to step ${nextStep}`);
+        }).catch((error) => {
+            console.error('Navigation error:', error);
+        });
+    }
 
     private getLastPathSegment(url: string): string | null {
         const segments = url.split('/').filter(segment => segment.length > 0);
@@ -136,7 +152,6 @@ export class PpodetailsComponent implements OnDestroy {
 
     private async loadPPOData(): Promise<void> {
         this.isLoading = true;
-
         try {
             let payload = {
                 pageSize: 10,
@@ -176,44 +191,31 @@ export class PpodetailsComponent implements OnDestroy {
         return EMPTY;
     }
 
-    next(): void {
+    prev(): void {
         if (!this.ppoId) {
+            console.warn('PPO ID is missing. Cannot go to the previous step.');
             return;
         }
-        switch(this.currentStepIndex){
-        case 0:
-            this.currentStepIndex=1;
-            this.router.navigate(['pension-process/ppo/entry',this.ppoId,'bank-account']);
-            break;
-        case 1:
-            this.currentStepIndex=2;
-            break;
-        case 2:
-            this.currentStepIndex=3;
-            break;
-        case 3:
-            this.currentStepIndex=0;
-            break;
-        default:
-            this.currentStepIndex=0;
-            this.viewChange(true);
-            break;
+
+        const previousStep = this.currentStepIndex - 1;
+
+        if (previousStep >= 0) {
+            // Update the step and navigate to the previous step.
+            this.currentStepIndex = previousStep;
+            this.router.navigate(
+                ['pension-process/ppo', this.ppoId, 'edit'],
+                { queryParams: { step: previousStep } }
+            ).then(() => {
+                console.log(`Navigated to step ${previousStep}`);
+                this.currentStepIndex = previousStep;
+            }).catch((error) => {
+                console.error('Navigation error:', error);
+            });
+        } else {
+            console.log('Already at the first step');
         }
     }
 
-    prev(): void {
-        if(this.ppoId){
-            this.router.navigate(['pension-process/ppo/entry',this.ppoId,'edit']);
-        }
-        else{
-            this.location.back()
-        }
-        if (this.currentStepIndex > 0) {
-            this.currentStepIndex--;
-        } else {
-            this.viewMode = true;
-        }
-    }
 
     viewChange(state: boolean): void {
         if (state) {
@@ -229,7 +231,7 @@ export class PpodetailsComponent implements OnDestroy {
         this.cdr.detectChanges();
     }
 
-    addNewEntry(){
+    addNewEntry() {
         this.router.navigate(['pension-process/ppo/entry/new']);
     }
 
@@ -257,18 +259,29 @@ export class PpodetailsComponent implements OnDestroy {
     }
 
     editThisRecord(record: PPORecord): void {
+        const currentStep = this.currentStepIndex;
+        const nextStep = currentStep + 1;
+        const maxStep = 3; // Adjust as needed
+        if (nextStep > maxStep) {
+            console.log('All steps completed');
+            return;
+        }
         if (record['ppoId']) {
-            this.router.navigate(['pension-process/ppo/entry',record['ppoId'],'edit']);
+            this.router.navigate(['pension-process/ppo', record['ppoId'], 'edit'], {
+                queryParams: { step: 0 }
+            });
         }
     }
+
+    // get data using ppoid
+
+
 
     setPpoId(id: any) {
         if (id) {
             this.ppoId = id[0];
             this.pensionerName = id[1];
             this.cdr.detectChanges();
-            // Optionally navigate to the next step
-            // this.next();
         }
     }
 }

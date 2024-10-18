@@ -29,8 +29,9 @@ import {
 } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PensionFactoryService } from 'src/app/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ppid } from 'process';
 @Component({
     selector: 'app-details',
     templateUrl: './details.component.html',
@@ -59,6 +60,8 @@ export class DetailsComponent implements OnInit, OnChanges {
     returnUri: string | null = null;
     saveButton: boolean = false;
 
+    isInputshow: boolean = false;
+
     constructor(
         private fb: FormBuilder,
         private PensionManualPPOReceiptService: PensionManualPPOReceiptService,
@@ -67,7 +70,8 @@ export class DetailsComponent implements OnInit, OnChanges {
         private tostService: ToastService,
         private factoryService: PensionFactoryService,
         private pensionBankBranchService: PensionBankBranchService,
-        private router: Router
+        private router: Router,
+        private route: ActivatedRoute
     ) {
         this.ininalizer();
         this.religionOptions = [
@@ -94,6 +98,16 @@ export class DetailsComponent implements OnInit, OnChanges {
         if (!environment.production && !this.ppoId) {
             await this.factory();
         }
+
+        this.route.paramMap.subscribe(params => {
+            this.ppoId = params.get('ppoId') || undefined; // Get ppoId from the route parameters
+            console.log('Extracted PPO ID:', this.ppoId); // Log the extracted PPO ID
+            if (this.ppoId) {
+                const ppoidNumber = Number(this.ppoId);
+                this.getData(ppoidNumber)
+            }
+        });
+
     }
 
     async getFakePensionerData(ppoReceipt: ListAllPpoReceiptsResponseDTO) {
@@ -138,11 +152,9 @@ export class DetailsComponent implements OnInit, OnChanges {
                         }).then((result) => {
                             /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                this.router.navigate(["ppo/ppo-receipt"], {
-                                    queryParams: { returnUri: 'ppo/entry/new' }
-                                });
-                            }else{
-                                this.router.navigate(["ppo/entry"]);
+                                this.router.navigate(["pension-process/ppo/ppo-receipt/new"]);
+                            } else {
+                                this.router.navigate(["pension-process/ppo/entry"]);
                             }
                         });
                         return;
@@ -184,6 +196,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
+            Id: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoId: [null, []],
             pensionerName: [
@@ -212,7 +225,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
-            effectFrom : [null, []],
+            effectFrom: [null, []],
             uptoDate: [null, []],
             reducedPensionAmount: [
                 null,
@@ -451,11 +464,16 @@ export class DetailsComponent implements OnInit, OnChanges {
                                     if (res.message) {
                                         this.tostService.showSuccess(
                                             res.message
-                                        );
+                                        )
+                                        console.log("ppo id", this.ppoId)
+                                        this.router.navigate(['pension-process/ppo', res.result?.ppoId, 'edit'], {
+                                            queryParams: { step: 0 }});
                                     }
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);
+                                        const id = String(res.result.id);
                                         this.ppoFormDetails.controls['ppoId'].setValue(this.ppoId);
+                                        this.ppoFormDetails.controls['Id'].setValue(id);
                                         this.pensionerName = String(
                                             res.result.pensionerName
                                         );
@@ -486,7 +504,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 ).pipe(
                     tap(
                         (res) => {
-                            if (res.apiResponseStatus == "Success") {
+                            if (res.apiResponseStatus == "Success") { /// tor id gulo ki ki bol?
                                 if (res.message) {
                                     this.tostService.showSuccess(res.message);
                                 }
@@ -512,6 +530,9 @@ export class DetailsComponent implements OnInit, OnChanges {
     // handelManualEntrySelectRow
     handelManualEntrySelect($event: any) {
         this.ppoFormDetails.controls['receiptId'].setValue($event.id);
+        if ($event.treasuryReceiptNo == null) {
+            this.isInputshow = true;
+        }
         this.ppoFormDetails.controls['pensionerName'].setValue(
             $event.pensionerName
         );
@@ -658,12 +679,12 @@ export class DetailsComponent implements OnInit, OnChanges {
     }
 
     // fetchAll cat dep
-    async   setCat(){
+    async setCat() {
         if (this.ppoFormDetails.get('categoryId')?.value) {
             await firstValueFrom(
                 this.ppoCategoryService.getCategoryById(this.ppoFormDetails.get('categoryId')?.value).pipe(
                     tap(
-                        res =>{
+                        res => {
                             if (res.result) {
                                 this.handelCategoryDescription(res.result)
                             }
@@ -674,5 +695,53 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
     }
 
+
+    async getData(ppoID: number) {
+        console.log(ppoID);
+        if (ppoID != null) {
+            console.log(ppoID);
+
+            const response = await firstValueFrom(
+                this.PensionPPODetailsService.getPensionerByPpoId(ppoID));
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
+                console.log(response.result);
+                this.ppoFormDetails.patchValue({
+                    Id: response.result?.id,
+                    // receiptId: response.result?.receipt?.treasuryReceiptNo,
+                    ppoId: response.result?.ppoId,
+                    ppoNo: response.result?.ppoNo,
+                    pensionerName: response.result?.pensionerName,
+                    ppoType: response.result?.ppoType,
+                    ppoSubType: response.result?.ppoSubType,
+                    dateOfBirth: response.result?.dateOfBirth,
+                    categoryId: response.result?.categoryId,
+                    dateOfCommencement: response.result?.dateOfCommencement,
+                    basicPensionAmount: response.result?.basicPensionAmount,
+                    commutedPensionAmount: response.result?.commutedPensionAmount,
+                    reducedPensionAmount: response.result?.reducedPensionAmount,
+                    aadhaarNo: response.result?.aadhaarNo,
+                    mobileNumber: response.result?.mobileNumber,
+                    panNo: response.result?.panNo,
+                    gender: response.result?.gender,
+                    religion: response.result?.religion,
+                    emailId: response.result?.emailId,
+                    identificationMark: response.result?.identificationMark,
+                    enhancePensionAmount: response.result?.enhancePensionAmount,
+                    pensionerAddress: response.result?.pensionerAddress,
+                    retirementDate: response.result?.dateOfRetirement,
+                    // subCatDesc: response.result.
+                    categoryIdShow: response.result?.categoryId,
+                    categoryDescription: response.result?.category?.categoryName,
+                    // effectiveDate: response.result.e
+                    payMode: response.result?.payMode,
+                    bankAcNo: response.result?.bankAcNo,
+                    accountHolderName: response.result?.accountHolderName,
+                    ifscCode: response.result?.branch?.ifscCode,
+                    bank: response.result?.bankId,
+                    bankBranch: response.result?.branch?.branchName
+                })
+            }
+        }
+    }
 
 }

@@ -17,6 +17,8 @@ import { PpoReceiptComponent } from './ppo-receipt/ppo-receipt.component';
 import { PpoReceiptModule } from './ppo-receipt/ppo-receipt.module';
 import { LifeCertificateComponent } from './life-certificate/life-certificate.component';
 import { LifeCertificateModule } from './life-certificate/life-certificate.module';
+import { DetailsComponent } from './ppodetails/details/details.component';
+import { PpodetailsComponent } from './ppodetails/ppodetails.component';
 const routes: Routes = [
     {
         path: '', component: PpoComponent, data: {breadcrumb: 'PpoComponent'}
@@ -25,6 +27,10 @@ const routes: Routes = [
         path: 'entry',
         loadChildren: () => import('./ppodetails/ppodetails.module').then(m => m.PpodetailsModule),
         data: {breadcrumb: 'PpodetailsModule'}
+    },
+    {
+        path: ':ppoId/edit', // Define the nested route here
+        component: PpodetailsComponent,
     },
     {
         path: 'ppo-receipt',

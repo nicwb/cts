@@ -28,6 +28,7 @@ import { SanctionModule } from './sanction/sanction.module';
 import { FamilyNomineeModule } from './family-nominee/family-nominee.module';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { TableModule } from 'primeng/table';
+import { DividerModule } from 'primeng/divider';
 // md - 50
 // import { FloatLabe } ;
 
@@ -36,8 +37,11 @@ const routes: Routes = [
         path: '',
         component: PpodetailsComponent,
         data: {breadcrumb: 'PpodetailsComponent'}
-
-
+    },
+    {
+        path: 'new',
+        component: PpodetailsComponent,
+        data: {breadcrumb: 'PpodetailsComponent'}
     },
     {
         path: ':ppoId/bank-account',
@@ -45,7 +49,7 @@ const routes: Routes = [
         data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
     },
     {
-        path: 'new',
+        path: 'step/:step',
         component: PpodetailsComponent,
         data: { breadcrumb: 'PpodetailsComponent' }
     },
@@ -70,6 +74,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         SanctionModule,
+        DividerModule,
         ButtonModule,
         ReactiveFormsModule,
         DynamicTableModule,
