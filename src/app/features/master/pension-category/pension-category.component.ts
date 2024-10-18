@@ -19,7 +19,8 @@ import { PensionCategoryDetails } from 'src/app/core/models/pension-category-det
 import { Observable, filter, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { pathToFileURL } from 'url';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
+import { SessionStorageService } from 'src/app/core/services/session-storage.service'
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -68,8 +69,9 @@ export class PensionCategoryComponent implements OnInit {
         private service: PensionCategoryMasterService,
         private router: Router,
         private route: ActivatedRoute,
-        private location: Location
-    ) {}
+        private location: Location,
+        private sessionStorageService: SessionStorageService
+    ) { }
 
     @Output() PensionCategorySelected = new EventEmitter<any>();
 
@@ -77,12 +79,12 @@ export class PensionCategoryComponent implements OnInit {
     ngOnInit(): void {
         this.initializeForm();
         this.tableQueryParameters = {
-            pageSize: 10,
+            pageSize: 100,
             pageIndex: 0,
         };
         this.check_for_data();
         const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
-        if(endpoint == 'pension-category/new'){
+        if (endpoint == 'pension-category/new') {
             this.showInsertDialog();
         }
     }
@@ -341,7 +343,7 @@ export class PensionCategoryComponent implements OnInit {
             let response = await firstValueFrom(
                 this.service.createCategory(formData)
             );
-            if (response.apiResponseStatus===APIResponseStatus.Success) {
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
                 this.toastService.showSuccess(
                     'Pension Category Details added successfully'
@@ -463,7 +465,7 @@ export class PensionCategoryComponent implements OnInit {
         } else {
             this.toastService.showError(
                 response.message ||
-                    'An unexpected error occurred. Please try again.'
+                'An unexpected error occurred. Please try again.'
             );
         }
     }
@@ -487,99 +489,78 @@ export class PensionCategoryComponent implements OnInit {
     }
 
     // get id from  primary
-    async get_id_from_primary_category() {
-        const cacheKey = 'primaryCategoryData';
-        const cacheExpiryKey = 'primaryCategoryExpiry';
-        const cachedData = sessionStorage.getItem(cacheKey);
-        const cacheExpiry = sessionStorage.getItem(cacheExpiryKey);
-        const currentTime = new Date().getTime();
+    async get_id_from_primary_category(): Promise<void> {
+        try {
+            this.isTableDataLoading = true; // Start loading state
 
-        // Check if cached data is still valid (within 10 minutes)
-        if (cachedData && cacheExpiry && currentTime < Number(cacheExpiry)) {
-            // Use the cached data
-            const value = JSON.parse(cachedData);
-            this.populatePrimaryIdSelect(value);
-            this.primary_table = true;
-            return;
-        }
+            const primaryCategoryData = await this.sessionStorageService.cacheWithExpiry(
+                this,
+                async () => {
+                    const data = this.tableQueryParameters;
+                    const response = await firstValueFrom(this.service.getAllPrimaryCategories(data));
 
-        // If no valid cache, make the API call
-        let data = this.tableQueryParameters;
-        data.pageSize = 10;
-        let response = await firstValueFrom(this.service.getAllPrimaryCategories(data));
-        this.isTableDataLoading = false;
+                    if (response.result && response.result.data) {
+                        return response.result.data; // Return fetched data
+                    } else {
+                        throw new Error('Invalid response from API'); // Handle invalid response
+                    }
+                },
+                'primaryCategories' // Optional suffix for cache key
+            );
 
-        if (response.result && response.result.data) {
-            let value = response.result.data;
-            // Store the response in sessionStorage with a 10-minute expiry
-            sessionStorage.setItem(cacheKey, JSON.stringify(value));
-            sessionStorage.setItem(cacheExpiryKey, (currentTime + 10 * 60 * 1000).toString());
+            // Populate select options with fetched data
+            this.populatePrimaryIdSelect(primaryCategoryData);
 
-            this.populatePrimaryIdSelect(value);
-            this.primary_table = true;
-        } else {
-            console.error('Invalid response from API');
+        } catch (error) {
+            console.error('Error fetching primary categories:', error); // Log errors
+
+        } finally {
+            this.isTableDataLoading = false; // Ensure loading state resets
         }
     }
 
-    populatePrimaryIdSelect(value: any[]) {
-        let len_val = value.length;
-        this.primary_id_select = [];
-        for (let i = 0; i < len_val; i++) {
-            this.primary_id_select.push({
-                label: `${value[i].id}-${value[i].primaryCategoryName}`,
-                value: value[i].id,
-            });
-        }
+    populatePrimaryIdSelect(categories: any[]): void {
+        this.primary_id_select = categories.map(category => ({
+            label: `${category.id}-${category.primaryCategoryName}`,
+            value: category.id,
+        }));
     }
 
-    // get id from  sub
-    async get_id_from_sub_category() {
-        const cacheKey = 'subCategoryData';
-        const cacheExpiryKey = 'subCategoryExpiry';
-        const cachedData = sessionStorage.getItem(cacheKey);
-        const cacheExpiry = sessionStorage.getItem(cacheExpiryKey);
-        const currentTime = new Date().getTime();
 
-        // Check if cached data is still valid (within 10 minutes)
-        if (cachedData && cacheExpiry && currentTime < Number(cacheExpiry)) {
-            // Use the cached data
-            const value = JSON.parse(cachedData);
-            this.populateSubIdSelect(value);
-            this.sub_table = true;
-            return;
-        }
+    async get_id_from_sub_category(): Promise<void> {
+        try {
+            this.isTableDataLoading = true; // Set loading state to true
 
-        // If no valid cache, make the API call
-        let data = this.tableQueryParameters;
-        data.pageSize = 10;
-        let response = await firstValueFrom(this.service.getAllSubCategories(data));
-        this.isTableDataLoading = false;
+            const subCategoryData = await this.sessionStorageService.cacheWithExpiry(
+                this,
+                async () => {
+                    const data = this.tableQueryParameters;
+                    const response = await firstValueFrom(this.service.getAllSubCategories(data));
 
-        if (response.result && response.result.data) {
-            let value = response.result.data;
-            // Store the response in sessionStorage with a 10-minute expiry
-            sessionStorage.setItem(cacheKey, JSON.stringify(value));
-            sessionStorage.setItem(cacheExpiryKey, (currentTime + 10 * 60 * 1000).toString());
+                    if (response.result && response.result.data) {
+                        return response.result.data; // Return valid data
+                    } else {
+                        throw new Error('Invalid response from API'); // Handle invalid response
+                    }
+                },
+                'subCategoryCacheKey' // Optional custom cache key
+            );
 
-            this.populateSubIdSelect(value);
-            this.sub_table = true;
-        } else {
-            console.error('Invalid response from API');
+            this.populateSubIdSelect(subCategoryData); // Populate select options
+            this.sub_table = true; // Show the table
+
+        } catch (error) {
+            console.error('Error fetching sub-category data:', error); // Log the error
+        } finally {
+            this.isTableDataLoading = false; // Reset loading state
         }
     }
-
-    populateSubIdSelect(value: any[]) {
-        let len_val = value.length;
-        this.sub_id_select = [];
-        for (let i = 0; i < len_val; i++) {
-            this.sub_id_select.push({
-                label: `${value[i].id}-${value[i].subCategoryName}`,
-                value: value[i].id,
-            });
-        }
+    populateSubIdSelect(value: any[]): void {
+        this.sub_id_select = value.map(item => ({
+            label: `${item.id}-${item.subCategoryName}`,
+            value: item.id,
+        }));
     }
-
 
     async findById(id: any) {
         let payload = this.tableQueryParameters;
@@ -653,6 +634,7 @@ export class PensionCategoryComponent implements OnInit {
     cancelPensionCategory() {
         this.PensionForm.reset();
         this.displayInsertModal = false;
+        this.onDialogClose()
     }
 
     getDialogHeight(): string {
@@ -665,12 +647,17 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
 
-    createpensioncategory(){
+    createpensioncategory() {
         //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
         this.router.navigate(['/master/pension-category/new']);
 
     }
-    onDialogClose(){
-        this.location.back();
+    onDialogClose() {
+        if (this.router.url === '/master/pension-category/new') {
+            this.router.navigate(['/master/pension-category']);  // Go back if already on the intended route.
+        } else {
+            this.router.navigate(['/master/pension-category/new']);  // Navigate if not on the route.
+        }
     }
+
 }
