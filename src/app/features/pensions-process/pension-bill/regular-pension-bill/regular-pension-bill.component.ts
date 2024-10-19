@@ -78,8 +78,6 @@ export class RegularPensionBillComponent implements OnInit {
                 const month = formValue.months.id;
 
                 const response = await firstValueFrom(this.pensionRegularBillService.getAllPposForRegularBill(year, month));
-                console.log('Fetched PPOs:', response); // Debugging line
-
                 if (response?.result?.ppoList) {
                     this.ppoList = response.result.ppoList;
                     this.ppoCount = this.ppoList.length;
@@ -131,8 +129,8 @@ export class RegularPensionBillComponent implements OnInit {
 
                     const ppoBillEntryDTO: PpoBillEntryDTO = {
                         ppoId: ppo.ppoId,
-                        month: this.billPrintForm.controls['months'].value,
-                        year: this.billPrintForm.controls['year'].value,
+                        month: this.billPrintForm.controls['months'].value.id, // Extracting the id
+                        year: this.billPrintForm.controls['year'].value.getFullYear(), // Ensure it's a number
                         toDate: new Date().toISOString().split('T')[0]
                     };
 
