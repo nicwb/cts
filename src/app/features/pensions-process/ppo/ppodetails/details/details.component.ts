@@ -59,6 +59,8 @@ export class DetailsComponent implements OnInit, OnChanges {
     returnUri: string | null = null;
     saveButton: boolean = false;
 
+    isInputshow: boolean = false;
+
     constructor(
         private fb: FormBuilder,
         private PensionManualPPOReceiptService: PensionManualPPOReceiptService,
@@ -486,7 +488,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 ).pipe(
                     tap(
                         (res) => {
-                            if (res.apiResponseStatus == "Success") {
+                            if (res.apiResponseStatus == "Success") { /// tor id gulo ki ki bol?
                                 if (res.message) {
                                     this.tostService.showSuccess(res.message);
                                 }
@@ -512,6 +514,9 @@ export class DetailsComponent implements OnInit, OnChanges {
     // handelManualEntrySelectRow
     handelManualEntrySelect($event: any) {
         this.ppoFormDetails.controls['receiptId'].setValue($event.id);
+        if($event.treasuryReceiptNo == null){
+            this.isInputshow = true;
+        }
         this.ppoFormDetails.controls['pensionerName'].setValue(
             $event.pensionerName
         );
