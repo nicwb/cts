@@ -49,19 +49,18 @@
                 </p-divider>
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-2">
-                        <label><b>PPO No. :</b></label>
-                        <input class="w-full p-3 border-inherit" type="text" pInputText formControlName="ppoNo"
-                            class="w-full p-2 bg-cyan-100" />
+                        <label><b>PPO ID</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText formControlName="ppoId"  class="w-full p-2 bg-cyan-100"  [readonly]="true" >
                     </div>
                     <div class="field col-12 md:col-2">
                         <label><b>PPO No. :</b></label>
-                        <input class="w-full p-3 border-inherit" type="text" pInputText formControlName="ppoNo"
+                        <input class="w-full p-3 border-inherit bg-cyan-100" type="text" pInputText formControlName="ppoNo" [readonly]="true"
                             class="w-full p-2 bg-cyan-100" />
                     </div>
                     <div class="field col-12 md:col-2">
                         <label><b>Pensioner Name :</b></label>
-                        <input class="w-full p-2 border-inherit" id="pensionerName" type="text" pInputText
-                            formControlName="pensionerName" class="w-full p-2 " />
+                        <input class="w-full p-2 border-inherit bg-cyan-100" id="pensionerName" type="text" pInputText
+                            formControlName="pensionerName" bg-cyan-100class="w-full p-2 " [readonly]="true"/>
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="type"><b>Type :</b></label>
@@ -120,7 +119,7 @@
                     <div class="field col-12 md:col-3">
                         <label for="dateOfCommencement"><b>Commencement Date :</b></label>
                         <p-calendar formControlName="dateOfCommencement" dateFormat="dd-mm-yy"
-                            [showIcon]="true"></p-calendar>
+                            [showIcon]="true" [disabled]="true" class=" bg-cyan-100"></p-calendar>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label for="effectiveDate"><b>Effective Date :</b></label>
@@ -226,7 +225,7 @@
                     <div class="field col-12 md:col-3">
                         <label for="pensionerAddress"><b>Address :</b></label>
                         <input class="w-full p-3 border-inherit" pInputText formControlName="pensionerAddress"
-                            class="w-full p-2" />
+                            class="w-full p-2" [readonly]="isInputshow"/>
                     </div>
 
                     <div class="field col-12 md:col-3">
@@ -256,8 +255,8 @@
 
                     <div class="field col-12 md:col-3">
                         <label for="mobileNumber"><b>Mobile No. :</b></label>
-                        <input class="w-full p-2 border-inherit" pInputText formControlName="mobileNumber"
-                            class="w-full p-2" />
+                        <input class="w-full p-2 border-inheri" pInputText formControlName="mobileNumber"
+                            class="w-full p-2  bg-cyan-100" [readonly]="true"/>
                     </div>
 
                     <div class="field col-12 md:col-2">
