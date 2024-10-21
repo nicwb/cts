@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { BillPrintService } from 'src/app/core/services/bill-print/bill-print.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -22,6 +22,7 @@ export class RegularPensionBillPrintComponent implements OnInit {
     banks: any = [];
     categoryCode: any = [];
     categoryComponent$?: Observable<any>;
+    selectedBranchIds: number[] = [];
 
 
     constructor(private fb: FormBuilder, private toastService: ToastService, private billPrintService: BillPrintService ,private fileGeneration: FileGenerationBillPrintService, private pensionRegularBillService: PensionRegularBillService, private bankService: PensionBankBranchService, private categoryService: PensionCategoryMasterService) {
@@ -62,7 +63,8 @@ export class RegularPensionBillPrintComponent implements OnInit {
             months: [currentMonth, Validators.required],
             year: [new Date(), Validators.required],
             bank: [''],
-            category: ['']
+            category: [''],
+            selectedBranches: [[], Validators.required]
         });
 
         this.categoryComponent$ = this.categoryService.getAllCategories(payload);
@@ -73,37 +75,56 @@ export class RegularPensionBillPrintComponent implements OnInit {
     }
 
     applyChoiceValidators(): void {
-        this.BillPrintForm.get('choices')?.valueChanges.pipe(
-            tap(async (choice) => {
-                // Reset the form control validations based on the choice
-                const bankControl = this.BillPrintForm.get('bank');
-                const categoryControl = this.BillPrintForm.get('category');
+        const choicesControl = this.BillPrintForm.get('choices');
+        const bankControl = this.BillPrintForm.get('bank');
+        const categoryControl = this.BillPrintForm.get('category');
+        const selectedBranchesControl = this.BillPrintForm.get('selectedBranches');
 
-                if (choice === 'specificBackAllCategory' || choice === 'specificBankSpecificCategory') {
-                    // Enable and make bank required
-                    bankControl?.setValidators([Validators.required]);
-                    bankControl?.enable();
-                } else {
-                    // Disable and clear validators for bank
+        if (choicesControl) {
+            firstValueFrom(choicesControl.valueChanges.pipe(
+                tap(async (choice) => {
                     bankControl?.clearValidators();
-                    bankControl?.disable();
-                }
-
-                if (choice === 'allBankSpecificCategory' || choice === 'specificBankSpecificCategory') {
-                    // Enable and make category required
-                    categoryControl?.setValidators([Validators.required]);
-                    categoryControl?.enable();
-                } else {
-                    // Disable and clear validators for category
                     categoryControl?.clearValidators();
-                    categoryControl?.disable();
-                }
 
-                bankControl?.updateValueAndValidity();
-                categoryControl?.updateValueAndValidity();
-            })
-        ).toPromise(); // Use firstValueFrom-like behavior by converting to Promise
+                    // Reset selected branches control value
+                    this.BillPrintForm.patchValue({ selectedBranches: [] });
+
+                    if (choice === 'specificBackAllCategory' || choice === 'specificBankSpecificCategory') {
+                        bankControl?.setValidators([Validators.required]);
+                        bankControl?.enable();
+                    } else {
+                        bankControl?.disable();
+                    }
+
+                    if (choice === 'allBankSpecificCategory' || choice === 'specificBankSpecificCategory') {
+                        categoryControl?.setValidators([Validators.required]);
+                        categoryControl?.enable();
+                    } else {
+                        categoryControl?.disable();
+                    }
+
+                    if (choice === 'specificBranchOrBranches') {
+                        bankControl?.setValidators([Validators.required]);
+                        bankControl?.enable();
+                        selectedBranchesControl?.setValidators([Validators.required, Validators.minLength(1)]);
+                        selectedBranchesControl?.enable();
+                    } else {
+                        selectedBranchesControl?.disable();
+                        selectedBranchesControl?.clearValidators(); // Clear validators if not needed
+                    }
+
+                    bankControl?.updateValueAndValidity();
+                    categoryControl?.updateValueAndValidity();
+                    selectedBranchesControl?.updateValueAndValidity();
+                    this.BillPrintForm.updateValueAndValidity();
+                })
+            )).catch(error => {
+                console.error('Error in applyChoiceValidators:', error);
+                this.toastService.showError('An error occurred while updating form validations');
+            });
+        }
     }
+
 
 
     private getCurrentMonth(): any {
@@ -150,7 +171,51 @@ export class RegularPensionBillPrintComponent implements OnInit {
         }
     }
 
+    onBranchChoiceChange() {
+        // Reset selected branches whenever the choice changes
+        const selectedBranchesControl = this.BillPrintForm.get('selectedBranches') as FormArray;
+        selectedBranchesControl.clear();
+    }
 
+    onChangeBankForBranches(event: any) {
+        if (event.value) {
+            const selectedBankId = event.value.value.id; // Assuming the bank value has an 'id'
+            this.fetchBranchesByBankId(selectedBankId);
+        } else {
+            this.banksBranch = [];
+        }
+    }
+
+    async fetchBranchesByBankId(bankId: number) {
+        try {
+            const response = await firstValueFrom(this.bankService.getBranchesByBankId(bankId));
+            if (response.result && response.result.branches) {
+                this.banksBranch = response.result.branches;
+            } else {
+                this.toastService.showWarning('No bank branches found');
+            }
+        } catch (error) {
+            console.error('Error fetching branches:', error);
+            this.toastService.showError('Error fetching branches');
+        }
+    }
+
+
+    onBranchSelect(branch: BranchResponseDTO, isChecked: boolean) {
+        const selectedBranchesControl = this.BillPrintForm.get('selectedBranches') as FormArray;
+
+        if (isChecked) {
+            selectedBranchesControl.push(new FormControl(branch.id)); // Add selected branch ID
+        } else {
+            const index = selectedBranchesControl.controls.findIndex(x => x.value === branch.id);
+            if (index >= 0) {
+                selectedBranchesControl.removeAt(index); // Remove unselected branch ID
+            }
+        }
+    }
+    onBranchSelectChange(event: any) {
+        this.selectedBranchIds = event.value; // Update selected branch IDs
+    }
 
     handleCategorySearchEvent(event: any) {
         this.BillPrintForm.controls['category'].setValue(event.categoryName);
@@ -177,7 +242,7 @@ export class RegularPensionBillPrintComponent implements OnInit {
         }
     }
 
-    onGenerate(generation: string) {
+    async onGenerate(generation: string) {
         if (this.BillPrintForm.valid) {
             const formValue = this.BillPrintForm.value;
             const year = formValue.year.getFullYear();
@@ -204,11 +269,20 @@ export class RegularPensionBillPrintComponent implements OnInit {
                 case 'specificBankSpecificCategory':
                     this.generateSpecificBankSpecificCategoryReport(year, month, formValue.bank.value.code, this.categoryCode, selectedMonth, isAllBank, isAllCategory);
                     break;
+                case 'specificBranchOrBranches':
+                    const selectedBranchIds = formValue.selectedBranches;
+                    if (selectedBranchIds.length === 0) {
+                        this.toastService.showWarning('Please select at least one branch.');
+                        return;
+                    }
+                    await this.generateReportForSelectedBranches(year, month, selectedBranchIds, selectedMonth);
+                    break;
                 default:
                     throw new Error('Invalid choice selected');
                 }
             } catch (error) {
                 console.error('Error generating report', error);
+                this.toastService.showError('Error generating report');
             } finally {
                 this.loading = false;
             }
@@ -217,7 +291,20 @@ export class RegularPensionBillPrintComponent implements OnInit {
         }
     }
 
-    // Update these methods to include the new parameters
+    private async generateReportForSelectedBranches(year: number, month: number, selectedBranchIds: number[], selectedMonth: string) {
+        try {
+            console.log("The Branch array", selectedBranchIds);
+            //This console log contains an array of branches that are select extract the id for each and then pass to the response
+            //const response = await firstValueFrom(this.pensionRegularBillService.getAllRegularPensionBills(year, month, undefined, undefined, selectedBranchIds));
+            // Call the PDF generation function
+            //this.processBillsAndGeneratePdf(response.result, year, selectedMonth, false, false); // Adjust parameters as necessary
+        } catch (error) {
+            console.error('Error generating report for selected branches:', error);
+            this.toastService.showError('Error generating report for selected branches');
+        }
+    }
+
+
     private async generateAllReport(year: number, month: number, selectedMonth: string, isAllBank: boolean, isAllCategory: boolean) {
         try {
             const response = await firstValueFrom(this.pensionRegularBillService.getAllRegularPensionBills(year, month));
@@ -281,7 +368,9 @@ export class RegularPensionBillPrintComponent implements OnInit {
         const choices = this.BillPrintForm.get('choices')?.value;
         return choices === 'specificBackAllCategory' || choices === 'specificBankSpecificCategory';
     }
-
+    showBankForBranches(): boolean {
+        return this.BillPrintForm.get('choices')?.value === 'specificBranchOrBranches';
+    }
     showCategoryInput(): boolean {
         const choices = this.BillPrintForm.get('choices')?.value;
         return choices === 'allBankSpecificCategory' || choices === 'specificBankSpecificCategory';

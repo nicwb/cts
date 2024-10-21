@@ -27,9 +27,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PensionerStatusModule } from './shared/modules/pensioner-status/pensioner-status.module';
+import { PdfViewerComponent } from './core/services/pdf-viewer/pdf-viewer.component';
+import { DialogService } from 'primeng/dynamicdialog';
 @NgModule({
     declarations: [
-        AppComponent, ServerDownComponent, LoginComponent, NotFoundComponent, StaticLoginComponent,
+        AppComponent, ServerDownComponent, LoginComponent, NotFoundComponent, StaticLoginComponent, PdfViewerComponent,
     ],
     imports: [
         ApiModule,
@@ -65,7 +67,7 @@ import { PensionerStatusModule } from './shared/modules/pensioner-status/pension
             deps: [AuthTokenService, NgxRolesService],
             multi: true
         },
-        MessageService, LoadingIndeterminateService, DatePipe, DividerModule, StepsModule
+        MessageService, LoadingIndeterminateService, DatePipe, DividerModule, StepsModule, DialogService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     bootstrap: [AppComponent]

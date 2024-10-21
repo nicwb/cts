@@ -14,6 +14,7 @@ import { ChipModule } from 'primeng/chip';
 import { ChipsModule } from 'primeng/chips';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DividerModule } from 'primeng/divider';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -54,6 +55,7 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
         ChipsModule,
         ColorPickerModule,
         DialogModule,
+        DynamicDialogModule,
         DividerModule,
         DropdownModule,
         FieldsetModule,
@@ -82,6 +84,7 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
         MhPrimeDynamicTableModule,
         PopupTableModule,
     ],
+    providers: [DialogService],
     exports: [RegularPensionBillPrintComponent]
 })
 export class RegularPensionBillPrintModule { }

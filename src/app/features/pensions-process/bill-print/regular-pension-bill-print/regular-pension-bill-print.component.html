@@ -68,6 +68,15 @@
                                             label="Specific Bank/Specific Category"
                                         ></p-radioButton>
                                     </div>
+                                    <div class="field-radiobutton mb-3">
+                                        <p-radioButton
+                                            name="choices"
+                                            value="specificBranchOrBranches"
+                                            formControlName="choices"
+                                            label="Specific Branch or Branches"
+                                            (onChange)="onBranchChoiceChange()"
+                                        ></p-radioButton>
+                                    </div>
                                 </div>
                                 <p-divider align="left" type="solid">
                                 </p-divider>
@@ -111,8 +120,38 @@
                                                      (return)="handleCategorySearchEvent($event)">
                                     </app-popup-table>
                                 </div>
+                                <!-- Dropdown for bank selection for branches -->
+                                <div *ngIf="showBankForBranches()" class="grid align-items-center mt-2">
+                                    <label for="bank" class="col-12 md:col-2 my-2">Select Bank:</label>
+                                    <div class="col-12 md:col-6">
+                                        <p-dropdown
+                                            [options]="banks"
+                                            optionLabel="label"
+                                            formControlName="bank"
+                                            (onChange)="onChangeBankForBranches($event)"
+                                            placeholder="Select a Bank"
+                                        ></p-dropdown>
+                                    </div>
+                                </div>
 
-
+                                <!-- MultiSelect for branches -->
+                                <div *ngIf="banksBranch && banksBranch.length > 0" class="grid align-items-center mt-2">
+                                    <label class="col-12 md:col-2 my-2">Select Branches:</label>
+                                    <div class="col-12 md:col-6">
+                                        <p-multiSelect
+                                            [options]="banksBranch"
+                                            optionLabel="branchName"
+                                            [filter]="true"
+                                            [showClear]="true"
+                                            placeholder="Select Branches"
+                                            formControlName="selectedBranches"
+                                            (onChange)="onBranchSelectChange($event)"
+                                        ></p-multiSelect>
+                                        <div *ngIf="BillPrintForm.get('selectedBranches')?.value.length > 0" class="mt-2">
+                                            Selected Branches: {{ BillPrintForm.get('selectedBranches')?.value.length }}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
