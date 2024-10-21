@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BillPrintComponent } from './bill-print.component';
+import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { RouterModule, Routes } from '@angular/router';
 import { Breadcrumb, BreadcrumbModule } from 'primeng/breadcrumb';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
@@ -30,10 +32,13 @@ const routes: Routes = [
         CommonModule,
         OptionCardModule,
         RouterModule.forChild(routes),
+        DialogModule,
+        DynamicDialogModule,
         BreadcrumbModule,
         FirstPensionBillPrintModule,
         RegularPensionBillPrintModule
     ],
+    providers: [DialogService],
     exports: [RouterModule, BillPrintComponent]
 })
 export class BillPrintModule { }

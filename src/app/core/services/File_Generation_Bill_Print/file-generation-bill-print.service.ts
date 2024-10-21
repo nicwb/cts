@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import Swal from 'sweetalert2';
+import { PdfViewerComponent } from '../pdf-viewer/pdf-viewer.component';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FileGenerationBillPrintService {
-    constructor() { }
+    constructor(private dialogService: DialogService) { }
 
     generatePdf(reportData: any, year: number, month: string, isAllBank: boolean, isAllCategory: boolean): void {
         const doc = new jsPDF();
 
         if (!reportData || !Array.isArray(reportData.regularBills) || reportData.regularBills.length === 0) {
-            Swal.fire({
-                icon: "info",
-                title: "No regular bills available for PDF generation.",
-                confirmButtonText: "OK"
-            });
+            this.showDialog('No regular bills available for PDF generation.', reportData);
             return;
         }
+
+        let totalAmount = 0;
+        let ppoCount = 0;
 
         reportData.regularBills.forEach((bill: any, index: number) => {
             if (index > 0) {
@@ -28,31 +29,41 @@ export class FileGenerationBillPrintService {
             const startY = this.addHeader(doc, bill, month, year);
             this.addTable(doc, bill.ppoBills, startY, bill);
             this.addFooter(doc, bill, reportData.regularBills);
+
+            totalAmount += parseFloat(bill.grossAmount);
+            ppoCount += bill.ppoBills ? bill.ppoBills.length : 0;
         });
 
-        const pdfBlob = doc.output('blob');
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        const fileName = `Regular Pension Bill for ${month} ${year}.pdf`;
+        const pdfData = doc.output('datauristring');
+        this.showPdfDialog(pdfData, `Regular Pension Bill for ${month} ${year}`, reportData, totalAmount, ppoCount);
+    }
 
-        Swal.fire({
-            icon: 'success',
-            title: 'PDF Generated',
-            html: `
-                <p>The PDF "${fileName}" has been generated.</p>
-                <a href="${pdfUrl}" target="_blank" id="view-pdf-link">Click here to view the PDF</a>
-            `,
-            confirmButtonText: 'OK',
-            didClose: () => {
-                // Clean up the object URL when the dialog is closed
-                URL.revokeObjectURL(pdfUrl);
+    private showPdfDialog(pdfData: string, title: string, reportData: any, totalAmount: number, ppoCount: number): void {
+        this.dialogService.open(PdfViewerComponent, {
+            header: 'Regular Pension Bill',
+            width: '70%',
+            data: {
+                message: `PDF "${title}" has been generated.`,
+                pdfData,
+                ppoCount,
+                totalAmount,
+                generatedDate: new Date()
             }
         });
+    }
 
-        // Optionally, trigger the download
-        const link = document.createElement('a');
-        link.href = pdfUrl;
-        link.download = fileName;
-        link.click();
+    private showDialog(message: string, pdfData: string | null): void {
+        this.dialogService.open(PdfViewerComponent, {
+            header: 'PDF Generation',
+            width: '70%',
+            data: {
+                message,
+                pdfData,
+                ppoCount: 0,
+                totalAmount: 0,
+                generatedDate: new Date()
+            }
+        });
     }
 
     private addHeader(doc: jsPDF, bill: any, month: string, year: number): number {
