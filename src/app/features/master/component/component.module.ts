@@ -16,7 +16,6 @@ import {  ComponentComponent } from './component.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DialogModule } from 'primeng/dialog';
@@ -37,7 +36,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ColorPickerModule } from 'primeng/colorpicker';
-
+import {DynamicTableModule} from 'src/app/core/dynamic-table/dynamic-table.module'
 @NgModule({
     declarations: [ComponentComponent],
     imports: [
@@ -76,6 +75,7 @@ import { ColorPickerModule } from 'primeng/colorpicker';
         CheckboxModule,
         InputSwitchModule,
         ColorPickerModule,
+        DynamicTableModule
 
     ],
     exports:[ComponentComponent]

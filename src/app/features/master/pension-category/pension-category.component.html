@@ -1,46 +1,105 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Pension Category Details'"
-            [imgSrc]="'assets/layout/images/icons/indent-entry.png'">
-            <button pButton pRipple (click)="createpensioncategory()" type="button" icon="pi pi-plus" label="New"
-                class="p-button-rounded p-button-raised"></button>
-            <button pButton pRipple (click)="fun_refresh()" *ngIf="refresh_b" type="button" icon="pi pi-refresh"
-                label="Reset" class="p-button-rounded p-button-raised"></button>
+        <app-common-header
+            [headerName]="'Pension Category Details'"
+            [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
+        >
+            <button
+                pButton
+                pRipple
+                (click)="createpensioncategory()"
+                type="button"
+                icon="pi pi-plus"
+                label="New"
+                class="p-button-rounded p-button-raised"
+            ></button>
+            <button
+                pButton
+                pRipple
+                (click)="fun_refresh()"
+                *ngIf="refresh_b"
+                type="button"
+                icon="pi pi-refresh"
+                label="Reset"
+                class="p-button-rounded p-button-raised"
+            ></button>
         </app-common-header>
     </div>
     <div class="col-12">
-        <mh-prime-dynamic-table *ngIf="isTableVisible" size="small" [data]="tableData" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10, 30, 50, 100]" [showTopMenubar]="true" [isLoading]="isTableDataLoading"
-            [actionButtons]="tableActionButton" [childActionButtons]="tableChildActionButton"
-            (rowSelect)="handleRowSelection($event)" (queryParameterChange)="handQueryParameterChange($event)"
-            (searchKeyChange)="handsearchKeyChange($event)"></mh-prime-dynamic-table>
+
+        <app-dynamic-table
+            *ngIf="isTableVisible"
+            name=""
+            [service$]="Category$"
+            [suffix]="suffix"
+
+
+        ></app-dynamic-table>
 
         <!-- Placeholder when table is not visible -->
-        <div class="svg-placeholder-container" *ngIf="!isTableVisible"
-            style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
+        <div
+            class="svg-placeholder-container"
+            *ngIf="!isTableVisible"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100vh - 300px);
+                flex-direction: column;
+            "
+        >
             <div class="col-12 h-full text-center bg-constellation">
                 <!-- Load PPO Receipt Button -->
-                <button pButton pRipple (click)="getData()" type="button" icon="pi pi-download"
-                    label="Load Caregory Details" class="p-button-rounded p-button-raised">
-                </button>
-                <div class="mt-8">
-                </div>
-                <p class="text-gray-600">A happy heart is better than a full purse...</p>
+                <button
+                    pButton
+                    pRipple
+                    (click)="getData()"
+                    type="button"
+                    icon="pi pi-download"
+                    label="Load Caregory Details"
+                    class="p-button-rounded p-button-raised"
+                ></button>
+                <div class="mt-8"></div>
+                <p class="text-gray-600">
+                    A happy heart is better than a full purse...
+                </p>
             </div>
         </div>
     </div>
 </div>
 <!-- -->
-<p-dialog  (onHide)="onDialogClose()" header="Pension Category Details" [(visible)]="displayInsertModal" [modal]="true"  [style]="{ height: getDialogHeight() }"
-    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true" [baseZIndex]="10000">
+<p-dialog
+    (onHide)="onDialogClose()"
+    header="Pension Category Details"
+    [(visible)]="displayInsertModal"
+    [modal]="true"
+    [style]="{ height: getDialogHeight() }"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+>
     <div class="flex gap-4 xl:flex-row flex-column">
         <div class="flex-auto w-full">
-            <label for="pensionerName" class="flex-auto block mb-1 text-color text-lg">Primary Category Name:</label>
+            <label
+                for="pensionerName"
+                class="flex-auto block mb-1 text-color text-lg"
+                >Primary Category Name:</label
+            >
 
-            <p-dropdown [options]="primary_id_select" [(ngModel)]="primary_id" [filter]="true" optionLabel="label"
-                filterBy="label" [showClear]="true" placeholder="Select a Primary CategoryName"
-                (click)="get_id_from_primary_category()" (onFilter)="find_extra_primary_id($event)"
-                (onChange)="clicked_Primary($event)" (ngModelChange)="onClearPrimary($event)" id="primary">
+            <p-dropdown
+                [options]="primary_id_select"
+                [(ngModel)]="primary_id"
+                [filter]="true"
+                optionLabel="label"
+                filterBy="label"
+                [showClear]="true"
+                placeholder="Select a Primary CategoryName"
+                (click)="get_id_from_primary_category()"
+                (onFilter)="find_extra_primary_id($event)"
+                (onChange)="clicked_Primary($event)"
+                (ngModelChange)="onClearPrimary($event)"
+                id="primary"
+            >
                 <ng-template pTemplate="selectedItem">
                     <div>
                         <div>{{ primary_id.label }}</div>
@@ -48,21 +107,32 @@
                 </ng-template>
                 <ng-template let-id pTemplate="item">
                     <div>
-
                         {{ id.label }}
-
                     </div>
                 </ng-template>
             </p-dropdown>
-
         </div>
         <div class="flex-auto w-full">
-            <label for="pensionerName" class="flex-auto block mb-1 text-color text-lg">Sub Category Name:</label>
+            <label
+                for="pensionerName"
+                class="flex-auto block mb-1 text-color text-lg"
+                >Sub Category Name:</label
+            >
 
-            <p-dropdown [options]="sub_id_select" [(ngModel)]="sub_id" [filter]="true" optionLabel="label"
-                filterBy="label" [showClear]="true" placeholder="Select a SubCategoryName"
-                (click)="get_id_from_sub_category()" (onFilter)="find_extra_sub_id($event)"
-                (onChange)="clicked_Sub($event)" (ngModelChange)="onClearSub($event)" id="sub">
+            <p-dropdown
+                [options]="sub_id_select"
+                [(ngModel)]="sub_id"
+                [filter]="true"
+                optionLabel="label"
+                filterBy="label"
+                [showClear]="true"
+                placeholder="Select a SubCategoryName"
+                (click)="get_id_from_sub_category()"
+                (onFilter)="find_extra_sub_id($event)"
+                (onChange)="clicked_Sub($event)"
+                (ngModelChange)="onClearSub($event)"
+                id="sub"
+            >
                 <ng-template pTemplate="selectedItem">
                     <div>
                         <div>{{ sub_id.label }}</div>
@@ -74,23 +144,37 @@
                     </div>
                 </ng-template>
             </p-dropdown>
-
-
         </div>
     </div>
     <div class="flex gap-2 justify-content-end pt-3">
         <div class="m-0">
-            <button pButton label="New Primary" (click)="show_new_primary()"
-                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"></button>
-            <button pButton label="New Sub" (click)="show_new_sub()"
-                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"></button>
+            <button
+                pButton
+                label="New Primary"
+                (click)="show_new_primary()"
+                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"
+            ></button>
+            <button
+                pButton
+                label="New Sub"
+                (click)="show_new_sub()"
+                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"
+            ></button>
         </div>
         <div class="m-0">
-            <button pButton label="Submit" (click)="add_Pension_category()"
+            <button
+                pButton
+                label="Submit"
+                (click)="add_Pension_category()"
                 class="p-element p-ripple mx-2 p-button-rounded p-button p-component"
-                [disabled]="!PensionForm.valid"></button>
-            <button pButton label="Cancel" (click)="cancelPensionCategory()"
-                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"></button>
+                [disabled]="!PensionForm.valid"
+            ></button>
+            <button
+                pButton
+                label="Cancel"
+                (click)="cancelPensionCategory()"
+                class="p-element p-ripple mx-2 p-button-rounded p-button p-component"
+            ></button>
         </div>
     </div>
 </p-dialog>

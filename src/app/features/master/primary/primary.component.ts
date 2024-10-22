@@ -23,7 +23,7 @@ import {
     PensionCategoryMasterService,
     PensionFactoryService,
 } from 'src/app/api';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 interface expandedRows {
@@ -56,6 +56,9 @@ export class PrimaryComponent {
     primary!:string;
     sub!:string;
     isTableVisible: boolean = false;
+    primaryCategory$?: Observable<any>;
+    suffix="primaryCategory"
+
 
 
     constructor(
@@ -85,6 +88,15 @@ export class PrimaryComponent {
         if(endpoint == 'primary/new'){
             this.showInsertDialog();
         }
+
+        this.primaryCategory$ =
+        this.service.getPrimaryCategories();
+    }
+    handleSelectedRowByprimaryCategory(event: any) {
+        // this.ComponentRateForm.controls['breakupId'].setValue(event.id);
+        // this.ComponentRateForm.controls['componentName'].setValue(
+        //     event.componentName
+        // );
     }
 
     showInsertDialog() {
@@ -172,7 +184,7 @@ export class PrimaryComponent {
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
-                this.sessionStorageService.remove('','','PensionCategoryComponent_primaryCategories');
+                this.sessionStorageService.remove('','',  `DynamicTableComponent_${this.suffix}`);
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
                     ''+response.message
@@ -231,7 +243,7 @@ export class PrimaryComponent {
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
         const response = await firstValueFrom(
-            this.service.getAllPrimaryCategories(data)
+            this.service.getPrimaryCategories()
         );
 
         this.tableData = response.result;

@@ -82,11 +82,14 @@
                                         </td>
                                     </tr>
                                 </ng-template>
-                            </p-table>
+                            </p-table> -->
+                            <app-dynamic-table
+                                [service$]="ppoDetails$"
+                                [suffix]="suffix"
+                                [editable]="true"
+                                (return)="editThisRecord($event)"
+                            ></app-dynamic-table>
                         </div>
-
-
-
 
                         <!-- Table Message -->
                         <div class="m-4 text-center">

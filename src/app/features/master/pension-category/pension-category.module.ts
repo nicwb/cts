@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';  // <-- Import DialogModule
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { ButtonModule } from 'primeng/button';
+import { DynamicTableModule } from'src/app/core/dynamic-table/dynamic-table.module';
 
 @NgModule({
     declarations: [PensionCategoryComponent],
@@ -20,7 +21,9 @@ import { ButtonModule } from 'primeng/button';
         DialogModule,
         CommonHeaderModule,
         MhPrimeDynamicTableModule,
-        ButtonModule
+        ButtonModule,
+        DynamicTableModule,
+
     ],
     exports: [PensionCategoryComponent]
 })

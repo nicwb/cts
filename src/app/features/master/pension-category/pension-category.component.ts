@@ -30,24 +30,13 @@ interface expandedRows {
     styleUrls: ['./pension-category.component.scss'],
 })
 export class PensionCategoryComponent implements OnInit {
-    expandedRows: expandedRows = {};
     displayInsertModal: boolean = false;
     PensionForm!: FormGroup;
     tableQueryParameters!: DynamicTableQueryParameters | any;
-    tableActionButton: ActionButtonConfig[] = [];
-    tableChildActionButton: ActionButtonConfig[] = [];
     tableData: any;
-    modalData: PensionCategoryDetails[] = [];
-    count: number = 0;
     isTableDataLoading: boolean = false;
-    treasuryReceiptId!: string;
-    manaualPensionPayload!: PensionCategoryDetails;
-    selectedRowData: PensionCategoryDetails | null = null;
-    selectedRow: any;
-    PensionOption: SelectItem[] = [];
     primary_id_select: SelectItem[] = [];
     sub_id_select: SelectItem[] = [];
-    rowData: any;
     refresh_b = false;
     primary_id!: any;
     sub_id!: any;
@@ -62,6 +51,9 @@ export class PensionCategoryComponent implements OnInit {
     primary_from_url!: String;
     sub_from_url!: string;
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
+
+    Category$?: Observable<any>;
+    suffix="Category";
 
     constructor(
         // private datePipe: DatePipe,
@@ -348,6 +340,8 @@ export class PensionCategoryComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Pension Category Details added successfully'
                 );
+                this.sessionStorageService.remove('', '', `DynamicTableComponent_${this.suffix}`)
+
                 this.displayInsertModal = false; // Close the dialog
                 this.PensionForm.reset();
                 this.primary_id = null;
@@ -474,18 +468,11 @@ export class PensionCategoryComponent implements OnInit {
     }
 
     async getData() {
-        const data = this.tableQueryParameters;
         this.isTableVisible = true;
         this.isTableDataLoading = true;
-        let response = await firstValueFrom(
-            this.service.getAllCategories(data)
-        );
-        if (response.apiResponseStatus === APIResponseStatus.Success) {
-            this.tableData = response.result;
-            this.isTableDataLoading = false;
-        } else {
-            this.toastService.showError("Can't get Data");
-        }
+        this.Category$=this.service.getCategories();
+
+
     }
 
     // get id from  primary

@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -36,7 +36,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         ButtonModule,
-        ReactiveFormsModule,    
+        ReactiveFormsModule,
         DynamicTableModule,
         OptionCardModule,
         CommonHeaderModule,
@@ -56,6 +56,7 @@ const routes: Routes = [
         RatingModule,
         MhPrimeDynamicTableModule,
         RouterModule.forChild(routes),
+        DynamicTableModule
     ]
 })
 export class PpoReceiptModule { }

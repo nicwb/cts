@@ -1,0 +1,99 @@
+::ng-deep .p-datatable {
+    // Table Layout and General Styles
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+
+    // overflow: hidden;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.1);
+
+    // Header styles
+    .p-datatable-header th {
+        background-color: #4caf50; // Customize header background
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    // Body Row Styles (Odd and Even Rows)
+    .p-datatable-tbody {
+        tr {
+            &.p-row-odd {
+                background-color: rgb(
+                    220,
+                    220,
+                    220
+                ); // Odd rows - white background
+            }
+            &.p-row-even {
+                background-color: #ffffff; // Even rows - light gray background
+            }
+
+            &:hover {
+                background-color: #bdbdbd; // Hover effect on rows
+            }
+
+            td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+            }
+        }
+    }
+
+    // Optional: Paginator Styles (if your table is paginated)
+    .p-paginator {
+        background-color: #fafafa;
+        padding: 10px;
+
+        .p-paginator-pages {
+            .p-paginator-page {
+                padding: 5px 10px;
+                background-color: #e0e0e0;
+                border-radius: 3px;
+                margin: 0 5px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #5be0ec;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                &.p-highlight {
+                    background-color: #5be0ec;
+                    color: white;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+    // .p-dropdown-items-wrapper {
+    //     background-color: #4caf50;
+    //     z-index: 1001;
+    //     transform-origin: center bottom;
+    //     top: -164px;
+    //     left: 0px;
+    //     color: white;
+    // }
+    .p-dropdown-panel  {
+        z-index: 1001 !important;
+        transform-origin: center bottom !important;
+        top: -164px !important;
+        left: 0px !important;
+    }
+}
+.search-container {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Space between elements */
+    margin-bottom: 1rem; /* Space below the search input */
+}
+@media (min-width: 768px) {
+    /* Adjust this breakpoint as necessary */
+    .mobile-only {
+        display: none; /* Hide the button on larger screens */
+    }
+}

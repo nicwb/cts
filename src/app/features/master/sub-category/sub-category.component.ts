@@ -15,9 +15,9 @@ import {
 } from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
-import { SessionStorageService } from 'src/app/core/services/session-storage.service'
+import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { SelectItem } from 'primeng/api';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import {
     APIResponseStatus,
     PensionCategoryMasterService,
@@ -36,31 +36,19 @@ interface expandedRows {
     styleUrls: ['./sub-category.component.scss'],
 })
 export class SubCategoryComponent implements OnInit {
-    expandedRows: expandedRows = {};
     displayInsertModal: boolean = false;
     SubForm!: FormGroup;
-    tableQueryParameters!: DynamicTableQueryParameters | any;
-    tableActionButton: ActionButtonConfig[] = [];
-    tableChildActionButton: ActionButtonConfig[] = [];
-    tableData: any;
-    count: number = 0;
-    isTableDataLoading: boolean = false;
-    treasuryReceiptId!: string;
-    selectedRow: any;
-    SubOption: SelectItem[] = [];
-    type: SelectItem[] = [];
-    selectedDrop: SelectItem = { value: '' };
-    rowData: any;
-    refresh_b = false;
     searching = {
         val: false,
         data: null,
     };
     isTableVisible: boolean = false;
     primary!: string;
-    sub !: string;
+    sub!: string;
     called_from_pension = false;
 
+    subCategory$?: Observable<any>;
+    suffix = 'subCategory';
 
     constructor(
         private toastService: ToastService,
@@ -71,7 +59,7 @@ export class SubCategoryComponent implements OnInit {
         private router: Router,
         private location: Location,
         private SessionStorageService: SessionStorageService
-    ) { }
+    ) {}
 
     @Output() Sub_Category_Details = new EventEmitter<any>();
 
@@ -79,22 +67,19 @@ export class SubCategoryComponent implements OnInit {
     ngOnInit(): void {
         this.initializeForm();
 
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
         this.check_if_called();
-        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+        const endpoint = this.route.snapshot.url
+            .map((segment) => segment.path)
+            .join('/');
         if (endpoint == 'sub-category/new') {
             this.showInsertDialog();
         }
     }
+
     check_if_called() {
         let todo = null;
         this.route.queryParams.subscribe((params) => {
-            (todo = params['todo']),
-            (this.primary = params['primary']),
-            (this.sub = params['sub']);
+            (todo = params['todo']),(this.primary = params['primary']),(this.sub = params['sub']);
         });
         console.log(todo);
         if (todo == 'create') {
@@ -134,63 +119,6 @@ export class SubCategoryComponent implements OnInit {
         console.log('Row selected:', $event);
     }
 
-    handQueryParameterChange(event: any) {
-        console.log('Query parameter changed:', event);
-        if (this.searching.val == true) {
-            this.tableQueryParameters = {
-                pageSize: event.pageSize,
-                pageIndex: event.pageIndex / 10,
-                filterParameters: [
-                    {
-                        field: 'SubCategoryName',
-                        value: this.searching.data,
-                        operator: 'contains',
-                    },
-                ],
-                sortParameters: event.sortParameters,
-            };
-        } else {
-            this.tableQueryParameters = {
-                pageSize: event.pageSize,
-                pageIndex: event.pageIndex / 10,
-                filterParameters: event.filterParameters || [],
-                sortParameters: event.sortParameters,
-            };
-        }
-
-        this.getData();
-    }
-
-    handsearchKeyChange(event: string): void {
-        if (event == '') {
-            this.toastService.showError(`Search can not be empty`);
-            return;
-        }
-        this.findById(event);
-    }
-
-    async findById(data: any) {
-        let payload = this.tableQueryParameters;
-        payload.filterParameters = [
-            { field: 'SubCategoryName', value: data, operator: 'contains' },
-        ];
-        payload.pageIndex = 0;
-        this.isTableDataLoading = true;
-        let response = await firstValueFrom(
-            this.service.getAllSubCategories(payload)
-        );
-        console.log(response);
-        if (response.result?.data?.length != 0) {
-            this.tableData = response.result;
-            this.refresh_b = true;
-            this.searching.val = true;
-            this.searching.data = data;
-        } else {
-            this.toastService.showError('No Pension Category ID found');
-        }
-
-        this.isTableDataLoading = false;
-    }
     initializeForm(): void {
         this.SubForm = this.fb.group({
             SubCategoryName: ['', Validators.required],
@@ -201,12 +129,6 @@ export class SubCategoryComponent implements OnInit {
         table.clear();
     }
 
-    onGlobalFilter(dt: any, event: any): void {
-        if (event && event.target) {
-            const input = event.target as HTMLInputElement;
-            dt.filterGlobal(input.value, 'contains');
-        }
-    }
     async add_Sub_category() {
         if (this.SubForm.valid) {
             const formData = this.SubForm.value;
@@ -217,14 +139,23 @@ export class SubCategoryComponent implements OnInit {
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 this.displayInsertModal = false; // Close the dialog
-                this.SessionStorageService.remove('', '', 'PensionCategoryComponent_subCategoryCacheKey')
-                this.toastService.showSuccess(
-                    '' + response.message
+                this.SessionStorageService.remove(
+                    '',
+                    '',
+                    'PensionCategoryComponent_subCategoryCacheKey'
                 );
-                if (this.called_from_pension == true) {
-                    this.router.navigate(["master/pension-category"], { queryParams: { primary: this.primary, sub: name } });
-                }
+                this.SessionStorageService.remove(
+                    '',
+                    '',
+                    `DynamicTableComponent_${this.suffix}`
+                );
 
+                this.toastService.showSuccess('' + response.message);
+                if (this.called_from_pension == true) {
+                    this.router.navigate(['master/pension-category'], {
+                        queryParams: { primary: this.primary, sub: name },
+                    });
+                }
             } else {
                 this.handleErrorResponse(response);
             }
@@ -243,7 +174,7 @@ export class SubCategoryComponent implements OnInit {
         } else {
             this.toastService.showError(
                 response.message ||
-                'An unexpected error occurred. Please try again.'
+                    'An unexpected error occurred. Please try again.'
             );
         }
     }
@@ -253,21 +184,15 @@ export class SubCategoryComponent implements OnInit {
     }
 
     async getData() {
-        const data = this.tableQueryParameters;
-        this.isTableDataLoading = true;
-        const response = await firstValueFrom(
-            this.service.getAllSubCategories(data)
-        );
-        if (response.apiResponseStatus === APIResponseStatus.Success) {
-            this.tableData = response.result;
-            this.isTableVisible = true;
-            this.isTableDataLoading = false;
-        }
+        this.isTableVisible = true;
+
+        this.subCategory$ = this.service.getSubCategories();
     }
 
     emitSubCategory(): void {
         this.Sub_Category_Details.emit(this.SubForm.value);
     }
+
 
     cancelSubCategory() {
         this.SubForm.reset();
@@ -277,6 +202,6 @@ export class SubCategoryComponent implements OnInit {
         this.router.navigate(['/master/sub-category/new']);
     }
     onDialogClose() {
-        this.location.back()
+        this.location.back();
     }
 }

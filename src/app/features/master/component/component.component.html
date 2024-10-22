@@ -4,7 +4,7 @@
             [headerName]="'Pension Component Details'"
             [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
         >
-            <button 
+            <button
                 pButton
                 pRipple
                 (click)="createNewcomponent()"
@@ -13,32 +13,17 @@
                 label="New Entry"
                 class="p-button-rounded p-button-raised"
             ></button>
-            <button
-                pButton
-                pRipple
-                (click)="refresh_table()"
-                type="button"
-                *ngIf="refresh_val"
-                icon="pi pi-refresh"
-                label="Refresh"
-                class="p-button-rounded p-button-raised"
-            ></button>
+
         </app-common-header>
     </div>
     <div class="col-12">
-        <mh-prime-dynamic-table *ngIf="isTableVisible"
-            size="small"
-            [data]="tableData"
-            [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10, 30, 50]"
-            [showTopMenubar]="true"
-            [isLoading]="isTableDataLoading"
-            [actionButtons]="tableActionButton"
-            [childActionButtons]="tableChildActionButton"
-            (rowSelect)="handleRowSelection($event)"
-            (queryParameterChange)="handQueryParameterChange($event)"
-            (searchKeyChange)="handsearchKeyChange($event)"
-        ></mh-prime-dynamic-table>
+
+        <app-dynamic-table
+            *ngIf="isTableVisible"
+            name=""
+            [service$]="component$"
+            [suffix]="suffix"
+        ></app-dynamic-table>
 
         <!-- Placeholder when table is not visible -->
         <div class="svg-placeholder-container" *ngIf="!isTableVisible"
@@ -103,7 +88,7 @@
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
         <button
-            *ngIf="!selectedRow"
+
             pButton
             label="Submit"
             (click)="addComponentDetails()"

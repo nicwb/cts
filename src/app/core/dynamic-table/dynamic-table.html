@@ -1,0 +1,117 @@
+<div class="card" style="overflow: visible;">
+    <div class="search-container">
+        <span class="p-float-label mb-3">
+            <input
+                id="float-input"
+                type="text"
+                pInputText
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="searchRecords()"
+            />
+            <label for="float-input">Search data</label>
+        </span>
+        <button
+            pButton
+            type="button"
+            *ngIf="!expand"
+            (click)="rowExpand()"
+            class="mobile-only"
+        >
+            <i class="pi pi-arrows-v" style="color: white"></i>
+        </button>
+        <button
+            pButton
+            type="button"
+            *ngIf="expand"
+            (click)="rowCollaps()"
+            class="mobile-only"
+        >
+            <i class="pi pi-arrows-h" style="color: white"></i>
+        </button>
+    </div>
+
+    <!-- PrimeNG Table with Sortable Columns -->
+    <p-table
+        *ngIf="!scrollable"
+        [value]="data.data"
+        [scrollable]="false"
+        [loading]="isLoading"
+        [paginator]="true"
+        [rows]="rows"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+        (onSort)="customSort($event)"
+        >
+        <!-- Table Header -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of cols" pSortableColumn="{{ col.field }}">
+                    {{ col.header }}
+                    <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+                </th>
+                <th *ngIf="editable">Edit</th>
+            </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-record let-rowIndex="rowIndex">
+            <tr
+                [ngClass]="{'p-row-odd': rowIndex % 2 === 1, 'p-row-even': rowIndex % 2 === 0}"
+            >
+                <td *ngFor="let col of cols">{{ record[col.field] }}</td>
+                <td *ngIf="editable">
+                    <button
+                        pButton
+                        type="button"
+                        label="edit"
+                        (click)="editButton(record)"
+                    ></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-table
+        *ngIf="scrollable"
+        [value]="data.data"
+        [scrollable]="true"
+        [loading]="isLoading"
+        [paginator]="true"
+        [rows]="rows"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+        (onSort)="customSort($event)"
+    >
+        <!-- Table Header -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of cols" pSortableColumn="{{ col.field }}">
+                    {{ col.header }}
+                    <p-sortIcon field="{{ col.field }}"></p-sortIcon>
+                </th>
+                <th *ngIf="editable">Edit</th>
+            </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-record let-rowIndex="rowIndex">
+            <tr
+                [ngClass]="{'p-row-odd': rowIndex % 2 === 1, 'p-row-even': rowIndex % 2 === 0}"
+            >
+                <td *ngFor="let col of cols">{{ record[col.field] }}</td>
+                <td *ngIf="editable">
+                    <button
+                        pButton
+                        type="button"
+                        label="edit"
+                        (click)="editButton(record)"
+                    ></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- No Result Message -->
+    <div *ngIf="onresult" style="text-align: center" class="p-3">
+        {{ onresult }}
+    </div>
+</div>

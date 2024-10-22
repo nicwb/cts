@@ -1,61 +1,124 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'Pension Primary Category Details'"
-            [imgSrc]="'assets/layout/images/icons/indent-entry.png'">
-            <button pButton pRipple (click)="newPrimarycategory()" type="button" icon="pi pi-plus" label="New"
-                class="p-button-rounded p-button-raised"></button>
+        <app-common-header
+            [headerName]="'Pension Primary Category Details'"
+            [imgSrc]="'assets/layout/images/icons/indent-entry.png'"
+        >
+            <button
+                pButton
+                pRipple
+                (click)="newPrimarycategory()"
+                type="button"
+                icon="pi pi-plus"
+                label="New"
+                class="p-button-rounded p-button-raised"
+            ></button>
         </app-common-header>
     </div>
     <div class="col-12">
-        <mh-prime-dynamic-table *ngIf="isTableVisible" size="small" [data]="tableData" [numberRowsShown]="10"
+        <!-- <mh-prime-dynamic-table *ngIf="isTableVisible" size="small" [data]="tableData" [numberRowsShown]="10"
             [rowsPerPageOptions]="[10, 30, 50, 100]" [showTopMenubar]="true" [isLoading]="isTableDataLoading"
             [actionButtons]="tableActionButton" [childActionButtons]="tableChildActionButton"
             (rowSelect)="handleRowSelection($event)" (queryParameterChange)="handQueryParameterChange($event)"
-            (searchKeyChange)="handsearchKeyChange($event)"></mh-prime-dynamic-table>
+            (searchKeyChange)="handsearchKeyChange($event)"></mh-prime-dynamic-table> -->
+        <app-dynamic-table
+            *ngIf="isTableVisible"
+            name=""
+            [service$]="primaryCategory$"
+            [suffix]="suffix"
 
-        <div class="svg-placeholder-container" *ngIf="!isTableVisible"
-            style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
+        ></app-dynamic-table>
+        <div
+            class="svg-placeholder-container"
+            *ngIf="!isTableVisible"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100vh - 300px);
+                flex-direction: column;
+            "
+        >
             <div class="col-12 h-full text-center bg-constellation">
                 <!-- Load PPO Receipt Button -->
-                <button pButton pRipple (click)="getData()" type="button" icon="pi pi-download"
-                    label="Load Primary Details" class="p-button-rounded p-button-raised">
-                </button>
-                <div class="mt-8">
-                </div>
-                <p class="text-gray-600">If you are patient in a moment of anger, you will escape hundred days of
-                    sorrow...</p>
+                <button
+                    pButton
+                    pRipple
+                    (click)="getData()"
+                    type="button"
+                    icon="pi pi-download"
+                    label="Load Primary Details"
+                    class="p-button-rounded p-button-raised"
+                ></button>
+                <div class="mt-8"></div>
+                <p class="text-gray-600">
+                    If you are patient in a moment of anger, you will escape
+                    hundred days of sorrow...
+                </p>
             </div>
         </div>
     </div>
 </div>
 
-<p-dialog (onHide)="onDialogClose()" header="Primary Category Details" [(visible)]="displayInsertModal" [modal]="true"
-    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true" [baseZIndex]="10000">
+<p-dialog
+    (onHide)="onDialogClose()"
+    header="Primary Category Details"
+    [(visible)]="displayInsertModal"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+>
     <form [formGroup]="primaryForm" class="flex flex-column gap-4 mt-3">
-        <label *ngIf="selectedRow" class="block mb-1 text-color text-lg">ID:{{ selectedRow.id }}</label>
+        <label *ngIf="selectedRow" class="block mb-1 text-color text-lg"
+            >ID:{{ selectedRow.id }}</label
+        >
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="pensionerName" class="block mb-1 text-color text-lg">Head Of
-                    Account:<br />(Major-SubMajor-Minor-Plan
-                    Status-Schema-Charged Voted-Detail-SubDetail)</label>
-                <input type="text" pinputtext="" formControlName="HoaId"
+                <label for="pensionerName" class="block mb-1 text-color text-lg"
+                    >Head Of Account:<br />(Major-SubMajor-Minor-Plan
+                    Status-Schema-Charged Voted-Detail-SubDetail)</label
+                >
+                <input
+                    type="text"
+                    pinputtext=""
+                    formControlName="HoaId"
                     placeholder="0000 - 00 - 000 - 00 - 000 - v - 00 - 00"
-                    class="p-inputtext p-component p-element w-full" autofocus />
+                    class="p-inputtext p-component p-element w-full"
+                    autofocus
+                />
             </div>
 
             <div class="flex-auto">
                 <br />
-                <label for="mobileNumber" class="block mb-1 text-color text-lg">Description:</label>
-                <input type="text" pinputtext="" formControlName="PrimaryCategoryName" placeholder="Description"
-                    class="p-inputtext p-component p-element w-full" />
+                <label for="mobileNumber" class="block mb-1 text-color text-lg"
+                    >Description:</label
+                >
+                <input
+                    type="text"
+                    pinputtext=""
+                    formControlName="PrimaryCategoryName"
+                    placeholder="Description"
+                    class="p-inputtext p-component p-element w-full"
+                />
             </div>
         </div>
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
-        <button *ngIf="!selectedRow" pButton label="Submit" (click)="add_primary_category()"
-            class="p-element p-ripple p-button-rounded p-button p-component" [disabled]="!primaryForm.valid"></button>
+        <button
+            *ngIf="!selectedRow"
+            pButton
+            label="Submit"
+            (click)="add_primary_category()"
+            class="p-element p-ripple p-button-rounded p-button p-component"
+            [disabled]="!primaryForm.valid"
+        ></button>
 
-        <button pButton label="Cancel" (click)="cancelPrimaryCategory()"
-            class="p-element p-ripple p-button-rounded p-button p-component"></button>
+        <button
+            pButton
+            label="Cancel"
+            (click)="cancelPrimaryCategory()"
+            class="p-element p-ripple p-button-rounded p-button p-component"
+        ></button>
     </div>
 </p-dialog>

@@ -16,6 +16,7 @@ import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { PrimaryRoutingModule } from './primary-routing.module';
 import { PrimaryComponent } from './primary.component';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-
         DynamicDialogModule,
         CommonHeaderModule,
         MhPrimeDynamicTableModule,
+        DynamicTableModule
     ],
     exports: [
         RouterModule,

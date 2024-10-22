@@ -9,7 +9,7 @@
     <!-- PPO Table and Placeholder -->
     <div class="col-12">
         <!-- Dynamic Table Component -->
-        <mh-prime-dynamic-table *ngIf="isTableVisible"
+        <!-- <mh-prime-dynamic-table *ngIf="isTableVisible"
         size="small"
         [data]="tableData"
         [numberRowsShown]="10"
@@ -20,7 +20,16 @@
         (actionButtonClicked)="onActionButtonClick($event)"
         (queryParameterChange)="onQueryParametersChange($event)"
         (searchKeyChange)="onSearchKeyChange($event)">
-    </mh-prime-dynamic-table>
+    </mh-prime-dynamic-table> -->
+    <app-dynamic-table
+            *ngIf="isTableVisible"
+            name=""
+            [service$]="ppoRecipt$"
+            [suffix]="suffix"
+            [editable]="true"
+            (return)="onActionButtonClick($event)"
+
+        ></app-dynamic-table>
     <div *ngIf="e_PPO_div" class="col-12 card">
         <div>
             <label>E-PPO ID:</label><input pInputText (input)="eppo_input()" id="eppoinput" placeholder="E-PPO ID" >

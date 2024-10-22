@@ -19,7 +19,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { CalendarModule } from 'primeng/calendar';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
@@ -65,7 +65,8 @@ import { SliderModule } from 'primeng/slider';
         MultiSelectModule,
         ProgressBarModule,
         SliderModule,
-        MhPrimeDynamicTableModule
+        MhPrimeDynamicTableModule,
+        DynamicTableModule
 
     ],
     exports: [SubCategoryComponent]

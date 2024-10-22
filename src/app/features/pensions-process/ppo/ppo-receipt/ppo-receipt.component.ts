@@ -14,6 +14,7 @@ import { NavigationService } from 'src/app/core/services/navigation/navigation.s
 import { url } from 'inspector';
 import { ReturnUriService } from 'src/app/core/services/return-uri-service';
 import {PdfService} from 'src/app/core/services/pdf.service'
+import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 
 
 @Component({
@@ -60,7 +61,8 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
         { label: 'PSA Sanction', value: 'P' },
         { label: 'Other', value: 'O' }
     ];
-
+    ppoRecipt$!: Observable<any>;
+    suffix="ppoRecipt";
 
     constructor(
         private datePipe: DatePipe,
@@ -74,6 +76,9 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
         private location: Location,
         private returnUriService: ReturnUriService,
         private pdfservice: PdfService,
+        private SessionStorageService: SessionStorageService
+
+
     ) {
         this.initializePpoReceiptForm();
         this.navigationSubscription = this.router.events.pipe(
@@ -124,7 +129,7 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
         // this.router.navigate(['/pension/modules/pension-process/ppo/manualPpoReceipt/new']);
         this.isTableVisible = true;
         this.placeholder_div=false;
-        this.loadInitialTableData();
+        this.ppoRecipt$=this.pensionManualPpoReceiptService.getPpoReceipts();
     }
     loadE_PpoReceipts():void{
         this.e_PPO_div=true;
@@ -351,6 +356,8 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
                             }
                         });
                     }
+                    this.SessionStorageService.remove('', '', `DynamicTableComponent_${this.suffix}`)
+
                 } else {
                     this.handleErrorResponse(response);
                 }
@@ -389,9 +396,8 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
     }
 
     onActionButtonClick(event: any) {
-        if (event.buttonIdentifier === 'edit') {
-            this.initializeEditForm(event.rowData);
-        }
+        this.initializeEditForm(event);
+
     }
 
     onQueryParametersChange(event: DynamicTableQueryParameters): void {

@@ -16,39 +16,52 @@
         </app-common-header>
     </div>
     <div class="col-12">
-        <mh-prime-dynamic-table  *ngIf="isTableVisible"
-            size="small"
-            [data]="tableData"
-            [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10, 30, 50, 100]"
-            [showTopMenubar]="true"
-            [isLoading]="isTableDataLoading"
-            [actionButtons]="tableActionButton"
-            [childActionButtons]="tableChildActionButton"
-            (rowSelect)="handleRowSelection($event)"
-            (queryParameterChange)="handQueryParameterChange($event)"
-            (searchKeyChange)="handsearchKeyChange($event)"
-        ></mh-prime-dynamic-table>
-        <div class="svg-placeholder-container" *ngIf="!isTableVisible"
-        style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
-        <div class="col-12 h-full text-center bg-constellation">
-            <!-- Load PPO Receipt Button -->
-            <button pButton pRipple (click)="getData()" type="button" icon="pi pi-download"
-                label="Load Sub-Caregory Details" class="p-button-rounded p-button-raised">
-            </button>
-            <div class="mt-8">
+
+        <app-dynamic-table
+            *ngIf="isTableVisible"
+            name=""
+            [service$]="subCategory$"
+            [suffix]="suffix"
+
+        ></app-dynamic-table>
+        <div
+            class="svg-placeholder-container"
+            *ngIf="!isTableVisible"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100vh - 300px);
+                flex-direction: column;
+            "
+        >
+            <div class="col-12 h-full text-center bg-constellation">
+                <!-- Load PPO Receipt Button -->
+                <button
+                    pButton
+                    pRipple
+                    (click)="getData()"
+                    type="button"
+                    icon="pi pi-download"
+                    label="Load Sub-Caregory Details"
+                    class="p-button-rounded p-button-raised"
+                ></button>
+                <div class="mt-8"></div>
+                <p class="text-gray-600">
+                    The only free cheese is in the mousetrap...
+                </p>
             </div>
-            <p class="text-gray-600">The only free cheese is in the mousetrap...</p>
         </div>
-    </div>
     </div>
 </div>
 
-<p-dialog (onHide) = "onDialogClose()"
+<p-dialog
+    (onHide)="onDialogClose()"
     header="Sub-Caregory Details"
     [(visible)]="displayInsertModal"
     [modal]="true"
-    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }"
+    [maximizable]="true"
     [baseZIndex]="10000"
 >
     <form [formGroup]="SubForm" class="flex flex-column gap-4 mt-3">
@@ -70,7 +83,6 @@
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
         <button
-            *ngIf="!selectedRow"
             pButton
             label="Submit"
             (click)="add_Sub_category()"

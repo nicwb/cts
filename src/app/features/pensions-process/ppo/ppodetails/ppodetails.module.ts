@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { StepsModule } from 'primeng/steps';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -104,7 +104,8 @@ const routes: Routes = [
         FamilyNomineeModule,
         PopupTableModule,
         TableModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        DynamicTableModule
     ],
     providers: [],
     bootstrap: [PpodetailsComponent],
