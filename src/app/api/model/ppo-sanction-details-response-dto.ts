@@ -7,7 +7,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PensionerResponseDTO } from './pensioner-response-dto';
 
 
 export interface PpoSanctionDetailsResponseDTO { 
@@ -36,6 +35,5 @@ export interface PpoSanctionDetailsResponseDTO {
     qualifyingServiceNetMonths?: number | null;
     qualifyingServiceNetDays?: number | null;
     id?: number;
-    pensioner?: PensionerResponseDTO;
 }
 

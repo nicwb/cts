@@ -9,6 +9,7 @@
  */
 import { ManualPpoReceiptResponseDTO } from './manual-ppo-receipt-response-dto';
 import { BranchResponseDTO } from './branch-response-dto';
+import { PpoSanctionDetailsResponseDTO } from './ppo-sanction-details-response-dto';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 
@@ -45,6 +46,7 @@ export interface PensionerResponseDTO {
     category?: PensionCategoryResponseDTO;
     receipt?: ManualPpoReceiptResponseDTO;
     branch?: BranchResponseDTO;
+    ppoSanctionDetails?: Array<PpoSanctionDetailsResponseDTO> | null;
     readonly bankId?: number;
 }
 
