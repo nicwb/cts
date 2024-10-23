@@ -344,8 +344,6 @@ export class PensionCategoryComponent implements OnInit {
 
                 this.displayInsertModal = false; // Close the dialog
                 this.PensionForm.reset();
-                this.primary_id = null;
-                this.sub_id = null;
             } else {
                 this.toastService.showError(
                     'Pension Category Details already exsists'

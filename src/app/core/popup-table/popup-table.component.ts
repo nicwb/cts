@@ -84,17 +84,14 @@ export class PopupTableComponent{
   }
 
   searchRecords(): void {
+      const lowerCaseSearchTerm = this.searchTerm ? this.searchTerm.toLowerCase() : '';
       if (this.searchTerm) {
-          const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-
-          this.data.data = this.records.filter(record =>
-              Object.values(record).some(value => {
-                  if (typeof value === 'string' || typeof value === 'number') {
-                      return value.toString().toLowerCase().includes(lowerCaseSearchTerm);
-                  }
-                  return false;
-              })
-          );
+          this.data.data = this.records.filter(record => {
+              // Get the value of the first column
+              const firstColumnValue = record[this.cols[0].field]; // Ensure cols is populated correctly
+              // Check if the first column matches the search term exactly
+              return firstColumnValue && firstColumnValue.toString().toLowerCase() === lowerCaseSearchTerm;
+          });
 
           if (this.data.data.length === 0) {
               this.onresult = 'No records found';
@@ -107,7 +104,6 @@ export class PopupTableComponent{
           this.onresult = '';
       }
   }
-
   loadMore(event: any) {
       this.debug(this.totalRecords);
   }

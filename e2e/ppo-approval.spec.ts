@@ -6,9 +6,6 @@ test.beforeEach(async ({ pensionPage }) => {
 
 test('should approve PPO successfully', async ({ pensionPage }) => {
     // Arrange
-    const ppoId = await pensionPage.savePpoDetails();
-
-    // Act
-    await pensionPage.approvePpo(ppoId);
+    await pensionPage.savePpoDetailsAndApprove();
 });
 
