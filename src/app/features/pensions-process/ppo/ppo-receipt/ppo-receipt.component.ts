@@ -34,7 +34,7 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
     placeholder_div:boolean=true;
     e_PPO_div:boolean=false;
     pdfSrc: string | null = null;
-
+    hasEdited: boolean = false;
     src:{diginfo:{ifmsDigData:{filename:string,content:string}[]}} | null= null;
 
     ePpoEntry:string="";
@@ -319,6 +319,7 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
 
 
     async submitPpoReceipt(): Promise<void> {
+
         if (this.manualPpoForm.valid) {
             const formData: ManualPpoReceiptEntryDTO = {
                 ppoNo: this.manualPpoForm.get('ppoNo')?.value,
@@ -338,11 +339,15 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
                 const response = await firstValueFrom(apiCall);
 
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
+                    if (this.selectedRow) {
+                        this.hasEdited = true; // An edit was performed
+                    }
+
                     this.resetAndCloseDialog();
-                    this.toastService.showSuccess(`PPO Receipt ${this.selectedRow ? 'updated' : 'added'} successfully`);
+                    const successMessage: string = response.message ?? 'Operation completed successfully';
+                    this.toastService.showSuccess(successMessage);
 
                     const returnUri = this.returnUriService.getReturnUri();
-                    console.log('returnUri in submitPpoReceipt:', returnUri);
                     if (returnUri) {
                         await Swal.fire({
                             title: 'Manual PPO receipt is created. Do you want to go back to entry form?',
@@ -458,7 +463,11 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
         this.router.navigate(['pension-process/ppo/ppo-receipt/new']);
 
     }
-    onDialogClose(){
-        this.location.back();
+    onDialogClose() {
+        if (!this.hasEdited) {
+            this.location.back(); // Only go back if no edit was performed
+        } else {
+            this.hasEdited = false; // Reset the flag for future dialog closes
+        }
     }
 }

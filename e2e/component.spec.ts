@@ -1,36 +1,43 @@
-import {test,expect} from "@playwright/test";
+import { test, expect } from './fixtures';
 
-test.describe('Pension Component', () => {
-    test.beforeEach(async ({ page, isMobile }) => {
-        // Navigate to the static login page containing user roles
-        await page.goto('/static-login');
-        await page.getByRole('link', { name: 'cleark' }).click();
-        if(isMobile) {
-            await page.locator('button.layout-topbar-menu-button').click()
-        }
-        const dashboard = page.getByText(`CCTSCLERK`);
-        await expect(dashboard).toBeVisible();
-        // Navigate to the page containing your component
-        await page.goto('/master/component');
-    });
+test.beforeEach(async ({ pensionPage }) => {
+  await pensionPage.staticLogin();
+  await pensionPage.goToComponent();
+});
 
-    test('Pension component can be saved', async ({ page }) => {
+    test('Pension component can be saved', async ({ page, pensionPage }) => {
+        //ARRANGE
+        //ACT
         await page.getByRole('button', { name: 'New Entry' }).click();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
+        //ASSERT
+        await pensionPage.okSuccess();
+        expect(true).toBeTruthy();
     });
 
-    test('Duplicate data Checking', async ({ page }) => {
+    test('Duplicate data Checking', async ({ page, pensionPage }) => {
+        //ARRANGE
         await page.getByRole('button', { name: 'New Entry' }).click();
-        const data1= await page.locator('input[formControlName=componentName]').inputValue();
+
+        const inputElement = page.locator('input[formControlName=componentName]');
+        await inputElement.waitFor({ state: 'visible' });
+        await expect(inputElement).not.toBeEmpty();
+        const data1 = await inputElement.inputValue();
+
         await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
-        await page.getByRole('button', { name: 'OK' }).click();
-
+        await pensionPage.okSuccess();
+        expect(true).toBeTruthy();
+        //ACT
         await page.getByRole('button', { name: 'New Entry' }).click();
+
+        const inputElement1 = page.locator('input[formControlName=componentName]');
+        await inputElement1.waitFor({ state: 'visible' });
+        await expect(inputElement1).not.toBeEmpty();
+
         await page.locator('input[formControlName=componentName]').fill(data1);
         await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('heading', { name: 'Aww! Snap...' })).toBeVisible();
+        //ASSERT
+        await pensionPage.okError();
+        expect(true).toBeTruthy();
     });
-});
