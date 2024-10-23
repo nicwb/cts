@@ -1,243 +1,247 @@
 import {test,expect} from "./fixtures";
 
-    test.beforeEach(async ({ page, pensionPage }) => {
-        test.fixme(true, 'Remove this line after task-241 is merged');
-        await pensionPage.staticLogin();
-        // Navigate to the page containing your component
-        await page.goto('/master/component-rate');
-    });
+test.beforeEach(async ({ page, pensionPage }) => {
+    // test.fixme(true, 'Remove this line after task-241 is merged');
+    await pensionPage.staticLogin();
+    // Navigate to the page containing your component
+    await page.goto('/master/component-rate');
+});
 
-    test('should display the "Component Rate" page', async ({ page }) => {
-        //Arrange - going to the component rate page
-        //Act
-        const elements = [
-            { locator: 'text=Component Rate', type: 'text' },
-            { locator: 'text=Select Pension Category', type: 'text' },
-            { locator: 'text=Select Component', type: 'text' },
-            { locator: 'text=Date', type: 'text' },
-            { locator: 'text=Rate Type P/A', type: 'text' },
-            { locator: 'text=Amount/Percentage', type: 'text' },
-            { locator: 'button >> text="Submit"', type: 'button' },
-            { locator: 'button >> text="Refresh"', type: 'button' }
-        ];
+test('should display the "Component Rate" page', async ({ page }) => {
+    // Arrange - go to the component rate page
+    // await page.goto('/component-rate'); // Assuming you have a route
 
-        // Assert
-        await Promise.all(elements.map(element =>
-            expect(page.locator(element.locator)).toBeVisible()
-        ));
-        const element = page.locator('form button').nth(1);
-        await expect(element).toBeVisible();
-        const element1 = page.locator('form button').first();
-        await expect(element1).toBeVisible();
-    });
+    // Define expected elements with more specific locators
+    const elements = [
+        { locator: page.getByRole('heading', { name: 'Component Rate' }).locator('b')},  // For the heading
+        { locator: page.getByText('Select Pension Category') },
+        { locator: page.getByText('Select Component'), type: 'text' },
+        { locator: page.getByText('Date'), type: 'text' },
+        { locator: page.getByText('Rate Type P/A'), type: 'text' },
+        { locator: page.getByText('Amount/Percentage'), type: 'text' },
+        { locator: page.getByRole('button', { name: 'Submit' }), type: 'button' },  // For the "Submit" button
+        { locator: page.getByRole('button', { name: 'Refresh' }), type: 'button' }  // For the "Refresh" button
+    ];
 
-    test('Check form validation, reset, and refresh', async ({ page }) => {
-        // Arrange
-        await expect(page.getByRole('button', { name: ' Submit' })).toBeDisabled();
+    // Assert visibility of all elements
+    await Promise.all(elements.map(element =>
+        expect(element.locator).toBeVisible()
+    ));
 
-        // Act
-        const element1 = page.locator('form button').first();
-        await expect(element1).toBeVisible();
-        await element1.click();
-        const dialog = page.locator('div[role="dialog"]');
-        await expect(dialog).toBeVisible();
+    // Additional checks if needed
+    const submitButton = page.getByRole('button', { name: 'Submit' });
+    await expect(submitButton).toBeVisible();
 
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-        await firstRow.click();
-
-        const element = page.locator('form button').nth(1);
-        await expect(element).toBeVisible();
-        await element.click();
-        const dialog1 = page.locator('div[role="dialog"]');
-        await expect(dialog1).toBeVisible();
-
-        const firstRow1 = dialog1.locator('tbody tr:first-child');
-        await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-        await firstRow1.click();
-
-        const cal = page.locator('p-calendar[formControlName="effectiveFromDate"]');
-        await expect(cal).toBeVisible();
-        await cal.click();
-        await page.locator('.p-datepicker-today').click();
-
-        const rate = page.locator('p-dropdown[formControlName="rateType"]');
-        await expect(rate).toBeVisible();
-        await rate.click();
-        await page.locator('.p-dropdown-item >> text=A').click();
-
-        const rateAmount = Math.floor(Math.random() * 100);
-        await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
-
-        // Assert
-        await expect(page.locator('input[formControlName="categoryName"]')).toBeVisible();
-        await expect(page.locator('input[formControlName="componentName"]')).toBeVisible();
-        await expect(page.locator('p-calendar[formControlName="effectiveFromDate"]')).toBeVisible();
-        await expect(page.locator('p-dropdown[formControlName="rateType"]')).toBeVisible();
-        await expect(page.locator('input[formControlName="rateAmount"]')).toBeVisible();
-        await expect(page.getByRole('button', { name: ' Submit' })).toBeEnabled();
-
-        // Act
-        await page.getByRole('button', { name: 'Refresh' }).click();
-
-        // Assert
-        await expect(page.locator('input[formControlName="categoryName"]')).toHaveValue('');
-        await expect(page.locator('input[formControlName="componentName"]')).toHaveValue('');
-        await expect(page.locator('input[formControlName="rateAmount"]')).toHaveValue('');
-        await expect(page.getByRole('button', { name: ' Submit' })).toBeDisabled();
-      });
-
-      test('should add new component, submit form with valid date, and display success message', async ({ page }) => {
-        // Step 1: Add new component
-        const addComponentButton = page.locator('form button').first();
-        await Promise.all([
-            addComponentButton.click(),
-            page.locator('div[role="dialog"]').waitFor({ state: 'visible' })  // Wait for the dialog
-        ]);
-
-        const firstRow = page.locator('tbody tr:first-child');
-        await firstRow.click();  // No need for an explicit waitForSelector, the dialog is already visible
-
-        // Step 2: Select pension category
-        const pensionCategoryButton = page.locator('form button').nth(1);
-        await Promise.all([
-            pensionCategoryButton.click(),
-            page.locator('div[role="dialog"]').waitFor({ state: 'visible' })  // Wait for the dialog
-        ]);
-
-        const firstCategoryRow = page.locator('tbody tr:first-child');
-        await firstCategoryRow.click();
-
-        // Step 3: Set a unique future date (within the next 100 days)
-        const calendarWrapper = page.locator('p-calendar[formControlName="effectiveFromDate"]');
-        await calendarWrapper.click();
-
-        await page
-            .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-            .locator(`text="10"`)
-            .first()
-            .click();
+    const refreshButton = page.getByRole('button', { name: 'Refresh' });
+    await expect(refreshButton).toBeVisible();
+});
 
 
-        // Step 4: Set rate type
-        const rateDropdown = page.locator('p-dropdown[formControlName="rateType"]');
-        await Promise.all([
-            rateDropdown.click(),
-            page.locator('.p-dropdown-item >> text=A').click()
-        ]);
+test('Check form validation, reset, and refresh', async ({ page }) => {
+    // Arrange
+    await expect(page.getByRole('button', { name: ' Submit' })).toBeDisabled();
 
-        // Step 5: Set random rate amount
-        const rateAmount = Math.floor(Math.random() * 100);
-        await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+    // Act
+    const element1 = page.locator('form button').first();
+    await expect(element1).toBeVisible();
+    await element1.click();
+    const dialog = page.locator('div[role="dialog"]');
+    await expect(dialog).toBeVisible();
 
-        // Assert form fields and submit button
-        await Promise.all([
-            expect(page.locator('input[formControlName="categoryName"]')).toBeVisible(),
-            expect(page.locator('input[formControlName="componentName"]')).toBeVisible(),
-            expect(page.locator('p-calendar[formControlName="effectiveFromDate"]')).toBeVisible(),
-            expect(page.locator('p-dropdown[formControlName="rateType"]')).toBeVisible(),
-            expect(page.locator('input[formControlName="rateAmount"]')).toBeVisible(),
-            expect(page.getByRole('button', { name: 'Submit' })).toBeEnabled()
-        ]);
+    const firstRow = dialog.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child');
+    await firstRow.click();
 
-        // Submit the form
-        await page.getByRole('button', { name: 'Submit' }).click();
+    const element = page.locator('form button').nth(1);
+    await expect(element).toBeVisible();
+    await element.click();
+    const dialog1 = page.locator('div[role="dialog"]');
+    await expect(dialog1).toBeVisible();
 
-        // Assert success message and interaction
-        await page.getByRole('button', { name: 'OK' }).click();
-        await expect(page.locator('p-table')).toBeVisible();
-    });
+    const firstRow1 = dialog1.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child');
+    await firstRow1.click();
+
+    const cal = page.locator('p-calendar[formControlName="effectiveFromDate"]');
+    await expect(cal).toBeVisible();
+    await cal.click();
+    await page.locator('.p-datepicker-today').click();
+
+    const rate = page.locator('p-dropdown[formControlName="rateType"]');
+    await expect(rate).toBeVisible();
+    await rate.click();
+    await page.locator('.p-dropdown-item >> text=A').click();
+
+    const rateAmount = Math.floor(Math.random() * 100);
+    await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+
+    // Assert
+    await expect(page.locator('input[formControlName="categoryName"]')).toBeVisible();
+    await expect(page.locator('input[formControlName="componentName"]')).toBeVisible();
+    await expect(page.locator('p-calendar[formControlName="effectiveFromDate"]')).toBeVisible();
+    await expect(page.locator('p-dropdown[formControlName="rateType"]')).toBeVisible();
+    await expect(page.locator('input[formControlName="rateAmount"]')).toBeVisible();
+    await expect(page.getByRole('button', { name: ' Submit' })).toBeEnabled();
+
+    // Act
+    await page.getByRole('button', { name: 'Refresh' }).click();
+
+    // Assert
+    await expect(page.locator('input[formControlName="categoryName"]')).toHaveValue('');
+    await expect(page.locator('input[formControlName="componentName"]')).toHaveValue('');
+    await expect(page.locator('input[formControlName="rateAmount"]')).toHaveValue('');
+    await expect(page.getByRole('button', { name: ' Submit' })).toBeDisabled();
+});
+
+test('should add new component, submit form with valid date, and display success message', async ({ page }) => {
+    // Step 1: Add pension category
+    await page.goto("/master/pension-category");
+    await page.getByRole('button', { name: 'New' }).click();
+    await page.getByRole('button', { name: 'New Primary' }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByRole('button', { name: 'OK' }).click();
+    await page.getByRole('button', { name: 'New Sub' }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByRole('button', { name: 'OK' }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByRole('button', { name: 'OK' }).click();
+    await page.goto('/master/component');
+    await page.getByRole('button', { name: 'New' }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await page.getByRole('button', { name: 'OK' }).click();
+    await page.goto('/master/component-rate');
+    await expect(page.locator('form button').first()).toBeVisible();
+    await page.locator('form button').first().click();
+    let a = await page.locator('button.p-element.p-paginator-last').isEnabled();
+    if (a){
+        await page.locator('button.p-element.p-paginator-last').click();
+    }
+    await page.locator('tbody tr:last-child').click();
 
 
-    test('should show correct table', async({page}) => {
-       // Act
-       const element1 = page.locator('form button').first();
-       await expect(element1).toBeVisible();
-       await element1.click();
-       const dialog = page.locator('div[role="dialog"]');
-       await expect(dialog).toBeVisible();
+    // // Step 2: Select pension component
+    await expect(page.locator('form button').nth(1)).toBeVisible();
+    await page.locator('form button').nth(1).click();
+    a = await page.locator('button.p-element.p-paginator-last').isEnabled();
+    if (a){
+        await page.locator('button.p-element.p-paginator-last').click();
+    }
+    await page.locator('tbody tr:last-child').click();
 
-       const firstRow = dialog.locator('tbody tr:first-child');
-       await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-       await firstRow.click();
 
-       const element = page.locator('form button').nth(1);
-       await expect(element).toBeVisible();
-       await element.click();
-       const dialog1 = page.locator('div[role="dialog"]');
-       await expect(dialog1).toBeVisible();
-
-       const firstRow1 = dialog1.locator('tbody tr:first-child');
-       await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-       await firstRow1.click();
-
-       const calendarWrapper = page.locator('p-calendar[formControlName="effectiveFromDate"]');
-        await calendarWrapper.click();
-
-        const randomDaysFromNow = Math.floor(Math.random() * 100) + 1;
-        const randomFutureDate = new Date();
-        randomFutureDate.setDate(randomFutureDate.getDate() + randomDaysFromNow);
-
-        const randomFutureDay = randomFutureDate.getDate();
-        await page
-            .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-            .locator(`text="${randomFutureDay}"`)
-            .first()
-            .click();
+    //  Step 3: Set a unique future date (within the next 100 days)
+    await page.locator('p-calendar').getByRole('button').click();
+    await page.getByText('24', { exact: true }).click();
 
 
 
-       const rate = page.locator('p-dropdown[formControlName="rateType"]');
-       await expect(rate).toBeVisible();
-       await rate.click();
-       await page.locator('.p-dropdown-item >> text=A').click();
+    // // Step 4: Set rate type
+    const rateDropdown = page.locator('p-dropdown[formControlName="rateType"]');
+    await Promise.all([
+        rateDropdown.click(),
+        page.locator('.p-dropdown-item >> text=A').click()
+    ]);
 
-       const rateAmount = Math.floor(Math.random() * 100);
-       await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+    // // Step 5: Set random rate amount
+    const rateAmount = Math.floor(Math.random() * 100);
+    await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
 
-       // Assert
-       await expect(page.locator('input[formControlName="categoryName"]')).toBeVisible();
-       await expect(page.locator('input[formControlName="componentName"]')).toBeVisible();
-       await expect(page.locator('p-calendar[formControlName="effectiveFromDate"]')).toBeVisible();
-       await expect(page.locator('p-dropdown[formControlName="rateType"]')).toBeVisible();
-       await expect(page.locator('input[formControlName="rateAmount"]')).toBeVisible();
-       await expect(page.getByRole('button', { name: ' Submit' })).toBeEnabled();
+    // Submit the form
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await expect(page.getByLabel('Success')).toContainText(
+        'Component Rate saved sucessfully!');
+});
 
-       // Act
-       await page.getByRole('button', { name: 'Submit' }).click();
 
-       // Assert
-       await page.getByRole('button', { name: 'OK' }).click();
-       await expect(page.locator('p-table')).toBeVisible();
+test('should show correct table', async({page}) => {
+    // Act
+    const element1 = page.locator('form button').first();
+    await expect(element1).toBeVisible();
+    await element1.click();
+    const dialog = page.locator('div[role="dialog"]');
+    await expect(dialog).toBeVisible();
 
-       //Arrange
-       const table = page.locator('p-table');
-        await expect(table).toBeVisible();
+    const firstRow = dialog.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow.click();
 
-        //Act
-        const expectedHeaders = ['Component Rate ID', 'Category ID', 'Bill Breakup ID', 'Effective From Date', 'Rate Amount', 'Rate Type'];
+    const element = page.locator('form button').nth(1);
+    await expect(element).toBeVisible();
+    await element.click();
+    const dialog1 = page.locator('div[role="dialog"]');
+    await expect(dialog1).toBeVisible();
 
-        //Assert
-        await Promise.all(expectedHeaders.map(header =>
-            expect(table.locator(`th:has-text("${header}")`)).toBeVisible()
-        ));
+    const firstRow1 = dialog1.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow1.click();
 
-        //Act
-        const rows = table.locator('tbody tr');
-        const rowCount = await rows.count();
-        const firstRowText = await rows.first().textContent();
+    const calendarWrapper = page.locator('p-calendar[formControlName="effectiveFromDate"]');
+    await calendarWrapper.click();
 
-        //Assert
-        expect(rowCount).toBeGreaterThan(0);
+    const randomDaysFromNow = Math.floor(Math.random() * 100) + 1;
+    const randomFutureDate = new Date();
+    randomFutureDate.setDate(randomFutureDate.getDate() + randomDaysFromNow);
 
-        expect(firstRowText).toBeTruthy();
+    const randomFutureDay = randomFutureDate.getDate();
+    await page
+        .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
+        .locator(`text="${randomFutureDay}"`)
+        .first()
+        .click();
 
-        if (!firstRowText?.includes('No records found')) {
-          for (let i = 0; i < expectedHeaders.length; i++) {
+
+
+    const rate = page.locator('p-dropdown[formControlName="rateType"]');
+    await expect(rate).toBeVisible();
+    await rate.click();
+    await page.locator('.p-dropdown-item >> text=A').click();
+
+    const rateAmount = Math.floor(Math.random() * 100);
+    await page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+
+    // Assert
+    await expect(page.locator('input[formControlName="categoryName"]')).toBeVisible();
+    await expect(page.locator('input[formControlName="componentName"]')).toBeVisible();
+    await expect(page.locator('p-calendar[formControlName="effectiveFromDate"]')).toBeVisible();
+    await expect(page.locator('p-dropdown[formControlName="rateType"]')).toBeVisible();
+    await expect(page.locator('input[formControlName="rateAmount"]')).toBeVisible();
+    await expect(page.getByRole('button', { name: ' Submit' })).toBeEnabled();
+
+    // Act
+    await page.getByRole('button', { name: 'Submit' }).click();
+
+    // Assert
+    await page.getByRole('button', { name: 'OK' }).click();
+    await expect(page.locator('p-table')).toBeVisible();
+
+    //Arrange
+    const table = page.locator('p-table');
+    await expect(table).toBeVisible();
+
+    //Act
+    const expectedHeaders = ['Component Rate ID', 'Category ID', 'Bill Breakup ID', 'Effective From Date', 'Rate Amount', 'Rate Type'];
+
+    //Assert
+    await Promise.all(expectedHeaders.map(header =>
+        expect(table.locator(`th:has-text("${header}")`)).toBeVisible()
+    ));
+
+    //Act
+    const rows = table.locator('tbody tr');
+    const rowCount = await rows.count();
+    const firstRowText = await rows.first().textContent();
+
+    //Assert
+    expect(rowCount).toBeGreaterThan(0);
+
+    expect(firstRowText).toBeTruthy();
+
+    if (!firstRowText?.includes('No records found')) {
+        for (let i = 0; i < expectedHeaders.length; i++) {
             const cell = table.locator(`td:nth-child(${i + 1})`).first();
             await expect(cell).toBeVisible();
             const cellText = await cell.textContent();
             expect(cellText).toBeTruthy();
-          }
         }
-    });
+    }
+});

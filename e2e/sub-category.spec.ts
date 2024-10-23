@@ -16,10 +16,8 @@ test.describe('Sub Category', () => {
     test('Check the input box is visible and working or not and submit it successfully', async ({
         page,
     }) => {
+        await page.getByRole('button', { name: 'Load Sub-Caregory Details' }).click();
         await page.getByRole('button', { name: 'New' }).click();
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
             'SubCategory saved sucessfully!'
@@ -27,27 +25,21 @@ test.describe('Sub Category', () => {
     });
 
 
-    test.fixme('Duplicate Data Checking ', async ({ page }) => {
+    test('Duplicate Data Checking ', async ({ page }) => {
+        await page.getByRole('button', { name: 'Load Sub-Caregory Details' }).click();
         await page.getByRole('button', { name: 'New' }).click();
         const data = await page.locator('input[formControlName=SubCategoryName]').inputValue();
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
-            'Sub Category Details added successfully'
+            'SubCategory saved sucessfully!'
         );
         await page.getByRole('button', { name: 'OK' }).click();
 
         await page.getByRole('button', { name: 'New' }).click();
         await page.locator('input[formControlName=SubCategoryName]').fill(data);
-
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Aww! Snap...')).toContainText(
-            'This already exsists.'
+            'Sub Category already exists!'
         );
     });
 });

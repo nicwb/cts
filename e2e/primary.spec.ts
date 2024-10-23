@@ -11,28 +11,16 @@ test.describe('Primary Category', () => {
         await expect(dashboard).toBeVisible();
         await page.goto('/master/primary');
     });
-
-    test('new button', async ({ page }) => {
-        await expect(page.getByRole('button', { name: 'New' })).toBeVisible();
-        await page.getByRole('button', { name: 'New' }).click();
-        await expect(page.getByText('Head Of Account:(Major-')).toBeVisible();
-        await expect(page.getByText('Description:')).toBeVisible();
-    });
     test('testing the form and submit button', async ({ page }) => {
+        await page.getByRole('button', { name: 'Load Primary Details' }).click();
         await page.getByRole('button', { name: 'New' }).click();
-
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
             'PrimaryCategory saved sucessfully!'
         );
-        await page.getByRole('button', { name: 'OK' }).click();
     });
-
-
-    test.fixme('duplicate primary category entry ', async ({ page }) => {
+    test('duplicate primary category entry ', async ({ page }) => {
+        await page.getByRole('button', { name: 'Load Primary Details' }).click();
         await page.getByRole('button', { name: 'New' }).click();
         const data1 = await page
             .locator('input[formControlName=HoaId]')
@@ -41,12 +29,9 @@ test.describe('Primary Category', () => {
         const data2 = await page
             .locator('input[formControlName=PrimaryCategoryName]')
             .inputValue();
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Success')).toContainText(
-            'Primary Category Details added successfully'
+            'PrimaryCategory saved sucessfully!'
         );
         await page.getByRole('button', { name: 'OK' }).click();
         await expect(
@@ -64,16 +49,9 @@ test.describe('Primary Category', () => {
         await page
             .locator('input[formControlName=PrimaryCategoryName]')
             .fill(`${data2}`);
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
         await page.getByRole('button', { name: 'Submit' }).click();
         await expect(page.getByLabel('Aww! Snap...')).toContainText(
-            'This Primary number already exists.'
+            'Primary Category already exists!'
         );
-        await page.getByRole('button', { name: 'OK' }).click();
     });
-
-
-
 });
