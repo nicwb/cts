@@ -19,6 +19,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { LifeCertificateComponent } from './life-certificate.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PensionerStatusModule } from 'src/app/shared/modules/pensioner-status/pensioner-status.module';
+import { DividerModule } from 'primeng/divider';
 // import { PensionerStatusModule } from '../pensioner-status/pensioner-status.module';
 
 
@@ -49,6 +50,7 @@ const routes: Routes = [
         CalendarModule,
         TreasuryDropdownModule,
         FieldsetModule,
+        DividerModule,
         RouterModule.forChild(routes),
         PensionerStatusModule
     ],
