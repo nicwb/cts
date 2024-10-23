@@ -52,7 +52,7 @@
     "@angular/compiler-cli": "~14.0.0",
     "@eslint/js": "^9.12.0",
     "@ngx-env/builder": "^18.0.1",
-    "@playwright/test": "^1.46.0",
+    "@playwright/test": "^1.48.1",
     "@types/eslint__js": "^8.42.3",
     "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~3.10.0",

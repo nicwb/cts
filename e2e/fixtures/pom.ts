@@ -24,7 +24,7 @@ export class PensionModule {
   }
 
   async savePpoReceipt() {
-    await this.page.goto('/pension/modules/pension-process/ppo/receipt', { waitUntil: "domcontentloaded"});
+    await this.page.goto('/pension-process/ppo/ppo-receipt', { waitUntil: "domcontentloaded"});
     await this.page.getByRole('button', { name: 'New Manual PPO Entry' }).click();
     await this.page.getByRole('button', { name: 'Submit' }).click();
     await this.page.getByRole('button', { name: 'OK' }).click();
@@ -41,7 +41,7 @@ export class PensionModule {
   }
 
   async approvePpo(ppoId : string) {
-    await this.page.goto('/pension/modules/pension-process/approval/ppo-approval', { waitUntil: "domcontentloaded"});
+    await this.page.goto('/pension-process/approval/ppo-approval', { waitUntil: "domcontentloaded"}); //::markMOD
     await this.page.getByLabel('PPO ApprovalPPO ID:').getByRole('button').click();
     await this.page.getByRole('cell', { name: ppoId, exact: true }).click();
     await this.page.getByRole('button', { name: 'Approve' }).click();
@@ -49,10 +49,10 @@ export class PensionModule {
   }
 
   async savePpoDetailsWithoutBankAccount() {
-    test.fixme(true, 'Remove this line after fixing PPO Entry Form');
+    // test.fixme(true, 'Remove this line after fixing PPO Entry Form');
     test.slow(this.isMobile, 'PPO Entry Form takes too long to complete');
     await this.savePpoReceipt();
-    await this.page.goto('/pension/modules/pension-process/ppo/entry', { waitUntil: "domcontentloaded"});
+    await this.page.goto('/pension-process/ppo/entry', { waitUntil: "domcontentloaded"});
     const addNewButton = this.page.getByRole('button', { name: 'Add New PPO' });
     await addNewButton.click();
     await expect(async () => {
