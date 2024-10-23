@@ -459,6 +459,6 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
 
     }
     onDialogClose(){
-        this.location.back();
+        this.router.navigate(['pension-process/ppo/ppo-receipt/new']);
     }
 }

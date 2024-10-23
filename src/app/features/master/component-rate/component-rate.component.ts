@@ -57,18 +57,16 @@ export class ComponentRateComponent implements OnInit {
         this.initializeForm();
         let payload = {
             pageSize: 10,
-            pageIndex: 0,
+            pageIndex: 1,
             filterParameters: [],
             sortParameters: {
                 field: '',
                 order: '',
             },
         };
-        this.allPensionCategory$ =
-            this.pensionCategoryMasterService.getAllCategories(payload);
+        this.allPensionCategory$ = this.pensionCategoryMasterService.getCategories();
 
-        this.pensionComponent$ =
-            this.pensionComponentService.getAllComponents(payload);
+        this.pensionComponent$ = this.pensionComponentService.getComponents();
     }
 
     getFormattedDate(date: Date | null): string {
