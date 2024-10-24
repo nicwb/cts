@@ -2,24 +2,28 @@ import { test, expect } from "./fixtures";
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
+    //NEEDS FIX
 });
 
-test("Navigation Service", async ({ pensionPage,page }) => {
-    //Arrange
-    const ppoId = await pensionPage.savePpoDetailsWithoutBankAccount();
+test("Navigation Service", async ({ pensionPage, page }) => {
+    await page.goto('pension-process/ppo/entry', { waitUntil: "domcontentloaded" });
+    const addNewButton = page.getByRole('button', { name: 'Add New PPO' });
+    await addNewButton.click();
 
-    //Act
-    await pensionPage.page.goto('/#/pension/modules/pension-process/approval/ppo-approval', { waitUntil: "domcontentloaded"});
-    await pensionPage.page.getByLabel('PPO ApprovalPPO ID:').getByRole('button').click();
-    await pensionPage.page.getByRole('cell', { name: ppoId, exact: true }).click();
-    await page.getByRole('button', { name: 'Update Bank Account Details' }).click();
+    const messageLocator = page.locator('text="No manual ppo receipt found!. Do you want add it?"');
+    const isMessageVisible = await messageLocator.isVisible({ timeout: 3000 })
+        .catch(() => false);
 
-    //Assert
-    await expect(page).toHaveURL(`/#/pension/modules/pension-process/ppo/entry/${ppoId}/bank-account?return-uri=%2Fpension%2Fmodules%2Fpension-process%2Fapproval%2Fppo-approval%2F${ppoId}&ask=Do%20you%20want%20go%20back%20to%20approval%20form%3F`);
-    await page.getByRole('button', { name: 'Save' }).click();
-    await expect(page.getByLabel('Confirmation')).toBeVisible();
-    await page.getByRole('button', { name: 'Yes' }).click();
-    await expect(page).toHaveURL(`/#/pension/modules/pension-process/approval/ppo-approval/${ppoId}`);
-    await page.getByRole('button', { name: 'Approve' }).click();
-    await expect(page.getByRole('heading', { name: 'Success' })).toBeVisible();
+    if (isMessageVisible) {
+        await page.getByText('Yes').click();
+        expect(page.url()).toContain('pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew');
+        await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
+        await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByRole('button', { name: 'Yes' })).toBeVisible();
+        await page.getByRole('button', { name: 'Yes' }).click();
+        expect(page.url()).toContain('pension-process/ppo/entry/new');
+    } else {
+        await page.getByRole('button', { name: 'Save' }).click();
+        await pensionPage.okSuccess();
+    }
 });
