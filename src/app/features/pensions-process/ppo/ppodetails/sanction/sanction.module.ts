@@ -18,6 +18,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SanctionComponent } from './sanction.component';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
     declarations: [SanctionComponent],
@@ -38,6 +39,7 @@ import { SanctionComponent } from './sanction.component';
         DropdownModule,
         DialogModule,
         CalendarModule,
+        DividerModule,
         TreasuryDropdownModule,
         FieldsetModule,
     ],

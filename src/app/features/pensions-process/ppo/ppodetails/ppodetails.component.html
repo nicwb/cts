@@ -5,7 +5,7 @@
         </div>
 
         <!-- Step Navigation and Action Buttons -->
-        <div class="px-0 py-4 mt-2" *ngIf="!viewMode">
+        <div class="px-0 py-4 mt-2 w-full" *ngIf="!viewMode">
             <!-- <p-steps [model]="steps" [(activeIndex)]="currentStepIndex"></p-steps> -->
             <div class="my-4 px-0">
                 <!-- PPO and OtherDetails -->
@@ -13,7 +13,7 @@
                     <app-details [ppoId]="ppoId" (return)="setPpoId($event)"></app-details>
                 </div>
 
-                <div *ngIf="currentStepIndex === 1" class="flex flex-column p-0 m-0 gap-3">
+                <div *ngIf="currentStepIndex === 1" class="flex flex-column p-0 m-0 gap-3 ">
                     <!-- add from for sanction -->
                     <app-sanction></app-sanction>
                 </div>
@@ -30,73 +30,68 @@
                 </p-button>
             </div>
         </div>
-
         <!-- Table View -->
         <div class="col-12">
             <div class="card" *ngIf="viewMode">
                 <div class="flex flex-column  ppo-container">
                     <p-fieldset legend="All PPO" class="line-height-3 m-0">
                         <!-- Responsive Search Input and Button -->
-                        <div class="relative mb-2 search-button-container">
-                            <!-- Search Input -->
-                            <div class="search-input">
-                                <span class="p-float-label">
-                                    <input [(ngModel)]="ppoSearchField" id="inputtext" pInputText
-                                        (ngModelChange)="search()" />
-                                    <label for="inputtext">Search</label>
-                                </span>
-                            </div>
-
-                            <!-- Search Button -->
-                            <button label="Search" pButton icon="pi pi-search" class="p-button-secondary"
-                                (click)="toggleTableVisibility()"></button>
-                            <div style="margin: 10px;"></div>
+                        <div class="relative mb-2 search-button-container flex flex-col gap-4">
+                            <!-- List All Button -->
+                            <button 
+                                label="List All" 
+                                pButton 
+                                icon="pi pi-list" 
+                                class="p-button-secondary w-full"
+                                (click)="toggleTableVisibility()">
+                            </button>
+                        
                             <!-- Add New PPO Button -->
-                            <div class="add-button">
-                                <button label="Add New PPO" pButton pRipple icon="pi pi-plus"
-                                    (click)="addNewEntry()"></button>
-                            </div>
-                        </div>
-
-                        <!-- Table Container with Scroll -->
-                        <div class="table-wrapper" *ngIf="tableVisible">
-                            <p-table [value]="data.data" selectionMode="single" [scrollable]="true"
-                                [loading]="isLoading">
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th *ngFor="let col of cols">
-                                            {{ col.header }}
-                                        </th>
-                                        <th>Edit</th>
-                                    </tr>
-                                </ng-template>
-
-                                <ng-template pTemplate="body" let-record>
-                                    <tr>
-                                        <td *ngFor="let col of cols">
-                                            {{ record[col.field] }}
-                                        </td>
-                                        <td>
-                                            <p-button label="Edit" icon="pi pi-pencil" class="p-button-text"
-                                                (click)="editThisRecord(record)"></p-button>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                            </p-table> -->
-                            <app-dynamic-table
-                                [service$]="ppoDetails$"
-                                [suffix]="suffix"
-                                [editable]="true"
-                                (return)="editThisRecord($event)"
-                            ></app-dynamic-table>
-                        </div>
-
-                        <!-- Table Message -->
-                        <div class="m-4 text-center">
-                            <h1>{{ tableMsg }}</h1>
+                            <button 
+                                label="Add New PPO" 
+                                pButton 
+                                pRipple 
+                                icon="pi pi-plus"
+                                class="p-button w-full "
+                                (click)="addNewEntry()">
+                            </button>
                         </div>
                     </p-fieldset>
                 </div>
+            </div>
+            <div class="table-wrapper" *ngIf="tableVisible">
+                <p-table [value]="data.data" selectionMode="single" [scrollable]="true"
+                    [loading]="isLoading">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th *ngFor="let col of cols">
+                                {{ col.header }}
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-record>
+                        <tr>
+                            <td *ngFor="let col of cols">
+                                {{ record[col.field] }}
+                            </td>
+                            <td>
+                                <p-button label="Edit" icon="pi pi-pencil" class="p-button-text"
+                                    (click)="editThisRecord(record)"></p-button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <app-dynamic-table
+                    [service$]="ppoDetails$"
+                    [suffix]="suffix"
+                    [editable]="true"
+                    (return)="editThisRecord($event)"
+                ></app-dynamic-table>
+            </div>
+
+            <div class="m-4 text-center">
+                <h1>{{ tableMsg }}</h1>
             </div>
         </div>
     </div>

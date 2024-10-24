@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -62,6 +63,7 @@ export class DetailsComponent implements OnInit, OnChanges {
 
     isInputshow: boolean = false;
 
+    isEditMode: boolean = false; // Track whether it's edit mode
     constructor(
         private fb: FormBuilder,
         private PensionManualPPOReceiptService: PensionManualPPOReceiptService,
@@ -71,6 +73,8 @@ export class DetailsComponent implements OnInit, OnChanges {
         private factoryService: PensionFactoryService,
         private pensionBankBranchService: PensionBankBranchService,
         private router: Router,
+
+        private cdr: ChangeDetectorRef,
         private route: ActivatedRoute
     ) {
         this.ininalizer();
@@ -101,12 +105,13 @@ export class DetailsComponent implements OnInit, OnChanges {
 
         this.route.paramMap.subscribe(params => {
             this.ppoId = params.get('ppoId') || undefined; // Get ppoId from the route parameters
-            console.log('Extracted PPO ID:', this.ppoId); // Log the extracted PPO ID
             if (this.ppoId) {
                 const ppoidNumber = Number(this.ppoId);
                 this.getData(ppoidNumber)
             }
         });
+        this.checkIfEditModeFromUrl();
+        // this.fetchBanks();
 
     }
 
@@ -196,7 +201,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
-            Id: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
+            id: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoId: [null, []],
             pensionerName: [
@@ -267,25 +272,30 @@ export class DetailsComponent implements OnInit, OnChanges {
 
 
     onChangeBankBranch(event: any): void {
-        const selectedBranch = event.value;
-        if (selectedBranch) {
-            const branch = this.banksBranch.find((b: any) => b.id === selectedBranch.id);
+        const selectedBranchId = event.value; // Selected branch ID
+
+        if (selectedBranchId) {
+            const branch = this.banksBranch.find((b: any) => b.id === selectedBranchId);
+
             if (branch) {
+                // Patch the form with the branch details
                 this.ppoFormDetails.patchValue({
                     bankBranch: branch.id,
                     ifscCode: branch.ifscCode
                 });
             } else {
-                console.error('Selected branch not found in branches list');
-                this.tostService.showError('Error selecting branch');
+                // console.error('Selected branch not found in the list');
+                // this.tostService.showError('Error: Selected branch not found');
             }
         } else {
+            // Clear the branch and IFSC code fields if no branch is selected
             this.ppoFormDetails.patchValue({
-                bankBranch: { id: null, label: null },
+                bankBranch: null,
                 ifscCode: null
             });
         }
     }
+
 
 
     async fetchBankDetails(branchId: number): Promise<any> {
@@ -332,30 +342,6 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
         return null;
     }
-
-    async fetchPpoDetails() {
-        if (this.ppoId) {
-            await firstValueFrom(
-                this.PensionPPODetailsService.getPensionerByPpoId(
-                    Number(this.ppoId)
-                ).pipe(
-                    tap((res) => {
-                        if (res.apiResponseStatus == "Success" && res.result) {
-                            this.patchData(res.result);
-                            if (res.result.category) {
-                                this.handelCategoryDescription(res.result.category)
-                            }
-                        } else {
-                            if (res.message) {
-                                this.tostService.showError(res.message);
-                            }
-                        }
-                    })
-                )
-            );
-        }
-    }
-    // this function do date object to string
     getFormattedDate(date: Date | null): string {
         if (date) {
             return formatDate(date, 'yyyy-MM-dd', 'en-US');
@@ -403,16 +389,6 @@ export class DetailsComponent implements OnInit, OnChanges {
             this.getFormattedDate(this.ppoFormDetails.get('dateOfBirth')?.value)
         );
     }
-
-    // remove that fild not required for server
-    removeNotrequiredField(): void {
-        // this.ppoFormDetails.removeControl('categoryDescription');
-        // this.ppoFormDetails.removeControl('categoryIdShow');
-        // this.ppoFormDetails.removeControl('subCatDesc');
-        // this.ppoFormDetails.removeControl('effectiveDate');
-        // this.ppoFormDetails.removeControl('reducedPensionAmount');
-    }
-
     // call this method for save database
     async saveData() {
         if (this.saveButton) {
@@ -467,7 +443,8 @@ export class DetailsComponent implements OnInit, OnChanges {
                                         )
                                         console.log("ppo id", this.ppoId)
                                         this.router.navigate(['pension-process/ppo', res.result?.ppoId, 'edit'], {
-                                            queryParams: { step: 0 }});
+                                            queryParams: { step: 0 }
+                                        });
                                     }
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);
@@ -556,17 +533,8 @@ export class DetailsComponent implements OnInit, OnChanges {
         const CatDescription = this.ppoFormDetails.get(
             'categoryDescription'
         )?.value;
-        // if (CatDescription) {
-        //     payload.filterParameters = [
-        //         {
-        //             field: 'primaryCategoryId',
-        //             value: CatDescription,
-        //             operator: 'contains',
-        //         },
-        //     ];
-        // }
         this.catDescription$ =
-            this.ppoCategoryService.getAllCategories(payload);
+            this.ppoCategoryService.getCategories();
     }
 
     // handelCategoryDescription
@@ -633,11 +601,8 @@ export class DetailsComponent implements OnInit, OnChanges {
                         ifscCode: branch.ifscCode
                     });
                 } else {
-                    console.error('No valid branch found for branchId:', initialBranchId);
-                    this.tostService.showError('Bank branch details not found');
                 }
             } else {
-                // If no initial branchId is found, set the first branch as default
                 if (this.banksBranch.length > 0) {
                     const defaultBranch = this.banksBranch[0];
                     this.ppoFormDetails.patchValue({
@@ -646,10 +611,10 @@ export class DetailsComponent implements OnInit, OnChanges {
                     });
                 }
             }
-            this.hasBranches = this.banksBranch.length > 0; // Update the hasBranches flag
+            this.hasBranches = this.banksBranch.length > 0;
         } else {
             this.banksBranch = [];
-            this.hasBranches = false; // Update the hasBranches flag
+            this.hasBranches = false;
         }
     }
 
@@ -668,7 +633,6 @@ export class DetailsComponent implements OnInit, OnChanges {
                 this.hasBranches = false; // Update the hasBranches flag
             }
         } catch (error) {
-            console.error('Error fetching branches:', error);
             this.tostService.showError('An error occurred while fetching branches');
         }
     }
@@ -697,51 +661,131 @@ export class DetailsComponent implements OnInit, OnChanges {
 
 
     async getData(ppoID: number) {
-        console.log(ppoID);
         if (ppoID != null) {
-            console.log(ppoID);
-
             const response = await firstValueFrom(
                 this.PensionPPODetailsService.getPensionerByPpoId(ppoID));
             if (response.apiResponseStatus === APIResponseStatus.Success) {
-                console.log(response.result);
-                this.ppoFormDetails.patchValue({
-                    Id: response.result?.id,
-                    // receiptId: response.result?.receipt?.treasuryReceiptNo,
-                    ppoId: response.result?.ppoId,
-                    ppoNo: response.result?.ppoNo,
-                    pensionerName: response.result?.pensionerName,
-                    ppoType: response.result?.ppoType,
-                    ppoSubType: response.result?.ppoSubType,
-                    dateOfBirth: response.result?.dateOfBirth,
-                    categoryId: response.result?.categoryId,
-                    dateOfCommencement: response.result?.dateOfCommencement,
-                    basicPensionAmount: response.result?.basicPensionAmount,
-                    commutedPensionAmount: response.result?.commutedPensionAmount,
-                    reducedPensionAmount: response.result?.reducedPensionAmount,
-                    aadhaarNo: response.result?.aadhaarNo,
-                    mobileNumber: response.result?.mobileNumber,
-                    panNo: response.result?.panNo,
-                    gender: response.result?.gender,
-                    religion: response.result?.religion,
-                    emailId: response.result?.emailId,
-                    identificationMark: response.result?.identificationMark,
-                    enhancePensionAmount: response.result?.enhancePensionAmount,
-                    pensionerAddress: response.result?.pensionerAddress,
-                    retirementDate: response.result?.dateOfRetirement,
-                    // subCatDesc: response.result.
-                    categoryIdShow: response.result?.categoryId,
-                    categoryDescription: response.result?.category?.categoryName,
-                    // effectiveDate: response.result.e
-                    payMode: response.result?.payMode,
-                    bankAcNo: response.result?.bankAcNo,
-                    accountHolderName: response.result?.accountHolderName,
-                    ifscCode: response.result?.branch?.ifscCode,
-                    bank: response.result?.bankId,
-                    bankBranch: response.result?.branch?.branchName
-                })
+                if (response.result != undefined && response.result?.category) {
+                    this.ppoFormDetails.patchValue(response.result)
+                    const bank = response.result.branch?.bank;
+                    const branch = response.result.branch;
+                    if (bank) {
+                        this.banks = [{
+                            label: bank.bankName,
+                            value: bank.id
+                        }];
+                        this.onChangeBank({ value: bank.id });
+                        this.onChangeBankBranch
+
+                        const branch = response.result.branch;
+                        this.fetchBanks();
+                        this.ppoFormDetails.get('bank')?.setValue(bank.id);
+                    }
+                    if (branch) {
+                        this.ppoFormDetails.patchValue({
+                            bankBranch: branch.id,
+                            ifscCode: branch.ifscCode,
+                        });
+                    } else {
+                        this.tostService.showError('Branch details not found.');
+                    }
+                    this.handelCategoryDescription(response.result.category)
+                    this.ppoFormDetails.patchValue({
+                        dateOfRetirement: this.parseDate(response.result.dateOfRetirement),
+                        dateOfCommencement: this.parseDate(response.result.dateOfCommencement),
+                        dateOfBirth: this.parseDate(response.result.dateOfBirth),
+                        ifscCode: response.result.branch?.ifscCode,
+                    })
+                }
+
+
             }
         }
     }
+
+
+    getFormValues(): any {
+        const form = this.ppoFormDetails;
+        return {
+            ppoNo: form.get('ppoNo')?.value,
+            ppoType: form.get('ppoType')?.value,
+            ppoSubType: form.get('ppoSubType')?.value,
+            categoryId: form.get('categoryId')?.value,
+            branchId: form.value.bankBranch, // Added here
+            bankId: form.value.bank,     // Added here
+            accountHolderName: form.get('accountHolderName')?.value,
+            payMode: form.get('payMode')?.value,
+            bankAcNo: form.get('bankAcNo')?.value,
+            pensionerName: form.get('pensionerName')?.value,
+            gender: form.get('gender')?.value || null, // Handle optional field
+            dateOfBirth: this.formatDate(form.get('dateOfBirth')?.value),
+            mobileNumber: form.get('mobileNumber')?.value || null, // Optional
+            emailId: form.get('emailId')?.value || null, // Optional
+            pensionerAddress: form.get('pensionerAddress')?.value || null,
+            identificationMark: form.get('identificationMark')?.value || null,
+            panNo: form.get('panNo')?.value || null, // Optional
+            aadhaarNo: form.get('aadhaarNo')?.value || null,
+            dateOfRetirement: this.formatDate(form.get('dateOfRetirement')?.value),
+            dateOfCommencement: this.formatDate(form.get('dateOfCommencement')?.value),
+            commutedFromDate: this.formatDate(form.get('commutedFromDate')?.value) || null,
+            commutedUptoDate: this.formatDate(form.get('commutedUptoDate')?.value),
+            basicPensionAmount: form.get('basicPensionAmount')?.value,
+            commutedPensionAmount: form.get('commutedPensionAmount')?.value,
+            enhancePensionAmount: form.get('enhancePensionAmount')?.value,
+            reducedPensionAmount: form.get('reducedPensionAmount')?.value,
+            religion: form.get('religion')?.value,
+        };
+    }
+
+    async updateData() {
+        const formValue = this.getFormValues();
+        const id = this.ppoFormDetails.get('ppoId')?.value;
+        try {
+            const response = await firstValueFrom(
+                this.PensionPPODetailsService.updatePensionerByPpoId(id, formValue)
+            );
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
+                this.tostService.showSuccess('' + response.message);
+            } else {
+                this.tostService.showError('' + response.message);
+            }
+        } catch (error) {
+            this.tostService.showError('somting Want wrong');
+        }
+    }
+
+    // Unified method to handle both save and update operations
+    async handleSaveOrUpdate() {
+        if (this.isEditMode) {
+            await this.updateData();
+        } else {
+            await this.saveData();
+        }
+    }
+
+    // Check if the URL contains 'edit' to set the edit mode
+    checkIfEditModeFromUrl() {
+        const currentUrl = this.router.url;
+        if (currentUrl.includes('/edit')) {
+            this.isEditMode = true; // Enable edit mode
+        }
+    }
+
+
+    formatDate(dateString: string): string | null {
+        const date = new Date(dateString);
+
+        // Check if the date is valid
+        if (isNaN(date.getTime())) {
+            return null; // Return null for invalid dates
+        }
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`; // Returns the formatted date
+    }
+
 
 }

@@ -126,8 +126,6 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         // Read the `step` query parameter and set the current step index.
         const stepParam = this.route.snapshot.queryParamMap.get('step');
         this.currentStepIndex = stepParam ? parseInt(stepParam, 10) : 0;
-
-        console.log(`Initialized at step ${this.currentStepIndex}`);
     }
 
 
@@ -146,17 +144,14 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         }
 
         // Navigate to the next step.
-        this.router
-            .navigate(['pension-process/ppo', this.ppoId, 'edit'], {
-                queryParams: { step: nextStep },
-            })
-            .then(() => {
-                this.currentStepIndex = nextStep;
-                console.log(`Navigated to step ${nextStep}`);
-            })
-            .catch((error) => {
-                console.error('Navigation error:', error);
-            });
+        this.router.navigate(
+            ['pension-process/ppo', this.ppoId, 'edit'],
+            { queryParams: { step: nextStep } }
+        ).then(() => {
+            this.currentStepIndex = nextStep;
+        }).catch((error) => {
+            console.error('Navigation error:', error);
+        });
     }
 
     private getLastPathSegment(url: string): string | null {
@@ -221,7 +216,6 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
                     queryParams: { step: previousStep },
                 })
                 .then(() => {
-                    console.log(`Navigated to step ${previousStep}`);
                     this.currentStepIndex = previousStep;
                 })
                 .catch((error) => {
