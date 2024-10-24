@@ -1,206 +1,174 @@
-<form>
-    <div class="col-12 md:col-12">
+<div class="w-full">
+    <div class="card w-full">
+        <div class="row">
+            <form [formGroup]="sanctionDetails">
 
-        <p-fieldset legend="Details of Service Holder" class="line-height-3 m-0">
-            <!-- Details of Service Holder -->
-            <div class="col-12">
-                <div class="p-fluid">
-                    <div class="formgroup-inline">
-                        <label for="nameOfServiceHolder"
-                            class="col-12 mb-2 md:col-3 md:mb-0">Name of Service
-                            Holder:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <input id="nameOfServiceHolder" type="text" pInputText
-                                formControlName="nameOfServiceHolder"
-                                placeholder="Name of Service Holder" />
-                        </div>
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Details of Service Holder :</b>
+                    </div>
+                </p-divider>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-2">
+                        <label><b> Name of Service Holder:</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeName">
+                    </div>
+                <div class="field col-12 md:col-2">
+                    <label><b> Ppo Id:</b></label>
+                    <input class="w-full p-3  border-inherit" type="text" pInputText class="" formControlName="ppoId">
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b> PensionerId:</b></label>
+                    <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                        formControlName="pensionerId">
+                </div>
+                </div>
+
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Sanction Details</b>
+                    </div>
+                </p-divider>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-4">
+                        <label><b> Sanction Authority: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="sanctionAuthority">
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label><b> Sanction No.: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="sanctionNo">
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label><b> Sanction Date: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="sanctionDate">
                     </div>
                 </div>
-            </div>
-        </p-fieldset>
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Office and Personal Details of Service Holder</b>
+                    </div>
+                </p-divider>
 
-        <!-- Sanction Details -->
-        <p-fieldset legend="Sanction Details" class="line-height-3 m-8">
-            <div class="col-12 md:col-12">
-                <div class="card p-fluid">
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-2">
+                        <label><b> Date of Birth: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeDob">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b> Gender: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeGender">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b> Date of Appointment: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeDateOfAppointment">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Office Name: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeOffice">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Post Held: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeDesignation">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Last Pay: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeLastPay">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Average Amolument: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="averageEmolument">
+                    </div>
 
-                    <div class="formgroup-inline">
-                        <label for="sanctionAuthority"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Sanction Authority:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <input id="sanctionAuthority" type="text" pInputText
-                                formControlName="sanctionAuthority"
-                                placeholder="Sanction Authority" />
-                        </div>
-                        <label for="sanctionNo"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Sanction No:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <input type="number" pinputtext="" formControlName="sanctionNo"
-                                placeholder="Sanction No"
-                                class="p-inputtext p-component p-element w-full">
-                        </div>
-                        <label for="sanctionDate"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Sanction Date:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <p-calendar class="p-component p-element w-full p-calendar"
-                                formControlName="sanctionDate" placeholder="dd/mm/yyyy"
-                                appendTo="body" [showIcon]="true"
-                                inputId="icon"></p-calendar>
-                        </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>HRMS Unique ID of Service Holder: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="employeeHrmsId">
                     </div>
                 </div>
-            </div>
-        </p-fieldset>
 
-        <!-- Office and Personal Details of Service Holder -->
-        <p-fieldset legend="Office and Personal Details of Service Holder"
-            class="line-height-3  m-8">
-            <div class="col-12 md:col-12">
-                <div class="card p-fluid">
-                    <div class="formgroup-inline">
-                        <label for="dateOfBirth" class="col-12 mb-2 md:col-2 md:mb-0">Date
-                            of Birth:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <p-calendar class="p-component p-element w-full p-calendar"
-                                formControlName="dateOfBirth" placeholder="dd/mm/yyyy"
-                                appendTo="body" [showIcon]="true"
-                                inputId="icon"></p-calendar>
-                        </div>
-                        <label for="gender"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Gender:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <p-dropdown [options]="genders" formControlName="gender"
-                                placeholder="Select a Gender"
-                                [showClear]="true"></p-dropdown>
-                        </div>
-                        <label for="dateOfAppointment"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Date of
-                            Appointment:</label>
-                        <p-calendar class="p-component p-element w-full p-calendar"
-                            formControlName="dateOfAppointment" placeholder="dd/mm/yyyy"
-                            appendTo="body" [showIcon]="true" inputId="icon"></p-calendar>
-                        <label for="officeName" class="col-12 mb-2 md:col-2 md:mb-0">Office
-                            Name:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="officeName" type="text" pInputText
-                                formControlName="officeName" placeholder="Office Name" />
-                        </div>
-                        <label for="postHeld" class="col-12 mb-2 md:col-2 md:mb-0">Post
-                            Held:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="postHeld" type="text" pInputText
-                                formControlName="postHeld" placeholder="Post Held" />
-                        </div>
-                        <label for="officeName" class="col-12 mb-2 md:col-2 md:mb-0">Office
-                            Name:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="officeName" type="text" pInputText
-                                formControlName="officeName" placeholder="Office Name" />
-                        </div>
-                        <label for="lastPay" class="col-12 mb-2 md:col-2 md:mb-0">Last
-                            Pay:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="lastPay" type="text" pInputText
-                                formControlName="lastPay" placeholder="Last Pay" />
-                        </div>
-                        <label for="averageAmolument"
-                            class="col-12 mb-2 md:col-2 md:mb-0">Average Amolument:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="averageAmolument" type="text" pInputText
-                                formControlName="averageAmolument"
-                                placeholder="Average Amolument" />
-                        </div>
-                        <label for="hrmsUniqueIdOfServiceHolder"
-                            class="col-12 mb-2 md:col-2 md:mb-0">HRMS Unique of Service
-                            Holder:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="hrmsUniqueIdOfServiceHolder" type="text" pInputText
-                                formControlName="hrmsUniqueIdOfServiceHolder"
-                                placeholder="HRMS Unique Id" />
-                        </div>
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Issuing Authority</b>
+                    </div>
+                </p-divider>
+
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-2">
+                        <label><b>Issuing Authority: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="issuingAuthority">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Letter No.: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="issuingLetterNo">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Letter Date: </b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="issuingLetterDate">
                     </div>
                 </div>
-            </div>
 
-        </p-fieldset>
-
-        <!-- Issuing Authority -->
-        <p-fieldset legend="Issuing Authority" class="line-height-3  m-8">
-            <div class="col-12">
-                <div class="card p-fluid">
-
-                    <div class="formgroup-inline">
-                        <label for="issuingAuthority"
-                            class="col-12 mb-2 md:col-3 md:mb-0">Issuing Authority:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <input id="issuingAuthority" type="text" pInputText
-                                formControlName="issuingAuthority"
-                                placeholder="Issuing Authority" />
-                        </div>
-                        <label for="letterNo" class="col-12 mb-2 md:col-3 md:mb-0">Letter
-                            No:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <input id="letterNo" type="text" pInputText
-                                formControlName="letterNo" placeholder="Letter No" />
-                        </div>
-                        <label for="letterDate" class="col-12 mb-2 md:col-3 md:mb-0">Letter
-                            Date:</label>
-                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                            <p-calendar class="p-component p-element w-full p-calendar"
-                                formControlName="letterDate" placeholder="dd/mm/yyyy"
-                                appendTo="body" [showIcon]="true"
-                                inputId="icon"></p-calendar>
-                        </div>
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex align-items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Qualifying Service</b>
+                    </div>
+                </p-divider>
+                <div class="p-fluid formgrid grid">
+                    <div class="field col-12 md:col-2">
+                        <label><b> Gross Year :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceGrossYears">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Gross Month :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceGrossMonths">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Gross Day :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceGrossDays">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Net Year :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceNetYears">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Net Month :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceNetMonths">
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label><b>Net Day :</b></label>
+                        <input class="w-full p-3  border-inherit" type="text" pInputText class=""
+                            formControlName="qualifyingServiceNetDays">
                     </div>
                 </div>
-            </div>
-        </p-fieldset>
-
-        <!-- Qualifying Service -->
-        <p-fieldset legend="Qualifying Service" class="line-height-3 m-8">
-            <div class="col-12 md:col-12">
-                <div class="card p-fluid">
-
-                    <div class="formgroup-inline">
-                        <label for="grossYear" class="col-12 mb-2 md:col-2 md:mb-0">Gross
-                            Year:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="grossYear" type="text" pInputText
-                                formControlName="grossYear" placeholder="GrossYear" />
-                        </div>
-                        <label for="grossMonth" class="col-12 mb-2 md:col-2 md:mb-0">Gross
-                            Month:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="grossMonth" type="text" pInputText
-                                formControlName="grossMonth" placeholder="Gross Month" />
-                        </div>
-                        <label for="grossDay" class="col-12 mb-2 md:col-2 md:mb-0">Gross
-                            Day:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="grossDay" type="text" pInputText
-                                formControlName="grossDay" placeholder="Gross Day" />
-                        </div>
-                        <label for="netYear" class="col-12 mb-2 md:col-2 md:mb-0">Net
-                            Year:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="netYear" type="text" pInputText
-                                formControlName="netYear" placeholder="Net Year" />
-                        </div>
-                        <label for="netMonth" class="col-12 mb-2 md:col-2 md:mb-0">Net
-                            Month:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="netMonth" type="text" pInputText
-                                formControlName="netMonth" placeholder="Net Month" />
-                        </div>
-                        <label for="netDay" class="col-12 mb-2 md:col-2 md:mb-0">Net
-                            Day:</label>
-                        <div class="field col-12 mb-2 lg:col-2 lg:mb-0">
-                            <input id="netDay" type="text" pInputText
-                                formControlName="netDay" placeholder="Net Day" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </p-fieldset>
+            </form>
+        </div>
+        <div class="w-100" style="display: flex; justify-content: center">
+            <p-button label="save" icon="pi pi-bookmark" styleClass="p-button-raised">
+            </p-button>
+        </div>
     </div>
-</form>

@@ -62,6 +62,7 @@ export class DetailsComponent implements OnInit, OnChanges {
 
     isInputshow: boolean = false;
 
+    isEditMode: boolean = false; // Track whether it's edit mode
     constructor(
         private fb: FormBuilder,
         private PensionManualPPOReceiptService: PensionManualPPOReceiptService,
@@ -107,6 +108,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 this.getData(ppoidNumber)
             }
         });
+        this.checkIfEditModeFromUrl();
 
     }
 
@@ -196,7 +198,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
-            Id: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
+            id: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoNo: [null, [Validators.maxLength(100), Validators.minLength(0)]], /// null
             ppoId: [null, []],
             pensionerName: [
@@ -333,28 +335,28 @@ export class DetailsComponent implements OnInit, OnChanges {
         return null;
     }
 
-    async fetchPpoDetails() {
-        if (this.ppoId) {
-            await firstValueFrom(
-                this.PensionPPODetailsService.getPensionerByPpoId(
-                    Number(this.ppoId)
-                ).pipe(
-                    tap((res) => {
-                        if (res.apiResponseStatus == "Success" && res.result) {
-                            this.patchData(res.result);
-                            if (res.result.category) {
-                                this.handelCategoryDescription(res.result.category)
-                            }
-                        } else {
-                            if (res.message) {
-                                this.tostService.showError(res.message);
-                            }
-                        }
-                    })
-                )
-            );
-        }
-    }
+    // async fetchPpoDetails() {
+    //     if (this.ppoId) {
+    //         await firstValueFrom(
+    //             this.PensionPPODetailsService.getPensionerByPpoId(
+    //                 Number(this.ppoId)
+    //             ).pipe(
+    //                 tap((res) => {
+    //                     if (res.apiResponseStatus == "Success" && res.result) {
+    //                         this.patchData(res.result);
+    //                         if (res.result.category) {
+    //                             this.handelCategoryDescription(res.result.category)
+    //                         }
+    //                     } else {
+    //                         if (res.message) {
+    //                             this.tostService.showError(res.message);
+    //                         }
+    //                     }
+    //                 })
+    //             )
+    //         );
+    //     }
+    // }
     // this function do date object to string
     getFormattedDate(date: Date | null): string {
         if (date) {
@@ -467,7 +469,8 @@ export class DetailsComponent implements OnInit, OnChanges {
                                         )
                                         console.log("ppo id", this.ppoId)
                                         this.router.navigate(['pension-process/ppo', res.result?.ppoId, 'edit'], {
-                                            queryParams: { step: 0 }});
+                                            queryParams: { step: 0 }
+                                        });
                                     }
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);
@@ -566,7 +569,7 @@ export class DetailsComponent implements OnInit, OnChanges {
         //     ];
         // }
         this.catDescription$ =
-            this.ppoCategoryService.getAllCategories(payload);
+            this.ppoCategoryService.getCategories();
     }
 
     // handelCategoryDescription
@@ -705,43 +708,57 @@ export class DetailsComponent implements OnInit, OnChanges {
                 this.PensionPPODetailsService.getPensionerByPpoId(ppoID));
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 console.log(response.result);
-                this.ppoFormDetails.patchValue({
-                    Id: response.result?.id,
-                    // receiptId: response.result?.receipt?.treasuryReceiptNo,
-                    ppoId: response.result?.ppoId,
-                    ppoNo: response.result?.ppoNo,
-                    pensionerName: response.result?.pensionerName,
-                    ppoType: response.result?.ppoType,
-                    ppoSubType: response.result?.ppoSubType,
-                    dateOfBirth: response.result?.dateOfBirth,
-                    categoryId: response.result?.categoryId,
-                    dateOfCommencement: response.result?.dateOfCommencement,
-                    basicPensionAmount: response.result?.basicPensionAmount,
-                    commutedPensionAmount: response.result?.commutedPensionAmount,
-                    reducedPensionAmount: response.result?.reducedPensionAmount,
-                    aadhaarNo: response.result?.aadhaarNo,
-                    mobileNumber: response.result?.mobileNumber,
-                    panNo: response.result?.panNo,
-                    gender: response.result?.gender,
-                    religion: response.result?.religion,
-                    emailId: response.result?.emailId,
-                    identificationMark: response.result?.identificationMark,
-                    enhancePensionAmount: response.result?.enhancePensionAmount,
-                    pensionerAddress: response.result?.pensionerAddress,
-                    retirementDate: response.result?.dateOfRetirement,
-                    // subCatDesc: response.result.
-                    categoryIdShow: response.result?.categoryId,
-                    categoryDescription: response.result?.category?.categoryName,
-                    // effectiveDate: response.result.e
-                    payMode: response.result?.payMode,
-                    bankAcNo: response.result?.bankAcNo,
-                    accountHolderName: response.result?.accountHolderName,
-                    ifscCode: response.result?.branch?.ifscCode,
-                    bank: response.result?.bankId,
-                    bankBranch: response.result?.branch?.branchName
-                })
+                if (response.result != undefined && response.result?.category) {
+                    this.ppoFormDetails.patchValue(response.result)
+                    this.handelCategoryDescription(response.result.category)
+                    this.ppoFormDetails.patchValue({
+                        dateOfRetirement: this.parseDate(response.result.dateOfRetirement),
+                        dateOfCommencement: this.parseDate(response.result.dateOfCommencement),
+                        dateOfBirth: this.parseDate(response.result.dateOfBirth),
+                        ifscCode: response.result.branch?.ifscCode,
+                        // bank: response.result.branch?.bank?.bankName
+                    })
+                    if (response.result.branch?.bank?.bankName) {
+                        this.ppoFormDetails.get('bank')?.setValue(response.result.branch.bank.bankName);
+                      }
+                }
+
+
             }
         }
     }
+
+    async updateData() {
+        const formValue = this.ppoFormDetails.value; // Extract form values
+        const id = this.ppoFormDetails.get('ppoId')?.value;
+        console.log("form value", formValue);
+        try {
+          // Wait for the observable to complete using firstValueFrom
+          const response = await firstValueFrom(
+            this.PensionPPODetailsService.updatePensionerByPpoId(id,formValue)
+          );
+          console.log('Update successful:', response);
+        } catch (error) {
+          console.error('Error updating data:', error);
+        }
+      }
+
+     // Unified method to handle both save and update operations
+  async handleSaveOrUpdate() {
+    if (this.isEditMode) {
+      await this.updateData();
+    } else {
+      await this.saveData();
+    }
+  }
+
+    // Check if the URL contains 'edit' to set the edit mode
+  checkIfEditModeFromUrl() {
+    const currentUrl = this.router.url;
+    if (currentUrl.includes('/edit')) {
+      this.isEditMode = true; // Enable edit mode
+    }
+  }
+
 
 }

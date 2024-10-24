@@ -92,20 +92,20 @@ export class PpodetailsComponent implements OnDestroy {
     }
 
     async loadById() {
-        if (this.ppoId) {
-            await firstValueFrom(this.ppoDetialsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
-                tap(
-                    res => {
-                        if (!res.result) {
-                            this.toastService.showError("PPO ID is invalid");
-                            return;
-                        }
-                        this.pensionerName = res.result.pensionerName;
-                        this.cdr.detectChanges()
-                    }
-                )
-            ))
-        }
+        // if (this.ppoId) {
+        //     await firstValueFrom(this.ppoDetialsService.getPensionerByPpoId(Number(this.ppoId)).pipe(
+        //         tap(
+        //             res => {
+        //                 if (!res.result) {
+        //                     this.toastService.showError("PPO ID is invalid");
+        //                     return;
+        //                 }
+        //                 this.pensionerName = res.result.pensionerName;
+        //                 this.cdr.detectChanges()
+        //             }
+        //         )
+        //     ))
+        // }
     }
 
     ngOnInit(): void {

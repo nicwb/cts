@@ -50,7 +50,7 @@
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-1">
                         <label><b>Pensioner ID</b></label>
-                        <input class="w-full p-3  border-inherit" type="text" pInputText formControlName="Id"  class="w-full p-2 bg-cyan-100"  [readonly]="true" >
+                        <input class="w-full p-3  border-inherit" type="text" pInputText formControlName="id"  class="w-full p-2 bg-cyan-100"  [readonly]="true" >
                     </div>
                     <div class="field col-12 md:col-1">
                         <label><b>PPO ID</b></label>
@@ -165,12 +165,14 @@
 
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4">
+                        <label for="PayMode"><b>Pay Mode :</b></label>
                         <p-dropdown styleClass="p-dropdown-sm"
                             [options]="[{label: 'Treasury', value: 'Q'}, {label: 'Bank', value: 'B'}]"
                             formControlName="payMode" placeholder="Pay Mode" class="py-2"></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-4">
+                        <label for="bankName"><b>Bank Name</b></label>
                         <p-dropdown styleClass="p-dropdown-sm" [options]="banks" optionLabel="label" optionValue="value"
                             [filter]="true" filterBy="label" [showClear]="true" (onChange)="onChangeBank($event)"
                             formControlName="bank" placeholder="Bank Name">
@@ -183,6 +185,7 @@
                     </div>
 
                     <div class="field col-12 md:col-4" *ngIf="hasBranches">
+                        <label for="PayMode"><b>Bank Branch</b></label>
                         <p-dropdown styleClass="p-dropdown-sm" [options]="banksBranch" optionLabel="label"
                             optionValue="id" [filter]="true" filterBy="label" [showClear]="true"
                             (onChange)="onChangeBankBranch($event)" formControlName="bankBranch"
@@ -198,8 +201,13 @@
 
                     <div class="field col-12 md:col-4">
                         <label for="ifsc code"><b>IFSC Code : </b></label>
-                        <input class="w-full" id="float-input" type="text" pInputText [readonly]="true"
+                        <input class="w-full" id="float-input" type="text" pInputText
                             formControlName="ifscCode">
+                    </div>
+                    <div class="field col-12 md:col-4">
+                        <label for="ifsc code"><b>Account Holder name </b></label>
+                        <input class="w-full" id="float-input" type="text" pInputText
+                            formControlName="accountHolderName">
                     </div>
                 </div>
                 <p-divider align="left" type="solid">
@@ -272,9 +280,13 @@
                 </div>
 
                 <div class="w-100" style="display: flex; justify-content: center">
-                    <p-button label="Save" icon="pi pi-bookmark" [disabled]="saveButton" styleClass="p-button-raised"
-                        (click)="saveData()">
+                    <p-button [label]="isEditMode ? 'Update' : 'Save'" icon="pi pi-bookmark" [disabled]="saveButton" styleClass="p-button-raised"
+                        (click)="handleSaveOrUpdate()">
                     </p-button>
+
+                    <!-- <p-button label="Update" icon="pi pi-bookmark" [disabled]="saveButton" styleClass="p-button-raised"
+                        (click)="saveData()">
+                    </p-button> -->
                 </div>
                 <!-- </p-fieldset> -->
             </form>

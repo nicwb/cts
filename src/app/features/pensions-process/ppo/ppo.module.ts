@@ -67,11 +67,9 @@ const routes: Routes = [
         DropdownModule,
         DialogModule,
         CalendarModule,
-        ReactiveFormsModule,
         TreasuryDropdownModule,
         FormsModule,
         RouterModule.forChild(routes)
-
     ],
     exports: [RouterModule, PpoComponent]
 })
