@@ -14,12 +14,12 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
         <p><strong>Generated On:</strong> {{ config.data.generatedDate | date:'medium' }}</p>
       </div>
       <ng-container *ngIf="config.data.pdfData">
-        <iframe [src]="safePdfDataUri" width="100%" height="500px"></iframe>
+        <object [data]="safePdfDataUri" type="application/pdf" width="100%" height="500px"></object>
       </ng-container>
     </div>
   `,
-    styles: [`
-    .pdf-viewer-container {
+    styles: [
+        `.pdf-viewer-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -29,7 +29,8 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
       padding: 15px;
       border-radius: 5px;
     }
-  `]
+  `
+    ]
 })
 export class PdfViewerComponent implements OnInit {
     safePdfDataUri?: SafeResourceUrl;
