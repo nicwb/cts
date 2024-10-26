@@ -44,7 +44,7 @@ test.beforeEach(async ({ pensionPage }) => {
         await page.waitForSelector('tbody tr');
         const firstRow = dialog.locator('tbody tr:first-child');
         const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-        const pensionerName = await firstRow.locator('td:nth-child(2)').textContent();
+        const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
         await firstRow.click();
         await expect(dialog).not.toBeVisible();
 
@@ -62,7 +62,7 @@ test('should generate PDF and handle errors appropriately', async ({ page, pensi
     //ARRANGE
     const firstRow = await pensionPage.openPopupAndSelectFirstRow();
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    const pensionerName = await firstRow.locator('td:nth-child(2)').textContent();
+    const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
 
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(ppoIdValue ?? '');
     await expect(page.locator('input[placeholder="Pensioner Name"]')).toHaveValue(pensionerName ?? '');

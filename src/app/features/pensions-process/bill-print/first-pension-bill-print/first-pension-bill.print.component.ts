@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PensionFirstBillService,PensionBankBranchService, PensionPPODetailsService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, APIResponseStatus } from 'src/app/api';
+import { PensionFirstBillService,PensionBankBranchService, ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse, APIResponseStatus } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable} from 'rxjs';
@@ -26,7 +26,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService,
     private pensionFirstBillService: PensionFirstBillService,
-    private pensionPPODetailsService: PensionPPODetailsService,
     private pensionBankBranchService: PensionBankBranchService,
     private route: ActivatedRoute
   ) {}
@@ -47,7 +46,7 @@ export class FirstPensionBillPrintComponent implements OnInit {
           },
       };
       this.pensionComponent$ =
-            this.pensionPPODetailsService.getAllPensioners(payload);
+            this.pensionFirstBillService.getPposForFirstBillPrint()
       // Check if ppoId is provided via route parameters
       this.route.paramMap.subscribe(params => {
           const routePpoId = params.get('ppoId');
