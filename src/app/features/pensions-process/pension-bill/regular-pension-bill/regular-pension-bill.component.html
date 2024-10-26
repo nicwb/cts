@@ -23,7 +23,11 @@
 
                 <!-- Progress and PPO Count Display -->
                 <div class="mt-4 px-4 text-center" *ngIf="isGenerating || ppoCount !== null">
-                    <p-progressBar [value]="progress"></p-progressBar>
+                    <div class="flex h-16" style="display: flex; justify-content: center; align-items: center;" *ngIf="isGenerating">
+                        <p-progressBar [value]="progress" class="flex-1"></p-progressBar>
+                        <button pButton pRipple class="ml-2 shrink-0 h-full px-4 text-white p-button-danger" *ngIf="isGenerating" (click)="onCancel()">Cancel</button>
+                    </div>
+
                     <p class="mt-2">{{progressMessage}}</p>
                     <p *ngIf="ppoCount !== null" class="mt-2">PPOs Available: {{ppoCount}}</p>
                 </div>
@@ -32,21 +36,22 @@
                  <div *ngIf="failedMessages.length > 0" class="mt-4 px-4">
                     <div class="error-container">
                         <div class="error-title">Failed PPOs</div>
-                        <ul class="error-list">
+                        <ul class="error-list" style="max-height: 200px; overflow-y: scroll; padding: 15px; margin: 0;">
                             <li *ngFor="let message of failedMessages">
                                 {{message}}
                             </li>
                         </ul>
                     </div>
                 </div>
-                
+
+
                 <!-- Button Group -->
                 <div class="flex flex-column mt-4 align-items-center justify-content-center">
                     <div class="flex flex-wrap gap-2 justify-content-center">
                         <button pButton pRipple (click)="onFetchPPOBills()" type="button" class="p-button-raised p-button-info" [disabled]="isGenerating || !billPrintForm.valid">
                             Fetch Bills
                         </button>
-                        
+
                         <button pButton pRipple (click)="onGenerate()" type="button" class="p-button-raised p-button-info"
                             [disabled]="isGenerating || ppoCount === null">
                             Generate {{ ppoCount }} Bill{{ ppoCount && ppoCount > 1 ? 's' : '' }}

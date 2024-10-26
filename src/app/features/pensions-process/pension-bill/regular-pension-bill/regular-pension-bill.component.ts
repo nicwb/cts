@@ -5,6 +5,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { firstValueFrom } from 'rxjs';
 import { PensionRegularBillService, PpoBillEntryDTO } from 'src/app/api';
 import { Router } from '@angular/router';
+import { SpinnerService } from 'src/app/core/interceptors/spinner.service';
 
 @Component({
     selector: 'app-regular-pension-bill',
@@ -23,13 +24,13 @@ export class RegularPensionBillComponent implements OnInit {
     failedMessages: string[] = [];
 
 
-
     constructor(
         private fb: FormBuilder,
         private toastService: ToastService,
         private pensionRegularBillService: PensionRegularBillService,
         private changeDetectorRef: ChangeDetectorRef,
-        private router: Router
+        private router: Router,
+        private spinnerService: SpinnerService
     ) {}
 
 
@@ -110,6 +111,7 @@ export class RegularPensionBillComponent implements OnInit {
 
     async onGenerate() {
         if (this.billPrintForm.valid && this.ppoCount !== null && this.ppoList.length > 0) {
+            this.spinnerService.setSpinnerVisibility(false);
             this.isGenerating = true;
             this.progress = 0;
             this.progressMessage = 'Starting bill generation...';
@@ -120,6 +122,11 @@ export class RegularPensionBillComponent implements OnInit {
 
             try {
                 for (let i = 0; i < this.ppoList.length; i++) {
+                    if (!this.isGenerating){
+                        this.spinnerService.setSpinnerVisibility(true);
+                        return;
+                    }
+
                     const ppo = this.ppoList[i];
 
                     if (!ppo || !ppo.ppoId) {
@@ -169,6 +176,7 @@ export class RegularPensionBillComponent implements OnInit {
                 this.toastService.showError('Error occurred while saving bills');
                 this.failedMessages = ['An unexpected error occurred while saving bills.'];
             } finally {
+                this.spinnerService.setSpinnerVisibility(true);
                 this.isGenerating = false;
                 this.updateProgress(successCount, this.ppoList.length, failedPPOs.length);
                 this.changeDetectorRef.detectChanges();
@@ -179,7 +187,7 @@ export class RegularPensionBillComponent implements OnInit {
     }
 
     private formatFailedPPOsMessage(failedPPOs: { ppoId: string; message: string }[]): string[] {
-        const maxDisplayed = 5;
+        const maxDisplayed = 500;
         const formattedMessages = failedPPOs.slice(0, maxDisplayed).map(failed =>
             `PPO ID ${failed.ppoId}: ${failed.message}`
         );
@@ -200,8 +208,8 @@ export class RegularPensionBillComponent implements OnInit {
     billprint(): void{
         this.router.navigate(
             this.ppoId
-                ? ['/pension/modules/pension-process/bill-print', this.ppoId, 'regular-pension']
-                : ['/pension/modules/pension-process/bill-print/regular-pension']
+                ? ['/pension-process/bill-print', this.ppoId, 'regular-pension-bill-print']
+                : ['/pension-process/bill-print/regular-pension-bill-print']
         );
     }
 
@@ -212,9 +220,21 @@ export class RegularPensionBillComponent implements OnInit {
         this.ppoCount = null;
         this.ppoList = [];
         this.isGenerating = false;
+        this.failedMessages = [];
 
+        // Set Defualt Form value
+        const currentMonthIndex = new Date().getMonth();
+        const currentMonth = this.months[currentMonthIndex];
+        this.billPrintForm.patchValue({
+            months: currentMonth.value,
+            year: new Date()
+        });
         // Optionally, fetch updated data if needed
         this.onFetchPPOBills();
     }
 
+    onCancel(){
+        this.progressMessage = 'Cancle bill genration...';
+        this.isGenerating=false;
+    }
 }
