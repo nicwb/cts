@@ -15,14 +15,14 @@ import { PanelModule } from 'primeng/panel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ManualPpoRegisterComponent } from './manual-ppo-register.component';
+import { DividerModule } from 'primeng/divider';
 const routes: Routes = [
-
-
-    {path: '', component: ManualPpoRegisterComponent, data: { breadcrumb: 'ManualPpoRegisterComponent' }},
-
+    {
+        path: '',
+        component: ManualPpoRegisterComponent,
+        data: { breadcrumb: 'ManualPpoRegisterComponent' },
+    },
 ];
-
-
 
 @NgModule({
     declarations: [ManualPpoRegisterComponent],
@@ -43,7 +43,7 @@ const routes: Routes = [
         PanelModule,
         FieldsetModule,
         RadioButtonModule,
-        
-    ]
+        DividerModule,
+    ],
 })
-export class ManualPpoRegisterModule { }
+export class ManualPpoRegisterModule {}

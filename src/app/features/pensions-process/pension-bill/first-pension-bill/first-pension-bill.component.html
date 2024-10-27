@@ -9,35 +9,58 @@
                 </div>
             </p-divider>
             <div class="p-fluid p-formgrid grid">
-
                 <div class="field col-12 md:col-6 mb-0">
-                    <label for="PpoId"><b>
-                            PPO ID:
-                        </b></label>
+                    <label for="PpoId"><b> PPO ID: </b></label>
                     <div class="w-full flex gap-1">
-                        <input type="text" pInputText formControlName="ppoId" placeholder="PPO ID" [(ngModel)]="ppoId"
-                            [readonly]="true" class="w-fit" (blur)="onInputBlur()" />
-                        <app-popup-table name="Open" [service$]="ppoList$"
-                            (return)="handleSelectedRow($event)">
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="ppoId"
+                            placeholder="PPO ID"
+                            [(ngModel)]="ppoId"
+                            [readonly]="true"
+                            class="w-fit"
+                            (blur)="onInputBlur()"
+                        />
+                        <app-popup-table
+                            name="Open"
+                            [service$]="ppoList$"
+                            (return)="handleSelectedRow($event)"
+                        >
                         </app-popup-table>
                     </div>
-                    <span *ngIf="massage" [ngClass]="massageColor"
-                        class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block">
+                    <span
+                        *ngIf="massage"
+                        [ngClass]="massageColor"
+                        class="text-xs sm:text-sm md:text-base lg:text-sm mt-1 block"
+                    >
                         {{ massage }}
                     </span>
                 </div>
 
                 <div class="field col-12 md:col-6 mb-0">
-                    <label for="periodTo"><b>
-                            Period To:
-                        </b></label>
+                    <label for="periodTo"><b> Period To: </b></label>
                     <div class="w-full flex gap-1">
-                        <p-calendar class="w-fit" id="periodTo" formControlName="periodTo" [minDate]="today"
-                            [maxDate]="endOfMonth" [(ngModel)]="period" (onSelect)="onDateSelect($event)"
-                            dateFormat="yy-mm-dd" placeholder="Select a date"
-                            [disabled]="isApiResponseStatus1"></p-calendar>
-                        <button type="submit" pButton pRipple (click)="getvalue()" class="w-fit"
-                            [disabled]="!isgenerate">
+                        <p-calendar
+                            class="w-fit"
+                            id="periodTo"
+                            formControlName="periodTo"
+                            [minDate]="today"
+                            [maxDate]="endOfMonth"
+                            [(ngModel)]="period"
+                            (onSelect)="onDateSelect($event)"
+                            dateFormat="yy-mm-dd"
+                            placeholder="Select a date"
+                            [disabled]="isApiResponseStatus1"
+                        ></p-calendar>
+                        <button
+                            type="submit"
+                            pButton
+                            pRipple
+                            (click)="getvalue()"
+                            class="w-fit"
+                            [disabled]="!isgenerate"
+                        >
                             Generate
                         </button>
                     </div>
@@ -52,7 +75,11 @@
                         <b>Pension Details:</b>
                     </div>
                 </p-divider>
-                <p-table [value]="[pensionForm.value]" [responsive]="true" [scrollable]="true">
+                <p-table
+                    [value]="[pensionForm.value]"
+                    [responsive]="true"
+                    [scrollable]="true"
+                >
                     <ng-template pTemplate="header">
                         <tr>
                             <th>PPO NO</th>
@@ -68,10 +95,25 @@
                         <tr>
                             <td>{{ pensionDetails.ppoNo }}</td>
                             <td>{{ pensionDetails.pensionerName }}</td>
-                            <td>{{ pensionDetails.periodFrom | date:'yyyy-MM-dd' }}</td>
-                            <td>{{ pensionDetails.periodTo | date:'yyyy-MM-dd' }}</td>
+                            <td>
+                                {{
+                                    pensionDetails.periodFrom
+                                        | date : "yyyy-MM-dd"
+                                }}
+                            </td>
+                            <td>
+                                {{
+                                    pensionDetails.periodTo
+                                        | date : "yyyy-MM-dd"
+                                }}
+                            </td>
                             <td>{{ pensionDetails.bankName }}</td>
-                            <td>{{ pensionDetails.billDate | date:'yyyy-MM-dd' }}</td>
+                            <td>
+                                {{
+                                    pensionDetails.billDate
+                                        | date : "yyyy-MM-dd"
+                                }}
+                            </td>
                             <td>{{ pensionDetails.accountNo }}</td>
                         </tr>
                     </ng-template>
@@ -84,22 +126,47 @@
                         <b>Bill Details:</b>
                     </div>
                 </p-divider>
-                <p-table class="justify-center" [responsive]="true" [scrollable]="true" *ngIf="pensioncategory"
-                    dataKey="id" [value]="[pensioncategory]">
+                <p-table
+                    class="justify-center"
+                    [responsive]="true"
+                    [scrollable]="true"
+                    *ngIf="pensioncategory"
+                    dataKey="id"
+                    [value]="[pensioncategory]"
+                >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="id">Bill No<p-sortIcon field="id"></p-sortIcon></th>
-                            <th pSortableColumn="categoryName">Description<p-sortIcon field="categoryName"></p-sortIcon>
+                            <th pSortableColumn="id">
+                                Bill No<p-sortIcon field="id"></p-sortIcon>
                             </th>
-                            <th pSortableColumn="hoaId">Account Head<p-sortIcon
-                                    field="primaryCategory.hoaId"></p-sortIcon></th>
-                            <th pSortableColumn="grossAmount">Gross Amount<p-sortIcon field="grossAmount"></p-sortIcon>
+                            <th pSortableColumn="categoryName">
+                                Description<p-sortIcon
+                                    field="categoryName"
+                                ></p-sortIcon>
                             </th>
-                            <th pSortableColumn="rateAmount">By Transfer<p-sortIcon field="rateAmount"></p-sortIcon>
+                            <th pSortableColumn="hoaId">
+                                Account Head<p-sortIcon
+                                    field="primaryCategory.hoaId"
+                                ></p-sortIcon>
                             </th>
-                            <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon>
+                            <th pSortableColumn="grossAmount">
+                                Gross Amount<p-sortIcon
+                                    field="grossAmount"
+                                ></p-sortIcon>
                             </th>
-                            <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
+                            <th pSortableColumn="rateAmount">
+                                By Transfer<p-sortIcon
+                                    field="rateAmount"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="dueAmount">
+                                Net Amount<p-sortIcon
+                                    field="dueAmount"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="remark">
+                                Remark<p-sortIcon field="remark"></p-sortIcon>
+                            </th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-category>
@@ -110,49 +177,22 @@
                             <td>₹ {{ totalDueAmount }}</td>
                             <td>0</td>
                             <td>₹ {{ totalDueAmount }}</td>
-                            <td><input pInputText type="text" class="w-full" /></td>
+                            <td>
+                                <input pInputText type="text" class="w-full" />
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class="text-lg">Total Component Amount: ₹ {{ totalDueAmount }}</td>
+                            <td class="text-lg">
+                                Total Component Amount: ₹ {{ totalDueAmount }}
+                            </td>
                         </tr>
                     </ng-template>
                 </p-table>
-
             </div>
-
-            <!-- Step 3: Component Details -->
-            <!-- <div *ngIf="currentStepIndex === 2" class="flex flex-column gap-3"> -->
-            <!-- <div class="flex justify-center card mx-6 mt-2 py-0" *ngIf="isDataLoaded">
-                <div class="col-12">
-                    <h5> Classification Details
-                    </h5>
-                    <hr class="border-b-2 h-10 border-dashed">
-
-                    <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th pSortableColumn="breakupId">Description<p-sortIcon field="breakupId"></p-sortIcon>
-                                </th>
-                                <th pSortableColumn="componentName">Account Head<p-sortIcon
-                                        field="componentName"></p-sortIcon></th>
-                                <th pSortableColumn="fromDate">Amount<p-sortIcon field="fromDate"></p-sortIcon></th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-payment>
-
-                        </ng-template>
-                    </p-table>
-                </div>
-
-            </div>
-             -->
-            <!-- *ngIf="isDataLoaded" -->
-            <!-- <div class="flex justify-center mx-6 mt-2 py-0"> -->
-            <!-- <div class="col-12"> -->
             <div *ngIf="isDataLoaded">
                 <p-divider align="left" type="solid">
                     <div class="inline-flex align-items-center">
@@ -160,19 +200,46 @@
                         <b>Component Detail:</b>
                     </div>
                 </p-divider>
-                <p-table class="justify-center" [value]="payments" dataKey="breakupId" [responsive]="true"
-                    [scrollable]="true">
+                <p-table
+                    class="justify-center"
+                    [value]="payments"
+                    dataKey="breakupId"
+                    [responsive]="true"
+                    [scrollable]="true"
+                >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="breakupId">Component Id<p-sortIcon field="breakupId"></p-sortIcon></th>
-                            <th pSortableColumn="componentName">Description<p-sortIcon
-                                    field="componentName"></p-sortIcon>
+                            <th pSortableColumn="breakupId">
+                                Component Id<p-sortIcon
+                                    field="breakupId"
+                                ></p-sortIcon>
                             </th>
-                            <th pSortableColumn="fromDate">From Date<p-sortIcon field="fromDate"></p-sortIcon></th>
-                            <th pSortableColumn="toDate">To Date<p-sortIcon field="toDate"></p-sortIcon></th>
-                            <th pSortableColumn="basicPensionAmount">Rate<p-sortIcon field="basicPensionAmount"></p-sortIcon></th>
-                            <th pSortableColumn="dueAmount">Net Amount<p-sortIcon field="dueAmount"></p-sortIcon></th>
-                            <th pSortableColumn="remark">Remark<p-sortIcon field="remark"></p-sortIcon></th>
+                            <th pSortableColumn="componentName">
+                                Description<p-sortIcon
+                                    field="componentName"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="fromDate">
+                                From Date<p-sortIcon
+                                    field="fromDate"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="toDate">
+                                To Date<p-sortIcon field="toDate"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="basicPensionAmount">
+                                Rate<p-sortIcon
+                                    field="basicPensionAmount"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="dueAmount">
+                                Net Amount<p-sortIcon
+                                    field="dueAmount"
+                                ></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="remark">
+                                Remark<p-sortIcon field="remark"></p-sortIcon>
+                            </th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-payment>
@@ -182,59 +249,84 @@
                             <td class="p-2">{{ payment.fromDate }}</td>
                             <td class="p-2">{{ payment.toDate }}</td>
                             <td class="p-2">
-                                {{ payment.rateType === 'P' ? '' : '₹' + (payment.rateAmount === 0 ? payment.baseAmount : payment.rateAmount) }}
-                                {{ payment.rateType === 'P' ? '' + payment.rateAmount + '%' : '' }}
+                                {{
+                                    payment.rateType === "P"
+                                        ? ""
+                                        : "₹" +
+                                          (payment.rateAmount === 0
+                                              ? payment.baseAmount
+                                              : payment.rateAmount)
+                                }}
+                                {{
+                                    payment.rateType === "P"
+                                        ? "" + payment.rateAmount + "%"
+                                        : ""
+                                }}
                             </td>
                             <td>₹ {{ payment.dueAmount }}</td>
-                            <td><input pInputText type="text" class="w-full" /></td>
+                            <td>
+                                <input pInputText type="text" class="w-full" />
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
                             <td></td>
                             <td></td>
-                            <td class="text-lg">Total Component Amount: ₹ {{ totalDueAmount }}</td>
-
+                            <td class="text-lg">
+                                Total Component Amount: ₹ {{ totalDueAmount }}
+                            </td>
                         </tr>
                     </ng-template>
                 </p-table>
             </div>
+            <div
+                style="
+                    border-bottom: 1px solid rgba(139, 167, 184, 0.514);
+                    margin: 20px 0;
+                "
+            ></div>
 
-            <!-- </div> -->
-
-            <!-- </div> -->
-            <div class="flex flex-col mt-2 align-items-center justify-content-center">
+            <div
+                class="flex flex-col mt-2 align-items-center justify-content-center"
+            >
                 <!-- Save Button -->
                 <div class="flex flex-wrap gap-2 mx-2">
-                    <!-- <button type="submit" pButton pRipple (click)="save()"
-                        class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        [disabled]="!hasSaved">
-                        <i class="pi pi-save mr-2"></i> Save
-                    </button> -->
                     <p-button
                         label="Save"
                         icon="pi pi-check"
                         [disabled]="!hasSaved"
                         styleClass="p-button-success"
-                        (click)="save()">
+                        (click)="save()"
+                        ><i class="pi pi-success mr-2"></i>
                     </p-button>
                 </div>
                 <!-- Refresh Button -->
                 <div class="flex flex-wrap gap-2 mx-2">
-                    <button type="button" pButton pRipple (click)="refresh()"
-                        class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <button
+                        type="button"
+                        pButton
+                        pRipple
+                        (click)="refresh()"
+                        class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >
                         <i class="pi pi-refresh mr-2"></i>Refresh
                     </button>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mx-2">
-                    <button pButton pRipple type="button" label="Print"
-                        class="p-button-secondary px-4" (click)="billprint()">
+                    <button
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Print"
+                        class="p-button-secondary px-4"
+                        (click)="billprint()"
+                    >
                         <i class="pi pi-check mr-2"></i>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
 </form>
