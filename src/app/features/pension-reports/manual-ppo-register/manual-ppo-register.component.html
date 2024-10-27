@@ -1,42 +1,98 @@
-<div class="container">
-    <div class="grid">
-        <div class="col-12">
-            <div class="card">
-                <div class="flex flex-column gap-4 mt-4">
-                    <div class="my-4 px-4">
-                        <form [formGroup]="ManualPpoRegisterForm">
-                            <div class="formgroup-inline">
-                                <p-radioButton name="generation" value="pdf"
-                                    formControlName="generation" label="Download as PDF"></p-radioButton>
-                                <p-radioButton name="generation" value="excel"
-                                    formControlName="generation" label="Download as Excel"></p-radioButton>
-                            </div>
-                            <div class="col-12 md:col-12">
-                                <p-fieldset legend="Manual PPO Register" class="line-height-3 m-0">
-                                    <div class="formgroup-inline">
-                                        <label for="fromDate" class="col-12 mb-2 md:col-2 md:mb-0">From Date:</label>
-                                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0">
-                                            <p-calendar formControlName="fromDate" [showIcon]="true"></p-calendar>
-                                        </div>
-
-                                        <label for="toDate"
-                                            class="col-12 mb-2 md:col-2 md:mb-0">To Date:</label>
-                                        <div class="field col-12 mb-2 lg:col-4 lg:mb-0" style="width: 300px;">
-                                            <p-calendar formControlName="toDate" [showIcon]="true"></p-calendar>
-                                        </div>
-                                    </div>
-                                </p-fieldset>
-                            </div>
-                        </form>
+<h2 class="bg-color text-xl"><b>Manual PPO Register</b></h2>
+<div class="card py-4">
+    <form [formGroup]="ManualPpoRegisterForm">
+        <div class="row">
+            <div class="p-fluid p-formgrid grid">
+                <div class="col-12 md:col-2">
+                    <div class="field-radiobutton">
+                        <p-radioButton
+                            value="pdf"
+                            formControlName="generation"
+                        ></p-radioButton>
+                        <label>Download as PDF</label>
                     </div>
                 </div>
-                <div class="flex flex-col mt-1 align-items-center justify-content-center">
-                    <div class="flex flex-wrap gap-2">
-                      <button pButton pRipple (click)="onGenerate(ManualPpoRegisterForm.value.generation)" type="button" class="p-button-raised p-button-info" [disabled]="ManualPpoRegisterForm.invalid || !ManualPpoRegisterForm.get('generation')?.value"> Generate Report</button>
-                      <button pButton pRipple (click)="onRefresh()" type="button" class="p-button-raised p-button-info"> Refresh</button>
+
+                <div class="col-12 md:col-2">
+                    <div class="field-radiobutton">
+                        <p-radioButton
+                            value="excel"
+                            formControlName="generation"
+                        ></p-radioButton>
+                        <label>Download as Excel</label>
                     </div>
-                  </div>
+                </div>
             </div>
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>Register Pension</b>
+                </div>
+            </p-divider>
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <div
+                        class="formgroup-inline"
+                        style="display: flex; align-items: center"
+                    >
+                        <label class="mr-3 text-lg" for="fromDate"
+                            >From Date:</label
+                        >
+                        <p-calendar
+                            formControlName="fromDate"
+                            [showIcon]="true"
+                            [ngStyle]="{ flex: '1' }"
+                        ></p-calendar>
+                    </div>
+                </div>
+                <div class="field col-12 md:col-4">
+                    <div
+                        class="formgroup-inline"
+                        style="display: flex; align-items: center"
+                    >
+                        <label class="mr-3 text-lg" for="toDate"
+                            >To Date:</label
+                        >
+                        <p-calendar
+                            formControlName="toDate"
+                            [showIcon]="true"
+                            [ngStyle]="{ flex: '1' }"
+                        ></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div
+                style="
+                    border-bottom: 1px solid rgba(139, 167, 184, 0.514);
+                    margin: 20px 0;
+                "
+            ></div>
+        </div>
+    </form>
+    <div class="flex flex-col mt-1 align-items-center justify-content-center">
+        <div class="flex flex-wrap gap-2">
+            <button
+                pButton
+                pRipple
+                (click)="onGenerate(ManualPpoRegisterForm.value.generation)"
+                type="button"
+                class="p-button-raised p-button-info"
+                [disabled]="
+                    ManualPpoRegisterForm.invalid ||
+                    !ManualPpoRegisterForm.get('generation')?.value
+                "
+            >
+                Generate Report
+            </button>
+            <button
+                pButton
+                pRipple
+                (click)="onRefresh()"
+                type="button"
+                class="p-button-raised p-button-info"
+            >
+                <i class="pi pi-refresh mr-2"></i>Refresh
+            </button>
         </div>
     </div>
 </div>
