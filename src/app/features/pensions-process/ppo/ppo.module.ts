@@ -19,7 +19,8 @@ import { LifeCertificateComponent } from './life-certificate/life-certificate.co
 import { LifeCertificateModule } from './life-certificate/life-certificate.module';
 import { DetailsComponent } from './ppodetails/details/details.component';
 import { PpodetailsComponent } from './ppodetails/ppodetails.component';
-import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
+import {ConvartToFamilyPensionComponent} from './convart-to-family-pension/convart-to-family-pension.component'
+import {ConvartToFamilyPensionModule} from './convart-to-family-pension/convart-to-family-pension.module'
 const routes: Routes = [
     {
         path: '', component: PpoComponent, data: {breadcrumb: 'PpoComponent'}
@@ -52,11 +53,10 @@ const routes: Routes = [
 
     },
     {
-        path: 'pensioner-status',
-        component: PensionerStatusComponent,
-        data: { breadcrumb: 'PensionerStatusComponent'}
-
-    },
+        path: 'convart-to-family-pension',
+        component: ConvartToFamilyPensionComponent,
+        data: {breadcrumb: 'ConvartToFamilyPensionComponent'}
+    }
 ];
 
 
@@ -64,7 +64,6 @@ const routes: Routes = [
     declarations: [PpoComponent ],
     imports: [
         CommonModule,
-
         ButtonModule,
         ReactiveFormsModule,
         DynamicTableModule,
@@ -76,6 +75,7 @@ const routes: Routes = [
         CalendarModule,
         TreasuryDropdownModule,
         FormsModule,
+        ConvartToFamilyPensionModule,
         RouterModule.forChild(routes)
     ],
     exports: [RouterModule, PpoComponent]
