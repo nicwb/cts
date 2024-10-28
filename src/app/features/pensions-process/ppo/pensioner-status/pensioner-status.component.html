@@ -1,0 +1,242 @@
+<style>
+    .h-45px {
+        height: 45px;
+    }
+
+    .h-full {
+        height: 100%;
+    }
+
+    .h-50 {
+        height: 50%;
+    }
+
+    .w-100 {
+        width: 100% !important;
+    }
+
+    .w-50 {
+        width: 50%;
+    }
+
+    .mb-2 {
+        margin-bottom: 2px;
+    }
+</style>
+
+<div class="card py-2">
+    <div class="row">
+        <div>
+            <!-- Divider for Pension Status Section -->
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center mb-2">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>Pension Status</b>
+                </div>
+            </p-divider>
+
+            <!-- Form for Pensioner Details -->
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="float-input" class="m-2"><b>PPO ID:</b></label>
+                    <div class="flex">
+                        <input
+                            style="width: 50%"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="Ppoid"
+                            class="border-inherit w-full ml-2 p-2 bg-cyan-100"
+                            [readonly]="true"
+                        />
+                        <app-popup-table
+                            [service$]="allManualPPOReceipt$"
+                            (return)="handelManualEntrySelect($event)"
+                        ></app-popup-table>
+                    </div>
+                </div>
+
+                <!-- Pensioner Name Input Field -->
+                <div class="field col-12 md:col-4">
+                    <label class="m-2"><b>Pensioner Name:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        [(ngModel)]="PensionerName"
+                        class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+
+                <!-- Pension Type Input Field -->
+                <div class="field col-12 md:col-4">
+                    <label class="m-2"><b>Pension Type</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        [(ngModel)]="PensionerType"
+                        class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+            </div>
+
+            <!-- Divider for Status Details Section -->
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center mb-2">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>Status Details</b>
+                </div>
+            </p-divider>
+
+            <!-- Form for Status Details -->
+            <div *ngIf="StatusDetailsDiv" class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-1">
+                    <label><b>PPO ID</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                        [(ngModel)]="Ppoid"
+                    />
+                </div>
+                <div class="field col-12 md:col-1">
+                    <label><b>Sl No.</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        [(ngModel)]="SlNo"
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+                <div class="field col-12 md:col-2">
+                    <label for=""><b>Start Date</b></label>
+
+                    <input
+                        [(ngModel)]="startdate"
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+                <div class="field col-12 md:col-2">
+                    <label for=""><b>Status</b></label>
+                    <p-dropdown
+                        [options]="[
+                            { label: 'Select Status', value: '' },
+                            { label: 'Running', value: 'PpoRunning' },
+                            { label: 'Suspended', value: 'PpoSuspended' },
+                            { label: 'Closed', value: 'PpoClosed' }
+                        ]"
+                        class="w-full p-2"
+                        [(ngModel)]="statusOption"
+                        (onChange)="changeStatus($event)"
+                    ></p-dropdown>
+                </div>
+                <div class="field col-12 md:col-2" *ngIf="reasondiv">
+                    <label for=""><b>Reason</b></label>
+                    <p-dropdown
+                        [options]="reasons"
+                        class="w-full p-2"
+                        (onChange)="changeReason($event)"
+                    ></p-dropdown>
+                </div>
+                <div class="p-fluid formgrid grid col-12 md:col-3"  >
+                    <div class="field col-12 md:col-8">
+                        <label for="dateOfRetirement"><b>From Date</b></label>
+                        <p-calendar
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                            (onSelect)="getDate($event)"
+                        ></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-4" [formGroup]="statusFormDetails">
+                        <label><b>Remarks</b></label>
+                        <input
+                            type="text"
+                            pInputText
+                            class="w-full p-2"
+                            formControlName="reasonRemark"
+                        />
+                    </div>
+                </div>
+                <div class="field col-12 md:col-1">
+                    <label><b>Changed</b></label>
+                    <div class="field-checkbox">
+                        <p-checkbox
+                            [(ngModel)]="checked"
+                            [binary]="true"
+                            inputId="binary"
+                        ></p-checkbox>
+                        <label for="binary">{{ checked }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider for Account Details Section -->
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center mb-2">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>Account Details</b>
+                </div>
+            </p-divider>
+
+            <!-- Form for Account Details -->
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-3">
+                    <label><b>Account Holder:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                        [(ngModel)]="AccountHolder"
+                    />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label><b>Previous Effective Date:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                        [(ngModel)]="pastStatusWef"
+                    />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label><b>Previous Remarks:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                        [(ngModel)]="pastRemark"
+                    />
+                </div>
+                <div class="field col-12 md:col-3">
+                    <label><b>Status Reason :</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        class="w-full p-2 bg-cyan-100"
+                        [readonly]="true"
+                        [(ngModel)]="pastReason"
+                    />
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="w-100" style="display: flex; justify-content: center">
+                <p-button
+                    label="Save"
+                    icon="pi pi-bookmark"
+                    styleClass="p-button-raised"
+                    (click)="saveData()"
+                    [disabled]="!statusFormDetails.valid"
+                ></p-button>
+            </div>
+        </div>
+    </div>
+</div>

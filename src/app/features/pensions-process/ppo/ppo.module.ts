@@ -19,6 +19,7 @@ import { LifeCertificateComponent } from './life-certificate/life-certificate.co
 import { LifeCertificateModule } from './life-certificate/life-certificate.module';
 import { DetailsComponent } from './ppodetails/details/details.component';
 import { PpodetailsComponent } from './ppodetails/ppodetails.component';
+import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
 const routes: Routes = [
     {
         path: '', component: PpoComponent, data: {breadcrumb: 'PpoComponent'}
@@ -50,11 +51,17 @@ const routes: Routes = [
         data: { breadcrumb: 'LifeCertificateComponent'}
 
     },
+    {
+        path: 'pensioner-status',
+        component: PensionerStatusComponent,
+        data: { breadcrumb: 'PensionerStatusComponent'}
+
+    },
 ];
 
 
 @NgModule({
-    declarations: [PpoComponent],
+    declarations: [PpoComponent ],
     imports: [
         CommonModule,
 

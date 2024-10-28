@@ -38,19 +38,19 @@
                         <!-- Responsive Search Input and Button -->
                         <div class="relative mb-2 search-button-container flex flex-col gap-4">
                             <!-- List All Button -->
-                            <button 
-                                label="List All" 
-                                pButton 
-                                icon="pi pi-list" 
+                            <button
+                                label="List All"
+                                pButton
+                                icon="pi pi-list"
                                 class="p-button-secondary w-full"
                                 (click)="toggleTableVisibility()">
                             </button>
-                        
+
                             <!-- Add New PPO Button -->
-                            <button 
-                                label="Add New PPO" 
-                                pButton 
-                                pRipple 
+                            <button
+                                label="Add New PPO"
+                                pButton
+                                pRipple
                                 icon="pi pi-plus"
                                 class="p-button w-full "
                                 (click)="addNewEntry()">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="table-wrapper" *ngIf="tableVisible">
-                <p-table [value]="data.data" selectionMode="single" [scrollable]="true"
+                <!--<p-table [value]="data.data" selectionMode="single" [scrollable]="true"
                     [loading]="isLoading">
                     <ng-template pTemplate="header">
                         <tr>
@@ -70,25 +70,25 @@
                         </tr>
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-record>
-                        <tr>
-                            <td *ngFor="let col of cols">
-                                {{ record[col.field] }}
-                            </td>
-                            <td>
-                                <p-button label="Edit" icon="pi pi-pencil" class="p-button-text"
-                                    (click)="editThisRecord(record)"></p-button>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-                <app-dynamic-table
-                    [service$]="ppoDetails$"
-                    [suffix]="suffix"
-                    [editable]="true"
-                    (return)="editThisRecord($event)"
-                ></app-dynamic-table>
-            </div>
+                                <ng-template pTemplate="body" let-record>
+                                    <tr>
+                                        <td *ngFor="let col of cols">
+                                            {{ record[col.field] }}
+                                        </td>
+                                        <td>
+                                            <p-button label="Edit" icon="pi pi-pencil" class="p-button-text"
+                                                (click)="editThisRecord(record)"></p-button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>  -->
+                            <app-dynamic-table
+                                [service$]="ppoDetails$"
+                                [suffix]="suffix"
+                                [editable]="true"
+                                (return)="editThisRecord($event)"
+                            ></app-dynamic-table>
+                        </div>
 
             <div class="m-4 text-center">
                 <h1>{{ tableMsg }}</h1>
