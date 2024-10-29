@@ -21,7 +21,7 @@ import { InitiateFirstPensionBillDTO } from '../model/initiate-first-pension-bil
 // @ts-ignore
 import { InitiateFirstPensionBillResponseDTOJsonAPIResponse } from '../model/initiate-first-pension-bill-response-dto-json-api-response';
 // @ts-ignore
-import { PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-api-response';
+import { PensionerListItemDTOTableResponseDTOJsonAPIResponse } from '../model/pensioner-list-item-dto-table-response-dto-json-api-response';
 // @ts-ignore
 import { PpoBillResponseDTOJsonAPIResponse } from '../model/ppo-bill-response-dto-json-api-response';
 // @ts-ignore
@@ -175,9 +175,9 @@ export class PensionFirstBillService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllPposForFirstBill(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
-    public getAllPposForFirstBill(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public getAllPposForFirstBill(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllPposForFirstBill(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
+    public getAllPposForFirstBill(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerListItemDTOTableResponseDTOJsonAPIResponse>>;
+    public getAllPposForFirstBill(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerListItemDTOTableResponseDTOJsonAPIResponse>>;
     public getAllPposForFirstBill(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -219,7 +219,7 @@ export class PensionFirstBillService {
         }
 
         let localVarPath = `/api/v1/ppo/first-bill/ppos`;
-        return this.httpClient.request<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -284,6 +284,66 @@ export class PensionFirstBillService {
 
         let localVarPath = `/api/v1/ppo/first-bill/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
         return this.httpClient.request<PpoBillResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPposForFirstBillPrint(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
+    public getPposForFirstBillPrint(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<PensionerListItemDTOTableResponseDTOJsonAPIResponse>>;
+    public getPposForFirstBillPrint(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<PensionerListItemDTOTableResponseDTOJsonAPIResponse>>;
+    public getPposForFirstBillPrint(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/first-bill-print/ppos`;
+        return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
