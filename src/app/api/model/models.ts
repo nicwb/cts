@@ -61,6 +61,7 @@ export * from './pension-status-dto-json-api-response';
 export * from './pension-status-entry-dto';
 export * from './pension-status-entry-dto-json-api-response';
 export * from './pension-status-flag';
+export * from './pension-status-reasson-flag';
 export * from './pension-sub-category-entry-dto';
 export * from './pension-sub-category-response-dto';
 export * from './pension-sub-category-response-dtoi-enumerable-dynamic-list-result';
