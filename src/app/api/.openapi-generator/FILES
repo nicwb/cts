@@ -11,6 +11,7 @@ api/pension-component.service.ts
 api/pension-factory.service.ts
 api/pension-first-bill.service.ts
 api/pension-manual-ppo-receipt.service.ts
+api/pension-nominee-details.service.ts
 api/pension-ppo-details.service.ts
 api/pension-ppo-status.service.ts
 api/pension-regular-bill.service.ts
@@ -55,6 +56,11 @@ model/manual-ppo-receipt-entry-dto.ts
 model/manual-ppo-receipt-response-dto-json-api-response.ts
 model/manual-ppo-receipt-response-dto.ts
 model/models.ts
+model/nominee-entry-dto.ts
+model/nominee-list-response-dto-json-api-response.ts
+model/nominee-list-response-dto.ts
+model/nominee-response-dto-json-api-response.ts
+model/nominee-response-dto.ts
 model/object-json-api-response.ts
 model/pension-breakup-entry-dto.ts
 model/pension-breakup-response-dto-json-api-response.ts

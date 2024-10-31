@@ -9,7 +9,7 @@
  */
 
 
-export type FactoryEntityEnum = 'ComponentRateEntryDTO' | 'ManualPpoReceiptEntryDTO' | 'PensionerEntryDTO' | 'PpoSanctionDetailsEntryDTO' | 'PensionPrimaryCategoryEntryDTO' | 'PensionSubCategoryEntryDTO' | 'PensionBreakupEntryDTO';
+export type FactoryEntityEnum = 'ComponentRateEntryDTO' | 'ManualPpoReceiptEntryDTO' | 'PensionerEntryDTO' | 'PpoSanctionDetailsEntryDTO' | 'PensionPrimaryCategoryEntryDTO' | 'PensionSubCategoryEntryDTO' | 'PensionBreakupEntryDTO' | 'NomineeEntryDTO';
 
 export const FactoryEntityEnum = {
     ComponentRateEntryDto: 'ComponentRateEntryDTO' as FactoryEntityEnum,
@@ -18,6 +18,7 @@ export const FactoryEntityEnum = {
     PpoSanctionDetailsEntryDto: 'PpoSanctionDetailsEntryDTO' as FactoryEntityEnum,
     PensionPrimaryCategoryEntryDto: 'PensionPrimaryCategoryEntryDTO' as FactoryEntityEnum,
     PensionSubCategoryEntryDto: 'PensionSubCategoryEntryDTO' as FactoryEntityEnum,
-    PensionBreakupEntryDto: 'PensionBreakupEntryDTO' as FactoryEntityEnum
+    PensionBreakupEntryDto: 'PensionBreakupEntryDTO' as FactoryEntityEnum,
+    NomineeEntryDto: 'NomineeEntryDTO' as FactoryEntityEnum
 };
 
