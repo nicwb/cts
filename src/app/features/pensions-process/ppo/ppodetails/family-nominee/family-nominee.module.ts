@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DropdownModule } from 'primeng/dropdown';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DialogModule } from 'primeng/dialog';
@@ -35,11 +35,11 @@ import { FieldsetModule } from 'primeng/fieldset';
 @NgModule({
     declarations: [FamilyNomineeComponent],
     imports: [
+        DynamicTableModule,
         CommonModule,
         ButtonModule,
         FormsModule,
         ReactiveFormsModule,
-        DynamicTableModule,
         OptionCardModule,
         CommonHeaderModule,
         DropdownModule,
@@ -58,8 +58,10 @@ import { FieldsetModule } from 'primeng/fieldset';
         RatingModule,
         PanelModule,
         FieldsetModule,
-    
+
     ],
-    exports: [FamilyNomineeComponent]
+    exports: [FamilyNomineeComponent,
+        DynamicTableModule
+    ]
 })
 export class FamilyNomineeModule { }

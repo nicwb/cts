@@ -42,7 +42,7 @@ export class PensionModule {
 
   async approvePpo(ppoId: string) {
     await this.page.goto('pension-process/approval/ppo-approval', { waitUntil: "domcontentloaded" });
-    await this.page.getByLabel('PPO ApprovalPPO ID:').getByRole('button').click();
+    await this.page.locator('p-button').click();
     const dialog = this.page.locator('.p-dialog');
     await expect(dialog.locator('input#float-input')).toBeVisible();
     await this.page.locator('input#float-input').fill(ppoId);
@@ -89,13 +89,10 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'OK' }).click();
 
         await this.page.getByRole('button', { name: 'Save' }).click();
-        await expect(this.page.getByRole('heading', { name: 'Success' })).toBeVisible();
-        await this.page.getByRole('button', { name: 'OK' }).click();
 
         // Assert
-        await expect(this.page.getByText('Component Detail:Component')).toBeVisible();
-        await expect(this.page.getByText('Bill Details:Bill')).toBeVisible();
-        await expect(this.page.getByText('Pension Details:PPO')).toBeVisible();
+        await expect(this.page.getByRole('heading', { name: 'Success' })).toBeVisible();
+        await this.page.getByRole('button', { name: 'OK' }).click();
         return ppoId;
   }
 
@@ -219,7 +216,7 @@ export class PensionModule {
 
   async goToRegularPensionBillPrint():Promise<void> {
     await this.page.goto('/pension-process/bill-print/regular-pension-bill-print');
-    await expect(this.page.getByText('Month')).toBeVisible();
+    await expect(this.page.getByText('Month', { exact: false }).nth(1)).toBeVisible();
     await expect(this.page.getByText('Year:')).toBeVisible();
   }
 

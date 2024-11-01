@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PensionService } from 'src/app/api';
 
 @Component({
@@ -12,7 +12,7 @@ export class StaticLoginComponent {
     public readonly playwrightUrl : string;
     constructor(private service : PensionService) {
         this.apiUrl = service.configuration.basePath;
-        this.baseUrl = import.meta.env.NG_APP_BASE_URL;
+        this.baseUrl = import.meta.env.NG_APP_ENV_DOCKER ? import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL : import.meta.env.NG_APP_BASE_URL;
         this.playwrightUrl = import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL
     }
 

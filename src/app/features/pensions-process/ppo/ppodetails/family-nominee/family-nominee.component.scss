@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+
+  ::ng-deep {
+    table {
+      min-width: 100%;
+
+      /* Ensure cells don't break into multiple lines */
+      td, th {
+        white-space: nowrap;
+        padding: 8px;
+      }
+
+      /* Add horizontal scrolling for overflow */
+      @media screen and (max-width: 1024px) {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  }
+}
