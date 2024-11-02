@@ -270,7 +270,7 @@ export class RegularPensionBillPrintComponent implements OnInit {
                     this.generateSpecificBankSpecificCategoryReport(year, month, formValue.bank.value.code, this.categoryCode, selectedMonth, isAllBank, isAllCategory);
                     break;
                 case 'specificBranchOrBranches':
-                    const selectedBranchIds = formValue.selectedBranches;
+                    const selectedBranchIds = formValue.selectedBranches.map((branch: { id: number; }) => branch.id);
                     if (selectedBranchIds.length === 0) {
                         this.toastService.showWarning('Please select at least one branch.');
                         return;
@@ -291,13 +291,13 @@ export class RegularPensionBillPrintComponent implements OnInit {
         }
     }
 
-    private async generateReportForSelectedBranches(year: number, month: number, selectedBranchIds: number[], selectedMonth: string) {
+    private async generateReportForSelectedBranches(year: number, month: number, branchIds: number[], selectedMonth: string) {
         try {
-            console.log("The Branch array", selectedBranchIds);
+            // console.log("The Branch array", branchIds);
             //This console log contains an array of branches that are select extract the id for each and then pass to the response
-            //const response = await firstValueFrom(this.pensionRegularBillService.getAllRegularPensionBills(year, month, undefined, undefined, selectedBranchIds));
+            const response = await firstValueFrom(this.pensionRegularBillService.getAllRegularPensionBills(year, month,undefined,undefined, branchIds));
             // Call the PDF generation function
-            //this.processBillsAndGeneratePdf(response.result, year, selectedMonth, false, false); // Adjust parameters as necessary
+            this.processBillsAndGeneratePdf(response.result, year, selectedMonth, false, false); // Adjust parameters as necessary
         } catch (error) {
             console.error('Error generating report for selected branches:', error);
             this.toastService.showError('Error generating report for selected branches');

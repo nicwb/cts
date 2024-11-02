@@ -169,13 +169,14 @@ export class PensionRegularBillService {
      * @param month 
      * @param categoryId 
      * @param bankId 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RegularBillListResponseDTOJsonAPIResponse>;
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RegularBillListResponseDTOJsonAPIResponse>>;
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RegularBillListResponseDTOJsonAPIResponse>>;
-    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, id?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<RegularBillListResponseDTOJsonAPIResponse>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, id?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<RegularBillListResponseDTOJsonAPIResponse>>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, id?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<RegularBillListResponseDTOJsonAPIResponse>>;
+    public getAllRegularPensionBills(year: number, month: number, categoryId?: number, bankId?: number, id?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (year === null || year === undefined) {
             throw new Error('Required parameter year was null or undefined when calling getAllRegularPensionBills.');
         }
@@ -191,6 +192,12 @@ export class PensionRegularBillService {
         if (bankId !== undefined && bankId !== null) {
             localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>bankId, 'bankId');
+        }
+        if (id) {
+            id.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'id');
+            })
         }
 
         let localVarHeaders = this.defaultHeaders;
