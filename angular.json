@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cts": {
+    "cts-pension": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@ngx-env/builder:browser",
           "options": {
-            "outputPath": "dist/cts",
+            "outputPath": "dist/pension",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -95,13 +95,13 @@
           "builder": "@ngx-env/builder:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cts:build:production"
+              "browserTarget": "cts-pension:build:production"
             },
             "test": {
-              "browserTarget": "cts:build:test"
+              "browserTarget": "cts-pension:build:test"
             },
             "development": {
-              "browserTarget": "cts:build:development"
+              "browserTarget": "cts-pension:build:development"
             }
           },
           "options": {
@@ -112,7 +112,7 @@
         "extract-i18n": {
           "builder": "@ngx-env/builder:extract-i18n",
           "options": {
-            "browserTarget": "cts:build"
+            "browserTarget": "cts-pension:build"
           }
         },
         "test": {
@@ -148,7 +148,7 @@
       }
     }
   },
-  "defaultProject": "cts",
+  "defaultProject": "cts-pension",
   "cli": {
     "analytics": false,
     "schematicCollections": [

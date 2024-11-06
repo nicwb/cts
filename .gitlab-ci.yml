@@ -18,16 +18,49 @@
 
 stages:          # List of stages for jobs, and their order of execution
   - build
+  - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
+  only:
+    - uat
+  tags:
+    - ifms_runner
+
+  artifacts:
+    expire_in: 30 mins
+    paths:
+      - dist/pension.tgz
 
   script:
-    - npm install
+    - pwd
+    - npm install --force
+    - cp .env.uat .env
+    - cp src/environments/environment.prod.ts src/environments/environment.ts
     - npm run build
     - cd dist
-    - tar cvfz ~/cts.tgz cts 
-    - printf 'krish@Nic24\ny'|/opt/cisco/anyconnect/bin/vpn -s connect sconnect.nic.in
-    - scp ~/cts.tgz root@10.173.13.51:/usr/share/nginx/html/
-    - ssh root@10.173.13.51 "cd /usr/share/nginx/html/ && rm -rf cts && tar xvfz cts.tgz && rm cts.tgz && chown -R root:root cts &&chmod -R 755 cts && systemctl stop nginx && systemctl daemon-reload && systemctl start nginx"
-    - /opt/cisco/anyconnect/bin/vpn disconnect
+    - tar cvfz  pension.tgz pension
+
+deploy-job:       # This job runs in the deploy stage, which runs first.
+  stage: deploy
+
+  variables:
+    GIT_STRATEGY: none
+
+  only:
+    - uat
+  tags:
+    - minidcdeployrunner
+
+  artifacts:
+    expire_in: 30 mins
+    paths:
+      - dist/pension.tgz
+
+  script:
+    - cp dist/pension.tgz /usr/share/nginx/html/
+    - cd /usr/share/nginx/html/
+    - rm -rf pension
+    - tar xvfz pension.tgz
+    - rm pension.tgz
+

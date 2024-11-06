@@ -1,11 +1,11 @@
 {
-  "name": "cts",
+  "name": "cts-pension",
   "version": "14.0.5-SNAPSHOT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
     "start:test": "ng serve -c test --host 0.0.0.0 --port 4200 --disable-host-check",
-    "build": "node --max_old_space_size=14336 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /cts/ --aot --build-optimizer",
+    "build": "node --max_old_space_size=14336 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /pension/ --aot --build-optimizer",
     "watch": "ng build --watch --configuration development",
     "test": "playwright test --reporter=list",
     "lint": "ng lint",
