@@ -19,9 +19,9 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { NomineeEntryDTO } from '../model/nominee-entry-dto';
 // @ts-ignore
-import { NomineeListResponseDTOJsonAPIResponse } from '../model/nominee-list-response-dto-json-api-response';
-// @ts-ignore
 import { NomineeResponseDTOJsonAPIResponse } from '../model/nominee-response-dto-json-api-response';
+// @ts-ignore
+import { NomineeResponseDTOTableResponseDTOJsonAPIResponse } from '../model/nominee-response-dto-table-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -99,6 +99,70 @@ export class PensionNomineeDetailsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public deleteNomineeDetailsById(nomineeId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<NomineeResponseDTOJsonAPIResponse>;
+    public deleteNomineeDetailsById(nomineeId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<NomineeResponseDTOJsonAPIResponse>>;
+    public deleteNomineeDetailsById(nomineeId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<NomineeResponseDTOJsonAPIResponse>>;
+    public deleteNomineeDetailsById(nomineeId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (nomineeId === null || nomineeId === undefined) {
+            throw new Error('Required parameter nomineeId was null or undefined when calling deleteNomineeDetailsById.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/ppo/nominee/${this.configuration.encodeParam({name: "nomineeId", value: nomineeId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        return this.httpClient.request<NomineeResponseDTOJsonAPIResponse>('delete', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param nomineeId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public getNomineeDetailsById(nomineeId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<NomineeResponseDTOJsonAPIResponse>;
     public getNomineeDetailsById(nomineeId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<NomineeResponseDTOJsonAPIResponse>>;
     public getNomineeDetailsById(nomineeId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<NomineeResponseDTOJsonAPIResponse>>;
@@ -163,9 +227,9 @@ export class PensionNomineeDetailsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getNomineesByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<NomineeListResponseDTOJsonAPIResponse>;
-    public getNomineesByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<NomineeListResponseDTOJsonAPIResponse>>;
-    public getNomineesByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<NomineeListResponseDTOJsonAPIResponse>>;
+    public getNomineesByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<NomineeResponseDTOTableResponseDTOJsonAPIResponse>;
+    public getNomineesByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<NomineeResponseDTOTableResponseDTOJsonAPIResponse>>;
+    public getNomineesByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<NomineeResponseDTOTableResponseDTOJsonAPIResponse>>;
     public getNomineesByPpoId(ppoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling getNomineesByPpoId.');
@@ -210,7 +274,7 @@ export class PensionNomineeDetailsService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/nominees`;
-        return this.httpClient.request<NomineeListResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<NomineeResponseDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

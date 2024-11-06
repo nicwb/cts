@@ -57,9 +57,9 @@ model/manual-ppo-receipt-response-dto-json-api-response.ts
 model/manual-ppo-receipt-response-dto.ts
 model/models.ts
 model/nominee-entry-dto.ts
-model/nominee-list-response-dto-json-api-response.ts
-model/nominee-list-response-dto.ts
 model/nominee-response-dto-json-api-response.ts
+model/nominee-response-dto-table-response-dto-json-api-response.ts
+model/nominee-response-dto-table-response-dto.ts
 model/nominee-response-dto.ts
 model/object-json-api-response.ts
 model/pension-breakup-entry-dto.ts
