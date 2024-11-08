@@ -11,6 +11,7 @@ import {
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
+import {SessionStorageService} from 'src/app/core/services/session-storage.service'
 import { Validators } from '@angular/forms';
 import { Payload } from 'src/app/core/models/search-query';
 import { formatDate } from '@angular/common';
@@ -23,6 +24,7 @@ import {
     PensionBankBranchService
 } from 'src/app/api';
 import {
+    async,
     firstValueFrom,
     Observable,
     Subscription,
@@ -72,6 +74,8 @@ export class DetailsComponent implements OnInit, OnChanges {
         private tostService: ToastService,
         private factoryService: PensionFactoryService,
         private pensionBankBranchService: PensionBankBranchService,
+        private SessionStorageService: SessionStorageService,
+
         private router: Router,
 
         private cdr: ChangeDetectorRef,
@@ -104,15 +108,16 @@ export class DetailsComponent implements OnInit, OnChanges {
         }
 
         this.route.paramMap.subscribe(params => {
-            this.ppoId = params.get('ppoId') || undefined; // Get ppoId from the route parameters
+            this.ppoId = params.get('ppoId') || undefined;
             if (this.ppoId) {
                 const ppoidNumber = Number(this.ppoId);
                 this.getData(ppoidNumber)
             }
         });
+        this.MEDetailsSearch();
+        this.getReceipt();
         this.checkIfEditModeFromUrl();
-        // this.fetchBanks();
-
+        this.fetchCatDescription()
     }
 
     async getFakePensionerData(ppoReceipt: ListAllPpoReceiptsResponseDTO) {
@@ -141,6 +146,37 @@ export class DetailsComponent implements OnInit, OnChanges {
                 })
             )
         );
+    }
+
+    async getReceipt(){
+        const fullPath = this.router.url;
+        if(fullPath === '/pension-process/ppo/entry/new'){
+            await firstValueFrom(this.PensionManualPPOReceiptService.getAllUnusedPpoReceipts().pipe(
+                tap(
+                    res => {
+                        if (res.result?.dataCount == 0) {
+                            Swal.fire({
+                                icon: "info",
+                                title: "No manual ppo receipt found!. Do you want add it?",
+                                showDenyButton: true,
+                                confirmButtonText: "Yes",
+                                denyButtonText: "No"
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    this.router.navigate(["pension-process/ppo/ppo-receipt/new"], {
+                                        queryParams: { returnUri: 'pension-process/ppo/entry/new' }
+                                    });
+                                } else {
+                                    this.router.navigate(["pension-process/ppo/entry"]);
+                                }
+                            });
+                            return;
+                        }
+                    }
+                )
+            ))
+        }
     }
 
     async factory() {
@@ -223,7 +259,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                 [Validators.required, Validators.pattern(/^\d+$/)],
             ],
             dateOfRetirement: [this.getFirstDateOfCurrentMonth()],
-            dateOfCommencement: [this.getFirstDateOfCurrentMonth()], // -->> api
+            dateOfCommencement: ['', Validators.required],
             basicPensionAmount: [
                 null,
                 [Validators.required, Validators.pattern(/^\d+$/)],
@@ -443,23 +479,28 @@ export class DetailsComponent implements OnInit, OnChanges {
                                         this.tostService.showSuccess(
                                             res.message
                                         )
-                                        console.log("ppo id", this.ppoId)
                                         this.router.navigate(['pension-process/ppo', res.result?.ppoId, 'edit'], {
                                             queryParams: { step: 0 }
                                         });
                                     }
+                                    this.SessionStorageService.remove(
+                                        '',
+                                        '',
+                                        `DynamicTableComponent_ppoDetails`
+                                    );
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);
                                         const id = String(res.result.id);
-                                        this.ppoFormDetails.controls['ppoId'].setValue(this.ppoId);
-                                        this.ppoFormDetails.controls['Id'].setValue(id);
-                                        this.pensionerName = String(
-                                            res.result.pensionerName
-                                        );
-                                        this.return.emit([
-                                            this.ppoId,
-                                            this.pensionerName,
-                                        ]);
+
+                                        if (this.ppoFormDetails.get('ppoId')) {
+                                            this.ppoFormDetails.get('ppoId')?.setValue(this.ppoId);
+                                        }
+                                        if (this.ppoFormDetails.get('Id')) {
+                                            this.ppoFormDetails.get('Id')?.setValue(id);
+                                        }
+
+                                        this.pensionerName = String(res.result.pensionerName);
+                                        this.return.emit([this.ppoId, this.pensionerName]);
                                         this.saveButton = true;
                                     }
                                 } else {
@@ -519,22 +560,12 @@ export class DetailsComponent implements OnInit, OnChanges {
         this.ppoFormDetails.controls['dateOfCommencement'].setValue(
             this.parseToDate($event.dateOfCommencement)
         );
+        this.ppoFormDetails.controls['mobileNumber'].setValue($event.mobileNumber);
         this.eppoid = $event.treasuryReceiptNo;
     }
 
     // fetch CatDescription
     async fetchCatDescription(): Promise<void> {
-        // get cat discription
-        let payload: Payload = {
-            pageSize: 10,
-            pageIndex: 0,
-            filterParameters: [],
-            sortParameters: { field: '', order: '' },
-        };
-
-        const CatDescription = this.ppoFormDetails.get(
-            'categoryDescription'
-        )?.value;
         this.catDescription$ =
             this.ppoCategoryService.getCategories();
     }

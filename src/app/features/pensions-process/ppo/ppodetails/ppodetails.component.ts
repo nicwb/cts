@@ -89,14 +89,14 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         this.pathOb = this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 const stepParam = this.route.snapshot.queryParamMap.get('step'); // Get 'step' query param
-                const lastSegment = this.route.snapshot.url.slice(-1)[0].path;
-
-                if (lastSegment === 'new') {
-                    this.newPPOEntry();
-                    return;
-                }
+                this.route.url.subscribe((segments) => {
+                    if (segments.length > 0 && segments[segments.length - 1].path === 'new') {
+                        this.newPPOEntry();
+                    }
+                });
             }
         });
+
     }
 
     async loadById() {
@@ -242,11 +242,6 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
 
     addNewEntry() {
         this.router.navigate(['pension-process/ppo/entry/new']);
-        this.SessionStorageService.remove(
-            '',
-            '',
-            `DynamicTableComponent_${this.suffix}`
-        );
     }
 
     search(): void {

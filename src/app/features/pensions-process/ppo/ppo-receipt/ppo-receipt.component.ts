@@ -22,7 +22,7 @@ import { SessionStorageService } from 'src/app/core/services/session-storage.ser
     templateUrl: './ppo-receipt.component.html',
     styleUrls: ['./ppo-receipt.component.scss']
 })
-export class PpoReceiptComponent implements OnInit, OnDestroy {
+export class PpoReceiptComponent implements OnDestroy {
     private navigationSubscription: Subscription;
     isInsertModalVisible = false;
     manualPpoForm!: FormGroup;
@@ -90,7 +90,6 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
 
     initializeComponent() {
         const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
-        console.log('end',endpoint)
         if(endpoint == 'ppo-receipt/new'){
             this.openNewPpoReceiptForm();
         }
@@ -101,7 +100,6 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
             const returnUri = params.get('returnUri');
             if (returnUri && !this.returnUriService.getReturnUri()) {
                 this.returnUriService.setReturnUri(returnUri);
-                console.log('Initial returnUri set:', returnUri);
             }
         });
 
@@ -113,10 +111,6 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
                 this.fetchUserInfo();
             }
         });
-    }
-
-    ngOnInit() {
-        this.initializeComponent();
     }
 
     ngOnDestroy() {
@@ -343,21 +337,24 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
                         this.hasEdited = true; // An edit was performed
                     }
 
-                    this.resetAndCloseDialog();
                     const successMessage: string = response.message ?? 'Operation completed successfully';
                     this.toastService.showSuccess(successMessage);
-
+                    this.manualPpoForm.reset();
                     const returnUri = this.returnUriService.getReturnUri();
-                    if (returnUri) {
+                    const returCheck = this.route.snapshot.queryParamMap.get('returnUri');
+                    if (returCheck) {
                         await Swal.fire({
-                            title: 'Manual PPO receipt is created. Do you want to go back to entry form?',
-                            icon: 'question',
+                            title: 'Success',
+                            text: 'Manual PPO receipt is created. Do you want to go back to the entry form?',
+                            icon: 'success',
                             showCancelButton: true,
                             confirmButtonText: 'Yes',
                             cancelButtonText: 'No'
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 this.router.navigate([returnUri]);
+                            }else {
+                                this.router.navigate(['pension-process/ppo/ppo-receipt']);
                             }
                         });
                     }
@@ -390,7 +387,8 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
     resetAndCloseDialog(): void {
         this.manualPpoForm.reset();
         this.isInsertModalVisible = false;
-        this.selectedRow = null;
+        this.router.navigate(['/pension-process/ppo/ppo-receipt']);  // Go back if already on the intended route.
+        // this.selectedRow = null;
     }
 
     parseToDate(dateOnly: any): Date | null {
@@ -459,7 +457,6 @@ export class PpoReceiptComponent implements OnInit, OnDestroy {
     }
 
     createNewMnualresipt(){
-        //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
         this.router.navigate(['pension-process/ppo/ppo-receipt/new']);
 
     }

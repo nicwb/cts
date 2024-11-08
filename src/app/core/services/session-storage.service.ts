@@ -53,7 +53,6 @@ export class SessionStorageService {
 
     remove(context: any, suffix: string = '', key?: string): void {
         const cacheKey = key ?? this.generateCacheKey(context, suffix);
-        console.log(cacheKey);
         sessionStorage.removeItem(cacheKey);
     }
 }

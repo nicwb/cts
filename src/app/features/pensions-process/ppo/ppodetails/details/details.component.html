@@ -31,7 +31,7 @@
         <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
             <div class="p-float-label absolute" style="left: 29px">
                 <input style="width: 80%" type="text" pInputText [(ngModel)]="eppoid"
-                    (ngModelChange)="MEDetailsSearch()" class="bg-cyan-100" />
+                     class="bg-cyan-100" />
                 <label for="float-input"><b>e-PPO Application No/TRID</b></label>
                 <app-popup-table [service$]="allManualPPOReceipt$"
                     (return)="handelManualEntrySelect($event)"></app-popup-table>
@@ -100,7 +100,7 @@
                         <label for="categoryDescription"><b>Cat Description :</b></label>
                         <div class="w-full flex gap-1">
                             <input class="w-full p-3 border-inherit" pInputText formControlName="categoryDescription"
-                                (ngModelChange)="fetchCatDescription()" class="w-full p-2" />
+                                class="w-full p-2" />
                             <app-popup-table [service$]="catDescription$"
                                 (return)="handelCategoryDescription($event)"></app-popup-table>
                         </div>
@@ -121,8 +121,7 @@
                     </div>
                     <div class="field col-12 md:col-3">
                         <label for="dateOfCommencement"><b>Commencement Date :</b></label>
-                        <p-calendar formControlName="dateOfCommencement" dateFormat="dd-mm-yy"
-                            [showIcon]="true" [disabled]="true"></p-calendar>
+                        <p-calendar formControlName="dateOfCommencement" dateFormat="dd-mm-yy" [disabled]="true" [showIcon]="true"></p-calendar>
                     </div>
                     <div class="field col-12 md:col-4">
                         <label for="effectiveDate"><b>Effective Date :</b></label>
@@ -175,6 +174,7 @@
                         <p-dropdown
                           styleClass="p-dropdown-sm"
                           [options]="banks"
+                          (click)="fetchBanks()"
                           optionLabel="label"
                           optionValue="value"
                           [filter]="true"
