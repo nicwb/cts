@@ -54,6 +54,8 @@ model/list-all-ppo-receipts-response-dtoi-enumerable-dynamic-list-result.ts
 model/list-header.ts
 model/manual-ppo-receipt-entry-dto.ts
 model/manual-ppo-receipt-response-dto-json-api-response.ts
+model/manual-ppo-receipt-response-dto-table-response-dto-json-api-response.ts
+model/manual-ppo-receipt-response-dto-table-response-dto.ts
 model/manual-ppo-receipt-response-dto.ts
 model/models.ts
 model/nominee-entry-dto.ts

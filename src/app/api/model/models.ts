@@ -33,6 +33,8 @@ export * from './list-header';
 export * from './manual-ppo-receipt-entry-dto';
 export * from './manual-ppo-receipt-response-dto';
 export * from './manual-ppo-receipt-response-dto-json-api-response';
+export * from './manual-ppo-receipt-response-dto-table-response-dto';
+export * from './manual-ppo-receipt-response-dto-table-response-dto-json-api-response';
 export * from './nominee-entry-dto';
 export * from './nominee-response-dto';
 export * from './nominee-response-dto-json-api-response';

@@ -26,6 +26,8 @@ import { ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse } from '..
 import { ManualPpoReceiptEntryDTO } from '../model/manual-ppo-receipt-entry-dto';
 // @ts-ignore
 import { ManualPpoReceiptResponseDTOJsonAPIResponse } from '../model/manual-ppo-receipt-response-dto-json-api-response';
+// @ts-ignore
+import { ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse } from '../model/manual-ppo-receipt-response-dto-table-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -249,9 +251,9 @@ export class PensionManualPPOReceiptService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllUnusedPpoReceipts(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
-    public getAllUnusedPpoReceipts(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
-    public getAllUnusedPpoReceipts(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>>;
+    public getAllUnusedPpoReceipts(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>;
+    public getAllUnusedPpoReceipts(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>>;
+    public getAllUnusedPpoReceipts(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>>;
     public getAllUnusedPpoReceipts(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
@@ -293,7 +295,7 @@ export class PensionManualPPOReceiptService {
         }
 
         let localVarPath = `/api/v1/manual-ppo/receipts/unused`;
-        return this.httpClient.request<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
