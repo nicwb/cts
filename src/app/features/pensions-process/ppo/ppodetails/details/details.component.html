@@ -68,16 +68,16 @@
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="type"><b>Type :</b></label>
-                        <p-dropdown dataKey="Pension" [options]="[
+                        <p-dropdown [options]="[
                                 { label: 'Pension', value: 'P' },
                                 { label: 'Bank', value: 'F' },
                                 { label: 'CPF', value: 'C' }
-                            ]" formControlName="ppoType" class="w-full p-2"></p-dropdown>
+                            ]" formControlName="ppoType" placeholder="Select Type" class="w-full p-2"></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-2">
                         <label for="subType"><b>Sub Type :</b></label>
-                        <p-dropdown dataKey="Employed" [options]="[
+                        <p-dropdown [options]="[
                                 { label: 'Employed', value: 'E' },
                                 { label: 'Widow Daughter', value: 'L' },
                                 { label: 'Unmarried Daughter', value: 'U' },
@@ -93,7 +93,7 @@
                                 { label: 'Dependent Mother', value: 'K' },
                                 { label: 'Husband', value: 'H' },
                                 { label: 'Wife', value: 'W' }
-                            ]" formControlName="ppoSubType" class="w-full p-2"></p-dropdown>
+                            ]" formControlName="ppoSubType" placeholder="Select Sub Type" class="w-full p-2"></p-dropdown>
                     </div>
                     <!-- <div class="field col-12 md:col-4"></div> -->
                     <div class="field col-12 md:col-4">
@@ -166,7 +166,7 @@
                         <label for="PayMode"><b>Pay Mode :</b></label>
                         <p-dropdown styleClass="p-dropdown-sm"
                             [options]="[{label: 'Treasury', value: 'Q'}, {label: 'Bank', value: 'B'}]"
-                            formControlName="payMode" placeholder="Pay Mode" class="py-2"></p-dropdown>
+                            formControlName="payMode" placeholder="Select Pay Mode" class="py-2"></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-4">
@@ -261,17 +261,16 @@
                         <p-dropdown [options]="[
                                 { label: 'Male', value: 'M' },
                                 { label: 'Female', value: 'F' },
-                                { label: 'Other', value: 'O' }
-                            ]" formControlName="gender"></p-dropdown>
+                            ]" formControlName="gender" placeholder="Select Gender"></p-dropdown>
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="religion"><b>Religion :</b></label>
-                        <p-dropdown [options]="religionOptions" dataKey="Hindu" formControlName="religion"></p-dropdown>
+                        <p-dropdown [options]="religionOptions" placeholder="Select Religion"  formControlName="religion"></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-3">
                         <label for="dateOfBirth"><b>Date of Birth :</b></label>
-                        <p-calendar formControlName="dateOfBirth" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                        <p-calendar formControlName="dateOfBirth"  dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
                     </div>
 
                     <div class="field col-12 md:col-3">

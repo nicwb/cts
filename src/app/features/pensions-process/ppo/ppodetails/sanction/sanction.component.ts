@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { APIResponseStatus, PensionerResponseDTOJsonAPIResponse, PensionFactoryService, PensionPPODetailsService, PensionSanctionDetailsService, PpoSanctionDetailsResponseDTO } from 'src/app/api';
 import { pensionerStatusDTO } from 'src/app/core/models/pensioner-status';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class SanctionComponent implements OnInit {
     ) {
 
     }
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.sanctionDetails = this.fb.group({
             ppoId: [null, Validators.required],
             pensionerId: [null, Validators.required],
@@ -74,6 +75,10 @@ export class SanctionComponent implements OnInit {
             { label: 'Male', value: 'M' },
             { label: 'Female', value: 'F' },
         ];
+
+        if (!environment.production) {
+            await this.getFakedata();
+        }
     }
 
     async fetchPensionerDetails(ppoId: any): Promise<void> {
@@ -114,9 +119,6 @@ export class SanctionComponent implements OnInit {
                             } catch (error) {
                                 console.error('Error fetching sanction details:', error);
                             }
-                        } else {
-                            this.getFakedata();
-
                         }
                     }
                 } else {

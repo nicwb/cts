@@ -247,11 +247,11 @@ export class DetailsComponent implements OnInit, OnChanges {
                 [Validators.maxLength(100), Validators.minLength(0)],
             ], // null
             ppoType: [
-                'P',
+                '',
                 [Validators.required, Validators.pattern('^[PFC]$')],
             ],
             ppoSubType: [
-                'E',
+                '',
                 [Validators.required, Validators.pattern('^[ELUVNRPGJKHW]$')],
             ],
             categoryId: [
@@ -277,10 +277,10 @@ export class DetailsComponent implements OnInit, OnChanges {
             mobileNumber: [null, [Validators.pattern(/^[6-9]\d{9}$/)]], // null
             aadhaarNo: [null, [Validators.required, this.aadhaarValidator]], // null
             panNo: [null, [Validators.required, this.panValidator]], // null
-            gender: ['M', [Validators.pattern('^[MFO]$')]], // null
+            gender: ['', [Validators.pattern('^[MFO]$')]], // null
             dateOfBirth: [null, [Validators.required]],
             religion: [
-                'H',
+                '',
                 [Validators.required, Validators.pattern('^[HMO]$')],
             ],
             emailId: [null, [Validators.email]], // null
@@ -299,7 +299,7 @@ export class DetailsComponent implements OnInit, OnChanges {
 
             //
             effectiveDate: [this.getFirstDateOfCurrentMonth()],
-            payMode: ['Q'],
+            payMode: ['',[Validators.required]],
             bankAcNo: ['', [Validators.required]],
             accountHolderName: [''],
             ifscCode: ['', [Validators.required]],
