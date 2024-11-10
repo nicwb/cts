@@ -1,15 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { LayoutService } from "./service/app.layout.service";
 import { AuthService } from '../core/services/auth/auth.service';
 import { IUserDetails } from '../core/models/jwt-token';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
     templateUrl: './app.topbar.component.html',
     providers: [ConfirmationService]
 })
-export class AppTopBarComponent {
+export class AppTopBarComponent implements OnInit{
     userDetais:IUserDetails | undefined;
     items!: MenuItem[];
 
@@ -19,8 +20,15 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: LayoutService,private authService:AuthService,private confirmationService: ConfirmationService,) { 
+    constructor(public layoutService: LayoutService,private authService:AuthService,private confirmationService: ConfirmationService,private router:Router) {
         this.userDetais =  authService.getUserDetails();
+    }
+    async ngOnInit(): Promise<void> {
+        const isLoggedIn = this.authService.isLoggedin();
+        if (!isLoggedIn) {
+            await this.router.navigate(['/static-login']);
+        }
+
     }
     logOut(){
         this.authService.userLogout();
@@ -38,7 +46,7 @@ export class AppTopBarComponent {
                 this.logOut();
             },
             reject: () => {
-                
+
             }
         });
     }
