@@ -4,3 +4,75 @@
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+*{
+    box-sizing: border-box;
+}
+
+// .profilePIC{
+//     width: 400px;
+//     @media (max-width:1040px) {
+//         display: block;
+//         width: 60vw;
+
+//     }
+//     @media (max-width:767px) {
+//         display: block;
+//         width: 80vw;
+
+//     }
+
+// }
+// tab view
+.profilePIC , .signPIC , .downloadB{
+
+    display: inline-block;
+
+}
+
+.profilePIC
+{ img{
+    width: 400px;
+    height: auto;
+}
+}
+.signPIC {
+    img{
+    width: 300px;
+    height: auto;}
+}
+@media (max-width: 1040px) {
+    .profilePIC{
+        width: 60%;
+        img{
+            width: 100%;
+        }
+    }
+    .signPIC{width: 30%;
+        img{
+            width: 100%;
+        }
+    }
+
+
+    .downloadB{
+        display: block;
+    }
+}
+// phone view
+@media (max-width: 500px) {
+    .profilePIC{
+        width: 90%;
+        img{
+            width: 100%;
+        }
+    }
+    .signPIC{width: 90%;
+        img{
+            width: 100%;
+        }
+    }
+
+    .downloadB{
+        display: block;
+    }
+}

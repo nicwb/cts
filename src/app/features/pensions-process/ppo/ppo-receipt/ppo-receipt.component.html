@@ -1,134 +1,259 @@
 <div class="grid">
     <div class="col-12">
-        <app-common-header [headerName]="'PPO Receipt'" [imgSrc]="'assets/layout/images/icons/ppo-receipt.png'">
-            <button pButton pRipple (click)="createNewMnualresipt()" type="button" icon="pi pi-plus" label="PPO Receipt Entry"
-                class="p-button-rounded p-button-raised"></button>
+        <app-common-header
+            [headerName]="'PPO Receipt'"
+            [imgSrc]="'assets/layout/images/icons/ppo-receipt.png'"
+        >
+            <button
+                pButton
+                pRipple
+                (click)="createNewMnualresipt()"
+                type="button"
+                icon="pi pi-plus"
+                label="PPO Receipt Entry"
+                class="p-button-rounded p-button-raised"
+            ></button>
         </app-common-header>
     </div>
 
     <!-- PPO Table and Placeholder -->
     <div class="col-12">
-        <!-- Dynamic Table Component -->
-        <!-- <mh-prime-dynamic-table *ngIf="isTableVisible"
-        size="small"
-        [data]="tableData"
-        [numberRowsShown]="10"
-        [rowsPerPageOptions]="[10, 30, 50]"
-        [showTopMenubar]="true"
-        [isLoading]="isDataLoading"
-        [actionButtons]="actionButtons"
-        (actionButtonClicked)="onActionButtonClick($event)"
-        (queryParameterChange)="onQueryParametersChange($event)"
-        (searchKeyChange)="onSearchKeyChange($event)">
-    </mh-prime-dynamic-table> -->
-    <app-dynamic-table
+        <app-dynamic-table
             *ngIf="isTableVisible"
             name=""
             [service$]="ppoRecipt$"
             [suffix]="suffix"
             [editable]="true"
             (return)="onActionButtonClick($event)"
-
         ></app-dynamic-table>
-    <div *ngIf="e_PPO_div" class="col-12 card">
-        <div>
-            <label>E-PPO ID:</label><input pInputText (input)="eppo_input()" id="eppoinput" placeholder="E-PPO ID" >
-            <button pButton pRipple (click)="search_ePPO()" [disabled]="!ePpoEntry"  type="button" icon="pi pi-search"
-                    class=" p-button-raised">
-        </button>
+        <div *ngIf="e_PPO_div" class="col-12 card">
+            <div>
+                <label>E-PPO ID:</label
+                ><input
+                    pInputText
+                    (input)="eppo_input()"
+                    id="eppoinput"
+                    placeholder="E-PPO ID"
+                />
+                <button
+                    pButton
+                    pRipple
+                    (click)="search_ePPO()"
+                    [disabled]="!ePpoEntry"
+                    type="button"
+                    icon="pi pi-search"
+                    class="p-button-raised"
+                ></button>
+            </div>
+
+            <div *ngIf="src" class="" style="align-items: end">
+                <div id="image_div" class="m-2 profilePIC">
+                    <p>image</p>
+                    <img [src]="image_src" *ngIf="image_src" />
+                </div>
+                <div id="singature_div" class="m-2 signPIC">
+                    <p>signature</p>
+                    <img [src]="signature_src" class="signIMG" *ngIf="signature_src" />
+                </div>
+                <div id="pdf_div" class="m-2 downloadB">
+                    <p>pdf:</p>
+                    <button
+                        pButton
+                        pRipple
+                        (click)="download_pdf()"
+                        label="download"
+                        type="button"
+                        icon="pi pi-download"
+                        class="p-button-rounded p-button-raised"
+                    ></button>
+                </div>
+            </div>
         </div>
-
-        <div *ngIf="src" class="flex " style="align-items: end;" >
-            <div id="image_div" class="m-2">
-                <p>image</p>
-                <img [src]="image_src" width="400px" *ngIf="image_src"  >
-
-            </div>
-            <div id="singature_div" class="m-2">
-                <img [src]="signature_src" width="200px" *ngIf="signature_src"  >
-            </div>
-            <div id="pdf_div" class="m-2">
-                pdf:
-                <button pButton pRipple (click)="download_pdf()" label="download" type="button" icon="pi pi-download"
-                    class="p-button-rounded p-button-raised">
-                </button>
-            </div>
-        </div>
-
-
-    </div>
-    <!-- Placeholder when table is not visible -->
-        <div class="svg-placeholder-container" *ngIf="placeholder_div" style="display: flex; justify-content: center; align-items: center; height: calc(100vh - 300px); flex-direction: column;">
+        <!-- Placeholder when table is not visible -->
+        <div
+            class="svg-placeholder-container"
+            *ngIf="placeholder_div"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100vh - 300px);
+                flex-direction: column;
+            "
+        >
             <div class="col-12 h-full text-center bg-constellation">
                 <!-- Load PPO Receipt Button -->
-                <button pButton pRipple (click)="loadPpoReceipts()" type="button" icon="pi pi-download" label="Load PPO Receipts"
-                    class="p-button-rounded p-button-raised m-2">
-                </button>
-                <button pButton pRipple (click)="loadE_PpoReceipts()" type="button" icon="pi pi-download" label="Load E-PPO Receipts"
-                    class="p-button-rounded p-button-raised m-2">
-                </button>
-                <div class="mt-8">
-                </div>
-                <p class="text-gray-600">A diamond with a flaw is better than a common stone that is perfect...</p>
+                <button
+                    pButton
+                    pRipple
+                    (click)="loadPpoReceipts()"
+                    type="button"
+                    icon="pi pi-download"
+                    label="Load PPO Receipts"
+                    class="p-button-rounded p-button-raised m-2"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    (click)="loadE_PpoReceipts()"
+                    type="button"
+                    icon="pi pi-download"
+                    label="Load E-PPO Receipts"
+                    class="p-button-rounded p-button-raised m-2"
+                ></button>
+                <div class="mt-8"></div>
+                <p class="text-gray-600">
+                    A diamond with a flaw is better than a common stone that is
+                    perfect...
+                </p>
             </div>
         </div>
     </div>
 </div>
 
-<p-dialog  (onHide)="onDialogClose()"  header="Manual PPO Receipt" [(visible)]="isInsertModalVisible" [modal]="true"
-    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }" [maximizable]="true"
-    [baseZIndex]="10000">
+<p-dialog
+    (onHide)="onDialogClose()"
+    header="Manual PPO Receipt"
+    [(visible)]="isInsertModalVisible"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw' }"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+>
     <form [formGroup]="manualPpoForm" class="flex flex-column gap-4 mt-3">
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="ppoNo" class="block mb-1 text-color text-lg">PPO No:</label>
-                <input type="text" pInputText formControlName="ppoNo" placeholder="PPO Number" class="w-full">
-                <small class="p-error" *ngIf="manualPpoForm.get('ppoNo')?.hasError('duplicate')">
-                    This PPO number already exists. Please use a different PPO number.
+                <label for="ppoNo" class="block mb-1 text-color text-lg"
+                    >PPO No:</label
+                >
+                <input
+                    type="text"
+                    pInputText
+                    formControlName="ppoNo"
+                    placeholder="PPO Number"
+                    class="w-full"
+                />
+                <small
+                    class="p-error"
+                    *ngIf="manualPpoForm.get('ppoNo')?.hasError('duplicate')"
+                >
+                    This PPO number already exists. Please use a different PPO
+                    number.
                 </small>
             </div>
         </div>
 
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="pensionerName" class="block mb-1 text-color text-lg">Pensioner's Name:</label>
-                <input type="text" pInputText formControlName="pensionerName" placeholder="Pensioner's Name" class="w-full">
+                <label for="pensionerName" class="block mb-1 text-color text-lg"
+                    >Pensioner's Name:</label
+                >
+                <input
+                    type="text"
+                    pInputText
+                    formControlName="pensionerName"
+                    placeholder="Pensioner's Name"
+                    class="w-full"
+                />
             </div>
             <div class="flex-auto">
-                <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Date of commencement of Pension/Family Pension:</label>
-                <p-calendar formControlName="dateOfCommencement" [maxDate]="maxDate" placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true"></p-calendar>
+                <label
+                    for="dateOfCommencement"
+                    class="block mb-1 text-color text-lg"
+                    >Date of commencement of Pension/Family Pension:</label
+                >
+                <p-calendar
+                    formControlName="dateOfCommencement"
+                    [maxDate]="maxDate"
+                    placeholder="dd-mm-yyyy"
+                    appendTo="body"
+                    [showIcon]="true"
+                ></p-calendar>
             </div>
         </div>
 
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="mobileNumber" class="block mb-1 text-color text-lg">Mobile No:</label>
-                <input type="text" pInputText formControlName="mobileNumber" placeholder="Mobile No" class="w-full">
+                <label for="mobileNumber" class="block mb-1 text-color text-lg"
+                    >Mobile No:</label
+                >
+                <input
+                    type="text"
+                    pInputText
+                    formControlName="mobileNumber"
+                    placeholder="Mobile No"
+                    class="w-full"
+                />
             </div>
             <div class="flex-auto">
-                <label for="receiptDate" class="block mb-1 text-color text-lg">Date of Receipt:</label>
-                <p-calendar formControlName="receiptDate" [maxDate]="maxDate" placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true"></p-calendar>
+                <label for="receiptDate" class="block mb-1 text-color text-lg"
+                    >Date of Receipt:</label
+                >
+                <p-calendar
+                    formControlName="receiptDate"
+                    [maxDate]="maxDate"
+                    placeholder="dd-mm-yyyy"
+                    appendTo="body"
+                    [showIcon]="true"
+                ></p-calendar>
             </div>
         </div>
 
         <div class="flex gap-2 xl:flex-row flex-column">
             <div class="flex-auto">
-                <label for="psaCode" class="block mb-1 text-color text-lg">PPO Issued By:</label>
-                <p-dropdown [options]="ppoIssuedBy" formControlName="psaCode" placeholder="Select a PPO Issued By" [showClear]="true"></p-dropdown>
+                <label for="psaCode" class="block mb-1 text-color text-lg"
+                    >PPO Issued By:</label
+                >
+                <p-dropdown
+                    [options]="ppoIssuedBy"
+                    formControlName="psaCode"
+                    placeholder="Select a PPO Issued By"
+                    [showClear]="true"
+                ></p-dropdown>
             </div>
             <div class="flex-auto">
-                <label for="ppoType" class="block mb-1 text-color text-lg">Type:</label>
-                <p-dropdown [options]="type" formControlName="ppoType" placeholder="Select a Type" [showClear]="true"></p-dropdown>
+                <label for="ppoType" class="block mb-1 text-color text-lg"
+                    >Type:</label
+                >
+                <p-dropdown
+                    [options]="type"
+                    formControlName="ppoType"
+                    placeholder="Select a Type"
+                    [showClear]="true"
+                ></p-dropdown>
             </div>
         </div>
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
-        <button *ngIf="!selectedRow" pButton label="Submit" (click)="submitPpoReceipt()"
-        class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
-        <button *ngIf="selectedRow&&!isFetchUserInfo" pButton label="Update" (click)="submitPpoReceipt()"
-        class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
-        <button *ngIf="isFetchUserInfo" pButton label="Update" (click)="fetchUserInfoUpdate()"
-        class="p-button-rounded" [disabled]="!manualPpoForm.valid"></button>
-        <button pButton label="Cancel" (click)="resetAndCloseDialog()" class="p-button-rounded"></button>
+        <button
+            *ngIf="!selectedRow"
+            pButton
+            label="Submit"
+            (click)="submitPpoReceipt()"
+            class="p-button-rounded"
+            [disabled]="!manualPpoForm.valid"
+        ></button>
+        <button
+            *ngIf="selectedRow && !isFetchUserInfo"
+            pButton
+            label="Update"
+            (click)="submitPpoReceipt()"
+            class="p-button-rounded"
+            [disabled]="!manualPpoForm.valid"
+        ></button>
+        <button
+            *ngIf="isFetchUserInfo"
+            pButton
+            label="Update"
+            (click)="fetchUserInfoUpdate()"
+            class="p-button-rounded"
+            [disabled]="!manualPpoForm.valid"
+        ></button>
+        <button
+            pButton
+            label="Cancel"
+            (click)="resetAndCloseDialog()"
+            class="p-button-rounded"
+        ></button>
     </div>
 </p-dialog>
