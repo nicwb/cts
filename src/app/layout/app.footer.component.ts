@@ -6,5 +6,6 @@ import { LayoutService } from "./service/app.layout.service";
     templateUrl: './app.footer.component.html'
 })
 export class AppFooterComponent {
+    readonly clientVersion = import.meta.env.NG_APP_VERSION;
     constructor(public layoutService: LayoutService) { }
 }
