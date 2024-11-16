@@ -78,8 +78,9 @@ export class PensionModule {
     const ppoId = await this.savePpoDetailsAndApprove();
       await this.page.goto('pension-process/pension-bill/first-pension-bill', { waitUntil: "domcontentloaded"});
         await this.page.locator('p-button').getByRole('button', {name: "Open"}).click();
-        await this.page.getByRole('cell', { name: '' + ppoId, exact: true }).waitFor({ state: 'visible' });
-        await this.page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
+        await this.page.getByLabel('Search data').click();
+        await this.page.getByLabel('Search data').fill(''+ppoId);
+        await this.page.getByRole('cell', { name: ''+ppoId, exact: true }).click();
         await this.page.getByRole('textbox', { name: 'Select a date' }).click();
         await this.page.locator('.p-datepicker-today').click();
         await expect(this.page.getByRole('textbox', { name: 'Select a date' })).not.toBeEmpty();

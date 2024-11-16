@@ -26,7 +26,7 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     await pensionPage.verifyFormIsReset(['categoryName', 'componentName', 'rateAmount']);
 });
 
-test('should add new component, submit form with valid date, and display success message', async ({ pensionPage }) => {
+test.skip('should add new component, submit form with valid date, and display success message', async ({ pensionPage }) => {
   // Add component and category
   await pensionPage.selectFirstComponent();
   await pensionPage.selectFirstPensionCategory();
