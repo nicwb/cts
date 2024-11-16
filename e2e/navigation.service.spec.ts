@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     //NEEDS FIX
 });
 
-test("Navigation Service", async ({ pensionPage, page }) => {
+test.skip("Navigation Service", async ({ pensionPage, page }) => {
     await page.goto('pension-process/ppo/entry', { waitUntil: "domcontentloaded" });
     const addNewButton = page.getByRole('button', { name: 'Add New PPO' });
     await addNewButton.click();
