@@ -24,36 +24,30 @@ export class AppSidebarPensionComponent implements OnInit {
             {
                 items: [
                     {
-                        label: 'Master', icon: 'pi pi-fw pi-box',
+                        label: 'Master', icon: 'assets/layout/images/icons/byte.png',
                         items: [
                             {
                                 label: 'Pension Category',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/pension-category']  // Ensure leading slash for absolute path
                             },
                             {
                                 label: 'Primary',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/primary']  // Absolute path
                             },
                             {
                                 label: 'Sub Category',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/sub-category']  // Absolute path
                             },
                             {
                                 label: 'Component',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/component']  // Absolute path
                             },
                             {
                                 label: 'Component Rate',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/component-rate']  // Absolute path
                             },
                             {
                                 label: 'Component Rate Revision',
-                                icon: 'pi pi-fw pi-bookmark',
                                 routerLink: ['/master/component-rate-revision']  // Absolute path
                             }
                         ]
@@ -63,50 +57,52 @@ export class AppSidebarPensionComponent implements OnInit {
             {
                 items: [
                     {
-                        label: 'Pension Process', icon: 'pi pi-fw pi-box',
+                        label: 'Pension Process', icon: 'assets/layout/images/icons/insurance.png',
                         items: [
                             {
-                                label: 'PPO', icon: 'pi pi-fw pi-bookmark',
+                                label: 'PPO', icon: 'assets/layout/images/icons/vendor-entry.png',
                                 items: [
-                                    { label: 'Entry', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/entry'] },
-                                    { label: 'PPO Receipt', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/ppo-receipt'] },
+                                    { label: 'Entry', routerLink: ['pension-process/ppo/entry'] },
+                                    { label: 'PPO Receipt',  routerLink: ['pension-process/ppo/ppo-receipt'] },
                                     // { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
-                                    { label: 'Life Certificate', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/life-certificate'] },
-                                    { label: 'Pensioner Status', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/ppo/pensioner-status'] },
+                                    { label: 'Life Certificate',  routerLink: ['pension-process/ppo/life-certificate'] },
+                                    { label: 'Convert to family pension',  routerLink: ['pension-process/ppo/convart-to-family-pension'] },
                                 ]
                             },
                             {
-                                label: 'Pension Details', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Pension Details', icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'Revision of Components', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-process/pension-details/revision'] },
+                                    { label: 'Revision of Components', routerLink: ['/pension-process/pension-details/revision'] },
                                     // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },
                             {
-                                label: 'Pension Bill', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Pension Bill', icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
                                     {
-                                        label: 'first pension bill',
-                                        icon: 'pi pi-fw pi-bookmark',
+                                        label: 'First Pension Bill',
                                         routerLink: ['pension-process/pension-bill/first-pension-bill']
                                     },
-                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/pension-bill/regular-pension-bill'] },
+                                    { label: 'Regular Pension', routerLink: ['pension-process/pension-bill/regular-pension-bill'] },
+                                    { label: 'Arrear Pension Bill', routerLink: ['pension-process/pension-bill/arrear-pension-bill'] },
+                                    { label: 'Life Time Arrear Pension Bill', routerLink: ['pension-process/pension-bill/life-time-arrear-pension-bill'] },
 
                                 ]
                             },
                             {
-                                label: 'Approval', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Approval', icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'PPO', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-process/approval/ppo-approval'] },
-                                    { label: 'First pension Bill', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/approval/firstpensionbill-approval'] },
+                                    { label: 'PPO',  routerLink: ['/pension-process/approval/ppo-approval'] },
+                                    { label: 'First pension Bill', routerLink: ['pension-process/approval/firstpensionbill-approval'] },
+                                    { label: 'Family Pension Approval', routerLink: ['pension-process/approval/family-pension-approval'] },
                                 // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ]
                             },{
-                                label: 'Bill Print', icon: 'pi pi-fw pi-bookmark',
+                                label: 'Bill Print', icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'First Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/bill-print/first-pension-bill-print'] },
-                                    { label: 'Regular Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['pension-process/bill-print/regular-pension-bill-print'] },
+                                    { label: 'First Pension',  routerLink: ['pension-process/bill-print/first-pension-bill-print'] },
+                                    { label: 'Regular Pension',  routerLink: ['pension-process/bill-print/regular-pension-bill-print'] },
                                 // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ]
 
@@ -121,9 +117,9 @@ export class AppSidebarPensionComponent implements OnInit {
                             // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
                         ]
                     },{
-                        label: 'Report', icon: 'pi pi-fw pi-box',
+                        label: 'Report', icon: 'assets/layout/images/icons/statistics.png',
                         items: [
-                            { label: 'Pension Report', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension-report'] },
+                            { label: 'Manual PPO Register', routerLink: ['/pension-report'] },
 
                         ]
                     }

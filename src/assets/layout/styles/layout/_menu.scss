@@ -11,6 +11,51 @@
 }
 
 .layout-menu {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+
+        // Add padding for nested levels
+        ul {
+          padding-left: 1rem;  // Adds indentation for first nested level
+
+          a {
+            // You might want to adjust padding for nested items
+            padding: 0.6rem 1rem;  // Slightly smaller padding for nested items
+
+            // Optional: make nested items visually distinct
+            font-size: 0.95em;  // Slightly smaller font
+          }
+
+          // For deeper nesting (third level)
+          ul {
+            padding-left: 1rem;  // Adds more indentation for deeper levels
+          }
+        }
+    }
+
+    // Ensure links maintain proper alignment
+    a {
+        display: flex;
+        align-items: center;
+        position: relative;
+        width: 100%;  // Ensure full width is clickable
+    }
+    .menu-parent > a::after {
+        content: '';
+        border: solid var(--surface-0);
+        border-width: 0 2px 2px 0;
+        padding: 2px;
+        position: absolute;
+        right: 1rem;
+        transform: rotate(45deg);
+        transition: transform 0.2s;
+    }
+
+    .menu-parent.active > a::after {
+        transform: rotate(-135deg);
+    }
     margin: 0 0 3rem 0;
     padding: 0.5rem 1.5rem;
     overflow-y: auto;

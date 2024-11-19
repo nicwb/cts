@@ -1,0 +1,161 @@
+<style>
+  .h-45px {
+      height: 45px;
+  }
+  .h-full {
+      height: 100%;
+  }
+  .h-50 {
+      height: 50%;
+  }
+  .w-100 {
+      width: 100% !important;
+  }
+  .w-50 {
+      width: 50%;
+  }
+  .mb-2 {
+      margin-bottom: 2px;
+  }
+</style>
+<div class="card py-2">
+  <div class="row">
+    <form [formGroup]="lifeTimeArrearPensionBillForm" class="flex flex-column gap-4 mt-3">
+        <div>
+            <!-- Divider for PPO Details Section -->
+            <p-divider align="left" type="solid">
+                <div class="inline-flex align-items-center mb-2">
+                    <i class="pi pi-clone mr-2"></i>
+                    <b>PPO Details For LTA Pension</b>
+                </div>
+            </p-divider>
+            <!-- Form for Pensioner Details -->
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-4">
+                    <label for="float-input" class="m-2"><b>PPO ID:</b></label>
+                    <div class="flex">
+                        <input
+                            style="width: 50%"
+                            type="text"
+                            pInputText
+                            formControlName="ppoId"
+                            class="border-inherit w-full ml-2 p-2 bg-cyan-100"
+                            [readonly]="true"
+                        />
+                        <app-popup-table
+                            [service$]="allManualPPOReceipt$"
+                            (return)="handelManualEntrySelect($event)"
+                        ></app-popup-table>
+                    </div>
+                </div>
+                <!-- PPO Sl No Input Field -->
+                <div class="field col-12 md:col-4">
+                    <label class="m-2"><b>PPO Sl No:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        formControlName="ppoSlNo"
+                        class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+                <!-- PPO No Input Field -->
+                <div class="field col-12 md:col-4">
+                    <label class="m-2"><b>PPO No:</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        formControlName="ppoNo"
+                        class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+                <!-- PPO Name Input Field -->
+                <div class="field col-12 md:col-4">
+                    <label class="m-2"><b>PPO Name</b></label>
+                    <input
+                        type="text"
+                        pInputText
+                        formControlName="ppoName"
+                        class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                        [readonly]="true"
+                    />
+                </div>
+                <!-- Period From Input Field -->
+                <div class="field col-12 md:col-4">
+                  <label class="m-2"><b>Period From:</b></label>
+                  <p-calendar
+                      formControlName="periodFrom"
+                      placeholder="dd-mm-yyyy"
+                      appendTo="body"
+                      [showIcon]="true"
+                  ></p-calendar>
+              </div>
+              <!-- Period To Input Field -->
+              <div class="field col-12 md:col-4">
+                  <label class="m-2"><b>Period To:</b></label>
+                  <p-calendar
+                      formControlName="periodTo"
+                      placeholder="dd-mm-yyyy"
+                      appendTo="body"
+                      [showIcon]="true"
+                  ></p-calendar>
+              </div>
+              <!-- Bank Name Input Field -->
+              <div class="field col-12 md:col-4">
+                  <label class="m-2"><b>Bank Name:</b></label>
+                  <input
+                      type="text"
+                      pInputText
+                      formControlName="bankName"
+                      class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                      [readonly]="true"
+                  />
+              </div>
+              <!-- Bank A/c No Input Field -->
+              <div class="field col-12 md:col-4">
+                  <label class="m-2"><b>Bank A/c No:</b></label>
+                  <input
+                      type="text"
+                      pInputText
+                      formControlName="bankAcNo"
+                      class="w-full m-2 border-inherit p-2 bg-cyan-100"
+                      [readonly]="true"
+                  />
+              </div>
+            </div>
+            <!-- Save Button -->
+            <div class="flex flex-col mt-1 align-items-center justify-content-center">
+                <div class="flex flex-wrap gap-2">
+                    <button
+                        pButton
+                        pRipple
+                        (click)="onGenerate()"
+                        type="button"
+                        class="p-button-raised p-button-info"
+                        [disabled]="lifeTimeArrearPensionBillForm.invalid"
+                    >
+                        Generate Report
+                    </button>
+                        <p-button
+                            label="Save"
+                            icon="pi pi-bookmark"
+                            styleClass="p-button-raised"
+                            (click)="saveData()"
+                            [disabled]="!lifeTimeArrearPensionBillForm.valid"
+                        ></p-button>
+                    <button
+                        pButton
+                        pRipple
+                        (click)="onRefresh()"
+                        type="button"
+                        class="p-button-raised p-button-info"
+                    >
+                        <i class="pi pi-refresh mr-2"></i>Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+  </div>
+</div>

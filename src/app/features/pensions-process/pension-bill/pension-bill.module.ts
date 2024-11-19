@@ -19,6 +19,8 @@ import { RegularPensionBillComponent } from './regular-pension-bill/regular-pens
 import { RegularPensionBillModule } from './regular-pension-bill/regular-pension-bill.module';
 import { ArrearPensionBillComponent } from './arrear-pension-bill/arrear-pension-bill.component';
 import { ArrearPensionBillModule } from './arrear-pension-bill/arrear-pension-bill.module';
+import { LifeTimeArrearPensionBillComponent } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.component';
+import { LifeTimeArrearPensionBillModule } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.module';
 
 type NewType = Routes;
 
@@ -40,6 +42,11 @@ const routes: NewType = [
         path: 'arrear-pension-bill',
         component: ArrearPensionBillComponent,
         data: { breadcrumb: 'ArrearPensionBillComponent'}
+    },
+    {
+        path: 'life-time-arrear-pension-bill',
+        component: LifeTimeArrearPensionBillComponent,
+        data: { breadcrumb: 'LifeTimeArrearPensionBillComponent'}
     }
 ];
 @NgModule({
@@ -47,6 +54,15 @@ const routes: NewType = [
     imports: [
         CommonModule,
         OptionCardModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        CalendarModule,
+        DialogModule,
+        DropdownModule,
+        CommonHeaderModule,
+        DynamicTableModule,
+        TreasuryDropdownModule,
         RegularPensionBillModule,
         FirstPensionBillModule,
         ArrearPensionBillModule,
@@ -59,6 +75,7 @@ const routes: NewType = [
         CommonHeaderModule,
         DynamicTableModule,
         TreasuryDropdownModule,
+        LifeTimeArrearPensionBillModule,
         RouterModule.forChild(routes)
     ],
     exports: [RouterModule] // Export if needed in other modules
