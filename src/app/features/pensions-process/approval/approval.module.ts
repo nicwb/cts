@@ -34,6 +34,7 @@ import { FirstpensionbillapprovalModule } from './firstpensionbillapproval/first
 import { PpoApprovalModule } from './ppo-approval/ppo-approval.module';
 import { FirstpensionbillapprovalComponent } from './firstpensionbillapproval/firstpensionbillapproval.component';
 import { PpoApprovalComponent } from './ppo-approval/ppo-approval.component';
+import { FamilyPensionApprovalComponent } from './family-pension-approval/family-pension-approval.component';
 
 // Routes for lazy loading the modules
 const routes: Routes = [
@@ -52,10 +53,14 @@ const routes: Routes = [
         path: 'ppo-approval/:ppoId',
         component: PpoApprovalComponent
     },
+    {
+        path: 'family-pension-approval',
+        component: FamilyPensionApprovalComponent
+    }
 ];
 
 @NgModule({
-    declarations: [ApprovalComponent],
+    declarations: [ApprovalComponent,FamilyPensionApprovalComponent],
     imports: [
         CommonModule,
         FormsModule,

@@ -1,0 +1,135 @@
+<h2 class="bg-color text-xl"><b>Family Pension Approval</b></h2>
+<div class="card py-2">
+  <form [formGroup]="pensionForm">
+    <p-divider align="left" type="solid">
+      <div class="inline-flex align-items-center">
+          <i class="pi pi-clone mr-2"></i>
+          <b>Family Pension Approval</b>
+      </div>
+  </p-divider>
+  <div class="p-fluid p-formgrid grid">
+      <div class="field col-12 md:col-6">
+            <div class="row">
+              <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-4 mx-auto">
+                      <div class="formgroup-inline">
+                        <label for="PpoId"><b>PPO ID:</b></label>
+                        <div class="w-full flex gap-11">
+                            <input type="text" pInputText formControlName="ppoId" placeholder="PPO ID"/>
+                            <app-popup-table name="" [service$]="ppoList$"
+                                (return)="handleSelectedRow($event)"></app-popup-table>
+                        </div>
+                        <div *ngIf="pensionForm.get('ppoId')?.invalid && pensionForm.get('ppoId')?.touched">
+                          <small *ngIf="pensionForm.get('ppoId')?.errors?.['required']">PPO ID is required.</small>
+                          <small *ngIf="pensionForm.get('ppoId')?.errors?.['pattern']">PPO ID must be a valid number.</small>
+                      </div>
+                      </div>
+                  </div>
+                  <div class="field col-12 md:col-4 mx-auto">
+                      <div
+                          class="formgroup-inline"
+                          style="display: flex; align-items: center"
+                      >
+                        <label for="ppoNo"><b>PPO Number:</b></label>
+                        <div class="w-full flex gap-1">
+                            <input type="text" pInputText formControlName="ppoNo" placeholder="PPO No"/>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+      </div>
+  </div>
+  <p-divider align="left" type="solid">
+      <div class="inline-flex align-items-center">
+          <i class="pi pi-clone mr-2"></i>
+          <b>Family Details</b>
+      </div>
+  </p-divider>
+  <p-table class="justify-center table p-datatable p-component" [scrollable]="true" dataKey="id"
+      [value]="[getpensionbill?.result]">
+      <ng-template pTemplate="header">
+          <tr>
+              <th pSortableColumn="branchCode">Mobile Number<p-sortIcon field="mobileNo"></p-sortIcon></th>
+              <th pSortableColumn="aadharNo">Aadhar No<p-sortIcon field="aadharNo"></p-sortIcon></th>
+              <th pSortableColumn="relationship">Relationship<p-sortIcon field="relationship"></p-sortIcon></th>
+              <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="bankName">Bank Name<p-sortIcon field="bankName"></p-sortIcon></th>
+              <th pSortableColumn="bankAcNo">Bank Account No<p-sortIcon field="bankAcNo"></p-sortIcon></th>
+              <th pSortableColumn="effectiveDate">Effective Date<p-sortIcon field="effectiveDate"></p-sortIcon></th>
+              <th pSortableColumn="expiryDate">Expiry Date<p-sortIcon field="expiryDate"></p-sortIcon></th>
+              <th pSortableColumn="commencementDate">Commencement Date<p-sortIcon field="commencementDate"></p-sortIcon></th>
+              <th pSortableColumn="approve">Approve<p-sortIcon field="approve"></p-sortIcon></th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body">
+          <tr>
+              <!-- Use the pensioner properties for each row -->
+              <td>{{ getpensionbill?.result?.mobileNo || 'N/A' }}</td>
+              <td>{{ getpensionbill?.result?.pensioner?.aadharNo || 'N/A' }}</td>
+              <td>{{ getpensionbill?.result?.pensioner?.relationship || 'N/A' }}</td>
+              <td>{{getpensionbill?.result?.pensioner?.category?.primaryCategory?.name || 'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+              <td>{{'N/A'}}</td>
+          </tr>
+      </ng-template>
+  </p-table>
+  <p-divider align="left" type="solid">
+      <div class="inline-flex align-items-center">
+          <i class="pi pi-clone mr-2"></i>
+          <b>Pension Detail</b>
+      </div>
+  </p-divider>
+  <div class="p-fluid p-formgrid grid">
+
+  </div>
+  <div class="flex justify-center" style="margin-bottom: 20px;">
+    <div class="flex flex-col items-center">
+      <label for="enhancedFamilyPension"><b>Enhanced Family Pension:</b></label>
+      <input type="text" pInputText formControlName="enhancedFamilyPension" />
+    </div>
+    <div class="flex flex-col items-center">
+      <label for="efpUptoDate"><b>EFP Upto Date:</b></label>
+      <input type="text" pInputText formControlName="efpUptoDate" />
+    </div>
+    <div class="flex flex-col items-center">
+      <label for="familyPension"><b>Family Pension:</b></label>
+      <input type="text" pInputText formControlName="familyPension" />
+    </div>
+  </div>
+  </form>
+  <div class="flex justify-content-center mt-2">
+    <!-- Search button -->
+    <div class="flex flex-wrap gap-2 mx-2">
+      <button type="search" pButton pRipple (click)="search()"
+        class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        <i class="pi pi-check mr-2"></i> Search
+      </button>
+    </div>
+    <!-- Save Button -->
+    <div class="flex flex-wrap gap-2 mx-2">
+      <button type="save" pButton pRipple (click)="save()"
+        class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+        <i class="pi pi-check mr-2"></i> Save
+      </button>
+    </div>
+    <!-- Approve Button -->
+    <div class="flex flex-wrap gap-2 mx-2">
+      <button type="submit" pButton pRipple (click)="approve()"
+        class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+        <i class="pi pi-check mr-2"></i> Approve
+      </button>
+    </div>
+    <!-- Refresh Button -->
+    <div class="flex flex-wrap gap-2 mx-2">
+      <button type="button" pButton pRipple (click)="refreshTable()"
+        class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+        <i class="pi pi-refresh mr-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+</div>
