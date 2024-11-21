@@ -10,6 +10,7 @@ api/pension-component-revision.service.ts
 api/pension-component.service.ts
 api/pension-factory.service.ts
 api/pension-first-bill.service.ts
+api/pension-life-certificate.service.ts
 api/pension-manual-ppo-receipt.service.ts
 api/pension-nominee-details.service.ts
 api/pension-ppo-details.service.ts
@@ -46,6 +47,11 @@ model/filter-parameter.ts
 model/initiate-first-pension-bill-dto.ts
 model/initiate-first-pension-bill-response-dto-json-api-response.ts
 model/initiate-first-pension-bill-response-dto.ts
+model/life-certificate-entry-dto.ts
+model/life-certificate-response-dto-json-api-response.ts
+model/life-certificate-response-dto-table-response-dto-json-api-response.ts
+model/life-certificate-response-dto-table-response-dto.ts
+model/life-certificate-response-dto.ts
 model/list-all-ppo-receipts-response-dto-table-response-dto-json-api-response.ts
 model/list-all-ppo-receipts-response-dto-table-response-dto.ts
 model/list-all-ppo-receipts-response-dto.ts
