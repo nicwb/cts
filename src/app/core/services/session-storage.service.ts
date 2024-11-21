@@ -9,7 +9,7 @@ export class SessionStorageService {
     // Generate a unique key using class name and optional suffix
     private generateCacheKey(context: any, suffix: string = ''): string {
         const className = context.constructor.name;
-        return `${className}${suffix ? `_${suffix}` : ''}`;
+        return `${suffix ? `${suffix}` : ''}`;
     }
 
     set(key: string, value: any): void {
@@ -36,11 +36,11 @@ export class SessionStorageService {
         context: any,
         fetchData: () => Promise<T>,
         suffix: string = '',
-        key?: string // Optional key parameter
+        key?: string
     ): Promise<T> {
         const cacheKey = key ?? this.generateCacheKey(context, suffix); // Use provided key or generate one
         const cachedData = this.get<T>(cacheKey);
-
+        console.log(cacheKey,cachedData);
         if (cachedData) {
             return cachedData;
         }

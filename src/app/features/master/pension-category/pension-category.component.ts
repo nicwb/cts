@@ -340,7 +340,7 @@ export class PensionCategoryComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Pension Category Details added successfully'
                 );
-                this.sessionStorageService.remove('', '', `DynamicTableComponent_${this.suffix}`)
+                this.sessionStorageService.remove('', '', `${this.suffix}`)
 
                 this.displayInsertModal = false; // Close the dialog
                 this.PensionForm.reset();
@@ -490,10 +490,9 @@ export class PensionCategoryComponent implements OnInit {
                         throw new Error('Invalid response from API'); // Handle invalid response
                     }
                 },
-                'primaryCategories' // Optional suffix for cache key
+                'primaryCategorys' // Optional suffix for cache key
             );
 
-            // Populate select options with fetched data
             this.populatePrimaryIdSelect(primaryCategoryData);
 
         } catch (error) {

@@ -92,12 +92,6 @@ export class PrimaryComponent {
         this.primaryCategory$ =
         this.service.getPrimaryCategories();
     }
-    handleSelectedRowByprimaryCategory(event: any) {
-        // this.ComponentRateForm.controls['breakupId'].setValue(event.id);
-        // this.ComponentRateForm.controls['componentName'].setValue(
-        //     event.componentName
-        // );
-    }
 
     showInsertDialog() {
         this.displayInsertModal = true;
@@ -184,7 +178,8 @@ export class PrimaryComponent {
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
                 // Assuming 1 means success
-                this.sessionStorageService.remove('','',  `DynamicTableComponent_${this.suffix}`);
+                this.sessionStorageService.remove('','',  `${this.suffix}`);
+                this.sessionStorageService.remove('','', 'primaryCategorys');
                 this.displayInsertModal = false; // Close the dialog
                 this.toastService.showSuccess(
                     ''+response.message
@@ -242,13 +237,8 @@ export class PrimaryComponent {
     async getData() {
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
-        const response = await firstValueFrom(
-            this.service.getPrimaryCategories()
-        );
-
-        this.tableData = response.result;
         this.isTableVisible = true;
-        this.isTableDataLoading = false;
+        // this.isTableDataLoading = false;
     }
     async findById(data: any) {
         let payload = this.tableQueryParameters;

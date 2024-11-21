@@ -142,12 +142,12 @@ export class SubCategoryComponent implements OnInit {
                 this.SessionStorageService.remove(
                     '',
                     '',
-                    'PensionCategoryComponent_subCategoryCacheKey'
+                    'subCategoryCacheKey'
                 );
                 this.SessionStorageService.remove(
                     '',
                     '',
-                    `DynamicTableComponent_${this.suffix}`
+                    `${this.suffix}`
                 );
 
                 this.toastService.showSuccess('' + response.message);

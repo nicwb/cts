@@ -486,7 +486,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                                     this.SessionStorageService.remove(
                                         '',
                                         '',
-                                        `DynamicTableComponent_ppoDetails`
+                                        `ppoDetails`
                                     );
                                     if (res.result?.ppoId) {
                                         this.ppoId = String(res.result.ppoId);

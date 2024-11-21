@@ -358,7 +358,7 @@ export class PpoReceiptComponent implements OnDestroy {
                             }
                         });
                     }
-                    this.SessionStorageService.remove('', '', `DynamicTableComponent_${this.suffix}`)
+                    this.SessionStorageService.remove('', '', `${this.suffix}`)
 
                 } else {
                     this.handleErrorResponse(response);

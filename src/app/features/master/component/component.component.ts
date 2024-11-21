@@ -128,7 +128,7 @@ export class ComponentComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Component Details added successfully'
                 );
-                this.SessionStorageService.remove('', '', `DynamicTableComponent_${this.suffix}`)
+                this.SessionStorageService.remove('', '', `${this.suffix}`)
 
             } else {
                 this.handleErrorResponse(response);
