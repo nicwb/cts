@@ -1,14 +1,19 @@
-<ul class="layout-menu">
+<ul class="layout-menu" style="position: relative !important;">
     <ng-container *ngFor="let item of model; let i = index;">
         <app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></app-menuitem>
         <li *ngIf="item.separator" class="menu-separator"></li>
     </ng-container>
-
-
 
     <!-- <li>
         <a href="https://www.primefaces.org/primeblocks-ng/#/">
             <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'banner-primeblocks' : 'banner-primeblocks-dark'}}.png" alt="Prime Blocks" class="w-full mt-3"/>
         </a>
     </li> -->
+
+    <li style="position: absolute; bottom: 0px;">
+        <div class="w-full text-white p-4 bold text-lg">
+            <i class="pi pi-info-circle" style="color: white;"></i>
+            <span> Version 0.0.1</span>
+        </div>
+    </li>
 </ul>

@@ -1,53 +1,43 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class BreadcrumbService {
-    breadcrumbs: Array<{ label: string, url: string }> = [];
-    routeChangeHandler$;
+  breadcrumbs: Array<{ label: string, url: string }> = [];
+  routeChangeHandler$: Observable<any>;
 
-    constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-        
-        this.routeChangeHandler$ = router.events.pipe(
-            filter(
-                (event) => event instanceof NavigationEnd
-            )
-        )
-            .pipe(
-                tap(
-                    () => this.breadcrumbs 
-                = this.createBreadcrumbs(this.activatedRoute.root)
-                )
-            );
-    }
-    
-    private createBreadcrumbs(
-        route: ActivatedRoute,
-        url: string = '/#/',
-        breadcrumbs: Array<{ label: string, url: string }> = []
-    ): Array<{ label: string, url: string }> 
-    {
-        const children: ActivatedRoute[] = route.children;
-        // console.log(breadcrumbs);
-        if (children.length === 0) {
-            return breadcrumbs;
-        }
-        
-        for (const child of children) {
-            const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
-            if (routeURL !== '') {
-                url += `${routeURL}/`;
-            }
-            
-            breadcrumbs.push({ label: child.snapshot.data['breadcrumb'], url: url.replace(/\/+$/, '') });
-            return this.createBreadcrumbs(child, url, breadcrumbs);
-        }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+    // Listen for route changes
+    this.routeChangeHandler$ = router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      tap(() => this.createBreadcrumbs()) // Call createBreadcrumbs when route changes
+    );
+  }
 
-        // this return statement will never be reached
-        return breadcrumbs;
+  private createBreadcrumbs(): void {
+    let currentRoute: ActivatedRoute | null = this.activatedRoute.root;
+    this.breadcrumbs = [];
+
+    // Loop through route tree and build breadcrumbs
+    while (currentRoute) {
+      const routeURL: string = currentRoute.snapshot.url.map((segment) => segment.path).join('/');
+      if (routeURL) {
+        const breadcrumbLabel = currentRoute.snapshot.data['breadcrumb'];
+        const url = `/${routeURL}`;
+
+        // Add the breadcrumb item
+        this.breadcrumbs.push({
+          label: breadcrumbLabel || routeURL, // If no 'breadcrumb' data, use the route path as label
+          url: url,
+        });
+      }
+
+      // Move to the first child of the current route
+      currentRoute = currentRoute.firstChild;
     }
+  }
 }
