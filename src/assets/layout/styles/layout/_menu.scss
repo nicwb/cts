@@ -2,7 +2,7 @@
     position: fixed;
     height: calc(100vh - 12rem);
     z-index: 999;
-    width: 100%;
+    width: 300px;
     user-select: none;
     top: 10rem;
     left: 2rem;
@@ -60,7 +60,7 @@
     margin: 0 0 3rem 0;
     padding: 0.5rem 1.5rem;
     overflow-y: auto;
-    height: calc(100vh - 2rem);
+    height: calc(100vh - 15rem);
     list-style-type: none;
     border-radius: $borderRadius;
     background-color: var(--surface-overlay);
@@ -184,7 +184,7 @@
 }
 
 
-@media (min-width: 769px) {
+@media (max-width: 769px) {
     .layout-sidebar {
         position: fixed;
         height: calc(100vh - 12rem);
