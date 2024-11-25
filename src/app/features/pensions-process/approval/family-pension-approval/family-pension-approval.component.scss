@@ -18,3 +18,32 @@
 label {
   margin-bottom: 10px;
 }
+.div2{
+    display: inline-block;
+    margin-right: 100px;
+    label{
+       display: block;
+    }
+}
+.butt1{
+    margin-right:20px ;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+.butt2{
+    text-align: center;
+}
+@media (max-width: 1040px) {
+
+}
+// phone view
+@media (max-width: 669px) {
+    .div2{
+        display: block;
+        margin-right: 0px;
+        input{
+            width: 100%;
+        }
+    }
+
+}
