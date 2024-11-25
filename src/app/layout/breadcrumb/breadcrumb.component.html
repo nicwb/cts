@@ -1,29 +1,41 @@
 <!-- <p-breadcrumb [model]="breadcrumbs" [home]="home"></p-breadcrumb> -->
- <style>
+<style>
+    .active-breadcrumb {
+        pointer-events: none;
+        opacity: 0.7;
+    }
     @media (max-width: 678px) {
-    .p-breadcrumb {
-        font-size: 0.85rem; /* Adjust breadcrumb font size */
-    }
+        .p-breadcrumb {
+            font-size: 0.85rem;
+        }
 
-    .p-breadcrumb .p-breadcrumb-list {
-        flex-wrap: nowrap; /* Prevent wrapping */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        .p-breadcrumb .p-breadcrumb-list {
+            flex-wrap: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
-}
-
- </style>
+</style>
+<!-- breadcrumb.component.html -->
 <div class="flex flex-row {{layoutService.config.colorScheme === 'light' ? 'sub-nav' : 'sub-nav-dark'}}">
     <div class="flex align-self-center align-items-center justify-content-center">
-        <button pButton pRipple type="button" icon="pi pi-angle-left" class="p-button-rounded p-button-secondary p-button-text" (click)="goBack()"></button>
-        <button pButton pRipple type="button" icon="pi pi-refresh" class="p-button-rounded p-button-secondary p-button-text" (click)="pageReload()"></button>
+        <button pButton pRipple type="button" icon="pi pi-angle-left"
+                class="p-button-rounded p-button-secondary p-button-text"
+                (click)="goBack()"></button>
+        <button pButton pRipple type="button" icon="pi pi-refresh"
+                class="p-button-rounded p-button-secondary p-button-text"
+                (click)="pageReload()"></button>
     </div>
     <div class="flex-grow-1">
-        <p-breadcrumb [model]="breadcrumbs" [home]="{icon: 'pi pi-home', routerLink: '/' }">
+        <p-breadcrumb [model]="breadcrumbs" [home]="home">
             <ng-template let-item pTemplate="item">
-                <span *ngIf="!item.url" class="breadcrumb-label">{{item.label}}</span>
-                <a *ngIf="item.url" [routerLink]="item.url" class="breadcrumb-link">{{item.label}}</a>
+                <a [routerLink]="item.routerLink"
+                   [class.active-breadcrumb]="router.url === item.routerLink"
+                   (click)="$event.preventDefault(); item.command && item.command($event)"
+                   class="breadcrumb-link">
+                    {{item.label}}
+                </a>
             </ng-template>
         </p-breadcrumb>
     </div>
