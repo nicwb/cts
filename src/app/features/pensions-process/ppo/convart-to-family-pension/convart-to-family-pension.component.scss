@@ -1,102 +1,95 @@
-.bg-color {
-  background-color: #a7c7e3;
-  padding: 5px;
-  border-radius: 5px;
+/* Base styles for responsive containers */
+.responsive-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    padding: 1rem;
 }
 
-label{
-  color: #0e0e10;
-  font-weight: bold;
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+        padding: 0.75rem;
+        text-align: left;
+        font-size: 1rem;
+        white-space: nowrap; /* Prevent content wrapping */
+    }
+    th {
+        background-color: #f7f7f7;
+        text-align: center;
+    }
 }
-.fixed-width {
-  width: 6rem;
+.butt1{
+    margin-right:20px ;
+    margin-bottom: 10px;
+    display: inline-block;
 }
-
-label{
-  color: #0e0e10;
-  font-weight: bold;
-}
-
-b{
-  color: #0e0e10;
-  font-weight: bold;
-}
-
-/* General styles for mobile and desktop view */
-.button-group {
-display: flex;
-justify-content: flex-end;
-gap: 10px;
-}
-
-/* Ensure button cell aligns content to the right */
-.button-cell {
-text-align: right;
+.butt2{
+    text-align: center;
 }
 
-/* Mobile view adjustments */
-@media only screen and (max-width: 1000px) {
-.overflow-x-auto {
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
+/* Mobile-specific adjustments */
+@media screen and (max-width: 900px) {
+    .overflow-x-auto {
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    p-table {
+        display: block;
+        min-width: 100%; /* Ensure full table width is scrollable */
+        overflow-x: auto;
+    }
+
+    tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        border-radius: 5px;
+    }
+
+    td,
+    th {
+        display: block; /* Stack table cells for mobile */
+        text-align: left;
+        font-size: 0.875rem;
+        width: 100%; /* Ensure full width for cells */
+    }
+
+    th {
+        display: none; /* Hide headers on mobile */
+    }
+
+    td:before {
+        content: attr(
+            data-label
+        ); /* Use data-label attribute for cell headers */
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .fixed-width {
+        width: 100%; /* Make fixed-width columns take full width */
+    }
 }
 
-p-table {
-  min-width: 400px;
-  overflow-x: auto;
-}
+/* Tablet-specific adjustments */
+@media screen and (max-width: 1200px) {
+    th,
+    td {
+        font-size: 0.875rem;
+    }
+    .button-group {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
 
-th, td {
-  white-space: nowrap;
-}
-
-/* Button group adjustments for mobile */
-.button-group {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.p-button-rounded {
-  padding: 0.5em 0.75em; /* Smaller padding on mobile */
-  font-size: 14px; /* Smaller font size */
-}
-
-td.fixed-width {
-  width: 100%; /* Full-width cells on smaller screens */
-}
-}
-
-/* Table block display for screens under 900px */
-@media only screen and (max-width: 900px) {
-p-table {
-  display: block;
-}
-
-tr {
-  display: block;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
-
-td, th {
-  display: block;
-  text-align: left;
-  width: 100%;
-}
-
-th {
-  display: none; /* Hide table headers */
-}
-
-td:before {
-  content: attr(data-label); /* Display label before each td value */
-  font-weight: bold;
-  display: block;
-}
-
-.fixed-width {
-  width: 100%; /* Full-width cells for small screens */
-}
+    .p-button-rounded {
+        padding: 0.5em 0.75em; /* Smaller padding */
+        font-size: 0.875rem;
+    }
 }
