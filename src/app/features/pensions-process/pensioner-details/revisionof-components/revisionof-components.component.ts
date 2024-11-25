@@ -131,7 +131,7 @@ export class RevisionofComponentsComponent implements OnInit {
                 id: [revision.id],
                 breakupId: [revision.rate.breakupId],
                 componentName: [revision.rate.breakup.componentName],
-                fromDate: [this.datePipe.transform(parsedDate, 'yyyy-MM-dd')], // Use 'yyyy-MM-dd'
+                fromDate: [this.datePipe.transform(parsedDate, 'dd-MM-yyyy')], // Use 'yyyy-MM-dd'
                 toDate: [this.getToDate(index)],
                 amountPerMonth: [revision.amountPerMonth]
             }));
@@ -273,11 +273,18 @@ export class RevisionofComponentsComponent implements OnInit {
         if (this.responce[index + 1]) {
             const nextFromDate = new Date(this.responce[index + 1].fromDate);
             nextFromDate.setDate(nextFromDate.getDate() - 1);
-            return nextFromDate.toISOString().split('T')[0];  // Format as YYYY-MM-DD
+
+            // Format the date as dd-mm-yyyy
+            const day = String(nextFromDate.getDate()).padStart(2, '0');
+            const month = String(nextFromDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = nextFromDate.getFullYear();
+
+            return `${day}-${month}-${year}`;
         } else {
             return 'N/A';  // If it's the last row
         }
     }
+
 
     resetAndCloseDialog(): void {
         this.componentForm.reset();

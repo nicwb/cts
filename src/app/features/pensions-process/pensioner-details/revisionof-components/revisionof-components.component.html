@@ -130,13 +130,13 @@
                         <td>
                             <!-- Displaying the date when not editing -->
                             <input pInputText type="text" formControlName="fromDate" class="w-full p-2 bg-cyan-400"
-                                [value]="revision.get('fromDate')?.value | date:'yyyy-MM-dd'" [readonly]="true"
+                                [value]="revision.get('fromDate')?.value | date:'dd-MM-yyyy'" [readonly]="true"
                                 *ngIf="!isRowEditing(revision.get('id')?.value)" />
 
                             <!-- Input for editing the date -->
                             <input pInputText type="date" formControlName="fromDate" class="w-full p-2"
                                 *ngIf="isRowEditing(revision.get('id')?.value)"
-                                [ngModel]="revision.get('fromDate')?.value | date:'yyyy-MM-dd'"
+                                [ngModel]="revision.get('fromDate')?.value | date:'dd-MM-yyyy'"
                                 (ngModelChange)="revision.get('fromDate').setValue($event)" />
                         </td>
 
