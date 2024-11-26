@@ -8,7 +8,7 @@ import { LayoutService } from '../service/app.layout.service';
 })
 
 export class AppSidebarPensionComponent implements OnInit {
-
+    readonly clientVersion = import.meta.env.NG_APP_VERSION;
     model: any[] = [];
 
     constructor(public layoutService: LayoutService) { }

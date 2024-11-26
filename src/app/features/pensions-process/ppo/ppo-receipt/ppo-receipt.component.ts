@@ -208,9 +208,9 @@ export class PpoReceiptComponent implements OnDestroy {
                     this.manualPpoForm.patchValue({
                         ppoNo: ppoReceipt.ppoNo,
                         pensionerName: ppoReceipt.pensionerName,
-                        dateOfCommencement: this.parseToDate(ppoReceipt.dateOfCommencement),
+                        dateOfCommencement: this.datePipe.transform(ppoReceipt.dateOfCommencement,'dd-MM-YYYY'),
                         mobileNumber: ppoReceipt.mobileNumber,
-                        receiptDate: this.parseToDate(ppoReceipt.receiptDate),
+                        receiptDate: this.datePipe.transform(ppoReceipt.receiptDate,'dd-MM-YYYY'),
                         psaCode: ppoReceipt.psaCode,
                         ppoType: ppoReceipt.ppoType
                     });
@@ -256,7 +256,7 @@ export class PpoReceiptComponent implements OnDestroy {
     async loadInitialTableData(): Promise<void> {
         this.isDataLoading = true;
         try {
-            const response = await firstValueFrom(this.pensionManualPpoReceiptService.getAllPpoReceipts(this.tableQueryParameters));
+            const response = await firstValueFrom(this.pensionManualPpoReceiptService.getPpoReceipts());
             if (response.apiResponseStatus === APIResponseStatus.Success && response.result) {
                 this.tableData = {
                     headers: response.result.headers,
@@ -391,12 +391,12 @@ export class PpoReceiptComponent implements OnDestroy {
         // this.selectedRow = null;
     }
 
-    parseToDate(dateOnly: any): Date | null {
-        if (!dateOnly) return null;
-        if (dateOnly instanceof Date) return dateOnly;
-        const parsedDate = new Date(dateOnly);
-        return isNaN(parsedDate.getTime()) ? null : parsedDate;
-    }
+    // parseToDate(dateOnly: any): Date | null {
+    //     if (!dateOnly) return null;
+    //     if (dateOnly instanceof Date) return dateOnly;
+    //     const parsedDate = new Date(dateOnly);
+    //     return isNaN(parsedDate.getTime()) ? null : parsedDate;
+    // }
 
     onActionButtonClick(event: any) {
         this.initializeEditForm(event);
@@ -422,9 +422,9 @@ export class PpoReceiptComponent implements OnDestroy {
                 this.manualPpoForm.patchValue({
                     ppoNo: ppoReceipt.ppoNo,
                     pensionerName: ppoReceipt.pensionerName,
-                    dateOfCommencement: this.parseToDate(ppoReceipt.dateOfCommencement),
+                    dateOfCommencement: this.datePipe.transform(ppoReceipt.dateOfCommencement,'dd-MM-YYYY'),
                     mobileNumber: ppoReceipt.mobileNumber,
-                    receiptDate: this.parseToDate(ppoReceipt.receiptDate),
+                    receiptDate: this.datePipe.transform(ppoReceipt.receiptDate,'dd-MM-YYYY'),
                     psaCode: ppoReceipt.psaCode,
                     ppoType: ppoReceipt.ppoType
                 });
@@ -443,9 +443,9 @@ export class PpoReceiptComponent implements OnDestroy {
                 this.manualPpoForm.patchValue({
                     ppoNo: ppoReceipt.ppoNo,
                     pensionerName: ppoReceipt.pensionerName,
-                    dateOfCommencement: this.parseToDate(ppoReceipt.dateOfCommencement),
+                    dateOfCommencement: this.datePipe.transform(ppoReceipt.dateOfCommencement,'dd-MM-YYYY'),
                     mobileNumber: ppoReceipt.mobileNumber,
-                    receiptDate: this.parseToDate(ppoReceipt.receiptDate),
+                    receiptDate: this.datePipe.transform(ppoReceipt.receiptDate,'dd-MM-YYYY'),
                     psaCode: ppoReceipt.psaCode,
                     ppoType: ppoReceipt.ppoType
                 });
@@ -462,7 +462,7 @@ export class PpoReceiptComponent implements OnDestroy {
     }
     onDialogClose() {
         if (!this.hasEdited) {
-            this.location.back(); // Only go back if no edit was performed
+            this.router.navigate(['pension-process/ppo/ppo-receipt']);// Only go back if no edit was performed
         } else {
             this.hasEdited = false; // Reset the flag for future dialog closes
         }
