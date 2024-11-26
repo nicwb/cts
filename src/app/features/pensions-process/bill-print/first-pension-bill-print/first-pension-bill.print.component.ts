@@ -1,3 +1,4 @@
+import { PpoBillBreakupEntryDTO } from './../../../../api/model/ppo-bill-breakup-entry-dto';
 import { Result } from './../../../../core/models/pension-bill';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,9 +11,12 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { DialogService } from 'primeng/dynamicdialog';
+import { FirstPensionPdfViewerComponent } from 'src/app/core/services/pdf-viewer/first-pension-pdf-viwer.component';
+import { table } from 'console';
 
 @Component({
     selector: 'app-first-pension-bill-print',
@@ -31,7 +35,9 @@ export class FirstPensionBillPrintComponent implements OnInit {
         private toastService: ToastService,
         private pensionFirstBillService: PensionFirstBillService,
         private pensionBankBranchService: PensionBankBranchService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router,
+        private dialog: DialogService
     ) {}
 
     ngOnInit(): void {
@@ -62,7 +68,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
     }
 
     handleSearchEvent(event: any) {
-        console.log('', event);
         this.FirstPensionForm.controls['ppoId'].setValue(event.ppoId);
         this.FirstPensionForm.controls['pensionerName'].setValue(
             event.pensionerName
@@ -116,11 +121,13 @@ export class FirstPensionBillPrintComponent implements OnInit {
         } else {
             console.warn('No ppoId provided');
         }
-        console.warn('fetchUserInfo completed');
     }
 
     onRefresh(): void {
         this.FirstPensionForm.reset();
+        this.router.navigate([
+            'pension-process/bill-print/first-pension-bill-print',
+        ]);
     }
 
     onGenerate(generationType: string) {
@@ -161,7 +168,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
                     );
                     return;
                 }
-                console.log(response);
                 if (response.message)
                     this.toastService.showSuccess(response.message);
                 //   switch (true) {
@@ -244,106 +250,204 @@ export class FirstPensionBillPrintComponent implements OnInit {
 
     generatePDF(result: any): void {
         const doc = new jsPDF();
-
-        // Helper to replace null values
-        const handleNull = (value: any) =>
-            value === null || value === undefined ? 'N/A' : value;
-
-        // Title
-        doc.setFontSize(16);
-        doc.text('Pension Bill Details', 10, 10);
-
-        // General Details
+        doc.setProperties({
+            title: 'Pension Bill Report',
+            subject: 'Generated Report',
+            author: `${result?.preparedBy}`,
+            keywords: 'Pension, Bill, PDF',
+            creator: 'IFMS PENSION Report',
+        });
+        doc.setFontSize(14);
+        doc.text('Government Of West Bengal - Treasury ', 60, 10);
+        doc.text(result?.treasuryName, 90, 15);
         doc.setFontSize(12);
-        doc.text('General Details', 10, 20);
-        autoTable(doc, {
-            body: Object.entries(result)
-                .filter(
-                    ([key, value]) =>
-                        !Array.isArray(value) && typeof value !== 'object'
-                )
-                .map(([key, value]) => [key, handleNull(value)]),
-            startY: 25,
-            theme: 'grid',
-        });
+        doc.text('First Pension Bill', 90, 20);
+        doc.setFontSize(13);
+        doc.text(
+            `For the Period of ${result.fromDate} To ${result.billDate}`,
+            60,
+            25
+        );
+        doc.line(10, 27, 200, 27);
+        doc.setFontSize(8);
+        doc.text(`BILL ID: ${result?.billNo}`, 20, 30);
+        doc.text(`BILL DATE: ${result?.billDate}`, 20, 35);
+        doc.text(`PPO ID: ${result?.pensioner?.ppoId}`, 20, 40);
+        doc.text(
+            `BANK NAME: ${result?.bankBranchName.split(' - ')[0]}`,
+            20,
+            45
+        );
+        doc.text(
+            `BANK ADDRESS: ${result?.bankBranchName.split(' - ')[1]}`,
+            20,
+            50
+        );
+        doc.text(
+            `COMMENCEMENT DATE: ${result?.pensioner?.dateOfCommencement}`,
+            20,
+            55
+        );
+        doc.text(`SANCTION ORDER NUMBER: `, 20, 60);
+        doc.text(
+            `CATEGORY: ${result?.pensioner?.category?.categoryName}`,
+            20,
+            65
+        );
+        doc.text(`VOUCHER NUMBER: ${result?.treasuryVoucherNo}`, 120, 30);
+        doc.text(`VOUCHER DATE: ${result?.treasuryVoucherDate}`, 120, 35);
+        doc.text(`PPO NUMBER: ${result?.pensioner?.ppoNo}`, 120, 40);
+        doc.text(`BANK ACCOUNT: ${result?.pensioner?.bankAcNo}`, 120, 45);
+        doc.text(
+            `ACCOUNT HEAD: ${result?.pensioner?.category?.primaryCategory?.hoaId}`,
+            120,
+            50
+        );
+        doc.text(
+            `PENSIONER NAME: ${result?.pensioner?.pensionerName}`,
+            120,
+            55
+        );
 
-        // Track vertical position
-        let finalY = (doc as any).lastAutoTable.finalY || 25;
+        (doc as any).autoTable({
+            startY: 75,
+            margin: { top: 20, left: 15, right: 15 },
+            headStyles: { fillColor: [100, 100, 100] },
+            bodyStyles: { fillColor: [255, 255, 255] },
 
-        // Pensioner Details
-        doc.text('Pensioner Details', 10, finalY + 10);
-        autoTable(doc, {
-            body: Object.entries(result.pensioner || {})
-                .filter(
-                    ([key, value]) =>
-                        !Array.isArray(value) && typeof value !== 'object'
-                )
-                .map(([key, value]) => [key, handleNull(value)]),
-            startY: finalY + 15,
-            theme: 'grid',
-        });
-
-        // Update vertical position
-        finalY = (doc as any).lastAutoTable.finalY || 25;
-
-        // PPO Bill Breakups
-        doc.text('PPO Bill Breakups', 10, finalY + 10);
-        if (result.ppoBillBreakups && Array.isArray(result.ppoBillBreakups)) {
-            autoTable(doc, {
-                head: [
-                    [
-                        'Component Name',
-                        'Amount Per Month',
-                        'Breakup Amount',
-                        'Net Amount',
-                    ],
+            head: [
+                [
+                    'Period',
+                    'Component Description',
+                    'Due Amount',
+                    'Drawn Amount',
+                    'Paid/Deduct',
+                    'Net Amount',
                 ],
-                body: result.ppoBillBreakups.map(
-                    (breakup: {
-                        componentName: any;
-                        amountPerMonth: any;
-                        breakupAmount: any;
-                        netAmount: any;
-                    }) => [
-                        handleNull(breakup.componentName),
-                        handleNull(breakup.amountPerMonth),
-                        handleNull(breakup.breakupAmount),
-                        handleNull(breakup.netAmount),
-                    ]
-                ),
-                startY: finalY + 15,
-                theme: 'striped',
-            });
+            ],
+            body: (result?.ppoBillBreakups ?? []).map(
+                (element: {
+                    toDate: string;
+                    revision: {
+                        fromDate: string;
+                        toDate: string;
+                        rate: {
+                            breakup: {
+                                componentName: string;
+                                componentType: string;
+                            };
+                        };
+                    };
+                    dueAmount: number;
+                    drawnAmount: number;
+                    netAmount: number;
+                }) => [
+                    `${element?.revision?.fromDate ?? 'N/A'} To ${
+                        element?.toDate ?? 'N/A'
+                    }`,
+                    `${
+                        element?.revision?.rate?.breakup?.componentName ?? 'N/A'
+                    }`,
+                    `${element?.dueAmount ?? 'N/A'}`,
+                    `${element?.drawnAmount ?? 'N/A'}`,
+                    `${
+                        element?.revision?.rate?.breakup?.componentType ?? 'N/A'
+                    }`,
+                    `${element?.netAmount ?? 'N/A'}`,
+                ]
+            ),
+            styles: {
+                fontSize: 7,
+            },
+        });
+
+        const tableHeight = (doc as any).autoTable.previous.finalY || 0;
+
+        doc.text(
+            `Bill Gross: ${result.grossAmount}   Bill Net :  ${result?.netAmount}\nBy-transfer:  ${result?.byTransferAmount}  `,
+            20,
+            tableHeight + 10
+        );
+        if (tableHeight > 160) {
+            doc.addPage();
+
+            doc.setLineWidth(0.001);
+            doc.line(150, 150, 200, 150);
+            doc.text('Treasury Officer/ Addl. Treasury officer', 150, 155);
+            doc.line(150, 180, 200, 180);
+            doc.text('Treasury Officer/ Addl. Treasury officer', 150, 185);
+            doc.text('Date Of Issue Of Cheque.....\nCheque Number:', 20, 170);
+            doc.text('INSTRUCTIONS', 50, 185);
+            doc.text(
+                "1. The Pensioner's Single / Joint named account with the family pensioner will be operated for drawal of pension only.\n2. In the event of the death of the Pensioner,the Bank will intimate the actual date of death of the pensioner and the Bank will not release the Balance in the\n account of the Pensioner unless clearance is received from Treasury.\n3. If the pension has remained undrawn for six months the Bank will send an intimation to that effect to the Treasury.",
+                10,
+                190
+            );
+            doc.text('T.O /A.T.O', 160, 220);
+            doc.text(
+                `Pay Rs. ***${result?.netAmount}(${result?.amountInWords})as per beneficiary list enclosed through ECS  `,
+                10,
+                20
+            );
+        }else{
+            doc.setLineWidth(0.001);
+            doc.line(150, tableHeight+40, 200, tableHeight+40);
+            doc.text('Treasury Officer/ Addl. Treasury officer', 150, tableHeight+45);
+            doc.line(150, tableHeight+70, 200, tableHeight+70);
+            doc.text('Treasury Officer/ Addl. Treasury officer', 150, tableHeight+75);
+            doc.text('Date Of Issue Of Cheque.....\nCheque Number:', 20, tableHeight+60);
+            doc.text('INSTRUCTIONS', 50, tableHeight+75);
+            doc.text(
+                "1. The Pensioner's Single / Joint named account with the family pensioner will be operated for drawal of pension only.\n2. In the event of the death of the Pensioner,the Bank will intimate the actual date of death of the pensioner and the Bank will not release the Balance in the\n account of the Pensioner unless clearance is received from Treasury.\n3. If the pension has remained undrawn for six months the Bank will send an intimation to that effect to the Treasury.",
+                10,
+                tableHeight+80
+            );
+            doc.text('T.O /A.T.O', 160, tableHeight+110);
+            doc.text(
+                `Pay Rs. ***${result?.netAmount}(${result?.amountInWords})as per beneficiary list enclosed through ECS  `,
+                10,
+                tableHeight+20
+            );
         }
 
-        // Update vertical position
-        finalY = (doc as any).lastAutoTable.finalY || 25;
-
-        // Component Rates
-        doc.text('Component Rates', 10, finalY + 10);
-        if (
-            result.pensioner &&
-            Array.isArray(result.pensioner.componentRates)
-        ) {
-            autoTable(doc, {
-                head: [['Component Name', 'Component Rate', 'Rate Amount']],
-                body: result.pensioner.componentRates.map(
-                    (rate: {
-                        breakup: { componentName: any };
-                        componentRate: any;
-                        rateAmount: any;
-                    }) => [
-                        handleNull(rate.breakup?.componentName),
-                        handleNull(rate.componentRate),
-                        handleNull(rate.rateAmount),
-                    ]
-                ),
-                startY: finalY + 15,
-                theme: 'striped',
-            });
+        const totalPages = doc.getNumberOfPages();
+        for (let page = 1; page <= totalPages; page++) {
+            doc.setPage(page); // Switch to the page
+            doc.text(
+                `Prepared By :    ${result?.preparedBy} `,
+                10,
+                doc.internal.pageSize.getHeight() - 10
+            ); // Add footer
+            doc.text(
+                `Prepated On:    ${result?.preparedOn}`,
+                doc.internal.pageSize.getWidth() - 10,
+                doc.internal.pageSize.getHeight() - 10,
+                { align: 'right' }
+            );
+            if (page > 1) {
+                doc.text(
+                    `BILL NUMBER: ${result?.billNo}\nBILL DATE: ${result?.billDate}\nPPO ID: ${result?.pensioner?.ppoId}`,
+                    10,
+                    5
+                );
+                doc.text(
+                    `PPO NUMBER:${result?.pensioner?.ppoNo}`,
+                    doc.internal.pageSize.getWidth() - 10,
+                    5,
+                    { align: 'right' }
+                );
+            }
         }
 
-        // Save the PDF
-        doc.save('PensionBill.pdf');
+        const pdfData = doc.output('datauristring');
+        this.dialog.open(FirstPensionPdfViewerComponent, {
+            header: 'First Pension Bill',
+            width: '70%',
+            height: '100%',
+            data: {
+                message: `PDF has been generated.`,
+                pdfData,
+            },
+        });
     }
 }

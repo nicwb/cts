@@ -291,7 +291,7 @@
                 class="flex flex-col mt-2 align-items-center justify-content-center"
             >
                 <!-- Save Button -->
-                <div class="flex flex-wrap gap-2 mx-2">
+                <div class="flex flex-wrap gap-2 mx-2" *ngIf="hasSaved">
                     <p-button
                         label="Save"
                         icon="pi pi-check"
@@ -300,6 +300,18 @@
                         (click)="save()"
                         ><i class="pi pi-success mr-2"></i>
                     </p-button>
+                </div>
+                <div class="flex flex-wrap gap-2 mx-2" *ngIf="isPrint">
+                    <button
+                        pButton
+                        pRipple
+                        type="button"
+                        label="Print"
+                        class="p-button-secondary px-4"
+                        (click)="billprint()"
+                    >
+                        <i class="pi pi-check mr-2"></i>
+                    </button>
                 </div>
                 <!-- Refresh Button -->
                 <div class="flex flex-wrap gap-2 mx-2">
@@ -310,20 +322,7 @@
                         (click)="refresh()"
                         class="px-3 py-2 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                     >
-                        <i class="pi pi-refresh mr-2"></i>Refresh
-                    </button>
-                </div>
-
-                <div class="flex flex-wrap gap-2 mx-2">
-                    <button
-                        pButton
-                        pRipple
-                        type="button"
-                        label="Print"
-                        class="p-button-secondary px-4"
-                        (click)="billprint()"
-                    >
-                        <i class="pi pi-check mr-2"></i>
+                        <i class="pi pi-refresh mr-2"></i>Reset
                     </button>
                 </div>
             </div>
