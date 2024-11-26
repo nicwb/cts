@@ -1,247 +1,249 @@
-    <div class="grid">
-        <!-- Family Nominee Form -->
-        <div class="col-12">
-            <p-fieldset legend="Family Nominee Form" class="line-height-3 m-0">
-                <!-- from enable btn -->
-                <div class="w-full">
-                    <button pButton pRipple (click)="toggleFamilyNomineeForm()" type="button" icon="pi pi-plus"
-                        [label]="showFamilyNomineeForm ? 'Hide Form' : 'Show Form'" class="p-button-rounded p-button-raised"></button>
+<div class="card">
+    <p-divider align="left" type="solid">
+        <div class="inline-flex align-items-center mb-2">
+            <i class="pi pi-clone mr-2"></i>
+            <b> Family Details </b>
+        </div>
+    </p-divider>
+
+    <div class="flex gap-2 justify-content-end pt-3">
+        <button pButton pRipple (click)="familyDetails()" type="button" icon="pi pi-plus" [label]="'Add New'"
+            class="p-button-rounded p-button-raised"></button>
+
+        <button label="Show Table" (click)="toggleFamilyNomineeTable()"
+            class="p-element p-ripple p-button-rounded p-button p-component">
+            <span class="p-button-label">{{ showFamilyNomineeTable ? 'Hide Table' : 'Show Table' }}</span><span
+                class="p-ink"></span>
+        </button>
+    </div>
+
+    <!-- Form area -->
+    <p-dialog header="New Family Details" [(visible)]="isInsertModalVisible" [modal]="true"
+        [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
+        [baseZIndex]="10000" style="width: 80vw;">
+        <form [formGroup]="familyNomineeForm" class="flex flex-column gap-4 mt-3">
+            <div class="flex gap-2 xl:flex-row flex-column">
+                <div class="flex-auto">
+                    <label for="slNo" class="block mb-1 text-color text-lg">Sl No:</label>
+                    <input type="number" pInputText formControlName="slNo" placeholder="Sl No"
+                        class="p-inputtext p-component p-element w-full">
                 </div>
-                <div class="flex gap-2 justify-content-end pt-3">
-                    <button label="Show Table" (click)="toggleFamilyNomineeTable()"
-                        class="p-element p-ripple p-button-rounded p-button p-component">
-                        <span class="p-button-label">{{ showFamilyNomineeTable ? 'Hide Table' : 'Show Table' }}</span><span class="p-ink"></span>
-                    </button>
+                <div class="flex-auto">
+                    <label for="dependentName" class="block mb-1 text-color text-lg">Dependent Name:</label>
+                    <input type="text" pInputText formControlName="dependentName" placeholder="Dependent Name"
+                        class="p-inputtext p-component p-element w-full">
+                </div>
+            </div>
+            <div class="flex gap-2 xl:flex-row flex-column">
+                <div class="flex-auto">
+                    <label for="dateOfBirthFamilyDetails" class="block mb-1 text-color text-lg">Date of
+                        Birth:</label>
+                    <p-calendar class="p-component p-element w-full p-calendar"
+                        formControlName="dateOfBirthFamilyDetails" placeholder="dd/mm/yyyy" appendTo="body"
+                        [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy"></p-calendar>
+                </div>
+                <div class="flex-auto">
+                    <label for="dateOfDeath" class="block mb-1 text-color text-lg">Date of Death:</label>
+                    <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfDeath"
+                        placeholder="dd/mm/yyyy" appendTo="body" [showIcon]="true" inputId="icon2"
+                        dateFormat="dd-mm-yy"></p-calendar>
+                </div>
+            </div>
+            <div class="flex gap-2 xl:flex-row flex-column">
+
+                <div class="flex-auto">
+                    <label for="identificationMark" class="block mb-1 text-color text-lg">Identification
+                        Mark:</label>
+                    <input type="text" pInputText formControlName="identificationMark" placeholder="Identification Mark"
+                        class="p-inputtext p-component p-element w-full">
+                </div>
+                <div class="flex-auto">
+                    <label for="relationship" class="block mb-1 text-color text-lg">Relationship:</label>
+                    <p-dropdown [options]="relationship" formControlName="relationship" placeholder="Relationship"
+                        appendTo="body" [showClear]="true" inputId="icon" class="w-full"></p-dropdown>
+                </div>
+                <div class="flex-auto">
+                    <label for="handicap" class="block mb-1 text-color text-lg">Handicap:</label>
+                    <div class="flex items-center gap-4">
+                        <div class="field-radiobutton">
+                            <p-radioButton name="handicap" value="True" id="handicap1"
+                                formControlName="handicap"></p-radioButton>
+                            <label for="handicap1">True</label>
+                        </div>
+                        <div class="field-radiobutton">
+                            <p-radioButton name="handicap" value="False" id="handicap2"
+                                formControlName="handicap"></p-radioButton>
+                            <label for="handicap2">False</label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Form area -->
-                <div *ngIf="showFamilyNomineeForm" class="w-full">
-                    <form [formGroup]="familyNomineeForm" class="flex flex-column gap-4 mt-3">
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="slNo" class="block mb-1 text-color text-lg">Sl No:</label>
-                                <input type="number" pInputText formControlName="slNo" placeholder="Sl No"
-                                    class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="dependentName" class="block mb-1 text-color text-lg">Dependent Name:</label>
-                                <input type="text" pInputText formControlName="dependentName"
-                                    placeholder="Dependent Name" class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="relationship" class="block mb-1 text-color text-lg">Relationship:</label>
-                                <p-dropdown [options]="relationship" formControlName="relationship"
-                                    placeholder="Relationship" appendTo="body" [showClear]="true"
-                                    inputId="icon" class="w-full"></p-dropdown>
-                            </div>
-                        </div>
+            </div>
+        </form>
 
+        <div class="flex gap-2 justify-content-end pt-3">
+            <button label="Submit" (click)="addNominee('A')"
+                class="p-element p-ripple p-button-rounded p-button p-component">
+                <span class="p-button-label">Submit</span><span class="p-ink"></span>
+            </button>
+            <button (click)="cancle('A')" class="p-element p-ripple p-button-rounded p-button p-component">
+                <span class="p-button-label">Cancle</span><span class="p-ink"></span>
+            </button>
+        </div>
+    </p-dialog>
 
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="dateOfBirthFamilyDetails" class="block mb-1 text-color text-lg">Date of
-                                    Birth:</label>
-                                <p-calendar class="p-component p-element w-full p-calendar"
-                                    formControlName="dateOfBirthFamilyDetails" placeholder="dd/mm/yyyy" appendTo="body"
-                                    [showIcon]="true" inputId="icon1"></p-calendar>
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="dateOfDeath" class="block mb-1 text-color text-lg">Date of Death:</label>
-                                <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfDeath"
-                                    placeholder="dd/mm/yyyy" appendTo="body" [showIcon]="true" inputId="icon2"></p-calendar>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="identificationMark" class="block mb-1 text-color text-lg">Identification
-                                    Mark:</label>
-                                <input type="text" pInputText formControlName="identificationMark"
-                                    placeholder="Identification Mark" class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="handicap" class="block mb-1 text-color text-lg">Handicap:</label>
-                                <div class="grid formgrid">
-                                    <div class="col-12 md:col-4">
-                                        <div class="field-radiobutton">
-                                            <p-radioButton name="handicap" value="True" id="handicap1"
-                                                formControlName="handicap"></p-radioButton>
-                                            <label for="handicap1">True</label>
-                                        </div>
+    <!-- Form A Table -->
+    <div *ngIf="showFamilyNomineeTable">
+        <ng-container *ngIf="familyNomineeService$ | async as familyNominees">
+            <app-dynamic-table [data]="familyNominees.result || []" [suffix]="FAMILY_NOMINEE_SUFFIX"
+                (actionButtonClicked)="handleButtonClick($event)" [editable]="true" class="flex flex-column gap-4 mt-3">
+            </app-dynamic-table>
+        </ng-container>
+    </div>
+
+    <!-- Nominee Details  -->
+    <p-divider align="left" type="solid">
+        <div class="inline-flex align-items-center mb-2">
+            <i class="pi pi-clone mr-2"></i>
+            <b> Nominee Details </b>
+        </div>
+    </p-divider>
+    <div class="flex gap-2 justify-content-end">
+        <button pButton pRipple (click)="nomineeDetails()" type="button" icon="pi pi-plus" [label]="'Add New'"
+            class="p-button-rounded p-button-raised"></button>
+
+        <button label="Show Table" (click)="toggleNomineeDetailsTable()"
+            class="p-element p-ripple p-button-rounded p-button p-component">
+            <span class="p-button-label">{{ showNomineeDetailsTable ? 'Hide Table' : 'Show Table' }}</span><span
+                class="p-ink"></span>
+        </button>
+    </div>
+    <!-- From area -->
+    <p-dialog header="New Nominee Details" [(visible)]="isInsertNominee" [modal]="true"
+        [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
+        [baseZIndex]="10000" style="width: 80vw;">
+        <div class="w-full">
+            <form [formGroup]="nomineeDetailsForm" class="flex flex-column gap-4 mt-3">
+                <div class="flex gap-2 xl:flex-row flex-column">
+                    <div class="flex-auto">
+                        <label for="slNo1" class="block mb-1 text-color text-lg">Sl No:</label>
+                        <input type="number" pInputText formControlName="slNo1" placeholder="Sl No"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-auto">
+                        <label for="nomineeName1" class="block mb-1 text-color text-lg">Nominee Name:</label>
+                        <input type="text" pInputText formControlName="nomineeName1" placeholder="Nominee Name"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+
+                    <div class="flex-auto">
+                        <label for="relation1" class="block mb-1 text-color text-lg">Relation:</label>
+                        <p-dropdown [options]="relation" [style]="{ width: '100%' }" formControlName="relation1"
+                            placeholder="Relation" appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
+                    </div>
+                </div>
+                <div class="flex gap-2 xl:flex-row flex-column">
+                    <div class="flex-auto">
+                        <label for="dateOfBirth1" class="block text-color text-lg">Date of
+                            Birth:</label>
+                        <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfBirth1"
+                            placeholder="dd/mm/yyyy" appendTo="body" [showIcon]="true" inputId="icon4"                     dateFormat="dd-mm-yy"
+                            ></p-calendar>
+                    </div>
+                    <div class="flex-auto">
+                        <label for="accountNumber1" class="block  text-color text-lg">Account Number:</label>
+                        <input type="text" pInputText formControlName="accountNumber1" placeholder="Account Number"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+
+                </div>
+
+                <div class="flex gap-2 xl:flex-row flex-column">
+                    <div class="flex-auto">
+                        <label for="ifscCode1" class="block mb-1 text-color text-lg">IFSC Code:</label>
+                        <input type="text" pInputText formControlName="ifscCode1" placeholder="IFSC Code"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+
+                    <div class="flex-auto">
+                        <label for="bankBranch1" class="block mb-1 text-color text-lg">Bank Branch:</label>
+                        <input type="text" pInputText formControlName="bankBranch1" placeholder="Bank Branch"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                </div>
+
+                <div class="flex gap-2 xl:flex-row flex-row">
+                    <div class="flex-auto">
+                        <label for="nomineeType1" class="block mb-1 text-color text-lg">Nominee Type</label>
+                        <p-dropdown [options]="nomineeType" formControlName="nomineeType1" placeholder="Nominee Type"
+                            appendTo="body" [showClear]="true" inputId="icon5"></p-dropdown>
+                    </div>
+                    <div class="flex-auto">
+                        <label for="priorityLevel1" class="block mb-1 text-color text-lg">Priority Level</label>
+                        <p-dropdown [options]="priorityLevel" formControlName="priorityLevel1"
+                            placeholder="Priority Level" appendTo="body" [showClear]="true"
+                            inputId="icon6"></p-dropdown>
+                    </div>
+                </div>
+                <div class="flex gap-2 xl:flex-row flex-row">
+                    <div class="flex-auto">
+                        <label for="share1" class="block mb-1 text-color text-lg">Share:</label>
+                        <input type="text" pInputText formControlName="share1" placeholder="Share"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="flex-auto xl:flex-row flex-row">
+                        <div class="col-12 p-0 flex-auto xl:col-4o">
+                            <label for="activeFlag" class="block mb-1 text-color text-lg">Active Flag:</label>
+                            <div class="grid formgrid">
+                                <div class="col-12 md:col-4">
+                                    <div class="field-radiobutton">
+                                        <p-radioButton name="activeFlag" value="true" formControlName="activeFlag"
+                                            id="activeFlag11"></p-radioButton>
+                                        <label for="activeFlag11">True</label>
                                     </div>
-                                    <div class="col-12 md:col-4">
-                                        <div class="field-radiobutton">
-                                            <p-radioButton name="handicap" value="False" formControlName="handicap"
-                                                id="handicap2"></p-radioButton>
-                                            <label for="handicap2">False</label>
-                                        </div>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <div class="field-radiobutton">
+                                        <p-radioButton name="activeFlag" value="false" formControlName="activeFlag"
+                                            id="activeFlag12"></p-radioButton>
+                                        <label for="activeFlag12">False</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-
-                    <div class="flex gap-2 justify-content-end pt-3">
-                        <button label="Submit" (click)="addNominee('A')"
-                            class="p-element p-ripple p-button-rounded p-button p-component">
-                            <span class="p-button-label">Add</span><span class="p-ink"></span>
-                        </button>
                     </div>
                 </div>
-
-                <!-- Form A Table -->
-                <div *ngIf="showFamilyNomineeTable">
-                    <ng-container *ngIf="familyNomineeService$ | async as familyNominees">
-                        <app-dynamic-table
-                            [data]="familyNominees.result || []"
-                            [suffix]="FAMILY_NOMINEE_SUFFIX"
-                            (actionButtonClicked)="handleButtonClick($event)"
-                            [editable]="true"
-                            class="flex flex-column gap-4 mt-3">
-                        </app-dynamic-table>
-                    </ng-container>
-                </div>
-            </p-fieldset>
-        </div>
-
-        <!-- Nominee Details  -->
-        <div class="col-12">
-            <p-fieldset legend="Nominee Details" class="line-height-3 m-0">
-                <!-- from enable btn -->
-
-                <div class="w-full">
-                    <button pButton pRipple (click)="toggleNomineeDetailsForm()" type="button" icon="pi pi-plus"
-                        [label]="showNomineeDetailsForm ? 'Hide Form' : 'Show Form'" class="p-button-rounded p-button-raised"></button>
-                </div>
-                <div class="flex gap-2 justify-content-end pt-3">
-                    <button label="Show Table" (click)="toggleNomineeDetailsTable()"
+                <div class="flex gap-2 justify-content-end">
+                    <button label="Submit" (click)="addNominee('B')"
                         class="p-element p-ripple p-button-rounded p-button p-component">
-                        <span class="p-button-label">{{ showNomineeDetailsTable ? 'Hide Table' : 'Show Table' }}</span><span class="p-ink"></span>
+                        <span class="p-button-label">Submit</span><span class="p-ink"></span>
+                    </button>
+
+                    <button (click)="cancle('B')" class="p-element p-ripple p-button-rounded p-button p-component">
+                        <span class="p-button-label">Cancle</span><span class="p-ink"></span>
                     </button>
                 </div>
-
-                <!-- From area -->
-                <div *ngIf="showNomineeDetailsForm" class="w-full">
-                    <form [formGroup]="nomineeDetailsForm" class="flex flex-column gap-4 mt-3">
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="slNo1" class="block mb-1 text-color text-lg">Sl No:</label>
-                                <input type="number" pInputText formControlName="slNo1" placeholder="Sl No"
-                                    class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="nomineeName1" class="block mb-1 text-color text-lg">Nominee Name:</label>
-                                <input type="text" pInputText formControlName="nomineeName1" placeholder="Nominee Name"
-                                    class="p-inputtext p-component p-element w-full">
-                            </div>
-
-                            <div class="flex-auto xl:col-4">
-                                <label for="relation1" class="block mb-1 text-color text-lg">Relation:</label>
-                                <p-dropdown [options]="relation" formControlName="relation1" placeholder="Relation"
-                                    appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
-                            </div>
-
-                        </div>
-
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="dateOfBirth1" class="block mb-1 text-color text-lg">Date of
-                                    Birth:</label>
-                                <p-calendar class="p-component p-element w-full p-calendar"
-                                    formControlName="dateOfBirth1" placeholder="dd/mm/yyyy" appendTo="body"
-                                    [showIcon]="true" inputId="icon4"></p-calendar>
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="accountNumber1" class="block mb-1 text-color text-lg">Account Number:</label>
-                                <input type="text" pInputText formControlName="accountNumber1"
-                                    placeholder="Account Number" class="p-inputtext p-component p-element w-full">
-                            </div>
-
-                            <div class="flex-auto xl:col-4">
-                                <label for="ifscCode1" class="block mb-1 text-color text-lg">IFSC Code:</label>
-                                <input type="text" pInputText formControlName="ifscCode1"
-                                    placeholder="IFSC Code" class="p-inputtext p-component p-element w-full">
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="bankBranch1" class="block mb-1 text-color text-lg">Bank Branch:</label>
-                                <input type="text" pInputText formControlName="bankBranch1"
-                                    placeholder="Bank Branch" class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="nomineeType1" class="block mb-1 text-color text-lg">Nominee Type</label>
-                                <p-dropdown [options]="nomineeType" formControlName="nomineeType1" placeholder="Nominee Type"
-                                    appendTo="body" [showClear]="true" inputId="icon5"></p-dropdown>
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <label for="priorityLevel1" class="block mb-1 text-color text-lg">Priority Level</label>
-                                <p-dropdown [options]="priorityLevel" formControlName="priorityLevel1" placeholder="Priority Level"
-                                    appendTo="body" [showClear]="true" inputId="icon6"></p-dropdown>
-                            </div>
-                        </div>
-                        <div class="flex gap-2 xl:flex-row flex-column">
-                            <div class="flex-auto xl:col-4">
-                                <label for="share1" class="block mb-1 text-color text-lg">Share:</label>
-                                <input type="text" pInputText formControlName="share1" placeholder="Share"
-                                    class="p-inputtext p-component p-element w-full">
-                            </div>
-                            <div class="flex-auto xl:col-4">
-                                <div class="col-12 p-0 flex-auto xl:col-4o">
-                                    <label for="activeFlag" class="block mb-1 text-color text-lg">Active Flag:</label>
-                                    <div class="grid formgrid">
-                                        <div class="col-12 md:col-4">
-                                            <div class="field-radiobutton">
-                                                <p-radioButton name="activeFlag" value="true"
-                                                    formControlName="activeFlag" id="activeFlag11"></p-radioButton>
-                                                <label for="activeFlag11">True</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 md:col-4">
-                                            <div class="field-radiobutton">
-                                                <p-radioButton name="activeFlag" value="false"
-                                                    formControlName="activeFlag" id="activeFlag12"></p-radioButton>
-                                                <label for="activeFlag12">False</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-
-                    <!-- add Button -->
-                    <div class="flex gap-2 justify-content-end pt-3">
-                        <button label="Submit" (click)="addNominee('B')"
-                            class="p-element p-ripple p-button-rounded p-button p-component">
-                            <span class="p-button-label">Add</span><span class="p-ink"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Form B Table -->
-                <div *ngIf="showNomineeDetailsTable">
-                    <ng-container *ngIf="nomineeDetailsService$ | async as nomineeDetails">
-                        <script>console.log("Nominee Details in Template:", nomineeDetails);</script>
-                        <app-dynamic-table
-                            [data]="nomineeDetails.result"
-                            [suffix]="NOMINEE_DETAILS_SUFFIX"
-                            (actionButtonClicked)="handleButtonClick($event)"
-                            [editable]="true"
-                            class="flex flex-column gap-4 mt-3">
-                        </app-dynamic-table>
-                    </ng-container>
-                </div>
-            </p-fieldset>
+            </form>
         </div>
+    </p-dialog>
+    <!-- Form B Table -->
+    <div *ngIf="showNomineeDetailsTable">
+        <ng-container *ngIf="nomineeDetailsService$ | async as nomineeDetails">
+            <script>console.log("Nominee Details in Template:", nomineeDetails);</script>
+            <app-dynamic-table [data]="nomineeDetails.result" [suffix]="NOMINEE_DETAILS_SUFFIX"
+                (actionButtonClicked)="handleButtonClick($event)" [editable]="true" class="flex flex-column gap-4 mt-3">
+            </app-dynamic-table>
+        </ng-container>
+    </div>
+    <!-- </p-fieldset> -->
+</div>
 
-        <!-- Nominee details for family pension holder  -->
-        <!-- <div class="col-12">
+<!-- Nominee details for family pension holder  -->
+<!-- <div class="col-12">
             <p-fieldset legend="Nominee details for family pension holder" class="line-height-3 m-0"> -->
-                <!-- from enable btn -->
+<!-- from enable btn -->
 
-                <!-- <div class="w-full">
+<!-- <div class="w-full">
                     <button pButton pRipple (click)="switchPensionHolder();" type="button" icon="pi pi-plus"
                         label="Show Form" class="p-button-rounded p-button-raised"></button>
                 </div>
@@ -252,8 +254,8 @@
                     </button>
                 </div> -->
 
-                <!-- From area -->
-                <!-- <div *ngIf="showPensionHolder" class="w-full">
+<!-- From area -->
+<!-- <div *ngIf="showPensionHolder" class="w-full">
                     <form [formGroup]="pensionHolderForm" class="flex flex-column gap-4 mt-3">
                         <div class="flex gap-2 xl:flex-row flex-column">
                             <div class="flex-auto xl:col-4">
@@ -344,8 +346,8 @@
                         </div>
                     </form> -->
 
-                    <!-- add Button -->
-                    <!-- <div class="flex gap-2 justify-content-end pt-3">
+<!-- add Button -->
+<!-- <div class="flex gap-2 justify-content-end pt-3">
                         <button pButton="" pRipple="" label="Submit" (click)="addNominee('C')"
                             class="p-element p-ripple p-button-rounded p-button p-component">
                             <span class="p-button-label">Add</span><span class="p-ink"></span>
@@ -353,8 +355,8 @@
                     </div>
                 </div> -->
 
-                <!-- Form C Table -->
-                <!-- <div *ngIf="showPensionHolderTable">
+<!-- Form C Table -->
+<!-- <div *ngIf="showPensionHolderTable">
                     <ng-container *ngIf="pensionHolderService$ | async as pensionHolders">
                         <app-dynamic-table
                             [data]="pensionHolders.result|| []"
@@ -365,6 +367,6 @@
                         </app-dynamic-table>
                     </ng-container>
                 </div> -->
-            <!-- </p-fieldset> -->
-        <!-- </div> -->
-    </div>
+<!-- </p-fieldset> -->
+<!-- </div> -->
+<!-- </div> -->
