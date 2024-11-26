@@ -10,7 +10,7 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -31,7 +31,8 @@ export class FirstPensionBillPrintComponent implements OnInit {
         private toastService: ToastService,
         private pensionFirstBillService: PensionFirstBillService,
         private pensionBankBranchService: PensionBankBranchService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -53,6 +54,7 @@ export class FirstPensionBillPrintComponent implements OnInit {
             this.pensionFirstBillService.getPposForFirstBillPrint();
         // Check if ppoId is provided via route parameters
         this.route.paramMap.subscribe((params) => {
+
             const routePpoId = params.get('ppoId');
             if (routePpoId) {
                 this.ppoId = routePpoId;
@@ -62,7 +64,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
     }
 
     handleSearchEvent(event: any) {
-        console.log('', event);
         this.FirstPensionForm.controls['ppoId'].setValue(event.ppoId);
         this.FirstPensionForm.controls['pensionerName'].setValue(
             event.pensionerName
@@ -116,11 +117,12 @@ export class FirstPensionBillPrintComponent implements OnInit {
         } else {
             console.warn('No ppoId provided');
         }
-        console.warn('fetchUserInfo completed');
     }
 
     onRefresh(): void {
         this.FirstPensionForm.reset();
+        this.router.navigate(['pension-process/bill-print/first-pension-bill-print'])
+
     }
 
     onGenerate(generationType: string) {
@@ -161,7 +163,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
                     );
                     return;
                 }
-                console.log(response);
                 if (response.message)
                     this.toastService.showSuccess(response.message);
                 //   switch (true) {

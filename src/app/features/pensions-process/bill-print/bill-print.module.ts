@@ -23,7 +23,12 @@ const routes: Routes = [
     },
     {
         path: 'regular-pension-bill-print', component: RegularPensionBillPrintComponent, data: {breadcrumb : 'RegularPensionBillPrintComponent'}
-    }
+    },
+    {
+        path: 'first-pension-bill-print/:ppoId',
+        component: FirstPensionBillPrintComponent,
+        data: { breadcrumb: 'FirstPensionBillPrintComponent' }
+    },
 ];
 
 @NgModule({

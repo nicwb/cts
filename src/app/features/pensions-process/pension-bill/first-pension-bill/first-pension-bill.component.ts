@@ -30,6 +30,7 @@ export class FirstPensionBillComponent implements OnInit {
     period: string = '';
     pensionForm: FormGroup = this.fb.group({});
     totalDueAmount: number = 0;
+    isPrint: boolean = false;
     isDataLoaded: boolean = false;
     billdate = new Date().toISOString().split('T')[0];
     ppoList$: Observable<any>;
@@ -274,6 +275,7 @@ export class FirstPensionBillComponent implements OnInit {
             if (this.res?.apiResponseStatus === APIResponseStatus.Success) {
                 this.toastService.showSuccess(this.response.message ?? 'First bill saved');
                 this.hasSaved = false;
+                this.isPrint = true;
             }
             if (this.res.apiResponseStatus === APIResponseStatus.Error) {
                 if (this.res.message && this.res.message.toLowerCase().includes('not approved')) {
@@ -381,6 +383,7 @@ export class FirstPensionBillComponent implements OnInit {
             this.ppoInput = true;
             this.isSearch = false;
             this.hasSaved = false;
+            this.isPrint = false;
             this.massage = '';
             this.massageColor = '';
         }
@@ -399,11 +402,10 @@ export class FirstPensionBillComponent implements OnInit {
         this.router.navigate(
             this.ppoId
                 ? [
-                    '/pension/modules/pension-process/bill-print',
+                    'pension-process/bill-print/first-pension-bill-print',
                     this.ppoId,
-                    'first-pension',
                 ]
-                : ['/pension/modules/pension-process/bill-print/first-pension']
+                : ['pension-process/bill-print/first-pension-bill-print']
         );
     }
 
