@@ -28,6 +28,7 @@ import { FamilyNomineeComponent } from './family-nominee.component';
 // add requirement for panel
 import { PanelModule } from 'primeng/panel';
 import { FieldsetModule } from 'primeng/fieldset';
+import { DividerModule } from 'primeng/divider';
 
 
 
@@ -58,6 +59,7 @@ import { FieldsetModule } from 'primeng/fieldset';
         RatingModule,
         PanelModule,
         FieldsetModule,
+        DividerModule
 
     ],
     exports: [FamilyNomineeComponent,
