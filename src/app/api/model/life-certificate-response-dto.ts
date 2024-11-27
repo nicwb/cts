@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BranchResponseDTO } from './branch-response-dto';
 
 
 export interface LifeCertificateResponseDTO { 
@@ -19,6 +20,9 @@ export interface LifeCertificateResponseDTO {
     accountHolderName: string;
     mobileNumber: string;
     certificateFlag?: boolean | null;
+    branchId?: number | null;
     id?: number;
+    branch?: BranchResponseDTO;
+    readonly bankId?: number;
 }
 

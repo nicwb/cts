@@ -20,8 +20,6 @@ import { Observable }                                        from 'rxjs';
 import { LifeCertificateEntryDTO } from '../model/life-certificate-entry-dto';
 // @ts-ignore
 import { LifeCertificateResponseDTOJsonAPIResponse } from '../model/life-certificate-response-dto-json-api-response';
-// @ts-ignore
-import { LifeCertificateResponseDTOTableResponseDTOJsonAPIResponse } from '../model/life-certificate-response-dto-table-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -172,9 +170,9 @@ export class PensionLifeCertificateService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLifeCertificateByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LifeCertificateResponseDTOTableResponseDTOJsonAPIResponse>;
-    public getLifeCertificateByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LifeCertificateResponseDTOTableResponseDTOJsonAPIResponse>>;
-    public getLifeCertificateByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LifeCertificateResponseDTOTableResponseDTOJsonAPIResponse>>;
+    public getLifeCertificateByPpoId(ppoId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
+    public getLifeCertificateByPpoId(ppoId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
+    public getLifeCertificateByPpoId(ppoId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
     public getLifeCertificateByPpoId(ppoId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
         if (ppoId === null || ppoId === undefined) {
             throw new Error('Required parameter ppoId was null or undefined when calling getLifeCertificateByPpoId.');
@@ -218,10 +216,87 @@ export class PensionLifeCertificateService {
             }
         }
 
-        let localVarPath = `/api/v1/api/v1/ppo/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/lifecertificate`;
-        return this.httpClient.request<LifeCertificateResponseDTOTableResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/v1/lifecertificate/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param ppoId 
+     * @param lifeCertificateEntryDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateLifeCertificateByPpoId(ppoId: number, lifeCertificateEntryDTO?: LifeCertificateEntryDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
+    public updateLifeCertificateByPpoId(ppoId: number, lifeCertificateEntryDTO?: LifeCertificateEntryDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
+    public updateLifeCertificateByPpoId(ppoId: number, lifeCertificateEntryDTO?: LifeCertificateEntryDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
+    public updateLifeCertificateByPpoId(ppoId: number, lifeCertificateEntryDTO?: LifeCertificateEntryDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext}): Observable<any> {
+        if (ppoId === null || ppoId === undefined) {
+            throw new Error('Required parameter ppoId was null or undefined when calling updateLifeCertificateByPpoId.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/lifecertificate/${this.configuration.encodeParam({name: "ppoId", value: ppoId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: lifeCertificateEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

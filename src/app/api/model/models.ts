@@ -27,8 +27,6 @@ export * from './initiate-first-pension-bill-response-dto-json-api-response';
 export * from './life-certificate-entry-dto';
 export * from './life-certificate-response-dto';
 export * from './life-certificate-response-dto-json-api-response';
-export * from './life-certificate-response-dto-table-response-dto';
-export * from './life-certificate-response-dto-table-response-dto-json-api-response';
 export * from './list-all-ppo-receipts-response-dto';
 export * from './list-all-ppo-receipts-response-dtoi-enumerable-dynamic-list-result';
 export * from './list-all-ppo-receipts-response-dtoi-enumerable-dynamic-list-result-json-api-response';

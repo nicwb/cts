@@ -19,5 +19,7 @@ export interface LifeCertificateEntryDTO {
     accountHolderName: string;
     mobileNumber: string;
     certificateFlag?: boolean | null;
+    bankId?: number;
+    branchId?: number | null;
 }
 
