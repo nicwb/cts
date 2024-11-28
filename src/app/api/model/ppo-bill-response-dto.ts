@@ -17,6 +17,7 @@ export interface PpoBillResponseDTO {
     id?: number;
     pensionerId?: number;
     bankBranchName?: string | null;
+    treasuryName?: string | null;
     fromDate?: string;
     billType?: string;
     billNo?: number;
@@ -24,6 +25,7 @@ export interface PpoBillResponseDTO {
     grossAmount?: number;
     byTransferAmount?: number;
     netAmount?: number;
+    amountInWords?: string | null;
     breakups?: Array<PpoBillBreakupEntryDTO> | null;
     drawnAmount?: number;
     treasuryVoucherNo?: string | null;
