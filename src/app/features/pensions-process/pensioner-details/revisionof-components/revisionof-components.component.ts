@@ -24,15 +24,19 @@ export class RevisionofComponentsComponent implements OnInit {
     getpensionbill!: PpoBillResponseDTOJsonAPIResponse;
     ppoId?: number;
     responce: any;
-    isEditing: boolean = false;
     isSearch: boolean = false;
     editRowId: number | null = null;
     isInsertModalVisible: boolean = false;
     hasPpoDetailsFetched = false;
     rateid: any;
+    isEditMode: boolean = false;
+
+    hidePpoId: boolean = false;
+
     isMobileView: boolean = false;
-    disableButton: boolean = false;
     isPopupTableDisabled = true;
+    pensionData: any[] = [];
+    dialogHeader = 'Component Rate';
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
@@ -50,25 +54,15 @@ export class RevisionofComponentsComponent implements OnInit {
         private bank: PensionBankBranchService
 
     ) {
-        const payload = {
-            listType: 'type1',
-            pageSize: 200,
-            pageIndex: 0,
-            filterParameters: [],
-        };
         this.ppoList$ = this.revisionOfComponentsService.getAllPposForComponentRevisions();
 
-        this.pensionComponent$ = this.pensionComponentService.getAllComponents(payload);
+        this.pensionComponent$ = this.pensionComponentService.getComponents();
 
     }
 
     ngOnInit(): void {
         this.pensionForm = this.fb.group({
             ppoId: ['', [Validators.required, Validators.pattern("^[0-9]*$")]], // PPO ID must be a number
-            ppono: ['',Validators.required],
-            pensionerName: ['',Validators.required],
-            category: ['',Validators.required],
-            bankcode: ['',Validators.required]
         });
         this.componentForm = this.fb.group({
             componentname: ['', Validators.required],
@@ -87,21 +81,22 @@ export class RevisionofComponentsComponent implements OnInit {
     handleSelectedRow(event: any) {
         this.pensionForm.patchValue({
             ppoId: event.ppoId,
+        });
+        const selectedData = {
+            ppoId: event.ppoId,
             bankcode: event.bankBranchName,
             ppono: event.ppoNo,
             pensionerName: event.pensionerName,
             category: event.categoryDescription,
-        });
+        };
+        // Push selected data to pensionData array
+        this.pensionData.push(selectedData);
 
-        if(this.pensionForm.valid){
+        if (this.pensionForm.valid) {
             this.hasPpoDetailsFetched = true;
             this.isSearch = true;
         }
     }
-
-    // Method to fetch PPO details when a valid PPO ID is entered
-
-
     get revisions() {
         return this.tableForm.get('revisions') as FormArray;
     }
@@ -117,7 +112,7 @@ export class RevisionofComponentsComponent implements OnInit {
                 this.showTable = true;
                 this.isPopupTableDisabled = !this.pensionForm.valid;
                 this.patchFormValues(this.responce);
-
+                this.hidePpoId = true;
             }
         }
     }
@@ -142,32 +137,38 @@ export class RevisionofComponentsComponent implements OnInit {
     // Enable edit for specific row by id
     enableEdit(rowId: number) {
         this.editRowId = rowId;
-    }
+        this.isEditMode = true;
+        this.dialogHeader = 'Update Component';
+        this.isInsertModalVisible = true;
+        const revisionForm = this.revisions.controls.find(control => control.get('id')?.value === this.editRowId);
+        this.componentForm.patchValue({
+            fromDate: revisionForm?.value.fromDate,
+            amount: revisionForm?.value.amountPerMonth
+        })
 
-    // Check if the row is being edited
-    isRowEditing(rowId: number): boolean {
-        return this.editRowId === rowId;
     }
 
     // Save changes and disable edit mode
-    async saveRow(rowId: number) {
-        const revisionForm = this.revisions.controls.find(control => control.get('id')?.value === rowId);
-        if (revisionForm) {
-            const payload = {
-                fromDate: revisionForm.get('fromDate')?.value,
-                amountPerMonth: revisionForm.get('amountPerMonth')?.value,
-            };
-            try {
-                const response = await firstValueFrom(
-                    this.revisionOfComponentsService.updatePpoComponentRevisionById(rowId, payload)
-                );
-                if (response.apiResponseStatus === APIResponseStatus.Success) {
-                    this.toastService.showSuccess('' + response.message);
-                    this.loadComponentRevisions();
-                    this.editRowId = null;
+    async saveRow() {
+        if (this.editRowId) {
+            const revisionForm = this.revisions.controls.find(control => control.get('id')?.value === this.editRowId);
+            if (revisionForm) {
+                const value = this.convertToDateFormat(this.componentForm.get('fromDate')?.value);
+                const payload = {
+                    fromDate: value,
+                    amountPerMonth: this.componentForm.get('amount')?.value,
+                };
+                try {
+                    const response = await firstValueFrom(
+                        this.revisionOfComponentsService.updatePpoComponentRevisionById(this.editRowId, payload)
+                    );
+                    if (response.apiResponseStatus === APIResponseStatus.Success) {
+                        this.toastService.showSuccess('' + response.message);
+                        this.loadComponentRevisions();
+                    }
+                } catch (error) {
+                    this.toastService.showError('' + APIResponseStatus.Error);
                 }
-            } catch (error) {
-                this.toastService.showError('' + APIResponseStatus.Error);
             }
         }
     }
@@ -231,11 +232,9 @@ export class RevisionofComponentsComponent implements OnInit {
         this.isSearch = false;
         this.hasPpoDetailsFetched = false;
         this.isPopupTableDisabled = true;
-
+        this.hidePpoId = false;
+        this.pensionData = [];
     }
-    // Select row
-
-
     handleSelectedRowByPensionComponent(event: any) {
         this.rateid = event.id
         this.componentForm.patchValue({
@@ -245,6 +244,9 @@ export class RevisionofComponentsComponent implements OnInit {
 
     addcomponent() {
         this.isInsertModalVisible = true;
+        this.isEditMode = false;
+        this.dialogHeader = 'Component Rate';
+
     }
 
     // Load component revision when table in modify
@@ -289,10 +291,27 @@ export class RevisionofComponentsComponent implements OnInit {
     resetAndCloseDialog(): void {
         this.componentForm.reset();
         this.isInsertModalVisible = false;
-        // this.selectedRow = null;
+        this.editRowId = null;
     }
-    // Check if any row is in editing mode
-    isAnyRowEditing(): boolean {
-        return this.editRowId !== null;
+    convertToDateFormat(inputDate: string): string {
+        // First, check if the input matches 'dd-MM-yyyy' format using regex
+        const regex = /^\d{2}-\d{2}-\d{4}$/;
+
+        if (regex.test(inputDate)) {
+            const [day, month, year] = inputDate.split('-');
+            return `${year}-${month}-${day}`;
+        } else {
+            // For any other input (such as full date strings), parse using the Date constructor
+            const parsedDate = new Date(inputDate);
+            if (isNaN(parsedDate.getTime())) {
+                return '';
+            } else {
+                // Return the date in 'yyyy-MM-dd' format
+                const year = parsedDate.getFullYear();
+                const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+                const day = parsedDate.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`; // Return the formatted date string
+            }
+        }
     }
 }
