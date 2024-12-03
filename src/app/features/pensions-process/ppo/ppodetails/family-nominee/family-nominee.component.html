@@ -18,9 +18,9 @@
     </div>
 
     <!-- Form area -->
-    <p-dialog header="New Family Details" [(visible)]="isInsertModalVisible" [modal]="true"
+    <p-dialog [header]="popupHeader" [(visible)]="isInsertModalVisible" [modal]="true"
         [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
-        [baseZIndex]="10000" style="width: 80vw;">
+        [baseZIndex]="10000" >
         <form [formGroup]="familyNomineeForm" class="flex flex-column gap-4 mt-3">
             <div class="flex gap-2 xl:flex-row flex-column">
                 <div class="flex-auto">
@@ -39,13 +39,13 @@
                     <label for="dateOfBirthFamilyDetails" class="block mb-1 text-color text-lg">Date of
                         Birth:</label>
                     <p-calendar class="p-component p-element w-full p-calendar"
-                        formControlName="dateOfBirthFamilyDetails" placeholder="dd/mm/yyyy" appendTo="body"
+                        formControlName="dateOfBirthFamilyDetails" placeholder="dd-mm-yyyy" appendTo="body"
                         [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy"></p-calendar>
                 </div>
                 <div class="flex-auto">
                     <label for="dateOfDeath" class="block mb-1 text-color text-lg">Date of Death:</label>
                     <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfDeath"
-                        placeholder="dd/mm/yyyy" appendTo="body" [showIcon]="true" inputId="icon2"
+                        placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon2"
                         dateFormat="dd-mm-yy"></p-calendar>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="flex-auto">
                     <label for="relationship" class="block mb-1 text-color text-lg">Relationship:</label>
-                    <p-dropdown [options]="relationship" formControlName="relationship" placeholder="Relationship"
+                    <p-dropdown [options]="relationship" formControlName="relationship" placeholder="Select"
                         appendTo="body" [showClear]="true" inputId="icon" class="w-full"></p-dropdown>
                 </div>
                 <div class="flex-auto">
@@ -82,9 +82,13 @@
         </form>
 
         <div class="flex gap-2 justify-content-end pt-3">
-            <button label="Submit" (click)="addNominee('A')"
+            <button label="Submit" (click)="addNominee('A')" *ngIf="popupHeader !== 'Edit Family Details'"
                 class="p-element p-ripple p-button-rounded p-button p-component">
                 <span class="p-button-label">Submit</span><span class="p-ink"></span>
+            </button>
+            <button label="Submit" class="p-element p-ripple p-button-rounded p-button p-component"
+                (click)="updateFamilyDetails()" *ngIf="popupHeader === 'Edit Family Details'">
+                <span class="p-button-label">Update</span><span class="p-ink"></span>
             </button>
             <button (click)="cancle('A')" class="p-element p-ripple p-button-rounded p-button p-component">
                 <span class="p-button-label">Cancle</span><span class="p-ink"></span>
@@ -95,8 +99,9 @@
     <!-- Form A Table -->
     <div *ngIf="showFamilyNomineeTable">
         <ng-container *ngIf="familyNomineeService$ | async as familyNominees">
-            <app-dynamic-table [data]="familyNominees.result || []" [suffix]="FAMILY_NOMINEE_SUFFIX"
-                (actionButtonClicked)="handleButtonClick($event)" [editable]="true" class="flex flex-column gap-4 mt-3">
+            <app-dynamic-table [data]="staticDataA" [suffix]="FAMILY_NOMINEE_SUFFIX"
+                (actionButtonClicked)="handleButtonClick($event)" [editable]="true" (return)="editFamilyDetails($event)"
+                class="flex flex-column gap-4 mt-3">
             </app-dynamic-table>
         </ng-container>
     </div>
@@ -119,74 +124,79 @@
         </button>
     </div>
     <!-- From area -->
-    <p-dialog header="New Nominee Details" [(visible)]="isInsertNominee" [modal]="true"
+    <p-dialog [header]="NomineePopupHeader" [(visible)]="isInsertNominee" [modal]="true"
         [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
-        [baseZIndex]="10000" style="width: 80vw;">
+        [baseZIndex]="10000" >
         <div class="w-full">
             <form [formGroup]="nomineeDetailsForm" class="flex flex-column gap-4 mt-3">
                 <div class="flex gap-2 xl:flex-row flex-column">
-                    <div class="flex-auto">
+                    <div class="vw-1">
                         <label for="slNo1" class="block mb-1 text-color text-lg">Sl No:</label>
                         <input type="number" pInputText formControlName="slNo1" placeholder="Sl No"
                             class="p-inputtext p-component p-element w-full">
                     </div>
-                    <div class="flex-auto">
+                    <div class="vw-4">
                         <label for="nomineeName1" class="block mb-1 text-color text-lg">Nominee Name:</label>
                         <input type="text" pInputText formControlName="nomineeName1" placeholder="Nominee Name"
                             class="p-inputtext p-component p-element w-full">
                     </div>
 
-                    <div class="flex-auto">
+                    <div class="w-3">
                         <label for="relation1" class="block mb-1 text-color text-lg">Relation:</label>
-                        <p-dropdown [options]="relation" [style]="{ width: '100%' }" formControlName="relation1"
-                            placeholder="Relation" appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
+                        <p-dropdown [options]="relation" [style]="{ width: '100%' }" formControlName="relation1" placeholder="Select"
+                            appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
+                    </div>
+                    <div class="flex-auto">
+                        <label for="dateOfBirth1" class="block mb-1 text-color text-lg">Date of
+                            Birth:</label>
+                        <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfBirth1"
+                            placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon4"
+                            dateFormat="dd-mm-yy"></p-calendar>
                     </div>
                 </div>
                 <div class="flex gap-2 xl:flex-row flex-column">
-                    <div class="flex-auto">
-                        <label for="dateOfBirth1" class="block text-color text-lg">Date of
-                            Birth:</label>
-                        <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfBirth1"
-                            placeholder="dd/mm/yyyy" appendTo="body" [showIcon]="true" inputId="icon4"                     dateFormat="dd-mm-yy"
-                            ></p-calendar>
+                    <div class="w-6">
+                        <label for="bankName" class="block mb-1 text-color text-lg">Bank Name</label>
+                        <p-dropdown [options]="bankName" formControlName="bankId" (click)="fetchBankName()"
+                            placeholder="Select Bank" [style]="{ width: '100%' }" appendTo="body" [showClear]="true"
+                            (onChange)="fetchBankBranch($event.value)" inputId="icon6"></p-dropdown>
                     </div>
-                    <div class="flex-auto">
-                        <label for="accountNumber1" class="block  text-color text-lg">Account Number:</label>
+
+                    <div class="w-6">
+                        <label for="bankBranch1" class="block mb-1 text-color text-lg">Bank Branch:</label>
+                        <p-dropdown [options]="branchName" formControlName="bankBranch1"
+                            placeholder="Select Bank Branch" (onChange)="selectIfsc($event)" [style]="{ width: '100%' }"
+                            appendTo="body" [showClear]="true" inputId="icon6"></p-dropdown>
+                    </div>
+
+                </div>
+
+                <div class="flex gap-2 xl:flex-row flex-column">
+                    <div class="w-3">
+                        <label for="ifscCode1" class="block mb-1 text-color text-lg">IFSC Code:</label>
+                        <input type="text" pInputText placeholder="IFSC Code" [value]="ifscCode"
+                            class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="w-3">
+                        <label for="accountNumber1" class="block mb-1  text-color text-lg">Account Number:</label>
                         <input type="text" pInputText formControlName="accountNumber1" placeholder="Account Number"
                             class="p-inputtext p-component p-element w-full">
                     </div>
 
-                </div>
-
-                <div class="flex gap-2 xl:flex-row flex-column">
-                    <div class="flex-auto">
-                        <label for="ifscCode1" class="block mb-1 text-color text-lg">IFSC Code:</label>
-                        <input type="text" pInputText formControlName="ifscCode1" placeholder="IFSC Code"
-                            class="p-inputtext p-component p-element w-full">
-                    </div>
-
-                    <div class="flex-auto">
-                        <label for="bankBranch1" class="block mb-1 text-color text-lg">Bank Branch:</label>
-                        <input type="text" pInputText formControlName="bankBranch1" placeholder="Bank Branch"
-                            class="p-inputtext p-component p-element w-full">
-                    </div>
-                </div>
-
-                <div class="flex gap-2 xl:flex-row flex-row">
-                    <div class="flex-auto">
+                    <div class="w-3">
                         <label for="nomineeType1" class="block mb-1 text-color text-lg">Nominee Type</label>
-                        <p-dropdown [options]="nomineeType" formControlName="nomineeType1" placeholder="Nominee Type"
-                            appendTo="body" [showClear]="true" inputId="icon5"></p-dropdown>
+                        <p-dropdown [options]="nomineeType" formControlName="nomineeType1" placeholder="Select Type"
+                            [style]="{ width: '100%' }" appendTo="body" [showClear]="true" inputId="icon5"></p-dropdown>
                     </div>
-                    <div class="flex-auto">
+                    <div class="w-2">
                         <label for="priorityLevel1" class="block mb-1 text-color text-lg">Priority Level</label>
                         <p-dropdown [options]="priorityLevel" formControlName="priorityLevel1"
-                            placeholder="Priority Level" appendTo="body" [showClear]="true"
+                            [style]="{ width: '100%' }" placeholder="Select Level" appendTo="body" [showClear]="true"
                             inputId="icon6"></p-dropdown>
                     </div>
                 </div>
                 <div class="flex gap-2 xl:flex-row flex-row">
-                    <div class="flex-auto">
+                    <div class="w-2">
                         <label for="share1" class="block mb-1 text-color text-lg">Share:</label>
                         <input type="text" pInputText formControlName="share1" placeholder="Share"
                             class="p-inputtext p-component p-element w-full">
@@ -195,14 +205,14 @@
                         <div class="col-12 p-0 flex-auto xl:col-4o">
                             <label for="activeFlag" class="block mb-1 text-color text-lg">Active Flag:</label>
                             <div class="grid formgrid">
-                                <div class="col-12 md:col-4">
+                                <div class="col-12 md:col-2">
                                     <div class="field-radiobutton">
                                         <p-radioButton name="activeFlag" value="true" formControlName="activeFlag"
                                             id="activeFlag11"></p-radioButton>
                                         <label for="activeFlag11">True</label>
                                     </div>
                                 </div>
-                                <div class="col-12 md:col-4">
+                                <div class="col-12 md:col-2">
                                     <div class="field-radiobutton">
                                         <p-radioButton name="activeFlag" value="false" formControlName="activeFlag"
                                             id="activeFlag12"></p-radioButton>
@@ -215,8 +225,13 @@
                 </div>
                 <div class="flex gap-2 justify-content-end">
                     <button label="Submit" (click)="addNominee('B')"
+                        *ngIf="NomineePopupHeader !== 'Edit Nominee Details'"
                         class="p-element p-ripple p-button-rounded p-button p-component">
                         <span class="p-button-label">Submit</span><span class="p-ink"></span>
+                    </button>
+                    <button label="Submit" class="p-element p-ripple p-button-rounded p-button p-component"
+                        (click)="updateNomineeDetails()" *ngIf="NomineePopupHeader === 'Edit Nominee Details'">
+                        <span class="p-button-label">Update</span><span class="p-ink"></span>
                     </button>
 
                     <button (click)="cancle('B')" class="p-element p-ripple p-button-rounded p-button p-component">
@@ -230,8 +245,8 @@
     <div *ngIf="showNomineeDetailsTable">
         <ng-container *ngIf="nomineeDetailsService$ | async as nomineeDetails">
             <script>console.log("Nominee Details in Template:", nomineeDetails);</script>
-            <app-dynamic-table [data]="nomineeDetails.result" [suffix]="NOMINEE_DETAILS_SUFFIX"
-                (actionButtonClicked)="handleButtonClick($event)" [editable]="true" class="flex flex-column gap-4 mt-3">
+            <app-dynamic-table [data]="staticDataB" [suffix]="NOMINEE_DETAILS_SUFFIX" [editable]="true"
+                (return)="editNomineeDetails($event)" class="flex flex-column gap-4 mt-3">
             </app-dynamic-table>
         </ng-container>
     </div>
