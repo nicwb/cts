@@ -1,6 +1,3 @@
-## SEARCH POPUP
-
-The Search Popup is designed to help users filter and search through tabular data dynamically. This component provides an inputs by attribute for searching and the displayed data in the table based on the search query. Select the row for return the row data.
 
 ## ATTRIBUTE
 
@@ -12,6 +9,9 @@ The Search Popup is designed to help users filter and search through tabular dat
 [suffix]="suffix"
 [editable]="true" // optional
 (return)="returnHandelFunction($event)" // if [editable]="true" is used
+[filterON]="['data',....]" // optional
+[filterOFF]="['data',....]" // optional  removes the rows containing this data from the table
+[data]="staticData" // optional
 
 ></app-dynamic-table>
 ```
@@ -45,6 +45,24 @@ import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.mod
 export YourAppComponent{
     suffix="suffix name"
     myService$?:Observable<any>;
+    staticData: {
+        data: { id: string; subCategoryName: string }[];
+        headers: { name: string; fieldName: string }[];
+    } = {
+        data: [
+            { id: '1', subCategoryName: 'ROPA 2008' },
+            { id: '2', subCategoryName: 'ROPA 2009' },
+            { id: '3', subCategoryName: 'ROPA 1998' },
+            { id: '6', subCategoryName: 'NO SUB CATEGORY' },
+            { id: '7', subCategoryName: 'Pension Rules 1966(Pre 81)' },
+            { id: '8', subCategoryName: 'ROPA 2016' },
+            { id: '12', subCategoryName: 'ROPA 2019' },
+        ],
+        headers: [
+            { name: 'Sub Category ID', fieldName: 'id' },
+            { name: 'Sub Category Name', fieldName: 'subCategoryName' },
+        ],
+    };
     constructor(
         private YourAppService: YourAppService,
         private SessionStorageService: SessionStorageService
@@ -94,6 +112,7 @@ async add_primary_category() {
     }
 
                 */
+
 
 
 
