@@ -5,7 +5,7 @@ import { SessionStorageService } from './../services/session-storage.service';
 @Component({
     selector: 'app-dynamic-table',
     templateUrl: './dynamic-table.html',
-    styleUrls: ['./dynamic-table.scss']
+    styleUrls: ['./dynamic-table.scss'],
 })
 export class DynamicTableComponent implements OnInit {
     @Input() service$?: Observable<any> | null | undefined;
@@ -13,7 +13,9 @@ export class DynamicTableComponent implements OnInit {
     @Input() name: string = '';
     @Input() style: any = { width: 'auto' };
     @Input() suffix: string = '';
-    @Input() editable:boolean=false;
+    @Input() filterON: string[] = [];
+    @Input() filterOFF: string[] = [];
+    @Input() editable: boolean = false;
     @Output() return = new EventEmitter<any>();
 
     @Output() loads = new EventEmitter<any>();
@@ -28,32 +30,30 @@ export class DynamicTableComponent implements OnInit {
     isLoading: boolean = false;
     rows: number = 10; // Number of rows per page, initially set to 10
     first: number = 0; // Start index for pagination
-    scrollable:boolean=true;
+    scrollable: boolean = true;
 
     debugState?: boolean;
-    expand:boolean=false;
-
+    expand: boolean = false;
 
     constructor(private session: SessionStorageService) {}
 
     ngOnInit(): void {
         this.showDialog();
     }
-    rowExpand(){
-        this.isLoading=true;
-        this.expand=!this.expand;
-        this.scrollable=false;
-        this.isLoading=false;
-
+    rowExpand() {
+        this.isLoading = true;
+        this.expand = !this.expand;
+        this.scrollable = false;
+        this.isLoading = false;
     }
-    rowCollaps(){
-        this.isLoading=true;
-        this.expand=!this.expand;
-        this.scrollable=true;
-        this.isLoading=false;
+    rowCollaps() {
+        this.isLoading = true;
+        this.expand = !this.expand;
+        this.scrollable = true;
+        this.isLoading = false;
     }
 
-    editButton(event:any){
+    editButton(event: any) {
         if (event) {
             this.return.emit(event);
         }
@@ -61,7 +61,13 @@ export class DynamicTableComponent implements OnInit {
 
     async showDialog() {
         this.isLoading = true;
-        await this.callService();
+        if (this.data.data.length > 0) {
+            this.records = this.data.data; // Store the original data
+            this.filteredRecords = [...this.records]; // Initialize filtered data
+            this.totalRecords = this.filteredRecords.length;
+        } else {
+            await this.callService();
+        }
 
         if (this.data) {
             const { headers, data } = this.data;
@@ -71,7 +77,7 @@ export class DynamicTableComponent implements OnInit {
             if (headers) {
                 this.cols = headers.map((header: any) => ({
                     field: header.fieldName,
-                    header: header.name
+                    header: header.name,
                 }));
             }
         }
@@ -79,22 +85,41 @@ export class DynamicTableComponent implements OnInit {
         this.totalRecords = this.filteredRecords.length; // Set total records to filtered records
         this.display = true;
         this.isLoading = false;
+        if (this.filterON.length > 0 && this.filterOFF.length > 0) {
+            this.includeRecords();
+            this.excludeRecords(); //
+        } else if (this.filterON.length > 0) {
+            this.includeRecords();
+        } else if (this.filterOFF.length > 0) {
+            this.excludeRecords();
+        }
     }
 
     async callService() {
         if (this.service$) {
             try {
-                const dataget = await this.session.cacheWithExpiry(this,async () => {
-                    if (this.service$) {
-                        return await firstValueFrom(this.service$.pipe(tap((response) => {
-                            if (response.result && response.result.data) {
-                                return response.result.data;
-                            } else {
-                                this.debug(response);
-                            }
-                        })));
-                    }
-                },this.suffix);
+                const dataget = await this.session.cacheWithExpiry(
+                    this,
+                    async () => {
+                        if (this.service$) {
+                            return await firstValueFrom(
+                                this.service$.pipe(
+                                    tap((response) => {
+                                        if (
+                                            response.result &&
+                                            response.result.data
+                                        ) {
+                                            return response.result.data;
+                                        } else {
+                                            this.debug(response);
+                                        }
+                                    })
+                                )
+                            );
+                        }
+                    },
+                    this.suffix
+                );
                 this.dataset(dataget);
             } catch (error) {
                 this.debug(['Error in getting data from cache:', error]);
@@ -116,17 +141,24 @@ export class DynamicTableComponent implements OnInit {
         const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
 
         if (this.searchTerm) {
-            this.filteredRecords = this.records.filter((record) =>Object.values(record).some((value) => {
-                if (typeof value === 'string' || typeof value === 'number') {
-                    return value.toString().toLowerCase().includes(lowerCaseSearchTerm);
-                }
-                return false;
-            }));
-            this.data.data=this.filteredRecords;
+            this.filteredRecords = this.records.filter((record) =>
+                Object.values(record).some((value) => {
+                    if (
+                        typeof value === 'string' ||
+                        typeof value === 'number'
+                    ) {
+                        return value
+                            .toString()
+                            .toLowerCase()
+                            .includes(lowerCaseSearchTerm);
+                    }
+                    return false;
+                })
+            );
+            this.data.data = this.filteredRecords;
         } else {
             this.filteredRecords = [...this.records];
-            this.data.data=this.filteredRecords;
-
+            this.data.data = this.filteredRecords;
         }
 
         // Reset pagination when search changes
@@ -136,7 +168,80 @@ export class DynamicTableComponent implements OnInit {
         this.totalRecords = this.filteredRecords.length;
 
         // Display no results message if necessary
-        this.onresult = this.filteredRecords.length === 0 ? 'No records found' : '';
+        this.onresult =
+            this.filteredRecords.length === 0 ? 'No records found' : '';
+    }
+    //  filterON
+    includeRecords() {
+        const lowerCaseSearchTerms = this.filterON.map((term) =>
+            term.toLowerCase()
+        ); // Convert all search terms to lowercase.
+
+        if (this.filterON && this.filterON.length > 0) {
+            // Include rows where any value matches any of the search terms exactly
+            this.filteredRecords = this.records.filter((record) =>
+                lowerCaseSearchTerms.some((term) =>
+                    Object.values(record).some((value) => {
+                        if (
+                            typeof value === 'string' ||
+                            typeof value === 'number'
+                        ) {
+                            return value.toString().toLowerCase() === term;
+                        }
+                        return false;
+                    })
+                )
+            );
+            this.data.data = this.filteredRecords;
+            this.records = this.data.data;
+        }
+
+        // Reset pagination when the search changes
+        this.first = 0;
+
+        // Update total record count for the paginator
+        this.totalRecords = this.filteredRecords.length;
+
+        // Display no results message if necessary
+        this.onresult =
+            this.filteredRecords.length === 0 ? 'No records found' : '';
+    }
+
+    //  filterOFF
+    excludeRecords() {
+        const lowerCaseSearchTerms = this.filterOFF.map((term: string) =>
+            term.toLowerCase()
+        ); // Convert all search terms to lowercase.
+
+        if (this.filterOFF && this.filterOFF.length > 0) {
+            // Filter out rows where any value exactly matches any search term
+            this.filteredRecords = this.records.filter(
+                (record) =>
+                    !lowerCaseSearchTerms.some((term: string) =>
+                        Object.values(record).some((value) => {
+                            if (
+                                typeof value === 'string' ||
+                                typeof value === 'number'
+                            ) {
+                                return value.toString().toLowerCase() === term; // Exact match condition
+                            }
+                            return false;
+                        })
+                    )
+            );
+            this.data.data = this.filteredRecords;
+            this.records = this.data.data;
+        }
+
+        // Reset pagination when the search changes
+        this.first = 0;
+
+        // Update total record count for the paginator
+        this.totalRecords = this.filteredRecords.length;
+
+        // Display no results message if necessary
+        this.onresult =
+            this.filteredRecords.length === 0 ? 'No records found' : '';
     }
 
     // Custom sort function
