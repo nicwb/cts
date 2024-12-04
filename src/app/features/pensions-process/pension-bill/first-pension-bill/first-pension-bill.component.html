@@ -22,12 +22,14 @@
                             class="w-fit"
                             (blur)="onInputBlur()"
                         />
-                        <app-popup-table
-                            name="Open"
-                            [service$]="ppoList$"
-                            (return)="handleSelectedRow($event)"
-                        >
-                        </app-popup-table>
+                        <span [class.disabled]="isGenerateClicked">
+                            <app-popup-table
+                                name="Open"
+                                [service$]="ppoList$"
+                                (return)="handleSelectedRow($event)"
+                            >
+                            </app-popup-table>
+                        </span>
                     </div>
                     <span
                         *ngIf="massage"

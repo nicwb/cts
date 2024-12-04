@@ -52,6 +52,7 @@ export class FirstPensionBillComponent implements OnInit {
     isSearch = false;
     bankName: string = '';
     returnUri: string | null = null;
+    isGenerateClicked: boolean = false;
 
     // Define all constractor
     constructor(
@@ -225,6 +226,7 @@ export class FirstPensionBillComponent implements OnInit {
                 this.ppoInput = false;
             }
         }
+        this.isGenerateClicked=true;
     }
 
     // save function
@@ -387,6 +389,7 @@ export class FirstPensionBillComponent implements OnInit {
             this.massage = '';
             this.massageColor = '';
         }
+        this.isGenerateClicked=false;
     }
 
     // date calculate in p-calendar html propaty

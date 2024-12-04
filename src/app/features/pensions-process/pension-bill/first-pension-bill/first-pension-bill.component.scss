@@ -18,3 +18,7 @@
     color: #0e0e10;
     font-weight: bold;
   }
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
