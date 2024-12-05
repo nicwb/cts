@@ -7,22 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BranchResponseDTO } from './branch-response-dto';
 
 
 export interface LifeCertificateResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
     financialYear: number;
     ppoId: number;
-    ppoNo: string;
-    bankAcNo: string;
-    ifscCode: string;
-    accountHolderName: string;
-    mobileNumber: string;
-    certificateFlag?: boolean | null;
-    branchId?: number | null;
+    certificateSubmitted: boolean;
     id?: number;
-    branch?: BranchResponseDTO;
-    readonly bankId?: number;
 }
 

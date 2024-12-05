@@ -19,6 +19,7 @@ export interface PpoBillResponseDTO {
     bankBranchName?: string | null;
     treasuryName?: string | null;
     fromDate?: string;
+    toDate?: string;
     billType?: string;
     billNo?: number;
     billDate?: string;

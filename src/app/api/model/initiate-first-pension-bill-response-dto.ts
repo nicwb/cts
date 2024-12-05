@@ -33,5 +33,6 @@ export interface InitiateFirstPensionBillResponseDTO {
     preparedOn?: string;
     readonly pensionerId?: number;
     pensioner?: PensionerResponseDTO;
+    readonly bankBranchName?: string | null;
 }
 

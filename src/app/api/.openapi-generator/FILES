@@ -47,7 +47,10 @@ model/filter-parameter.ts
 model/initiate-first-pension-bill-dto.ts
 model/initiate-first-pension-bill-response-dto-json-api-response.ts
 model/initiate-first-pension-bill-response-dto.ts
+model/life-certificate-details-response-dto.ts
 model/life-certificate-entry-dto.ts
+model/life-certificate-list-response-dto-json-api-response.ts
+model/life-certificate-list-response-dto.ts
 model/life-certificate-response-dto-json-api-response.ts
 model/life-certificate-response-dto.ts
 model/list-all-ppo-receipts-response-dto-table-response-dto-json-api-response.ts

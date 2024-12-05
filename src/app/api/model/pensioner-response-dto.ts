@@ -26,6 +26,7 @@ export interface PensionerResponseDTO {
     pensionerName: string;
     gender?: string | null;
     dateOfBirth: string;
+    dateOfDeath?: string;
     mobileNumber?: string | null;
     emailId?: string | null;
     pensionerAddress?: string | null;

@@ -13,13 +13,6 @@ export interface LifeCertificateEntryDTO {
     dataSource?: { [key: string]: any; } | null;
     financialYear: number;
     ppoId: number;
-    ppoNo: string;
-    bankAcNo: string;
-    ifscCode: string;
-    accountHolderName: string;
-    mobileNumber: string;
-    certificateFlag?: boolean | null;
-    bankId?: number;
-    branchId?: number | null;
+    certificateSubmitted: boolean;
 }
 
