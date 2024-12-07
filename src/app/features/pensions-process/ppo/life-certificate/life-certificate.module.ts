@@ -20,6 +20,12 @@ import { LifeCertificateComponent } from './life-certificate.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PensionerStatusModule } from 'src/app/shared/modules/pensioner-status/pensioner-status.module';
 import { DividerModule } from 'primeng/divider';
+import { TableModule } from 'primeng/table';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
+import { RatingModule } from 'primeng/rating';
+import { ToastModule } from 'primeng/toast';
+import { ChipsModule } from 'primeng/chips';
 // import { PensionerStatusModule } from '../pensioner-status/pensioner-status.module';
 
 
@@ -48,11 +54,18 @@ const routes: Routes = [
         DropdownModule,
         DialogModule,
         CalendarModule,
+        TableModule,
         TreasuryDropdownModule,
         FieldsetModule,
+        ProgressBarModule,
         DividerModule,
         RouterModule.forChild(routes),
-        PensionerStatusModule
+        PensionerStatusModule,
+
+        ChipsModule,
+        ToastModule,
+        RatingModule,
+        PopupTableModule,
     ],
     exports: [LifeCertificateComponent],
 })

@@ -12,3 +12,28 @@ p{
   color: #0e0e10;
   font-weight: bold;
 }
+
+.table-auto {
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  padding: 8px;
+  background-color: #f9f9f9;
+  border-bottom: 2px solid #ddd;
+}
+
+tbody td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+.text-green-500 {
+  color: #22c55e;
+}
+.text-red-500 {
+  color: #ef4444;
+}
+.text-yellow-500 {
+  color: #fbbf24;
+}
