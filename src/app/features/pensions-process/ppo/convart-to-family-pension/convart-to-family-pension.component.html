@@ -1,244 +1,168 @@
 <div class="card py-2">
-    <div class="row">
+    <div class="row" *ngIf="DetailsFrom">
         <p-divider align="left" type="solid">
             <div class="inline-flex align-items-center mb-2">
                 <i class="pi pi-clone mr-2"></i>
                 <b>Details:</b>
             </div>
         </p-divider>
-        <div class="p-fluid formgrid grid">
-            <div class="field col-12 md:col-2">
-                <label><b>Ppo ID</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Ppo number</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Pensioner name</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Commencement date</b></label>
-                <p-calendar
-                    class="w-full p-3 border-inherit"
-                    class="w-full p-2"
-                    placeholder="Select Date"
-                    [showIcon]="true"
-                ></p-calendar>
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Basic pension</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Bank name</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Commuted Amount</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Bank account no : </b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Pension Reduced : </b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Date of death : </b></label>
-                <p-calendar
-                    class="w-full p-2"
-                    [readonlyInput]="true"
-                    placeholder="Select Date"
-                    [showIcon]="true"
-                    appendTo="body"
-                ></p-calendar>
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Pension Status</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Expire Date : </b></label>
-                <p-calendar
-                    class="w-full p-2"
-                    [readonlyInput]="true"
-                    placeholder="Select Date"
-                    [showIcon]="true"
-                    appendTo="body"
-                ></p-calendar>
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Pension Type</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Category Description</b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-            <div class="field col-12 md:col-2">
-                <label><b>Remarks : </b></label>
-                <input
-                    class="w-full p-3 border-inherit"
-                    type="text"
-                    pInputText
-                    class="w-full p-2 bg-cyan-100"
-                    [readonly]="true"
-                />
-            </div>
-        </div>
-        <div>
-            <!-- Divider with Icon and Label -->
-            <p-divider align="left" type="solid">
-                <div class="inline-flex items-center mb-2">
-                    <i class="pi pi-clone mr-2"></i>
-                    <b>Family Detail:</b>
+        <form [formGroup]="DetailsFrom">
+            <div class="p-fluid formgrid grid">
+                <div class="field col-12 md:col-2">
+                    <label><b>Ppo ID</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="ppoId" />
                 </div>
-            </p-divider>
 
-            <!-- PrimeNG Table -->
-            <p-table
-                [value]="familyDetails"
-                [responsive]="true"
-                [scrollable]="false"
-                scrollHeight="300px"
-                class="overflow-x-auto"
-            >
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th class="text-center">Dependent Name</th>
-                        <th class="text-center">Relationship</th>
-                        <th class="text-center">Date of Birth</th>
-                        <th class="text-center">Handicapped</th>
-                        <th class="text-center">Eligible for Family Pension</th>
-                    </tr>
-                </ng-template>
+                <div class="field col-12 md:col-2">
+                    <label><b>Ppo Number</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="ppoNo" />
+                </div>
 
-                <ng-template
-                    pTemplate="body"
-                    let-rowData
-                    let-rowIndex="rowIndex"
+                <div class="field col-12 md:col-2">
+                    <label><b>Pensioner Name</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="pensionerName" />
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Commencement Date</b></label>
+                    <p-calendar class="w-full p-2" placeholder="Select Date" [showIcon]="true" formControlName="dateOfCommencement" ></p-calendar>
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Basic Pension</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="basicPensionAmount" />
+                </div>
+
+                <div class="field col-12 md:col-2" formGroupName="branch">
+                    <label><b>Bank Name</b></label>
+                    <div formGroupName="bank">
+                        <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="bankName" />
+                    </div>
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Commuted Amount</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="commutedPensionAmount" />
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Bank Account No</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="bankAcNo" />
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Pension Reduced</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="reducedPensionAmount" />
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Date of Death</b></label>
+                    <p-calendar class="w-full p-2" placeholder="Select Date" [showIcon]="true" appendTo="body" formControlName="dateOfDeath"></p-calendar>
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Pension Type</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="ppoType" />
+                </div>
+
+                <div class="field col-12 md:col-2" formGroupName="category">
+                    <label><b>Category Description</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="categoryName" />
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <label><b>Remarks</b></label>
+                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="identificationMark" />
+                </div>
+            </div>
+        </form>
+
+            <div *ngIf="familyDetails" class="overflow-x-scroll">
+                <!-- Divider with Icon and Label -->
+                <p-divider align="left" type="solid">
+                    <div class="inline-flex items-center mb-2">
+                        <i class="pi pi-clone mr-2"></i>
+                        <b>Family Detail:</b>
+                    </div>
+                </p-divider>
+
+                <!-- PrimeNG Table -->
+                <p-table
+                    [value]="familyDetails"
+                    [responsive]="true"
+                    [scrollable]="false"
+                    scrollHeight="300px"
+                    class="overflow-x-auto"
                 >
-                    <tr>
-                        <td data-label="Dependent Name">
-                            <input
-                                type="text"
-                                pInputText
-                                class="w-full p-2 border border-gray-300 rounded"
-                                [(ngModel)]="familyDetails[rowIndex].name"
-                                placeholder="Enter Name"
-                            />
-                        </td>
-                        <td data-label="Relationship">
-                            <p-dropdown
-                                [options]="relationshipOptions"
-                                [(ngModel)]="
-                                    familyDetails[rowIndex].relationship
-                                "
-                                placeholder="Select Relationship"
-                                class="w-full p-2 border"
-                            ></p-dropdown>
-                        </td>
-                        <td data-label="Date of Birth">
-                            <input
-                                type="date"
-                                pInputText
-                                class="w-full p-2 border border-gray-300"
-                                [(ngModel)]="familyDetails[rowIndex].dob"
-                            />
-                        </td>
-                        <td data-label="Handicapped">
-                            <input
-                                type="checkbox"
-                                [(ngModel)]="
-                                    familyDetails[rowIndex].handicapped
-                                "
-                            />
-                        </td>
-                        <td data-label="Eligible for Family Pension">
-                            <input
-                                type="checkbox"
-                                [(ngModel)]="
-                                    familyDetails[rowIndex].eligibleForPension
-                                "
-                            />
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="text-center">Dependent Name</th>
+                            <th class="text-center">Relationship</th>
+                            <th class="text-center">Date of Birth</th>
+                            <th class="text-center">Handicapped</th>
+                            <th class="text-center">Eligible for Family Pension</th>
+                        </tr>
+                    </ng-template>
 
-        <div>
+                    <ng-template
+                        pTemplate="body"
+                        let-rowData
+                        let-rowIndex="rowIndex"
+                    >
+                        <tr>
+                            <td data-label="Dependent Name">
+                                <input
+                                    type="text"
+                                    pInputText
+                                    class="w-full p-2 border border-gray-300 rounded"
+                                    [(ngModel)]="familyDetails[rowIndex].
+nomineeName"
+                                    placeholder="Enter Name"
+                                />
+                            </td>
+                            <td data-label="Relationship">
+                                <p-dropdown
+                                    [options]="relationshipOptions"
+                                    [(ngModel)]="
+                                        familyDetails[rowIndex].
+                                        relation
+                                    "
+                                    placeholder="Select Relationship"
+                                    class="w-full p-2 border"
+                                ></p-dropdown>
+                            </td>
+                            <td data-label="Date of Birth">
+                                <input
+                                    type="date"
+                                    pInputText
+                                    class="w-full p-2 border border-gray-300"
+                                    [(ngModel)]="familyDetails[rowIndex].dateOfBirth
+                                    "
+                                />
+                            </td>
+                            <td data-label="Handicapped">
+                                <input
+                                    type="checkbox"
+                                    [(ngModel)]="
+                                        familyDetails[rowIndex].handicapped
+                                    "
+                                />
+                            </td>
+                            <td data-label="Eligible for Family Pension">
+                                <input
+                                    type="checkbox"
+                                    [(ngModel)]="
+                                        familyDetails[rowIndex].nomineeActive
+                                    "
+                                />
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+
+        <div *ngIf="FamilyPensionDetails">
             <p-divider align="left" type="solid">
                 <div class="inline-flex align-items-center mb-2">
                     <i class="pi pi-clone mr-2"></i>
@@ -268,7 +192,7 @@
                     let-rowIndex="rowIndex"
                 >
                     <tr>
-                        <td data-label="Pension">
+                        <td data-label="Pension" >
                             <input
                                 type="text"
                                 pInputText
@@ -433,6 +357,7 @@
                     type="button"
                     label="Save"
                     class="p-button-warning px-3"
+                    (click)="onSave();"
                 >
                     <i class="pi pi-save mr-2"></i>
                 </button>
@@ -445,6 +370,7 @@
                     type="button"
                     label="Reset"
                     class="p-button-secondary px-3"
+                    (click)="onReset();"
                 >
                     <i class="pi pi-replay mr-2"></i>
                 </button>

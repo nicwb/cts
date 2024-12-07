@@ -7,7 +7,6 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.tabSize": 2,
   "editor.fontLigatures": true,
-  "editor.fontFamily": "'Fira Code', 'Cascadia Code', Consolas, 'Courier New', monospace",
   "git.ignoreMissingGitWarning": true,
   "window.customTitleBarVisibility": "never",
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,

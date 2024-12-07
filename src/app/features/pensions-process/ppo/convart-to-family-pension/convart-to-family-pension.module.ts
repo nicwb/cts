@@ -9,7 +9,7 @@ import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [ConvartToFamilyPensionComponent],
@@ -22,7 +22,8 @@ import { CalendarModule } from 'primeng/calendar';
         TableModule,
         FormsModule,
         DropdownModule,
-        CalendarModule
+        CalendarModule,
+        ReactiveFormsModule
 
     ]
 })
