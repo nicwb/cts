@@ -56,6 +56,11 @@ const routes: Routes = [
         path: 'convart-to-family-pension',
         component: ConvartToFamilyPensionComponent,
         data: {breadcrumb: 'ConvartToFamilyPensionComponent'}
+    },
+    {
+        path: 'convart-to-family-pension/:id',
+        component: ConvartToFamilyPensionComponent,
+        data: { breadcrumb: 'Convert to Family Pension:id' }
     }
 ];
 
