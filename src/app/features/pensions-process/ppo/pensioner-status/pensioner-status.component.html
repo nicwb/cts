@@ -141,15 +141,17 @@
                         [options]="reasons"
                         class="w-full p-2"
                         (onChange)="changeReason($event)"
+                        [(ngModel)]="reason"
                     ></p-dropdown>
                 </div>
                 <div class="p-fluid formgrid grid col-12 md:col-3"  >
                     <div class="field col-12 md:col-8">
-                        <label for="dateOfRetirement"><b>From Date</b></label>
+                        <label for="dateOfRetirement"><b>{{From_Date}}</b></label>
                         <p-calendar
                             dateFormat="dd-mm-yy"
                             [showIcon]="true"
                             (onSelect)="getDate($event)"
+                            [(ngModel)]="from_date"
                         ></p-calendar>
                     </div>
                     <div class="field col-12 md:col-4" [formGroup]="statusFormDetails">
@@ -228,7 +230,7 @@
             </div>
 
             <!-- Save Button -->
-            <div class="w-100" style="display: flex; justify-content: center">
+            <div class="w-100 gap-4"  style="display: flex; justify-content: center">
                 <p-button
                     label="Save"
                     icon="pi pi-bookmark"
@@ -236,6 +238,12 @@
                     (click)="saveData()"
                     [disabled]="!statusFormDetails.valid"
                 ></p-button>
+                <p-button
+                label="Refresh"
+                icon="pi pi-bookmark"
+                styleClass="p-button-raised"
+                (click)="refreshdata()"
+            ></p-button>
             </div>
         </div>
     </div>
