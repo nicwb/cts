@@ -64,6 +64,8 @@ export class AppSidebarPensionComponent implements OnInit {
                                 items: [
                                     { label: 'Entry', routerLink: ['pension-process/ppo/entry'] },
                                     { label: 'PPO Receipt',  routerLink: ['pension-process/ppo/ppo-receipt'] },
+                                    { label: 'Pensioner Status',  routerLink: ['pension-process/ppo/pensioner-status'] },
+
                                     // { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
                                     { label: 'Life Certificate',  routerLink: ['pension-process/ppo/life-certificate'] },
                                     { label: 'Convert to family pension',  routerLink: ['pension-process/ppo/convart-to-family-pension'] },

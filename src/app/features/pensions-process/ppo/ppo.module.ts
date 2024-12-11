@@ -21,6 +21,7 @@ import { DetailsComponent } from './ppodetails/details/details.component';
 import { PpodetailsComponent } from './ppodetails/ppodetails.component';
 import {ConvartToFamilyPensionComponent} from './convart-to-family-pension/convart-to-family-pension.component'
 import {ConvartToFamilyPensionModule} from './convart-to-family-pension/convart-to-family-pension.module'
+import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
 const routes: Routes = [
     {
         path: '', component: PpoComponent, data: {breadcrumb: 'PpoComponent'}
@@ -56,6 +57,11 @@ const routes: Routes = [
         path: 'convart-to-family-pension',
         component: ConvartToFamilyPensionComponent,
         data: {breadcrumb: 'ConvartToFamilyPensionComponent'}
+    },
+    {
+        path: 'pensioner-status',
+        component: PensionerStatusComponent,
+        data: { breadcrumb: 'PensionerStatusComponent'}
     }
 ];
 

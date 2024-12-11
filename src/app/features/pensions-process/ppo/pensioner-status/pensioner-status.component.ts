@@ -1,43 +1,21 @@
-import { Result } from './../../../../core/models/pension-bill';
+import { Component, OnInit } from '@angular/core';
 import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    Output,
-} from '@angular/core';
-import {
-    AbstractControl,
     FormBuilder,
-    FormControl,
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { Validators } from '@angular/forms';
-import { Payload } from 'src/app/core/models/search-query';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
-    PensionManualPPOReceiptService,
     PensionPPODetailsService,
-    PensionCategoryMasterService,
-    ListAllPpoReceiptsResponseDTO,
-    APIResponseStatus,
-    PensionBankBranchService,
     PensionPPOStatusService,
     PensionStatusFlag,
     PensionStatusEntryDTO,
 } from 'src/app/api';
-import { firstValueFrom, Observable, Subscription, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { firstValueFrom, Observable } from 'rxjs';
 import { PensionFactoryService } from 'src/app/api';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
-import { ppid } from 'process';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -119,6 +97,10 @@ export class PensionerStatusComponent implements OnInit {
     pastReason?: any;
     pastRemark?: any;
     SlNo?: any = 0;
+    from_date: any;
+    reason: any;
+    From_Date = 'From Date';
+
     statusFormDetails: FormGroup = new FormGroup({});
 
     constructor(
@@ -135,13 +117,11 @@ export class PensionerStatusComponent implements OnInit {
     }
     ininalizer() {
         this.statusFormDetails = this.fb.group({
-            statusFlag: [null, Validators.required],
-            reasonFlag: [null],
-            statusWef: [null, Validators.required],
-            reasonRemark: [null],
-            ppoId: [null, Validators.required],
-            dataSource: null,
-            statusUpto: null,
+            statusFlag: ['', Validators.required],
+            reasonFlag: [''],
+            statusWef: ['', Validators.required],
+            reasonRemark: [''],
+            ppoId: ['', Validators.required],
         });
     }
 
@@ -207,7 +187,6 @@ export class PensionerStatusComponent implements OnInit {
         } else {
             this.reasondiv = false;
         }
-
     }
     async callStatus(id: any): Promise<void> {
         const list: PensionStatusFlag[] = [
@@ -220,6 +199,7 @@ export class PensionerStatusComponent implements OnInit {
             a = await firstValueFrom(
                 this.status.getPpoStatusFlagByPpoId(id, li)
             );
+            console.log(a);
             if (a.apiResponseStatus == 'Success') {
                 this.statusOption = li;
                 this.statusFormDetails.patchValue({
@@ -262,6 +242,14 @@ export class PensionerStatusComponent implements OnInit {
         this.statusFormDetails.patchValue({
             reasonFlag: event.value,
         });
+        if (
+            this.statusFormDetails.value.reasonFlag == 'Death' &&
+            this.statusFormDetails.value.statusFlag == 'PpoSuspended'
+        ) {
+            this.From_Date = 'Date of Death';
+        } else {
+            this.From_Date = 'From Date';
+        }
     }
     getDate(event: any) {
         const year = event.getFullYear();
@@ -273,22 +261,52 @@ export class PensionerStatusComponent implements OnInit {
         });
     }
     async saveData() {
-        if (this.checked) {
-            const payload: PensionStatusEntryDTO = {
-                statusFlag: this.statusFormDetails.value.statusFlag,
-                statusWef: this.statusFormDetails.value.statusWef,
-                ppoId: this.statusFormDetails.value.ppoId,
-                reasonFlag: this.statusFormDetails.value.reasonFlag,
-                reasonRemark: this.statusFormDetails.value.reasonRemark,
-            };
+        console.log(this.statusFormDetails);
 
-            const val = await firstValueFrom(this.status.setPpoStatusFlag(payload));
-            console.log(val);
-            if (val.apiResponseStatus === 'Success') {
-                this.toastService.showSuccess('' + val.message);
+        if (this.checked) {
+            if (this.statusFormDetails.value.statusFlag == '') {
+                this.toastService.showWarning('Please select status');
+            } else if (this.statusFormDetails.value.statusWef == '') {
+                this.toastService.showWarning('Please select from date');
+            } else if (this.statusFormDetails.value.ppoId == '') {
+                this.toastService.showWarning('Please select PPO ID');
+            } else if (this.statusFormDetails.value.reasonFlag == '') {
+                this.toastService.showWarning('Please select reason');
+            } else {
+                const payload: PensionStatusEntryDTO = {
+                    statusFlag: this.statusFormDetails.value.statusFlag,
+                    statusWef: this.statusFormDetails.value.statusWef,
+                    ppoId: this.statusFormDetails.value.ppoId,
+                    reasonFlag: this.statusFormDetails.value.reasonFlag,
+                    reasonRemark: this.statusFormDetails.value.reasonRemark,
+                };
+
+                const val = await firstValueFrom(
+                    this.status.setPpoStatusFlag(payload)
+                );
+                console.log(val);
+                if (val.apiResponseStatus === 'Success') {
+                    this.toastService.showSuccess('' + val.message);
+                }
             }
         } else {
             this.toastService.showWarning('Please check the Changed Option');
         }
+    }
+    async refreshdata() {
+        this.statusFormDetails.reset();
+        this.Ppoid = '';
+        this.PensionerName = '';
+        this.PensionerType = '';
+        this.SlNo = '';
+        this.startdate = '';
+        this.statusOption = '';
+        this.checked = false;
+        this.AccountHolder = '';
+        this.pastStatusWef = '';
+        this.pastRemark = '';
+        this.pastReason = '';
+        this.from_date = '';
+        this.reason = '';
     }
 }
