@@ -469,9 +469,10 @@ export class FamilyNomineeComponent implements OnInit {
                 if (nominee.bankId) {
                     const response_branch = await firstValueFrom(this.pensionBankBranchService.getBranchesByBankId(nominee.bankId));
                     const branch = response_branch.result?.branches?.find((branch) => branch.id === nominee.branchId);
+                    const bank = response_branch.result?.bank;
                     await this.fetchBankName();
-                    await this.fetchBankBranch(branch?.bankId ?? 0); // Replace `0` with an appropriate default
-                    const bankName = this.bankName.find((item) => item.value === branch?.bank?.id);
+                    await this.fetchBankBranch(bank?.id ?? 0); // Replace `0` with an appropriate default
+                    const bankName = this.bankName.find((item) => item.value === bank?.id);
                     const bankBranch = this.branchName.find((item) => item.label === branch?.branchName);
                     this.ifscCode = bankBranch?.ifscCode ?? null;
                     if (branch) {

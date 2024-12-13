@@ -25,6 +25,7 @@ model/api-response-status.ts
 model/bank-list-response-dto-json-api-response.ts
 model/bank-list-response-dto.ts
 model/bank-response-dto.ts
+model/branch-list-item-response-dto.ts
 model/branch-list-response-dto-json-api-response.ts
 model/branch-list-response-dto.ts
 model/branch-response-dto.ts

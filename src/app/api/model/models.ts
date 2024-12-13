@@ -2,6 +2,7 @@ export * from './api-response-status';
 export * from './bank-list-response-dto';
 export * from './bank-list-response-dto-json-api-response';
 export * from './bank-response-dto';
+export * from './branch-list-item-response-dto';
 export * from './branch-list-response-dto';
 export * from './branch-list-response-dto-json-api-response';
 export * from './branch-response-dto';

@@ -40,6 +40,23 @@ export interface PensionerResponseDTO {
     commutedFromDate?: string;
     commutedUptoDate?: string;
     enhancePensionAmount: number;
+    efpAmount?: number | null;
+    efpWefDate?: string;
+    efpUptoDate?: string;
+    nfpAmount?: number | null;
+    nfpWefDate?: string;
+    notionalPensionAmount?: number | null;
+    notionalWefDate?: string;
+    gpfTpfNo?: string | null;
+    healthScheme?: boolean | null;
+    employedPensioner?: boolean | null;
+    reEmployedPensioner?: boolean | null;
+    doublePension?: boolean | null;
+    adhocPension?: boolean | null;
+    provisionalPension?: boolean | null;
+    interimAllowance?: boolean | null;
+    sharedPension?: boolean | null;
+    remarks?: string | null;
     reducedPensionAmount: number;
     religion: string;
     id?: number;
@@ -49,5 +66,7 @@ export interface PensionerResponseDTO {
     branch?: BranchResponseDTO;
     ppoSanctionDetails?: Array<PpoSanctionDetailsResponseDTO> | null;
     readonly bankId?: number;
+    pensionerStatus?: string | null;
+    firstPensionGenerated?: boolean | null;
 }
 
