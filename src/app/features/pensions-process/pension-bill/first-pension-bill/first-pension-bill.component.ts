@@ -30,6 +30,7 @@ export class FirstPensionBillComponent implements OnInit {
     period: string = '';
     pensionForm: FormGroup = this.fb.group({});
     totalDueAmount: number = 0;
+    totalGrossAmount: number = 0;
     isPrint: boolean = false;
     isDataLoaded: boolean = false;
     billdate = new Date().toISOString().split('T')[0];
@@ -86,7 +87,7 @@ export class FirstPensionBillComponent implements OnInit {
             pensionerName: ['', Validators.required],
             periodFrom: ['', Validators.required],
             periodTo: [null, [Validators.required]],
-            // bankName: ['', Validators.required],
+            bankName: ['', Validators.required],
             accountNo: ['', Validators.required],
             billDate: [this.billdate, Validators.required],
         });
@@ -192,15 +193,16 @@ export class FirstPensionBillComponent implements OnInit {
                     this.pensionForm.patchValue({
                         ppoNo: this.response.result?.pensioner?.ppoNo,
                         pensionerName: this.response.result?.pensioner?.pensionerName,
-                        periodFrom: this.response.result?.pensioner?.dateOfRetirement,
+                        periodFrom: this.response.result?.pensioner?.dateOfCommencement,
                         accountNo: this.response?.result?.pensioner?.bankAcNo,
-                        // bankName: this.bankName, // Use the retrieved bank name
+                        bankName: this.response.result?.bankBranchName, // Use the retrieved bank name
                         periodTo: this.response.result?.toDate,
                         billDate: this.response.result?.billDate,
                     });
                     this.payments = this.response?.result?.pensionerPayments || [];
                     this.pensioncategory = this.response?.result?.pensioner?.category;
-                    this.calculateTotalDueAmount();
+                    this.totalDueAmount = this.response.result?.netAmount ?? 0;
+                    this.totalGrossAmount = this.response.result?.grossAmount ?? 0;
                     this.isDataLoaded = true;
                     this.hasSaved = true;
                     this.massage = '';
@@ -353,12 +355,12 @@ export class FirstPensionBillComponent implements OnInit {
     }
 
     // calculate total value
-    calculateTotalDueAmount() {
-        this.totalDueAmount = this.payments?.reduce(
-            (acc, payment) => acc + (payment?.dueAmount || 0), // Ensure payment and dueAmount are valid
-            0
-        ) || 0; // Fallback to 0 if payments is undefined
-    }
+    // calculateTotalDueAmount() {
+    //     this.totalDueAmount = this.payments?.reduce(
+    //         (acc, payment) => acc + (payment?.dueAmount || 0), // Ensure payment and dueAmount are valid
+    //         0
+    //     ) || 0; // Fallback to 0 if payments is undefined
+    // }
 
 
     // generate button cuntrol

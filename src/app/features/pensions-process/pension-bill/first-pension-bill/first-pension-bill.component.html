@@ -55,16 +55,6 @@
                             placeholder="Select a date"
                             [disabled]="isApiResponseStatus1"
                         ></p-calendar>
-                        <button
-                            type="submit"
-                            pButton
-                            pRipple
-                            (click)="getvalue()"
-                            class="w-fit"
-                            [disabled]="!isgenerate"
-                        >
-                            Generate
-                        </button>
                     </div>
                 </div>
             </div>
@@ -100,20 +90,20 @@
                             <td>
                                 {{
                                     pensionDetails.periodFrom
-                                        | date : "yyyy-MM-dd"
+                                        | date : "dd-MM-yyyy"
                                 }}
                             </td>
                             <td>
                                 {{
                                     pensionDetails.periodTo
-                                        | date : "yyyy-MM-dd"
+                                        | date : "dd-MM-yyyy"
                                 }}
                             </td>
                             <td>{{ pensionDetails.bankName }}</td>
                             <td>
                                 {{
                                     pensionDetails.billDate
-                                        | date : "yyyy-MM-dd"
+                                        | date : "dd-MM-yyyy"
                                 }}
                             </td>
                             <td>{{ pensionDetails.accountNo }}</td>
@@ -138,7 +128,7 @@
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="id">
+                            <th pSortableColumn="id" *ngIf="res && res.result && res.result.id !== undefined">
                                 Bill No<p-sortIcon field="id"></p-sortIcon>
                             </th>
                             <th pSortableColumn="categoryName">
@@ -173,10 +163,10 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-category>
                         <tr>
-                            <td></td>
+                            <td *ngIf="res && res.result && res.result.id !== undefined">{{ res.result.id }}</td>
                             <td>{{ category.categoryName }}</td>
                             <td>{{ category.primaryCategory.hoaId }}</td>
-                            <td>₹ {{ totalDueAmount }}</td>
+                            <td>₹ {{ totalGrossAmount }}</td>
                             <td>0</td>
                             <td>₹ {{ totalDueAmount }}</td>
                             <td>
@@ -188,8 +178,9 @@
                         <tr>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td class="text-lg">
-                                Total Component Amount: ₹ {{ totalDueAmount }}
+                                Total Amount: ₹ {{ totalDueAmount }}
                             </td>
                         </tr>
                     </ng-template>
@@ -248,8 +239,8 @@
                         <tr class="">
                             <td class="p-2">{{ payment.breakupId }}</td>
                             <td class="p-2">{{ payment.componentName }}</td>
-                            <td class="p-2">{{ payment.fromDate }}</td>
-                            <td class="p-2">{{ payment.toDate }}</td>
+                            <td class="p-2">{{ payment.fromDate | date : "dd-MM-yyyy" }}</td>
+                            <td class="p-2">{{ payment.toDate |  date : "dd-MM-yyyy"}}</td>
                             <td class="p-2">
                                 {{
                                     payment.rateType === "P"
@@ -275,6 +266,7 @@
                         <tr>
                             <td></td>
                             <td></td>
+                            <td></td>
                             <td class="text-lg">
                                 Total Component Amount: ₹ {{ totalDueAmount }}
                             </td>
@@ -292,6 +284,17 @@
             <div
                 class="flex flex-col mt-2 align-items-center justify-content-center"
             >
+            <div class="flex flex-wrap gap-2 mx-2">
+                <button
+                type="submit"
+                pButton
+                pRipple
+                (click)="getvalue()"
+                class="w-fit"
+                [disabled]="!isgenerate"
+            >
+                Generate
+            </button>
                 <!-- Save Button -->
                 <div class="flex flex-wrap gap-2 mx-2" *ngIf="hasSaved">
                     <p-button
@@ -316,7 +319,6 @@
                     </button>
                 </div>
                 <!-- Refresh Button -->
-                <div class="flex flex-wrap gap-2 mx-2">
                     <button
                         type="button"
                         pButton
