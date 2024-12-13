@@ -30,7 +30,7 @@ export interface PpoBillResponseDTO {
     breakups?: Array<PpoBillBreakupEntryDTO> | null;
     drawnAmount?: number;
     treasuryVoucherNo?: string | null;
-    treasuryVoucherDate?: string;
+    treasuryVoucherDate?: string | null;
     pensioner?: PensionerResponseDTO;
     ppoBillBreakups?: Array<PpoBillBreakupResponseDTO> | null;
     preparedBy?: string | null;

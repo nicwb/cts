@@ -16,7 +16,7 @@ export interface PensionStatusDTO {
     statusFlag: PensionStatusFlag;
     reasonFlag?: PensionStatusReassonFlag;
     statusWef: string;
-    statusUpto?: string;
+    statusUpto?: string | null;
     reasonRemark?: string | null;
 }
 export namespace PensionStatusDTO {

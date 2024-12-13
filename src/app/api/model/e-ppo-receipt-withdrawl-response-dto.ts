@@ -7,16 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 
-export interface PpoComponentRevisionResponseDTO { 
+export interface EPpoReceiptWithdrawlResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    rateId: number;
-    fromDate: string;
-    amountPerMonth: number;
     id?: number;
-    toDate?: string | null;
-    rate?: ComponentRateResponseDTO;
+    pensionApplnNo?: string | null;
+    pensionerName?: string | null;
+    ppoTypeCode?: string;
+    ppoId?: number | null;
+    treasuryCode?: string | null;
 }
 

@@ -21,7 +21,7 @@ export interface InitiateFirstPensionBillResponseDTO {
     pensionerPayments?: Array<PpoPaymentListItemDTO> | null;
     ppoBillBreakups?: Array<PpoBillBreakupResponseDTO> | null;
     billGeneratedUptoDate?: string;
-    toDate?: string;
+    readonly toDate?: string;
     billDate?: string;
     treasuryVoucherNo?: string | null;
     treasuryVoucherId?: number;

@@ -17,9 +17,9 @@ export interface PpoSanctionDetailsResponseDTO {
     sanctionAuthority: string;
     sanctionNo: string;
     sanctionDate: string;
-    employeeDob?: string;
+    employeeDob?: string | null;
     employeeGender?: string | null;
-    employeeDateOfAppointment?: string;
+    employeeDateOfAppointment?: string | null;
     employeeOffice?: string | null;
     employeeDesignation?: string | null;
     employeeLastPay?: number | null;
@@ -27,7 +27,7 @@ export interface PpoSanctionDetailsResponseDTO {
     employeeHrmsId?: string | null;
     issuingAuthority?: string | null;
     issuingLetterNo?: string | null;
-    issuingLetterDate?: string;
+    issuingLetterDate?: string | null;
     qualifyingServiceGrossYears?: number | null;
     qualifyingServiceGrossMonths?: number | null;
     qualifyingServiceGrossDays?: number | null;

@@ -17,8 +17,9 @@ export interface NomineeResponseDTO {
     nomineeName: string;
     relation: string;
     dateOfBirth: string;
-    dateOfDeath?: string;
-    nomineeType?: string | null;
+    dateOfDeath?: string | null;
+    nomineeType: string;
+    nomineeAdultMinor: string;
     nomineePriority?: number | null;
     nomineeShare?: number | null;
     familyPension?: boolean | null;
