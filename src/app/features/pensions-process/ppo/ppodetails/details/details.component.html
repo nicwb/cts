@@ -26,15 +26,120 @@
 
 <div class="card py-2">
     <div class="row">
-        <!-- Search PPO ID -->
-
-        <div *ngIf="!ppoId" class="formgroup-inline w-100 relative m-5 p-4">
+        <!-- <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center mb-0">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Transferred PPO Search Details:</b>
+            </div>
+        </p-divider>
+        Search PPO ID
+        <div class="formgroup-inline w-100 relative m-5 mt-0 p-4 pt-2">
             <div class="p-float-label absolute" style="left: 29px">
-                <input style="width: 80%" type="text" pInputText [(ngModel)]="eppoid"
-                     class="bg-cyan-100" />
-                <label for="float-input"><b>e-PPO Application No/TRID</b></label>
-                <app-popup-table [service$]="allManualPPOReceipt$"
-                    (return)="handelManualEntrySelect($event)"></app-popup-table>
+                <input
+                    style="width: 80%"
+                    type="text"
+                    pInputText
+                    class="bg-cyan-100"
+                />
+                <label for="float-input"><b>Transferred PPO no.:(.)</b></label>
+                <app-popup-table [service$]=""></app-popup-table>
+            </div>
+        </div> -->
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center mb-0">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Manual/E-PPO Search Details:</b>
+            </div>
+        </p-divider>
+        <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-3">
+                <div
+                    *ngIf="!ppoId"
+                    class="formgroup-inline w-100 relative m-5 mt-0 p-4 pt-2"
+                >
+                    <div class="p-float-label absolute">
+                        <input
+                            style="width: 80%"
+                            type="text"
+                            pInputText
+                            [(ngModel)]="eppoid"
+                            class="bg-cyan-100"
+                        />
+                        <label for="float-input"
+                            ><b>e-PPO Application No/TRID</b></label
+                        >
+                        <app-popup-table
+                            [service$]="allManualPPOReceipt$"
+                            (return)="handelManualEntrySelect($event)"
+                        ></app-popup-table>
+                    </div>
+                </div>
+            </div>
+            <div class="field col-8 md:col-4 ml-7 md:ml-0 pt-2" *ngIf="!ppoId">
+                <p-button
+                    [label]="'E-PPO (_)'"
+                    icon="pi pi-bookmark"
+                    styleClass="p-button-raised "
+                >
+                </p-button>
+            </div>
+            <!-- <div class="field col-12 md:col-3" *ngIf="ppoId">
+                <b>{{legend}}</b>
+            </div> -->
+        </div>
+
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center mb-2">
+                <i class="pi pi-clone mr-2"></i>
+                <b>PPO Status Details:</b>
+            </div>
+        </p-divider>
+        <div class="p-fluid formgrid grid">
+            <div class="field col-12 md:col-4">
+                <label for=""><b> Pensioner's Status:</b></label>
+                <input
+                    class="w-full p-3 border-inherit"
+                    pInputText
+                    class="w-full p-2 bg-cyan-100"
+                    [readonly]="true"
+                    [(ngModel)]="pensionerStatus"
+                />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="commutedPensionAmount"
+                    ><b> PPO Approval Flag.:</b></label
+                >
+                <div class="flex">
+                    <div class="p-field-radiobutton mx-4">
+                        <p-radioButton
+                            name="ApprovalFlag"
+                            value="true"
+                            [(ngModel)]="ApprovalFlag"
+                            inputId="Yes"
+                        ></p-radioButton>
+                        <label for="Yes">Yes</label>
+                    </div>
+                    <div class="p-field-radiobutton mx-4">
+                        <p-radioButton
+                            name="ApprovalFlag"
+                            value="false"
+                            [(ngModel)]="ApprovalFlag"
+                            inputId="No"
+                        ></p-radioButton>
+                        <label for="No">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field col-12 md:col-4">
+                <label for=""><b> PPO Approve Date:</b></label>
+                <input
+                    class="w-full p-3 border-inherit"
+                    pInputText
+                    class="w-full p-2 bg-cyan-100"
+                    [readonly]="true"
+                    [(ngModel)]="PPOApproveDate"
+                />
             </div>
         </div>
 
@@ -49,35 +154,57 @@
                 </p-divider>
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-1">
-                        <label><b>Pensioner ID</b></label>
-                        <input class="w-full p-3  border-inherit" type="text" pInputText formControlName="id"  class="w-full p-2 bg-cyan-100"  [readonly]="true" >
-                    </div>
-                    <div class="field col-12 md:col-1">
                         <label><b>PPO ID</b></label>
-                        <input class="w-full p-3  border-inherit" type="text" pInputText formControlName="ppoId"  class="w-full p-2 bg-cyan-100"  [readonly]="true" >
+                        <input
+                            class="w-full p-3 border-inherit"
+                            type="text"
+                            pInputText
+                            formControlName="ppoId"
+                            class="w-full p-2 bg-cyan-100"
+                            [readonly]="true"
+                        />
                     </div>
                     <div class="field col-12 md:col-2">
                         <label><b>PPO No. :</b></label>
-                        <input class="w-full p-3 border-inherit bg-cyan-100" type="text" pInputText formControlName="ppoNo" [readonly]="true"
-                            class="w-full p-2 bg-cyan-100" />
+                        <input
+                            class="w-full p-3 border-inherit bg-cyan-100"
+                            type="text"
+                            pInputText
+                            formControlName="ppoNo"
+                            [readonly]="true"
+                            class="w-full p-2 bg-cyan-100"
+                        />
                     </div>
                     <div class="field col-12 md:col-3">
                         <label><b>Pensioner Name :</b></label>
-                        <input class="w-full p-2 border-inherit bg-cyan-100" id="pensionerName" type="text" pInputText
-                            formControlName="pensionerName" bg-cyan-100class="w-full p-2 " [readonly]="true"/>
+                        <input
+                            class="w-full p-2 border-inherit bg-cyan-100"
+                            id="pensionerName"
+                            type="text"
+                            pInputText
+                            formControlName="pensionerName"
+                            bg-cyan-100class="w-full p-2 "
+                            [readonly]="true"
+                        />
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="type"><b>Type :</b></label>
-                        <p-dropdown [options]="[
+                        <p-dropdown
+                            [options]="[
                                 { label: 'Pension', value: 'P' },
                                 { label: 'Bank', value: 'F' },
                                 { label: 'CPF', value: 'C' }
-                            ]" formControlName="ppoType" placeholder="Select Type" class="w-full p-2"></p-dropdown>
+                            ]"
+                            formControlName="ppoType"
+                            placeholder="Select Type"
+                            class="w-full p-2"
+                        ></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-2">
                         <label for="subType"><b>Sub Type :</b></label>
-                        <p-dropdown [options]="[
+                        <p-dropdown
+                            [options]="[
                                 { label: 'Employed', value: 'E' },
                                 { label: 'Widow Daughter', value: 'L' },
                                 { label: 'Unmarried Daughter', value: 'U' },
@@ -93,64 +220,161 @@
                                 { label: 'Dependent Mother', value: 'K' },
                                 { label: 'Husband', value: 'H' },
                                 { label: 'Wife', value: 'W' }
-                            ]" formControlName="ppoSubType" placeholder="Select Sub Type" class="w-full p-2"></p-dropdown>
+                            ]"
+                            formControlName="ppoSubType"
+                            placeholder="Select Sub Type"
+                            class="w-full p-2"
+                        ></p-dropdown>
                     </div>
                     <!-- <div class="field col-12 md:col-4"></div> -->
-                    <div class="field col-12 md:col-4">
-                        <label for="categoryDescription"><b>Cat Description :</b></label>
+                    <div class="field col-12 md:col-3">
+                        <label for="categoryDescription"
+                            ><b>Cat Description :</b></label
+                        >
                         <div class="w-full flex gap-1">
-                            <input class="w-full p-3 border-inherit" pInputText formControlName="categoryDescription"
-                                class="w-full p-2" />
-                            <app-popup-table [service$]="catDescription$"
-                                (return)="handelCategoryDescription($event)"></app-popup-table>
+                            <input
+                                class="w-full p-3 border-inherit"
+                                pInputText
+                                formControlName="categoryDescription"
+                                class="w-full p-2"
+                            />
+                            <app-popup-table
+                                [service$]="catDescription$"
+                                (return)="handelCategoryDescription($event)"
+                            ></app-popup-table>
                         </div>
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="catSubCatid"><b>Cat-SubCatID :</b></label>
                         <div class="w-full flex gap-1">
-                            <input class="w-full p-3 border-inherit" pInputText formControlName="categoryIdShow" [readonly]="true"
-                                class="w-full p-2  bg-cyan-100" />
-                            <input class="w-full p-3 border-inherit" pInputText formControlName="subCatDesc" [readonly]="true"
-                                class="w-full p-2  bg-cyan-100" />
+                            <input
+                                class="w-full p-2 border-inherit bg-cyan-100"
+                                pInputText
+                                formControlName="categoryIdShow"
+                                [readonly]="true"
+                            />
+                            <input
+                                class="w-full p-2 border-inherit bg-cyan-100"
+                                pInputText
+                                formControlName="subCatDesc"
+                                [readonly]="true"
+                            />
                         </div>
                     </div>
-                    <div class="field col-12 md:col-3">
-                        <label for="dateOfRetirement"><b>Retirement Date :</b></label>
-                        <p-calendar formControlName="dateOfRetirement" dateFormat="dd-mm-yy"
-                            [showIcon]="true"></p-calendar>
+                    <div class="field col-12 md:col-2">
+                        <label for="dateOfRetirement"
+                            ><b>Retirement Date :</b></label
+                        >
+                        <p-calendar
+                            formControlName="dateOfRetirement"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for=""><b>Date of Death :</b></label>
+                        <p-calendar
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                            formControlName="dateOfDeath"
+                        ></p-calendar>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="dateOfCommencement"
+                            ><b>Commencement Date :</b></label
+                        >
+                        <p-calendar
+                            formControlName="dateOfCommencement"
+                            dateFormat="dd-mm-yy"
+                            [disabled]="true"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
                     <div class="field col-12 md:col-3">
-                        <label for="dateOfCommencement"><b>Commencement Date :</b></label>
-                        <p-calendar formControlName="dateOfCommencement" dateFormat="dd-mm-yy" [disabled]="true" [showIcon]="true"></p-calendar>
+                        <label><b> Notional Basic Pension :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            class="w-full p-2"
+                            formControlName="notionalPensionAmount"
+                        />
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="effectiveDate"><b>Effective Date :</b></label>
-                        <p-calendar formControlName="effectiveDate" dateFormat="dd-mm-yy"
-                            [showIcon]="true"></p-calendar>
+                    <div class="field col-12 md:col-3">
+                        <label for="effectiveDate"
+                            ><b>With Effective Date :</b></label
+                        >
+                        <p-calendar
+                            formControlName="effectiveDate"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
-                    <div class="field col-12 md:col-4">
+                    <div class="field col-12 md:col-3">
                         <label for="basicPensionAmount"><b>Basic :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="basicPensionAmount"
-                            class="w-full p-2" />
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="basicPensionAmount"
+                            class="w-full p-2"
+                        />
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="commutedPensionAmount"><b>Commuted Pension :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="commutedPensionAmount"
-                            class="w-full p-2" />
+                    <div class="field col-12 md:col-3">
+                        <label for="commutedPensionAmount"
+                            ><b>Commuted Pension :</b></label
+                        >
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="commutedPensionAmount"
+                            class="w-full p-2"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="effectFrom"><b>Effective Date :</b></label>
+                        <p-calendar
+                            formControlName="effectFrom"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
                     </div>
 
-                    <div class="field col-12 md:col-4">
-                        <label for="reducedPensionAmount"><b>Reduced Pension :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="reducedPensionAmount"
-                            class="w-full p-2" />
+                    <div class="field col-12 md:col-3">
+                        <label for="reducedPensionAmount"
+                            ><b>Reduced Pension :</b></label
+                        >
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="reducedPensionAmount"
+                            class="w-full p-2"
+                        />
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="effectFrom"><b>Effect From :</b></label>
-                        <p-calendar formControlName="effectFrom" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                    <div class="field col-12 md:col-2">
+                        <label for="effectFrom"><b>EFP :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            class="w-full p-2"
+                            formControlName="efpAmount"
+                        />
                     </div>
-                    <div class="field col-12 md:col-4">
-                        <label for="effectFrom"><b>Up to date :</b></label>
-                        <p-calendar formControlName="uptoDate" dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                    <div class="field col-12 md:col-2">
+                        <label for="effectFrom"><b>Upto :</b></label>
+                        <p-calendar
+                            formControlName="uptoDate"
+                            dateFormat="dd-mm-yy"
+                            [showIcon]="true"
+                        ></p-calendar>
+                    </div>
+
+                    <div class="field col-12 md:col-3">
+                        <label><b> Family Pension :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            class="w-full p-2"
+                            formControlName="nfpAmount"
+                        />
                     </div>
                 </div>
 
@@ -164,59 +388,99 @@
                 <div class="p-fluid formgrid grid">
                     <div class="field col-12 md:col-4">
                         <label for="PayMode"><b>Pay Mode :</b></label>
-                        <p-dropdown styleClass="p-dropdown-sm"
-                            [options]="[{label: 'Treasury', value: 'Q'}, {label: 'Bank', value: 'B'}]"
-                            formControlName="payMode" placeholder="Select Pay Mode" class="py-2"></p-dropdown>
+                        <p-dropdown
+                            styleClass="p-dropdown-sm"
+                            [options]="[
+                                { label: 'Treasury', value: 'Q' },
+                                { label: 'Bank', value: 'B' }
+                            ]"
+                            formControlName="payMode"
+                            placeholder="Select Pay Mode"
+                            class="py-2"
+                        ></p-dropdown>
                     </div>
 
                     <div class="field col-12 md:col-4">
                         <label for="bankName"><b>Bank Name</b></label>
                         <p-dropdown
-                          styleClass="p-dropdown-sm"
-                          [options]="banks"
-                          (click)="fetchBanks()"
-                          optionLabel="label"
-                          optionValue="value"
-                          [filter]="true"
-                          filterBy="label"
-                          [showClear]="true"
-                          (onChange)="onChangeBank($event)"
-                          formControlName="bank"
-                          placeholder="Select Bank">
-
-                          <ng-template pTemplate="selectedItem" let-selectedOption>
-                            <div class="flex align-items-center gap-2">
-                              <div>{{ selectedOption?.label || 'Select Bank' }}</div>
-                            </div>
-                          </ng-template>
+                            styleClass="p-dropdown-sm"
+                            [options]="banks"
+                            (click)="fetchBanks()"
+                            optionLabel="label"
+                            optionValue="value"
+                            [filter]="true"
+                            filterBy="label"
+                            [showClear]="true"
+                            (onChange)="onChangeBank($event)"
+                            formControlName="bank"
+                            placeholder="Select Bank"
+                        >
+                            <ng-template
+                                pTemplate="selectedItem"
+                                let-selectedOption
+                            >
+                                <div class="flex align-items-center gap-2">
+                                    <div>
+                                        {{
+                                            selectedOption?.label ||
+                                                "Select Bank"
+                                        }}
+                                    </div>
+                                </div>
+                            </ng-template>
                         </p-dropdown>
-                      </div>
+                    </div>
 
                     <!--  -->
                     <div class="field col-12 md:col-4" *ngIf="hasBranches">
                         <label for="PayMode"><b>Bank Branch</b></label>
-                        <p-dropdown styleClass="p-dropdown-sm" [options]="banksBranch" optionLabel="label"
-                            optionValue="id" [filter]="true" filterBy="label" [showClear]="true"
-                            (onChange)="onChangeBankBranch($event)" formControlName="bankBranch"
-                            placeholder="Bank-Branch">
+                        <p-dropdown
+                            styleClass="p-dropdown-sm"
+                            [options]="banksBranch"
+                            optionLabel="label"
+                            optionValue="id"
+                            [filter]="true"
+                            filterBy="label"
+                            [showClear]="true"
+                            (onChange)="onChangeBankBranch($event)"
+                            formControlName="bankBranch"
+                            placeholder="Bank-Branch"
+                        >
                         </p-dropdown>
                     </div>
 
+                    <!--  -->
+
                     <div class="field col-12 md:col-4">
                         <label for="Bank Acno"><b>Account No :</b></label>
-                        <input class="w-full  border-inherit" id="float-input" type="text" pInputText
-                            formControlName="bankAcNo">
+                        <input
+                            class="w-full border-inherit"
+                            id="float-input"
+                            type="text"
+                            pInputText
+                            formControlName="bankAcNo"
+                        />
                     </div>
 
                     <div class="field col-12 md:col-4">
                         <label for="ifsc code"><b>IFSC Code : </b></label>
-                        <input class="w-full" id="float-input" type="text" pInputText
-                            formControlName="ifscCode">
+                        <input
+                            class="w-full"
+                            id="float-input"
+                            type="text"
+                            pInputText
+                            formControlName="ifscCode"
+                        />
                     </div>
                     <div class="field col-12 md:col-4">
-                        <label for="ifsc code"><b>Account Holder name </b></label>
-                        <input class="w-full" id="float-input" type="text" pInputText
-                            formControlName="accountHolderName">
+                        <label for="ifsc code"><b>Account Holder </b></label>
+                        <input
+                            class="w-full"
+                            id="float-input"
+                            type="text"
+                            pInputText
+                            formControlName="accountHolderName"
+                        />
                     </div>
                 </div>
                 <p-divider align="left" type="solid">
@@ -227,69 +491,329 @@
                 </p-divider>
 
                 <div class="p-fluid formgrid grid">
-
-
-                    <div class="field col-12 md:col-3">
-                        <label for="aadharNo"><b>Aadhar No. :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="aadhaarNo"
-                            class="w-full p-2" />
-                    </div>
-
-
-                    <div class="field col-12 md:col-3">
-                        <label for="panNo"><b>PAN No. :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="panNo"
-                            class="w-full p-2" />
-                    </div>
-
-
-                    <div class="field col-12 md:col-3">
-                        <label for="pensionerAddress"><b>Address :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="pensionerAddress"
-                            class="w-full p-2" [readonly]="isInputshow"/>
-                    </div>
-
-                    <div class="field col-12 md:col-3">
-                        <label for="emailId"><b>Email :</b></label>
-                        <input class="w-full p-2 border-inherit" pInputText formControlName="emailId"
-                            class="w-full p-2" />
-                    </div>
-
-
                     <div class="field col-12 md:col-2">
-                        <label for="type"><b>Gender :</b></label>
-                        <p-dropdown [options]="[
-                                { label: 'Male', value: 'M' },
-                                { label: 'Female', value: 'F' },
-                            ]" formControlName="gender" placeholder="Select Gender"></p-dropdown>
+                        <label for="commutedPensionAmount"
+                            ><b> First Pension Generated: (_)</b></label
+                        >
+                        <div class="flex">
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="Yes"
+                                    value="Yes"
+                                    [(ngModel)]="FirstPensionGenerated"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    inputId="Yes"
+                                ></p-radioButton>
+                                <label for="Yes">Yes</label>
+                            </div>
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="No"
+                                    value="No"
+                                    [(ngModel)]="FirstPensionGenerated"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    inputId="No"
+                                ></p-radioButton>
+                                <label for="No">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="mobileNumber"><b>Mobile No. :</b></label>
+                        <input
+                            class="w-full p-2 border-inheri"
+                            pInputText
+                            formControlName="mobileNumber"
+                            class="w-full p-2 bg-cyan-100"
+                            [readonly]="true"
+                        />
                     </div>
                     <div class="field col-12 md:col-2">
                         <label for="religion"><b>Religion :</b></label>
-                        <p-dropdown [options]="religionOptions" placeholder="Select Religion"  formControlName="religion"></p-dropdown>
+                        <p-dropdown
+                            [options]="religionOptions"
+                            placeholder="Select Religion"
+                            formControlName="religion"
+                        ></p-dropdown>
                     </div>
-
-                    <div class="field col-12 md:col-3">
-                        <label for="dateOfBirth"><b>Date of Birth :</b></label>
-                        <p-calendar formControlName="dateOfBirth"  dateFormat="dd-mm-yy" [showIcon]="true"></p-calendar>
+                    <div class="field col-12 md:col-2">
+                        <label for="panNo"><b>PAN No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="panNo"
+                            class="w-full p-2"
+                        />
                     </div>
-
-                    <div class="field col-12 md:col-3">
-                        <label for="mobileNumber"><b>Mobile No. :</b></label>
-                        <input class="w-full p-2 border-inheri" pInputText formControlName="mobileNumber"
-                            class="w-full p-2  bg-cyan-100" [readonly]="true"/>
+                    <div class="field col-12 md:col-2">
+                        <label for="aadharNo"><b>Aadhar No. :</b></label>
+                        <input
+                            class="w-full p-3 border-inherit"
+                            pInputText
+                            formControlName="aadhaarNo"
+                            class="w-full p-2"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-2" >
+                        <label for="commutedPensionAmount"
+                            ><b> Health Scheme:</b></label
+                        >
+                        <div class="flex">
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="healthScheme"
+                                    value="true"
+                                    formControlName="healthScheme"
+                                    inputId="Yes"
+                                ></p-radioButton>
+                                <label for="Yes">Yes</label>
+                            </div>
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="healthScheme"
+                                    value="false"
+                                    formControlName="healthScheme"
+                                    inputId="No"
+                                ></p-radioButton>
+                                <label for="No">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="commutedPensionAmount"
+                            ><b> Employeed Pensioner:</b></label
+                        >
+                        <div class="flex">
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="employedPensioner"
+                                    value="true"
+                                    formControlName="employedPensioner"
+                                    inputId="Yes"
+                                ></p-radioButton>
+                                <label for="Yes">Yes</label>
+                            </div>
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="employedPensioner"
+                                    value="false"
+                                    formControlName="employedPensioner"
+                                    inputId="No"
+                                ></p-radioButton>
+                                <label for="No">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-2">
+                        <label for="commutedPensionAmount"
+                            ><b> Re-Employeed:</b></label
+                        >
+                        <div class="flex">
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="reEmployedPensioner"
+                                    value="true"
+                                    formControlName="reEmployedPensioner"
+                                    inputId="Yes"
+                                ></p-radioButton>
+                                <label for="Yes">Yes</label>
+                            </div>
+                            <div class="p-field-radiobutton mx-4">
+                                <p-radioButton
+                                    name="reEmployedPensioner"
+                                    value="false"
+                                    formControlName="reEmployedPensioner"
+                                    inputId="No"
+                                ></p-radioButton>
+                                <label for="No">No</label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="field col-12 md:col-2">
-                        <label for="remarks"><b>IdentificationMark :</b></label>
-                        <input class="w-full p-3 border-inherit" pInputText formControlName="identificationMark"
-                            class="w-full p-2" />
+                        <label for=""><b>GPF/TPF No.:</b></label>
+                        <input
+                            class="w-full p-2 border-inherit"
+                            pInputText
+                            formControlName="gpfTpfNo"
+                        />
                     </div>
 
+                    <div class="field col-12 md:col-2">
+                        <label for="commutedPensionAmount"
+                            ><b> Double Pension: (_)</b></label
+                        >
+                        <div class="field-checkbox">
+                            <p-checkbox
+                                formControlName="doublePension"
+                                [binary]="true"
+                                inputId="binary"
+                            ></p-checkbox>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="this.ppoFormDetails.get('doublePension')?.value"
+                        class="field col-12 md:col-2"
+                    >
+                        <label for="Treasury / PPO Id:"
+                            ><b>Treasury / PPO Id:</b></label
+                        >
+                        <div class="w-full flex gap-1">
+                            <input
+                                class="w-full p-2 border-inherit"
+                                pInputText
+                            />
+                            <span style="font-size: x-large">/</span>
+                            <input
+                                class="w-full p-2 border-inherit"
+                                pInputText
+                            />
+                            <app-popup-table></app-popup-table>
+                        </div>
+                    </div>
+
+                    <div class="field col-12 md:col-3">
+                        <label for="pensionerAddress"><b>Address :</b></label>
+                        <input
+                            class="w-full p-2 border-inherit"
+                            pInputText
+                            formControlName="pensionerAddress"
+                            [readonly]="isInputshow"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="pensionerRemarks"><b>Remarks :</b></label>
+                        <input
+                            class="w-full p-2 border-inherit"
+                            pInputText
+                            [readonly]="isInputshow"
+                            formControlName="remarks"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-3 gap-1">
+                        <label for="commutedPensionAmount"
+                            ><b> Adhoc Pension: (_)</b></label
+                        >
+                        <div class="field-checkbox">
+                            <p-checkbox
+                                formControlName="adhocPension"
+                                [binary]="true"
+                                inputId="binary"
+                            ></p-checkbox>
+                            <div
+                                class="flex gap-1 w-full"
+                                *ngIf="
+                                    this.ppoFormDetails.get('adhocPension')
+                                        ?.value
+                                "
+                            >
+                                <input
+                                    class="w-full p-2 border-inherit"
+                                    pInputText
+                                />
+                                <app-popup-table></app-popup-table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field col-12 md:col-3">
+                        <label for="commutedPensionAmount"
+                            ><b> Provisional Pension: (_)</b></label
+                        >
+                        <div class="field-checkbox">
+                            <p-checkbox
+                                formControlName="provisionalPension"
+                                [binary]="true"
+                                inputId="binary"
+                            ></p-checkbox>
+                            <div
+                                class="flex gap-1 w-full"
+                                *ngIf="
+                                    this.ppoFormDetails.get(
+                                        'provisionalPension'
+                                    )?.value
+                                "
+                            >
+                                <input
+                                    class="w-full p-2 border-inherit"
+                                    pInputText
+                                />
+                                <app-popup-table></app-popup-table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="interimAllowance"
+                            ><b> Interim Allowance: (_)</b></label
+                        >
+                        <div class="field-checkbox">
+                            <p-checkbox
+                                formControlName="interimAllowance"
+                                [binary]="true"
+                            ></p-checkbox>
+                            <div
+                                class="flex gap-1 w-full"
+                                *ngIf="
+                                    this.ppoFormDetails.get('interimAllowance')
+                                        ?.value
+                                "
+                            >
+                                <input
+                                    class="w-full p-2 border-inherit"
+                                    pInputText
+                                />
+                                <app-popup-table></app-popup-table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-3">
+                        <label for="sharedPension"
+                            ><b> Shared Pension: (_)</b></label
+                        >
+                        <div class="field-checkbox">
+                            <p-checkbox
+                                formControlName="sharedPension"
+                                [binary]="true"
+                            ></p-checkbox>
+                            <div
+                                class="flex gap-1 w-full"
+                                *ngIf="
+                                    this.ppoFormDetails.get('sharedPension')
+                                        ?.value
+                                "
+                            >
+                                <input
+                                    class="w-full p-2 border-inherit"
+                                    pInputText
+                                />
+                                <app-popup-table></app-popup-table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="field col-12 md:col-3 gap-1">
+                        <label for="sharedPension"><b> Shared Pension:</b></label>
+                        <div class="p-field-checkbox">
+                            <p-checkbox
+                                formControlName="sharedPension"
+                                [binary]="true"
+                            ></p-checkbox>
+
+                        </div>
+                    </div> -->
                 </div>
 
-                <div class="w-100" style="display: flex; justify-content: center">
-                    <p-button [label]="isEditMode ? 'Update' : 'Save'" icon="pi pi-bookmark" [disabled]="saveButton" styleClass="p-button-raised"
-                        (click)="handleSaveOrUpdate()">
+                <div
+                    class="w-100"
+                    style="display: flex; justify-content: center"
+                >
+                    <p-button
+                        [label]="isEditMode ? 'Update' : 'Save'"
+                        icon="pi pi-bookmark"
+                        [disabled]="saveButton"
+                        styleClass="p-button-raised"
+                        (click)="handleSaveOrUpdate()"
+                    >
                     </p-button>
 
                     <!-- <p-button label="Update" icon="pi pi-bookmark" [disabled]="saveButton" styleClass="p-button-raised"
