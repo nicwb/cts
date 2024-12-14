@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { DatePipe } from '@angular/common';
 import { PassThrough } from 'stream';
+import Swal from 'sweetalert2';
 
 
 function convertDate(date: string): string {
@@ -72,6 +73,7 @@ export class FamilyNomineeComponent implements OnInit {
     relationship: SelectItem[] = [];
     relation: SelectItem[] = [];
     nomineeType: SelectItem[] = [];
+    nomineeAdultMinor: SelectItem[] = [];
     share: SelectItem[] = [];
     priorityLevel: SelectItem[] = [];
     valRadio: string = '';
@@ -83,6 +85,7 @@ export class FamilyNomineeComponent implements OnInit {
     branchName: { label: string; value: any; ifscCode: string }[] = [];
     bankBranch1: string = '';
     nomineeId: number = 0;
+    age: number = 0;
     filteredNomineeDetails$: Observable<any> | undefined
 
     // filteredNomineeDetails$: Observable<any[]> | undefined;
@@ -126,7 +129,6 @@ export class FamilyNomineeComponent implements OnInit {
     ngOnInit(): void {
         this.initializeForm();
         this.getPpoId();
-
         this.relationship = [
             { label: 'Father', value: { id: '1', name: 'Father', code: 'F' } },
             { label: 'Mother', value: { id: '2', name: 'Mother', code: 'M' } },
@@ -167,7 +169,11 @@ export class FamilyNomineeComponent implements OnInit {
             { label: '3', value: { id: '3', name: '3', code: 3 } },
             { label: '4', value: { id: '4', name: '4', code: 4 } },
             { label: '5', value: { id: '5', name: '5', code: 5 } },
-        ]
+        ],
+        this.nomineeAdultMinor = [
+            { label: 'Adult', value: { id: '1', name: 'Adult', code: 'A' } },
+            { label: 'Minor', value: { id: '2', name: 'Minor', code: 'M' } }
+        ];
     }
 
     getPpoId() {
@@ -277,6 +283,7 @@ export class FamilyNomineeComponent implements OnInit {
             identificationMark: ['', Validators.required],
             handicap: ['', Validators.required],
             nomineeType: ['0', Validators.required],
+            nomineeAdultMinor: ['', Validators.required]
         });
 
         this.nomineeDetailsForm = this.fb.group({
@@ -289,10 +296,11 @@ export class FamilyNomineeComponent implements OnInit {
             // ifscCode1: ['', Validators.required],
             bankBranch1: ['', Validators.required],
             nomineeType1: ['', Validators.required],
+            nomineeAdultMinor: ['', Validators.required],
             priorityLevel1: ['', Validators.required],
             share1: ['', Validators.required],
             activeFlag: [false, Validators.required],
-            bankId: []
+            bankId: [],
         });
 
         //   this.pensionHolderForm = this.fb.group({
@@ -310,75 +318,6 @@ export class FamilyNomineeComponent implements OnInit {
         //       activeFlag1: [false, Validators.required]
         //   });
     }
-
-    private mapFamilyNomineeToDTO(formData: any): NomineeEntryDTO {
-        return {
-            dataSource: null,
-            ppoId: formData.ppoId,
-            serialNo: parseInt(formData.slNo),
-            nomineeName: formData.dependentName,
-            relation: formData.relationship?.code || '',
-            dateOfBirth: formData.dateOfBirthFamilyDetails ? convertDate(formData.dateOfBirthFamilyDetails) : '',
-            dateOfDeath: formData.dateOfDeath ? convertDate(formData.dateOfDeath) : undefined,
-            identificationMark: formData.identificationMark || null,
-            handicapped: formData.handicap === 'True',
-            nomineeActive: null,
-            nomineeType: '0',
-            nomineePriority: null,
-            nomineeShare: null,
-            familyPension: null,
-            refused: null,
-            bankAcNo: null,
-            bankId: undefined,
-            branchId: null
-        };
-    }
-
-    private mapNomineeDetailsToDTO(formData: any): NomineeEntryDTO {
-        return {
-            dataSource: null,
-            ppoId: formData.ppoId,
-            serialNo: parseInt(formData.slNo1),
-            nomineeName: formData.nomineeName1,
-            relation: formData.relation1?.code || '',
-            dateOfBirth: formData.dateOfBirth1 ? convertDate(formData.dateOfBirth1) : '',
-            nomineeType: formData.nomineeType1?.code || null,
-            nomineePriority: formData.priorityLevel1?.id ? parseInt(formData.priorityLevel1.id) : null,
-            nomineeShare: formData.share1 ? parseFloat(formData.share1) : null,
-            nomineeActive: formData.activeFlag === 'true',
-            bankAcNo: formData.accountNumber1,
-            bankId: formData.bankId, // Set based on IFSC
-            branchId: formData.bankBranch1, // Set based on branch
-            dateOfDeath: undefined,
-            handicapped: false,
-            identificationMark: null,
-            familyPension: null,
-            refused: null
-        };
-    }
-
-    //   private mapPensionHolderToDTO(formData: any): NomineeEntryDTO {
-    //       return {
-    //           dataSource: null,
-    //           ppoId: formData.ppoId,
-    //           serialNo: parseInt(formData.slNo2),
-    //           nomineeName: formData.nomineeName2,
-    //           relation: formData.relation2?.code || '',
-    //           dateOfBirth: formData.dateOfBirth2 ? convertDate(formData.dateOfBirth2) : '',
-    //           nomineeType: formData.nomineeType2?.code || null,
-    //           nomineePriority: formData.priorityLevel2?.id ? parseInt(formData.priorityLevel2.id) : null,
-    //           nomineeShare: formData.share2 ? parseFloat(formData.share2) : null,
-    //           nomineeActive: formData.activeFlag1 === 'true',
-    //           familyPension: true,
-    //           bankAcNo: formData.accountNumber2,
-    //           bankId: undefined, // Set based on IFSC
-    //           branchId: null, // Set based on branch
-    //           dateOfDeath: undefined,
-    //           handicapped: false,
-    //           identificationMark: null,
-    //           refused: null
-    //       };
-    //   }
 
     async getData(formType: string) {
 
@@ -437,6 +376,7 @@ export class FamilyNomineeComponent implements OnInit {
                 const dateOfBirth = new Date(nominee.dateOfBirth);
                 const dateOfDeath = new Date(nominee.dateOfDeath);
                 const relationshipValue = this.relationship.find((item) => item.value.code === nominee.relation);
+                const nomineeAdultMinor = this.nomineeAdultMinor.find((item) => item.value.code === nominee.nomineeAdultMinor);
                 this.familyNomineeForm.patchValue({
                     ppoId: this.ppoId,
                     slNo: nominee.serialNo,
@@ -445,7 +385,8 @@ export class FamilyNomineeComponent implements OnInit {
                     dateOfBirthFamilyDetails: dateOfBirth,
                     dateOfDeath: dateOfDeath,
                     identificationMark: nominee.identificationMark,
-                    handicap: nominee.handicapped ? 'True' : 'False'
+                    handicap: nominee.handicapped ? 'True' : 'False',
+                    nomineeAdultMinor: nomineeAdultMinor?.value
                 });
             }
         } catch (error) {
@@ -465,6 +406,7 @@ export class FamilyNomineeComponent implements OnInit {
                 const relationshipValue = this.relation.find((item) => item.value.code === nominee.relation);
                 const nomineeTypeValue = this.nomineeType.find((item) => item.value.code === nominee.nomineeType);
                 const priorityLevelValue = this.priorityLevel.find((item) => item.value.code === nominee.nomineePriority);
+                const nomineeAdultMinor = this.nomineeAdultMinor.find((item) => item.value.code === nominee.nomineeAdultMinor);
 
                 if (nominee.bankId) {
                     const response_branch = await firstValueFrom(this.pensionBankBranchService.getBranchesByBankId(nominee.bankId));
@@ -488,13 +430,12 @@ export class FamilyNomineeComponent implements OnInit {
                             nomineeType1: nomineeTypeValue?.value,
                             priorityLevel1: priorityLevelValue?.value,
                             share1: nominee.nomineeShare,
-                            activeFlag: nominee.nomineeActive ? 'true' : 'false'
+                            activeFlag: nominee.nomineeActive ? 'true' : 'false',
+                            nomineeAdultMinor: nomineeAdultMinor?.value
                         });
-                        // Initialize nomineeDetailsTableData if it is undefined
                         if (!this.nomineeDetailsTableData) {
-                            this.nomineeDetailsTableData = { data: [] }; // Initialize with an empty array
+                            this.nomineeDetailsTableData = { data: [] };
                         }
-
                         this.nomineeDetailsTableData.data = [
                             {
                                 ...this.nomineeDetailsForm.value,
@@ -515,90 +456,73 @@ export class FamilyNomineeComponent implements OnInit {
             this.toastService.showError('Failed to fetch data of Nominee Details.');
         }
     }
-
-    //   async fillFactoryDataThirdForm(): Promise<void> {
-    //       try {
-    //           const response = await firstValueFrom(this.pensionFactoryService.createFake('NomineeEntryDTO'));
-    //           if (response.result) {
-    //               const nominee = response.result;
-    //               const dateOfBirth = new Date(nominee.dateOfBirth);
-    //               const relationshipValue = this.relation.find((item) => item.value.code === nominee.relation);
-    //               const nomineeTypeValue = this.nomineeType.find((item) => item.value.code === nominee.nomineeType);
-    //               const priorityLevelValue = this.priorityLevel.find((item) => item.value.code === nominee.nomineePriority);
-    //               const response_branch = await firstValueFrom(this.pensionBankBranchService.getBranchesByBankId(nominee.bankId));
-    //               const branch = response_branch.result?.branches?.find((branch) => branch.id === nominee.branchId);
-    //               this.showPensionHolder = true;
-    //               if(branch){
-    //                   this.pensionHolderForm.patchValue({
-    //                       ppoId: this.ppoId,
-    //                       slNo2: nominee.serialNo,
-    //                       nomineeName2: nominee.nomineeName,
-    //                       relation2: relationshipValue?.value,
-    //                       dateOfBirth2: dateOfBirth,
-    //                       accountNumber2: nominee.bankAcNo,
-    //                       bankBranch2: branch.branchName,
-    //                       ifscCode2: branch.ifscCode,
-    //                       nomineeType2:nomineeTypeValue?.value,
-    //                       priorityLevel2: priorityLevelValue?.value,
-    //                       share2: nominee.nomineeShare,
-    //                       activeFlag1: nominee.nomineeActive ? 'true' : 'false'
-    //                   });
-    //                   this.pensionHolderTableData.data = [
-    //                       {
-    //                           ...this.pensionHolderForm.value,
-    //                           ifscCode: this.pensionHolderForm.get('ifscCode2')?.value,
-    //                           bankBranch: this.pensionHolderForm.get('bankBranch2')?.value
-    //                       }
-    //                   ];
-    //               }
-
-    //           }
-    //       } catch (error) {
-    //           this.toastService.showError('Failed to fetch PPO receipt details.');
-    //       }
-    //   }
-
     async addNominee(nameForm: string): Promise<void> {
         this.loading = true;
         try {
-            let nomineeDTO: NomineeEntryDTO;
+            let nomineeDTO: NomineeEntryDTO = <NomineeEntryDTO>{}; // Initialize as empty object
             let form: FormGroup;
-
-            // Determine which form to process
             switch (nameForm) {
             case 'A':
                 this.getPpoId();
                 form = this.familyNomineeForm;
+                const Data = form.value; // Extract form values
+                console.log(form.value)
                 if (form.invalid) {
                     this.toastService.showError('Please fill all required fields in Family Nominee Form');
                     this.loading = false;
                     return;
                 }
-
-                nomineeDTO = this.mapFamilyNomineeToDTO(form.value);
+                nomineeDTO.dataSource = null,
+                nomineeDTO.ppoId = Data.ppoId,
+                nomineeDTO.serialNo = parseInt(Data.slNo),
+                nomineeDTO.nomineeName = Data.dependentName,
+                nomineeDTO.relation = Data.relationship?.code || '',
+                nomineeDTO.dateOfBirth = Data.dateOfBirthFamilyDetails ? convertDate(Data.dateOfBirthFamilyDetails) : '',
+                nomineeDTO.dateOfDeath = Data.dateOfDeath ? convertDate(Data.dateOfDeath) : undefined,
+                nomineeDTO.identificationMark = Data.identificationMark || null,
+                nomineeDTO.handicapped = Data.handicap === 'True',
+                nomineeDTO.nomineeActive = null,
+                nomineeDTO.nomineeType = '0',
+                nomineeDTO.nomineePriority = null,
+                nomineeDTO.nomineeShare = null,
+                nomineeDTO.familyPension = null,
+                nomineeDTO.refused = null,
+                nomineeDTO.bankAcNo = null,
+                nomineeDTO.bankId = undefined,
+                nomineeDTO.branchId = null,
+                nomineeDTO.nomineeAdultMinor = Data.nomineeAdultMinor.code;
                 break;
-
             case 'B':
                 this.getPpoId();
                 form = this.nomineeDetailsForm;
+                const formData = form.value; // Extract form values
+                console.log(formData);
+
                 if (form.invalid) {
                     this.toastService.showError('Please fill all required fields in Nominee Details Form');
                     this.loading = false;
                     return;
                 }
-                nomineeDTO = this.mapNomineeDetailsToDTO(form.value);
+                nomineeDTO.dataSource = null,
+                nomineeDTO.ppoId = this.ppoId,
+                nomineeDTO.serialNo = parseInt(form.value.slNo1),
+                nomineeDTO.nomineeName = formData.nomineeName1,
+                nomineeDTO.relation = formData.relation1?.code || '',
+                nomineeDTO.dateOfBirth = formData.dateOfBirth1 ? convertDate(formData.dateOfBirth1) : '',
+                nomineeDTO.nomineeType = formData.nomineeType1?.code || null,
+                nomineeDTO.nomineePriority = formData.priorityLevel1?.id ? parseInt(formData.priorityLevel1.id) : null,
+                nomineeDTO.nomineeShare = formData.share1 ? parseFloat(formData.share1) : null,
+                nomineeDTO.nomineeActive = formData.activeFlag === 'true',
+                nomineeDTO.bankAcNo = formData.accountNumber1,
+                nomineeDTO.bankId = formData.bankId, // Set based on IFSC
+                nomineeDTO.branchId = formData.bankBranch1, // Set based on branch
+                nomineeDTO.dateOfDeath = undefined,
+                nomineeDTO.handicapped = false,
+                nomineeDTO.identificationMark = null,
+                nomineeDTO.familyPension = null,
+                nomineeDTO.refused = null,
+                nomineeDTO.nomineeAdultMinor = formData.nomineeAdultMinor.code;
                 break;
-
-                //   case 'C':
-                //     form = this.pensionHolderForm;
-                //     if (form.invalid) {
-                //       this.toastService.showError('Please fill all required fields in Pension Holder Form');
-                //       this.loading = false;
-                //       return;
-                //     }
-                //     nomineeDTO = this.mapPensionHolderToDTO(form.value);
-                //     break;
-
             default:
                 this.toastService.showError('Invalid form type');
                 this.loading = false;
@@ -624,18 +548,14 @@ export class FamilyNomineeComponent implements OnInit {
                             if (error.error?.errors?.length > 0) {
                                 errorMessage = error.error.errors[0].detail || errorMessage;
                             }
+                            console.log(nomineeDTO);
                             this.toastService.showError(errorMessage);
                             throw error;
                         })
                     )
             );
-
-            // Clear session storage after successful addition
             const suffix = this.getSuffixForForm(nameForm);
             this.sessionStorageService.remove('', '', `DynamicTableComponent_${suffix}`);
-
-            // Refresh the relevant observable
-            //await this.refreshTableData(nameForm);
 
         } catch (error) {
             this.toastService.showError('Failed to add nominee');
@@ -656,37 +576,6 @@ export class FamilyNomineeComponent implements OnInit {
             return '';
         }
     }
-
-    // private async refreshTableData(formType: string): Promise<void> {
-    //     switch (formType) {
-    //         case 'A':
-    //             this.familyNomineeService$ = new Observable(observer => {
-    //                 this.loadNominees('A').then(data => {
-    //                     observer.next(data);
-    //                     observer.complete();
-    //                 });
-    //             });
-    //             break;
-    //         case 'B':
-    //             this.nomineeDetailsService$ = new Observable(observer => {
-    //                 this.loadNominees('B').then(data => {
-    //                     observer.next(data);
-    //                     observer.complete();
-    //                 });
-    //             });
-    //             console.log("Nominee Details Observable:", this.nomineeDetailsService$);
-    //             break;
-    //         case 'C':
-    //             this.pensionHolderService$ = new Observable(observer => {
-    //                 this.loadNominees('C').then(data => {
-    //                     observer.next(data);
-    //                     observer.complete();
-    //                 });
-    //             });
-    //             break;
-    //     }
-    // }
-
     private resetForm(formType: string): void {
         switch (formType) {
         case 'A':
@@ -697,59 +586,8 @@ export class FamilyNomineeComponent implements OnInit {
             this.nomineeDetailsForm.reset();
             this.showNomineeDetailsForm = false; // Hide form after submission
             break;
-            //   case 'C':
-            //       this.pensionHolderForm.reset();
-            //       this.showPensionHolder = false; // Hide form after submission
-            //       break;
         }
     }
-
-    //   private async loadNominees(formType?: string): Promise<any> {
-    //     console.log("FormType", formType);
-
-    //     if (!this.ppoId) {
-    //         console.error('PPO ID is not set. Cannot load nominees.');
-    //         return []; // Return an empty array instead of null
-    //     }
-
-    //     try {
-    //         const response = await firstValueFrom(
-    //             this.pensionNomineeDetailsService.getNomineesByPpoId(this.ppoId)
-    //         );
-    //         console.log("response", response);
-
-    //         // Check if the response is valid
-    //         if (response && response.apiResponseStatus === "Success") {
-    //             const nominees = response.result?.data ?? []; // Ensure this is an array
-    //             console.log("Nominee", nominees);
-
-    //             switch (formType) {
-    //                 case 'A':
-    //                     const familyNominees = nominees.filter(n => n.bankAcNo === null);
-    //                     console.log("familyNominee", familyNominees)
-    //                     return familyNominees; // Return only the filtered family nominees
-    //                 case 'B':
-    //                     const otherNominees = nominees.filter(n => n.bankAcNo !== null);
-    //                     console.log("otherNominee", otherNominees)
-    //                     return otherNominees; // Return only the filtered other nominees
-    //                 default:
-    //                     return nominees; // Return all nominees if no specific formType
-    //             }
-    //         } else {
-    //             const errorMessage = response?.message || 'Failed to load nominees';
-    //             console.log("Error incoming");
-    //             this.toastService.showError(errorMessage);
-    //             return []; // Return an empty array for error cases
-    //         }
-    //     } catch (error) {
-    //         console.error('Error loading nominees:', error);
-    //         console.log("Error 2 incoming");
-    //         this.toastService.showError('Failed to load nominees');
-    //         return []; // Return an empty array for error cases
-    //     }
-    // }
-
-    // show and hide forms
     switchFamilyNomineeFrom() {
         this.showFamilyNomineeForm = (!this.showFamilyNomineeForm);
         if (!environment.production) {
@@ -763,14 +601,6 @@ export class FamilyNomineeComponent implements OnInit {
             this.fillFactoryDataSecondForm();
         }
     }
-
-    //   switchPensionHolder(){
-    //       this.showPensionHolder = (!this.showPensionHolder);
-    //       if(!environment.production){
-    //           this.fillFactoryDataThirdForm();
-    //       }
-    //   }
-
     toggleFamilyNomineeForm() {
         this.showFamilyNomineeForm = !this.showFamilyNomineeForm;
         if (this.showFamilyNomineeForm) {
@@ -799,8 +629,6 @@ export class FamilyNomineeComponent implements OnInit {
             this.showFamilyNomineeTable = false; // Hide table
         }
     }
-
-    // Toggle method for Nominee Details Table
     toggleNomineeDetailsTable() {
         this.showNomineeDetailsTable = !this.showNomineeDetailsTable;
         if (this.showNomineeDetailsTable) {
@@ -815,6 +643,7 @@ export class FamilyNomineeComponent implements OnInit {
         this.isInsertModalVisible = true;
         this.nomineeId = data.id;
         const relationshipValue = this.relation.find((item) => item.value.name === data.relation);
+        const nomineeAdultMinor = this.nomineeAdultMinor.find((item) => item.value.code === data.nomineeAdultMinor);
         this.familyNomineeForm.patchValue({
             slNo: data.serialNo,
             dependentName: data.nomineeName,
@@ -824,6 +653,7 @@ export class FamilyNomineeComponent implements OnInit {
             identificationMark: data.identificationMark,
             relationship: relationshipValue?.value,
             handicap: data.handicapped ? 'True' : 'False',
+            nomineeAdultMinor: nomineeAdultMinor?.value
         })
     }
 
@@ -833,17 +663,18 @@ export class FamilyNomineeComponent implements OnInit {
                 return
             }
             if (this.familyNomineeForm.valid) {
-                const payload: NomineeEntryDTO = {
-                    ppoId: this.familyNomineeForm.get('ppoId')?.value ?? null,
-                    serialNo: this.familyNomineeForm.get('slNo')?.value,
-                    nomineeName: this.familyNomineeForm.get('dependentName')?.value,
-                    relation: this.familyNomineeForm.get('relationship')?.value.code,
-                    dateOfBirth: this.convertToDateFormat(this.familyNomineeForm.get('dateOfBirthFamilyDetails')?.value),
-                    dateOfDeath: this.convertToDateFormat(this.familyNomineeForm.get('dateOfDeath')?.value),
-                    identificationMark: this.familyNomineeForm.get('identificationMark')?.value,
-                    handicapped: this.familyNomineeForm.get('handicap')?.value?.toLowerCase() == 'true',
-                    nomineeType: '0'
-                };
+                let payload: NomineeEntryDTO = <NomineeEntryDTO>{};
+                payload.ppoId = this.familyNomineeForm.get('ppoId')?.value ?? null,
+                payload.nomineeName = this.familyNomineeForm.get('dependentName')?.value,
+                payload.serialNo = this.familyNomineeForm.get('slNo')?.value,
+                payload.relation = this.familyNomineeForm.get('relationship')?.value.code,
+                payload.dateOfBirth = this.convertToDateFormat(this.familyNomineeForm.get('dateOfBirthFamilyDetails')?.value),
+                payload.dateOfDeath = this.convertToDateFormat(this.familyNomineeForm.get('dateOfDeath')?.value),
+                payload.identificationMark = this.familyNomineeForm.get('identificationMark')?.value,
+                payload.handicapped = this.familyNomineeForm.get('handicap')?.value?.toLowerCase() == 'true',
+                payload.nomineeType = '0',
+                payload.nomineeAdultMinor = this.familyNomineeForm.get('nomineeAdultMinor')?.value.code
+
                 try {
                     const familyNominee: NomineeResponseDTOJsonAPIResponse = await firstValueFrom(
                         this.pensionNomineeDetailsService.updateNomineeDetailsById(this.nomineeId, payload)
@@ -871,9 +702,9 @@ export class FamilyNomineeComponent implements OnInit {
         const priorityLevel = this.priorityLevel.find((item) => item.value.code === data.nomineePriority);
         await this.fetchBankName();
         await this.fetchBankBranch(data.branch.bank.id);
-        // Find the bank and branch after branches have been populated
         const bankName = this.bankName.find((item) => item.label === data.branch.bank.bankName);
         const bankBranch = this.branchName.find((item) => item?.value === data?.branch?.id);
+        // const nomineeAdultMinor = this.nomineeAdultMinor.find((item) => item.value.code === data.nomineeAdultMinor);
         if (bankBranch !== undefined && bankBranch !== null) {
             this.nomineeDetailsForm.patchValue({
                 ppoId: data.ppoId,
@@ -887,7 +718,8 @@ export class FamilyNomineeComponent implements OnInit {
                 nomineeType1: nomineeType?.value,
                 priorityLevel1: priorityLevel?.value,
                 share1: data.nomineeShare,
-                activeFlag: data.nomineeActive ? 'true' : 'false'
+                nomineeAdultMinor: this.nomineeAdultMinor.find((item) => item.value.code === data.nomineeAdultMinor)?.value,
+                activeFlag: data.nomineeActive ? 'true' : 'false',
             });
         }
         this.ifscCode = bankBranch?.ifscCode ?? null;
@@ -895,20 +727,20 @@ export class FamilyNomineeComponent implements OnInit {
     async updateNomineeDetails() {
         if (this.nomineeId !== 0) {
             if (this.nomineeDetailsForm.valid) {
-                const payload: NomineeEntryDTO = {
-                    ppoId: this.nomineeDetailsForm.get('ppoId')?.value ?? null,
-                    serialNo: this.nomineeDetailsForm.get('slNo1')?.value,
-                    nomineeName: this.nomineeDetailsForm.get('nomineeName1')?.value,
-                    relation: this.nomineeDetailsForm.get('relation1')?.value.code,
-                    dateOfBirth: this.convertToDateFormat(this.nomineeDetailsForm.get('dateOfBirth1')?.value),
-                    bankAcNo: this.nomineeDetailsForm.get('accountNumber1')?.value,
-                    branchId: this.nomineeDetailsForm.get('bankBranch1')?.value,
-                    nomineeType: this.nomineeDetailsForm.get('nomineeType1')?.value.code,
-                    nomineePriority: this.nomineeDetailsForm.get('priorityLevel1')?.value.code,
-                    nomineeShare: this.nomineeDetailsForm.get('share1')?.value,
-                    nomineeActive: this.nomineeDetailsForm.get('activeFlag')?.value.toLowerCase() == 'true',
-                    bankId: this.nomineeDetailsForm.get('bankId')?.value
-                };
+                let payload: NomineeEntryDTO = <NomineeEntryDTO>{};
+                payload.ppoId = this.nomineeDetailsForm.get('ppoId')?.value ?? null,
+                payload.serialNo = this.nomineeDetailsForm.get('slNo1')?.value,
+                payload.nomineeName = this.nomineeDetailsForm.get('nomineeName1')?.value,
+                payload.relation = this.nomineeDetailsForm.get('relation1')?.value.code,
+                payload.dateOfBirth = this.convertToDateFormat(this.nomineeDetailsForm.get('dateOfBirth1')?.value),
+                payload.bankAcNo = this.nomineeDetailsForm.get('accountNumber1')?.value,
+                payload.branchId = this.nomineeDetailsForm.get('bankBranch1')?.value,
+                payload.nomineeType = this.nomineeDetailsForm.get('nomineeType1')?.value.code,
+                payload.nomineePriority = this.nomineeDetailsForm.get('priorityLevel1')?.value.code,
+                payload.nomineeShare = this.nomineeDetailsForm.get('share1')?.value,
+                payload.nomineeActive = this.nomineeDetailsForm.get('activeFlag')?.value.toLowerCase() == 'true',
+                payload.bankId = this.nomineeDetailsForm.get('bankId')?.value,
+                payload.nomineeAdultMinor = this.nomineeDetailsForm.get('nomineeAdultMinor')?.value.code
                 try {
                     const familyNominee: NomineeResponseDTOJsonAPIResponse = await firstValueFrom(
                         this.pensionNomineeDetailsService.updateNomineeDetailsById(this.nomineeId, payload)
@@ -942,5 +774,101 @@ export class FamilyNomineeComponent implements OnInit {
             }
         }
     }
+    async calculateAge(dob: string): Promise<number> {
+        const dobDate = new Date(dob);
+        const today = new Date();
+        this.age = today.getFullYear() - dobDate.getFullYear();
+        const monthDifference = today.getMonth() - dobDate.getMonth();
+        const dayDifference = today.getDate() - dobDate.getDate();
+
+        if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+            this.age--;
+        }
+
+        const nomineeValue = this.age >= 18
+            ? this.nomineeAdultMinor.find(item => item.value.code === 'A')?.value
+            : this.nomineeAdultMinor.find(item => item.value.code === 'M')?.value;
+
+        // Update both forms with the appropriate nominee value
+        this.familyNomineeForm.patchValue({ nomineeAdultMinor: nomineeValue });
+        this.nomineeDetailsForm.patchValue({ nomineeAdultMinor: nomineeValue });
+
+        console.log('Family Nominee Form:', this.familyNomineeForm.value);
+        console.log('Nominee Details Form:', this.nomineeDetailsForm.value);
+        return this.age;
+    }
+
+    checkEligibility() {
+        const nomineeAdultMinorFamily = this.familyNomineeForm.get('nomineeAdultMinor')?.value;
+        const nomineeAdultMinorDetails = this.nomineeDetailsForm.get('nomineeAdultMinor')?.value;
+
+        const selectedEligibility = nomineeAdultMinorFamily?.code || nomineeAdultMinorDetails?.code;
+        console.log(selectedEligibility);
+
+        // Check if age is 18 or older and nominee is selected as 'Minor'
+        if (this.age >= 18 && selectedEligibility === 'M') {
+            // Show warning dialog
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Nominee is minor!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    console.log('User confirmed nominee as Minor');
+                    this.familyNomineeForm.patchValue({
+                        nomineeAdultMinor: { code: 'M', name: 'Minor' }
+                    });
+                    this.nomineeDetailsForm.patchValue({
+                        nomineeAdultMinor: { code: 'M', name: 'Minor' }
+                    });
+                } else {
+                    // If user cancels, set the value to 'Adult'
+                    console.log('User selected to change to Adult');
+                    this.familyNomineeForm.patchValue({
+                        nomineeAdultMinor: { code: 'A', name: 'Adult' }
+                    });
+                    this.nomineeDetailsForm.patchValue({
+                        nomineeAdultMinor: { code: 'A', name: 'Adult' }
+                    });
+                }
+            });
+        }else if (this.age < 18 && selectedEligibility === 'A') {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Nominee is Adult!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    console.log('User confirmed nominee as Minor');
+                    this.familyNomineeForm.patchValue({
+                        nomineeAdultMinor: { code: 'A', name: 'Adult' }
+                    });
+                    this.nomineeDetailsForm.patchValue({
+                        nomineeAdultMinor: { code: 'A', name: 'Adult' }
+                    });
+                } else {
+                    // If user cancels, set the value to 'Adult'
+                    console.log('User selected to change to Adult');
+                    this.familyNomineeForm.patchValue({
+                        nomineeAdultMinor: { code: 'M', name: 'Minor' }
+                    });
+                    this.nomineeDetailsForm.patchValue({
+                        nomineeAdultMinor: { code: 'M', name: 'Minor' }
+                    });
+                }
+            });
+        }
+    }
+
 
 }

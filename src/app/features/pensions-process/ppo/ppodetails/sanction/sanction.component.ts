@@ -106,9 +106,9 @@ export class SanctionComponent implements OnInit {
                                     this.sanctionDetails.patchValue({
                                         ...sanction.result, // Spread the result to avoid multiple patchValue calls
                                         sanctionDate: this.convertYyyyMmDdToDdMmYyyy(sanction.result.sanctionDate), // Include sanctionDate explicitly if needed
-                                        employeeDob: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDob),
-                                        issuingLetterDate: this.convertYyyyMmDdToDdMmYyyy(sanction.result.issuingLetterDate),
-                                        employeeDateOfAppointment: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDateOfAppointment)
+                                        employeeDob: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDob ?? ''),
+                                        issuingLetterDate: this.convertYyyyMmDdToDdMmYyyy(sanction.result.issuingLetterDate ?? ''),
+                                        employeeDateOfAppointment: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDateOfAppointment ?? '')
                                     });
 
                                     this.originalValues = { ...sanction.result }; // Ensure a new reference is created

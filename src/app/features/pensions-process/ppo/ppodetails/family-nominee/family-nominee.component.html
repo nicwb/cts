@@ -40,8 +40,20 @@
                         Birth:</label>
                     <p-calendar class="p-component p-element w-full p-calendar"
                         formControlName="dateOfBirthFamilyDetails" placeholder="dd-mm-yyyy" appendTo="body"
-                        [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy"></p-calendar>
+                        [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy" (onSelect)="calculateAge($event)"></p-calendar>
                 </div>
+                <div class="flex-auto">
+                    <label for="Eligibility" class="block mb-1 text-color text-lg">Eligibility:</label>
+                    <p-dropdown
+                        [options]="nomineeAdultMinor"
+                        [style]="{ width: '100%' }"
+                        formControlName="nomineeAdultMinor"
+                        placeholder="Select"
+                        appendTo="body"
+                        inputId="icon3"
+                        [showClear]="true" (onChange)="checkEligibility()">
+                    </p-dropdown>
+                    </div>
                 <div class="flex-auto">
                     <label for="dateOfDeath" class="block mb-1 text-color text-lg">Date of Death:</label>
                     <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfDeath"
@@ -150,7 +162,7 @@
                         <label for="dateOfBirth1" class="block mb-1 text-color text-lg">Date of
                             Birth:</label>
                         <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfBirth1"
-                            placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon4"
+                            placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon4" (onSelect)="calculateAge($event)"
                             dateFormat="dd-mm-yy"></p-calendar>
                     </div>
                 </div>
@@ -200,6 +212,18 @@
                         <label for="share1" class="block mb-1 text-color text-lg">Share:</label>
                         <input type="text" pInputText formControlName="share1" placeholder="Share"
                             class="p-inputtext p-component p-element w-full">
+                    </div>
+                    <div class="w-2">
+                        <label for="Eligibility" class="block mb-1 text-color text-lg">Eligibility:</label>
+                        <p-dropdown
+                            [options]="nomineeAdultMinor"
+                            [style]="{ width: '100%' }"
+                            formControlName="nomineeAdultMinor"
+                            placeholder="Select"
+                            appendTo="body"
+                            inputId="icon3"
+                            [showClear]="true">
+                        </p-dropdown>
                     </div>
                     <div class="flex-auto xl:flex-row flex-row">
                         <div class="col-12 p-0 flex-auto xl:col-4o">
