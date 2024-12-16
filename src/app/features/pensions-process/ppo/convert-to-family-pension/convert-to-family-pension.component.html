@@ -9,8 +9,12 @@
         <form [formGroup]="DetailsFrom">
             <div class="p-fluid formgrid grid">
                 <div class="field col-12 md:col-2">
-                    <label><b>Ppo ID</b></label>
-                    <input type="text" pInputText class="w-full p-2 bg-cyan-100" [readonly]="true" formControlName="ppoId" />
+                    <label class="w-full"><b>Ppo ID</b></label>
+                    <input type="text" pInputText class="p-2 mr-2" formControlName="ppoId" style="width: 60%;" />
+                    <app-popup-table
+                    [service$]="allPPOId$"
+                    (return)="heandeleIdSelectChange($event)"
+                ></app-popup-table>
                 </div>
 
                 <div class="field col-12 md:col-2">

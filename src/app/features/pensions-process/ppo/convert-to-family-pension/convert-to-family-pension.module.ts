@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ConvartToFamilyPensionComponent } from './convart-to-family-pension.component';
+import { ConvartToFamilyPensionComponent } from './convert-to-family-pension.component';
 import { DividerModule } from 'primeng/divider';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { Dropdown, DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 @NgModule({
     declarations: [ConvartToFamilyPensionComponent],
     imports: [
@@ -24,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         DropdownModule,
         CalendarModule,
         ReactiveFormsModule,
+        PopupTableModule,
     ],
 })
 export class ConvartToFamilyPensionModule {}
