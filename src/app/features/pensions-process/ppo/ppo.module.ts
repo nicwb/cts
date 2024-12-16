@@ -19,8 +19,8 @@ import { LifeCertificateComponent } from './life-certificate/life-certificate.co
 import { LifeCertificateModule } from './life-certificate/life-certificate.module';
 import { DetailsComponent } from './ppodetails/details/details.component';
 import { PpodetailsComponent } from './ppodetails/ppodetails.component';
-import {ConvartToFamilyPensionComponent} from './convart-to-family-pension/convart-to-family-pension.component'
-import {ConvartToFamilyPensionModule} from './convart-to-family-pension/convart-to-family-pension.module'
+import {ConvartToFamilyPensionComponent} from './convert-to-family-pension/convert-to-family-pension.component'
+import {ConvartToFamilyPensionModule} from './convert-to-family-pension/convert-to-family-pension.module'
 import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
 const routes: Routes = [
     {

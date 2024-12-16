@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ConvartToFamilyPensionComponent} from './convart-to-family-pension.component'
+import {ConvartToFamilyPensionComponent} from './convert-to-family-pension.component'
 import { DividerModule } from 'primeng/divider';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FieldsetModule } from 'primeng/fieldset';

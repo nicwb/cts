@@ -3,7 +3,7 @@ import { first, firstValueFrom, retry, tap } from 'rxjs';
 import { PensionBankBranchService, PensionerEntryDTO, PensionPPODetailsService } from 'src/app/api';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PensionNomineeDetailsService } from 'src/app/api';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { formatDate } from '@angular/common';
 import { PensionBankAccountsService } from 'src/app/core/services/pension-bank-accounts/pension-bank-accounts.service';
@@ -11,8 +11,8 @@ import { PensionBankAccounts } from 'src/app/core/models/pension-bank-accounts';
 
 @Component({
     selector: 'app-convart-to-family-pension',
-    templateUrl: './convart-to-family-pension.component.html',
-    styleUrls: ['./convart-to-family-pension.component.scss']
+    templateUrl: './convert-to-family-pension.component.html',
+    styleUrls: ['./convert-to-family-pension.component.scss']
 })
 export class ConvartToFamilyPensionComponent implements OnInit {
 
@@ -27,7 +27,8 @@ export class ConvartToFamilyPensionComponent implements OnInit {
     private route: ActivatedRoute,
     private toastService: ToastService,
     private bankService: PensionBankBranchService,
-    
+    private router: Router
+
   ) { }
 
   onResize(event: any) {
@@ -67,14 +68,20 @@ export class ConvartToFamilyPensionComponent implements OnInit {
 
   //     FamilyPensionDetails
   DetailsFrom: FormGroup = new FormGroup({});
-
   id = this.route.snapshot.paramMap.get('id') || '';
 
-  ngOnInit() {
 
+  ngOnInit() {
       void this.getPpoDetails();
       this.init();
+      this.router.events.subscribe(event => {
+          if (event instanceof NavigationEnd) {
+              this.id = this.route.snapshot.paramMap.get('id') || '';
+              void this.getPpoDetails();
+              this.init();
 
+          }
+      });
   }
 
   init(){
@@ -249,7 +256,7 @@ export class ConvartToFamilyPensionComponent implements OnInit {
               )
           ))
       }
-  
+
   }
 
   onReset(){
@@ -257,12 +264,24 @@ export class ConvartToFamilyPensionComponent implements OnInit {
       this.getPpoDetails();
       this.getFamilyPensionDetails();
   }
-  
+
   getFormattedDate(date: Date | null): string {
       if (date) {
           return formatDate(date, 'yyyy-MM-dd', 'en-US');
       }
       return '';
+  }
+
+
+  resetIfhaveValue(){
+      console.log(this.DetailsFrom.valid);
+      if (this.DetailsFrom.valid) {
+          this.DetailsFrom.reset();
+      }
+  }
+
+  goTo(){
+      this.router.navigate(['/pension-process/ppo/convart-to-family-pension/'+this.DetailsFrom.value.ppoId]);
   }
 
 }
