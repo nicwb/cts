@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { first, firstValueFrom, retry, tap } from 'rxjs';
+import { first, firstValueFrom, Observable, retry, tap } from 'rxjs';
 import {
     PensionBankBranchService,
     PensionerEntryDTO,
@@ -7,20 +7,22 @@ import {
 } from 'src/app/api';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { PensionNomineeDetailsService } from 'src/app/api';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { formatDate } from '@angular/common';
 import { PensionBankAccountsService } from 'src/app/core/services/pension-bank-accounts/pension-bank-accounts.service';
 import { PensionBankAccounts } from 'src/app/core/models/pension-bank-accounts';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-convart-to-family-pension',
-    templateUrl: './convart-to-family-pension.component.html',
-    styleUrls: ['./convart-to-family-pension.component.scss'],
+    templateUrl: './convert-to-family-pension.component.html',
+    styleUrls: ['./convert-to-family-pension.component.scss'],
 })
 export class ConvartToFamilyPensionComponent implements OnInit {
     @HostListener('window:resize', ['$event'])
     isMobileView: boolean = false;
+    efftiveDate: any = '';
 
     constructor(
         private ppoDetailsService: PensionPPODetailsService,
@@ -28,7 +30,8 @@ export class ConvartToFamilyPensionComponent implements OnInit {
         private nomineeDetailsService: PensionNomineeDetailsService,
         private route: ActivatedRoute,
         private toastService: ToastService,
-        private bankService: PensionBankBranchService
+        private bankService: PensionBankBranchService,
+        private router: Router
     ) {}
 
     onResize(event: any) {
@@ -60,19 +63,24 @@ export class ConvartToFamilyPensionComponent implements OnInit {
     ];
 
     FamilyPensionDetails = [
-        { Pension: '', Upto: '', date: '', Effective_From: '' },
-        { Pension: '', Upto: '', date: '', Effective_From: '' },
-        { Pension: '', Upto: '', date: '', Effective_From: '' },
-        { Pension: '', Upto: '', date: '', Effective_From: '' },
+        { Pension: '', Upto: '', date: '', Effective_From: this.efftiveDate },
+        { Pension: '', Upto: '', date: '', Effective_From: this.efftiveDate },
+        { Pension: '', Upto: '', date: '', Effective_From: this.efftiveDate },
+        { Pension: '', Upto: '', date: '', Effective_From: this.efftiveDate },
     ];
 
     //     FamilyPensionDetails
     DetailsFrom: FormGroup = new FormGroup({});
 
     id = this.route.snapshot.paramMap.get('id') || '';
-
+    allPPOId$?: Observable<any>;
     ngOnInit() {
-        void this.getPpoDetails();
+        this.allPPOId$ = this.ppoDetailsService.getAllPensioners();
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.id = id;
+        }
+        this.getPpoDetails();
         this.init();
     }
 
@@ -179,6 +187,8 @@ export class ConvartToFamilyPensionComponent implements OnInit {
                                 this.DetailsFrom.value.commutedUptoDate
                             ),
                         });
+                        this.efftiveDate = this.DetailsFrom.value.dateOfDeath;
+
                         void this.getFamilyPensionDetails();
                     }
                 })
@@ -192,8 +202,39 @@ export class ConvartToFamilyPensionComponent implements OnInit {
                 .getNomineesByPpoId(this.DetailsFrom.value.ppoId)
                 .pipe(
                     tap((res) => {
-                        if (res.result) {
+                        if (
+                            res.result &&
+                            res.result.data &&
+                            res.result.data.length > 0
+                        ) {
                             this.familyDetails = res.result.data;
+                        } else {
+                            void Swal.fire({
+                                icon: 'info',
+                                title: 'Pensoner nominyee not found!. Do you want add it?',
+                                showDenyButton: true,
+                                confirmButtonText: 'Yes',
+                                denyButtonText: 'No',
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    void this.router.navigate(
+                                        [
+                                            'pension-process/ppo',
+                                            this.id,
+                                            'edit',
+                                        ],
+                                        {
+                                            queryParams: { step: 2 },
+                                        }
+                                    );
+                                } else {
+                                    void this.router.navigate([
+                                        'pension-process/ppo/convart-to-family-pension',
+                                    ]);
+                                }
+                            });
+                            return;
                         }
                     })
                 )
@@ -288,5 +329,14 @@ export class ConvartToFamilyPensionComponent implements OnInit {
             return formatDate(date, 'yyyy-MM-dd', 'en-US');
         }
         return '';
+    }
+
+    heandeleIdSelectChange($event: any) {
+        if ($event['ppoId']) {
+            this.router.navigate([
+                'pension-process/ppo/convart-to-family-pension/' +
+                    $event['ppoId'],
+            ]);
+        }
     }
 }
