@@ -13,53 +13,38 @@ import {
     DynamicTableQueryParameters,
     TableHeader,
 } from 'mh-prime-dynamic-table';
-
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
-
 import { SelectItem } from 'primeng/api';
 import {
     APIResponseStatus,
     PensionCategoryMasterService,
     PensionFactoryService,
+    PensionPrimaryCategoryEntryDTO,
 } from 'src/app/api';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-interface expandedRows {
-    [key: string]: boolean;
-}
 
 @Component({
     selector: 'app-primary',
     templateUrl: './primary.component.html',
     styleUrls: ['./primary.component.scss'],
 })
-export class PrimaryComponent {
-    expandedRows: expandedRows = {};
-    displayInsertModal: boolean = false;
+export class PrimaryComponent implements OnInit {
+    displayInsertModal: boolean = false; //used to display insert modal
     primaryForm!: FormGroup;
     tableQueryParameters!: DynamicTableQueryParameters | any;
-    tableActionButton: ActionButtonConfig[] = [];
-    tableChildActionButton: ActionButtonConfig[] = [];
-    tableData: any;
-    count: number = 0;
     isTableDataLoading: boolean = false;
-    treasuryReceiptId!: string;
     selectedRow: any;
-    PrimaryOption: SelectItem[] = [];
-    type: SelectItem[] = [];
-    selectedDrop: SelectItem = { value: '' };
-    rowData: any;
-    refresh_b = false;
     called_from_pension = false;
-    primary!:string;
-    sub!:string;
+    primary!: string;
+    sub!: string;
     isTableVisible: boolean = false;
     primaryCategory$?: Observable<any>;
-    suffix="primaryCategory"
-
-
+    suffix = 'primaryCategory';
+    hoaService$?: Observable<any>;
+    accountHeadId: any; //used to fetch accountHeadId for saving primary category
 
     constructor(
         private toastService: ToastService,
@@ -74,23 +59,24 @@ export class PrimaryComponent {
 
     @Output() Primary_Category_Details = new EventEmitter<any>();
 
-    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
         this.initializeForm();
         this.tableQueryParameters = {
             pageSize: 10,
             pageIndex: 0,
         };
+        this.hoaService$ = this.service.getAccountHeads();
         this.check_if_called();
 
         // add deplenk
-        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
-        if(endpoint == 'primary/new'){
+        const endpoint = this.route.snapshot.url
+            .map((segment) => segment.path)
+            .join('/');
+        if (endpoint == 'primary/new') {
             this.showInsertDialog();
         }
 
-        this.primaryCategory$ =
-        this.service.getPrimaryCategories();
+        this.primaryCategory$ = this.service.getPrimaryCategories();
     }
 
     showInsertDialog() {
@@ -103,27 +89,30 @@ export class PrimaryComponent {
     }
 
     handleRowSelection($event: any) {
-        console.log('Row selected:', $event);
+        this.primaryForm.patchValue({
+            accountHead: $event.headDetails,
+        });
+        this.accountHeadId = $event.id;
     }
 
-    handQueryParameterChange(event: any) {
-        console.log('Query parameter changed:', event);
-        this.tableQueryParameters = {
-            pageSize: event.pageSize,
-            pageIndex: event.pageIndex / 10,
-            filterParameters: event.filterParameters || [],
-            sortParameters: event.sortParameters,
-        };
-        this.getData();
-    }
+    // handQueryParameterChange(event: any) {
+    //     console.log('Query parameter changed:', event);
+    //     this.tableQueryParameters = {
+    //         pageSize: event.pageSize,
+    //         pageIndex: event.pageIndex / 10,
+    //         filterParameters: event.filterParameters || [],
+    //         sortParameters: event.sortParameters,
+    //     };
+    //     this.getData();
+    // }
 
-    handsearchKeyChange(event: string): void {
-        if (event == '') {
-            this.toastService.showError(`Search can not be empty`);
-            return;
-        }
-        this.findById(event);
-    }
+    // handsearchKeyChange(event: string): void {
+    //     if (event == '') {
+    //         this.toastService.showError(`Search can not be empty`);
+    //         return;
+    //     }
+    //     this.findById(event);
+    // }
     check_if_called() {
         let todo = null;
 
@@ -133,7 +122,7 @@ export class PrimaryComponent {
             (this.sub = params['sub']);
         });
 
-        console.log(todo, this.primary, this.sub);
+        //console.log(todo, this.primary, this.sub);
         if (todo == 'create') {
             this.called_from_pension = true;
             this.showInsertDialog();
@@ -144,51 +133,52 @@ export class PrimaryComponent {
 
     initializeForm(): void {
         this.primaryForm = this.fb.group({
-            HoaId: [
+            accountHead: [
                 '',
                 [
                     Validators.required,
                     Validators.pattern(
-                        /^\d{4} - \d{2} - \d{3} - \d{2} - \d{3} - [A-Z] - \d{2} - \d{2}$/
+                        /^\d{4}-\d{2}-\d{3}-\d{2}-\d{3}-[A-Z]-\d{2}-\d{2}$/
                     ),
                 ],
             ],
-            PrimaryCategoryName: ['', Validators.required],
+            primaryCategoryName: ['', Validators.required],
         });
     }
 
-    clear(table: any) {
-        table.clear();
-    }
+    // clear(table: any) {
+    //     table.clear();
+    // }
 
-    onGlobalFilter(dt: any, event: any): void {
-        if (event && event.target) {
-            const input = event.target as HTMLInputElement;
-            dt.filterGlobal(input.value, 'contains');
-        }
-    }
+    // onGlobalFilter(dt: any, event: any): void {
+    //     if (event && event.target) {
+    //         const input = event.target as HTMLInputElement;
+    //         dt.filterGlobal(input.value, 'contains');
+    //     }
+    // }
 
     async add_primary_category() {
         if (this.primaryForm.valid) {
-            const formData = this.primaryForm.value;
-            let name = this.primaryForm.value.PrimaryCategoryName;
+            const payload: PensionPrimaryCategoryEntryDTO = {
+                accountHeadId: this.accountHeadId,
+                primaryCategoryName: this.primaryForm.value.primaryCategoryName,
+            };
             let response = await firstValueFrom(
-                this.service.createPrimaryCategory(formData)
+                this.service.createPrimaryCategory(payload)
             );
 
             if (response.apiResponseStatus === APIResponseStatus.Success) {
-                // Assuming 1 means success
-                this.sessionStorageService.remove('','',  `${this.suffix}`);
-                this.sessionStorageService.remove('','', 'primaryCategorys');
-                this.displayInsertModal = false; // Close the dialog
-                this.toastService.showSuccess(
-                    ''+response.message
-                );
+                this.sessionStorageService.remove('', '', `${this.suffix}`);
+                this.sessionStorageService.remove('', '', 'primaryCategorys');
+                this.displayInsertModal = false;
+                this.toastService.showSuccess('' + response.message);
                 if (this.called_from_pension == true) {
-                    this.router.navigate(
-                        ['master/pension-category'],
-                        { queryParams: { primary: name, sub: this.sub } }
-                    );
+                    this.router.navigate(['master/pension-category'], {
+                        queryParams: {
+                            primary: this.primaryForm.value.primaryCategoryName,
+                            sub: this.sub,
+                        },
+                    });
                 }
             } else {
                 this.handleErrorResponse(response);
@@ -205,8 +195,7 @@ export class PrimaryComponent {
                 this.generate.createFake('PensionPrimaryCategoryEntryDTO')
             );
             this.primaryForm.patchValue({
-                HoaId: data.result.hoaId,
-                PrimaryCategoryName: data.result.primaryCategoryName,
+                primaryCategoryName: data.result.primaryCategoryName,
             });
         } catch (error) {
             this.toastService.showError('Failed to fetch');
@@ -230,35 +219,31 @@ export class PrimaryComponent {
         }
     }
 
-    resetForm() {
-        this.primaryForm.reset();
-    }
-
     async getData() {
         const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
         this.isTableVisible = true;
         // this.isTableDataLoading = false;
     }
-    async findById(data: any) {
-        let payload = this.tableQueryParameters;
-        payload.filterParameters = [
-            { field: 'HoaId', value: data, operator: 'contains' },
-        ];
-        payload.pageIndex = 0;
-        this.isTableDataLoading = true;
-        let response = await firstValueFrom(
-            this.service.getAllPrimaryCategories(payload)
-        );
-        if (response.result?.data?.length != 0) {
-            this.tableData = response.result;
-            this.refresh_b = true;
-        } else {
-            this.toastService.showError('No Pension Category ID found');
-        }
+    // async findById(data: any) {
+    //     let payload = this.tableQueryParameters;
+    //     payload.filterParameters = [
+    //         { field: 'accountHead', value: data, operator: 'contains' },
+    //     ];
+    //     payload.pageIndex = 0;
+    //     this.isTableDataLoading = true;
+    //     let response = await firstValueFrom(
+    //         this.service.getAllPrimaryCategories(payload)
+    //     );
+    //     if (response.result?.data?.length != 0) {
+    //         this.tableData = response.result;
+    //         this.refresh_b = true;
+    //     } else {
+    //         this.toastService.showError('No Pension Category ID found');
+    //     }
 
-        this.isTableDataLoading = false;
-    }
+    //     this.isTableDataLoading = false;
+    // }
 
     emitPrimaryCategory(): void {
         this.Primary_Category_Details.emit(this.primaryForm.value);
@@ -269,11 +254,10 @@ export class PrimaryComponent {
         this.displayInsertModal = false;
     }
 
-    newPrimarycategory(){
+    newPrimarycategory() {
         this.router.navigate(['/master/primary/new']);
     }
-    onDialogClose(){
+    onDialogClose() {
         this.location.back();
     }
-
 }

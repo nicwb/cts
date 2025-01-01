@@ -21,7 +21,8 @@ export interface RegularBillResponseDTO {
     toDate?: string;
     bankBranchName?: string | null;
     category?: string | null;
-    hoaId?: string | null;
+    accountHeadId?: number;
+    categoryDescription?: string | null;
     billNo?: number;
     billDate?: string;
     treasuryVoucherNo?: string | null;

@@ -10,6 +10,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { RatingModule } from 'primeng/rating';
 import { DialogModule } from 'primeng/dialog';
+import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
@@ -17,7 +18,6 @@ import { PrimaryRoutingModule } from './primary-routing.module';
 import { PrimaryComponent } from './primary.component';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
-
 
 @NgModule({
     declarations: [PrimaryComponent],
@@ -33,20 +33,14 @@ import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.mod
         TableModule,
         ToastModule,
         RatingModule,
+        PopupTableModule,
         DialogModule,
         DynamicDialogModule,
         CommonHeaderModule,
         MhPrimeDynamicTableModule,
-        DynamicTableModule
+        DynamicTableModule,
     ],
-    exports: [
-        RouterModule,
-        PrimaryComponent
-    ],
-    providers: [
-        MessageService,
-        ConfirmationService,
-        DialogService
-    ]
+    exports: [RouterModule, PrimaryComponent],
+    providers: [MessageService, ConfirmationService, DialogService],
 })
-export class PrimaryModule { }
+export class PrimaryModule {}

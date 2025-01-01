@@ -23,6 +23,10 @@ api/pension.service.ts
 configuration.ts
 encoder.ts
 index.ts
+model/account-head-list-item-response-dto-table-response-dto-json-api-response.ts
+model/account-head-list-item-response-dto-table-response-dto.ts
+model/account-head-list-item-response-dto.ts
+model/account-head-response-dto.ts
 model/api-response-status.ts
 model/bank-list-response-dto-json-api-response.ts
 model/bank-list-response-dto.ts

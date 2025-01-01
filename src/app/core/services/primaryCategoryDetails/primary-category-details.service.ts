@@ -33,13 +33,12 @@ export class PrimaryCategoryDetailsService {
             );
     }
 
-
     //Add New Primary Category
     add_new_primary_details(
         dto: PrimaryCategoryDetails
     ): Observable<IapiResponce> {
         const payload = {
-            HoaId: '2071 - 01 - 109 - 00 - 001 - V - 04 - 00',
+            hoaId: '2071-01-109-00-001-V-04-00',
             PrimaryCategoryName: 'Defence Pension',
         };
         return this.http
@@ -51,5 +50,4 @@ export class PrimaryCategoryDetailsService {
                 })
             );
     }
-
 }

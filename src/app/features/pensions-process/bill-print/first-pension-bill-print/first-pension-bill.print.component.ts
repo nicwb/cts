@@ -204,8 +204,8 @@ export class FirstPensionBillPrintComponent implements OnInit {
                 //   case !response?.result?.pensioner?.category?.primaryCategory:
                 //       this.toastService.showError('PrimaryCategory information is missing');
                 //       break;
-                //   case !response?.result?.pensioner?.category?.primaryCategory?.hoaId:
-                //       this.toastService.showError('Hoa id is missing');
+                //   case !response?.result?.pensioner?.category?.primaryCategory?.hoaID:
+                //       this.toastService.showError('hoaID is missing');
                 //       break;
                 //   case !response?.result?.pensioner?.category?.categoryName:
                 //       this.toastService.showError('Category name is missing');
@@ -298,11 +298,11 @@ export class FirstPensionBillPrintComponent implements OnInit {
         doc.text(`VOUCHER DATE: ${result?.treasuryVoucherDate}`, 120, 35);
         doc.text(`PPO NUMBER: ${result?.pensioner?.ppoNo}`, 120, 40);
         doc.text(`BANK ACCOUNT: ${result?.pensioner?.bankAcNo}`, 120, 45);
-        doc.text(
-            `ACCOUNT HEAD: ${result?.pensioner?.category?.primaryCategory?.hoaId}`,
-            120,
-            50
-        );
+        const hoaID =
+            `${result.pensioner.category.primaryCategory.accountHead.majorHead}-${result.pensioner.category.primaryCategory.accountHead.submajorHead}-${result.pensioner.category.primaryCategory.accountHead.minorHead}-` +
+            `${result.pensioner.category.primaryCategory.accountHead.planStatus}-${result.pensioner.category.primaryCategory.accountHead.schemeHead}-${result.pensioner.category.primaryCategory.accountHead.votedCharged}-` +
+            `${result.pensioner.category.primaryCategory.accountHead.detailHead}-${result.pensioner.category.primaryCategory.accountHead.subdetailHead}`;
+        doc.text(`ACCOUNT HEAD: ${hoaID}`, 120, 50);
         doc.text(
             `PENSIONER NAME: ${result?.pensioner?.pensionerName}`,
             120,
@@ -389,24 +389,36 @@ export class FirstPensionBillPrintComponent implements OnInit {
                 10,
                 20
             );
-        }else{
+        } else {
             doc.setLineWidth(0.001);
-            doc.line(150, tableHeight+40, 200, tableHeight+40);
-            doc.text('Treasury Officer/ Addl. Treasury officer', 150, tableHeight+45);
-            doc.line(150, tableHeight+70, 200, tableHeight+70);
-            doc.text('Treasury Officer/ Addl. Treasury officer', 150, tableHeight+75);
-            doc.text('Date Of Issue Of Cheque.....\nCheque Number:', 20, tableHeight+60);
-            doc.text('INSTRUCTIONS', 50, tableHeight+75);
+            doc.line(150, tableHeight + 40, 200, tableHeight + 40);
+            doc.text(
+                'Treasury Officer/ Addl. Treasury officer',
+                150,
+                tableHeight + 45
+            );
+            doc.line(150, tableHeight + 70, 200, tableHeight + 70);
+            doc.text(
+                'Treasury Officer/ Addl. Treasury officer',
+                150,
+                tableHeight + 75
+            );
+            doc.text(
+                'Date Of Issue Of Cheque.....\nCheque Number:',
+                20,
+                tableHeight + 60
+            );
+            doc.text('INSTRUCTIONS', 50, tableHeight + 75);
             doc.text(
                 "1. The Pensioner's Single / Joint named account with the family pensioner will be operated for drawal of pension only.\n2. In the event of the death of the Pensioner,the Bank will intimate the actual date of death of the pensioner and the Bank will not release the Balance in the\n account of the Pensioner unless clearance is received from Treasury.\n3. If the pension has remained undrawn for six months the Bank will send an intimation to that effect to the Treasury.",
                 10,
-                tableHeight+80
+                tableHeight + 80
             );
-            doc.text('T.O /A.T.O', 160, tableHeight+110);
+            doc.text('T.O /A.T.O', 160, tableHeight + 110);
             doc.text(
                 `Pay Rs. ***${result?.netAmount}(${result?.amountInWords})as per beneficiary list enclosed through ECS  `,
                 10,
-                tableHeight+20
+                tableHeight + 20
             );
         }
 

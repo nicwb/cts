@@ -7,12 +7,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AccountHeadResponseDTO } from './account-head-response-dto';
 
 
 export interface PensionPrimaryCategoryResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    hoaId: string;
+    accountHeadId: number;
     primaryCategoryName: string;
     id?: number;
+    readonly headDetails?: string | null;
+    accountHead?: AccountHeadResponseDTO;
 }
 

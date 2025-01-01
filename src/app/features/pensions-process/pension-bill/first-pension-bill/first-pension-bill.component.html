@@ -128,7 +128,14 @@
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th pSortableColumn="id" *ngIf="res && res.result && res.result.id !== undefined">
+                            <th
+                                pSortableColumn="id"
+                                *ngIf="
+                                    res &&
+                                    res.result &&
+                                    res.result.id !== undefined
+                                "
+                            >
                                 Bill No<p-sortIcon field="id"></p-sortIcon>
                             </th>
                             <th pSortableColumn="categoryName">
@@ -136,9 +143,9 @@
                                     field="categoryName"
                                 ></p-sortIcon>
                             </th>
-                            <th pSortableColumn="hoaId">
+                            <th pSortableColumn="accountHead">
                                 Account Head<p-sortIcon
-                                    field="primaryCategory.hoaId"
+                                    field="accountHead"
                                 ></p-sortIcon>
                             </th>
                             <th pSortableColumn="grossAmount">
@@ -163,9 +170,51 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-category>
                         <tr>
-                            <td *ngIf="res && res.result && res.result.id !== undefined">{{ res.result.id }}</td>
+                            <td
+                                *ngIf="
+                                    res &&
+                                    res.result &&
+                                    res.result.id !== undefined
+                                "
+                            >
+                                {{ res.result.id }}
+                            </td>
                             <td>{{ category.categoryName }}</td>
-                            <td>{{ category.primaryCategory.hoaId }}</td>
+                            <td>
+                                <ng-container
+                                    *ngIf="
+                                        category?.primaryCategory?.accountHead;
+                                        else noData
+                                    "
+                                >
+                                    {{
+                                        category.primaryCategory.accountHead
+                                            .majorHead +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .submajorHead +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .minorHead +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .planStatus +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .schemeHead +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .votedCharged +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .detailHead +
+                                            "-" +
+                                            category.primaryCategory.accountHead
+                                                .subdetailHead
+                                    }}
+                                </ng-container>
+                                <ng-template #noData>N/A</ng-template>
+                            </td>
                             <td>₹ {{ totalGrossAmount }}</td>
                             <td>0</td>
                             <td>₹ {{ totalDueAmount }}</td>
@@ -239,8 +288,12 @@
                         <tr class="">
                             <td class="p-2">{{ payment.breakupId }}</td>
                             <td class="p-2">{{ payment.componentName }}</td>
-                            <td class="p-2">{{ payment.fromDate | date : "dd-MM-yyyy" }}</td>
-                            <td class="p-2">{{ payment.toDate |  date : "dd-MM-yyyy"}}</td>
+                            <td class="p-2">
+                                {{ payment.fromDate | date : "dd-MM-yyyy" }}
+                            </td>
+                            <td class="p-2">
+                                {{ payment.toDate | date : "dd-MM-yyyy" }}
+                            </td>
                             <td class="p-2">
                                 {{
                                     payment.rateType === "P"
@@ -284,41 +337,41 @@
             <div
                 class="flex flex-col mt-2 align-items-center justify-content-center"
             >
-            <div class="flex flex-wrap gap-2 mx-2">
-                <button
-                type="submit"
-                pButton
-                pRipple
-                (click)="getvalue()"
-                class="w-fit"
-                [disabled]="!isgenerate"
-            >
-                Generate
-            </button>
-                <!-- Save Button -->
-                <div class="flex flex-wrap gap-2 mx-2" *ngIf="hasSaved">
-                    <p-button
-                        label="Save"
-                        icon="pi pi-check"
-                        [disabled]="!hasSaved"
-                        styleClass="p-button-success"
-                        (click)="save()"
-                        ><i class="pi pi-success mr-2"></i>
-                    </p-button>
-                </div>
-                <div class="flex flex-wrap gap-2 mx-2" *ngIf="isPrint">
+                <div class="flex flex-wrap gap-2 mx-2">
                     <button
+                        type="submit"
                         pButton
                         pRipple
-                        type="button"
-                        label="Print"
-                        class="p-button-secondary px-4"
-                        (click)="billprint()"
+                        (click)="getvalue()"
+                        class="w-fit"
+                        [disabled]="!isgenerate"
                     >
-                        <i class="pi pi-check mr-2"></i>
+                        Generate
                     </button>
-                </div>
-                <!-- Refresh Button -->
+                    <!-- Save Button -->
+                    <div class="flex flex-wrap gap-2 mx-2" *ngIf="hasSaved">
+                        <p-button
+                            label="Save"
+                            icon="pi pi-check"
+                            [disabled]="!hasSaved"
+                            styleClass="p-button-success"
+                            (click)="save()"
+                            ><i class="pi pi-success mr-2"></i>
+                        </p-button>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mx-2" *ngIf="isPrint">
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            label="Print"
+                            class="p-button-secondary px-4"
+                            (click)="billprint()"
+                        >
+                            <i class="pi pi-check mr-2"></i>
+                        </button>
+                    </div>
+                    <!-- Refresh Button -->
                     <button
                         type="button"
                         pButton

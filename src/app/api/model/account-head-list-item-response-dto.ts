@@ -9,9 +9,10 @@
  */
 
 
-export interface PensionPrimaryCategoryEntryDTO { 
+export interface AccountHeadListItemResponseDTO { 
     dataSource?: { [key: string]: any; } | null;
-    accountHeadId: number;
-    primaryCategoryName: string;
+    id?: number;
+    headDetails?: string | null;
+    headDescription?: string | null;
 }
 
