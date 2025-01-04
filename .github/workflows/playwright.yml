@@ -3,9 +3,31 @@ name: Playwright Tests for Angular CI
 on: [push, pull_request]
 
 jobs:
+  database:
+    name: Setup Database
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout IFMS-CTS repository for branch selection
+        uses: actions/checkout@v4
+        with:
+          repository: 'abusalam/IFMS-CTS'
+
+      - name: Select Branch of IFMS-CTS repository
+        id: selected-branch
+        run: |
+          if [[ -n $(git ls-remote --heads origin ${{ github.head.ref || github.ref }}) ]]; then
+            echo "branch-name=${{ github.head.ref || github.ref }}" >> $GITHUB_OUTPUT
+          else
+            echo "branch-name=pension-module" >> $GITHUB_OUTPUT
+          fi
+
+    outputs:
+      branch-name: ${{ steps.selected-branch.outputs.branch-name }}
+
   build:
     name: Build Angular 14 Project
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +42,8 @@ jobs:
 
   test:
     name: Run Playwright Tests
-    needs: [build]
-    runs-on: ubuntu-latest
+    needs: [build, database]
+    runs-on: ubuntu-24.04
     steps:
       - name: Add hosts to /etc/hosts
         run: |
@@ -31,12 +53,23 @@ jobs:
           git clone https://github.com/abusalam/IFMS-CTS.git ~/ifms-cts
           cd ~/ifms-cts
           git submodule update --init --recursive
+          echo "IFMS-CTS Branch: ${{ needs.database.outputs.branch-name }}"
+          git pull origin ${{ needs.database.outputs.branch-name }}
+          git show --oneline -s
           cp .env.docker .env
+          cd dotnet/CTS-BE
+          git fetch --all
+          git branch
+          git pull origin ${{ needs.database.outputs.branch-name }}
+          echo "dotnet/CTS-BE Branch: ${{ needs.database.outputs.branch-name }}"
+          git show --oneline -s
+          cd ..
           sudo curl -SL https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
           sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose build dotnet --build-arg HOST_UID=$UID
           docker-compose up -d dotnet
+
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Use Node.js
