@@ -85,6 +85,6 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
         PopupTableModule,
     ],
     providers: [DialogService],
-    exports: [RegularPensionBillPrintComponent]
+    exports: [RegularPensionBillPrintComponent],
 })
-export class RegularPensionBillPrintModule { }
+export class RegularPensionBillPrintModule {}
