@@ -2,7 +2,6 @@ import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
-    //FAILING TEST- all
 });
 
 test('should reset the retrieved first pension bill', async ({
@@ -27,8 +26,14 @@ test('should receive all component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Assert
-    const table = page.locator('p-table.p-element');
+    const table1 = page
+        .locator('p-table')
+        .filter({ hasText: 'IdBreakup IDComponent' });
+    const table = page
+        .locator('p-table')
+        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
     await expect(table).toBeVisible();
+    await expect(table1).toBeVisible();
 });
 
 test('should edit component Revision Details', async ({
@@ -40,8 +45,14 @@ test('should edit component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table = page.locator('p-table.p-element');
+    const table1 = page
+        .locator('p-table')
+        .filter({ hasText: 'IdBreakup IDComponent' });
+    const table = page
+        .locator('p-table')
+        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
     await expect(table).toBeVisible();
+    await expect(table1).toBeVisible();
     if (await page.getByRole('button', { name: 'Edit' }).first().isVisible()) {
         await page.getByRole('button', { name: 'Edit' }).first().click();
     } else {
@@ -69,8 +80,14 @@ test('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table = page.locator('p-table.p-element');
+    const table1 = page
+        .locator('p-table')
+        .filter({ hasText: 'IdBreakup IDComponent' });
+    const table = page
+        .locator('p-table')
+        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
     await expect(table).toBeVisible();
+    await expect(table1).toBeVisible();
     await page.getByRole('row').getByRole('button').nth(1).click();
     const dialog2 = page.locator('div[role="dialog"]');
     await expect(dialog2).toBeVisible();
@@ -93,9 +110,7 @@ test('should create a new component revision', async ({
     const componentNameInput = page.locator(
         'input[formControlName="componentname"]'
     );
-    const fromDateInput = page.locator('input[placeholder="dd/mm/yyyy"]');
     const amountInput = page.locator('input[formControlName="amount"]');
-    await expect(fromDateInput).toBeVisible();
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');

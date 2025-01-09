@@ -2,7 +2,6 @@ import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
-    //FAILING TEST - chromium
 });
 
 test('Navigation Service', async ({ pensionPage, page }) => {

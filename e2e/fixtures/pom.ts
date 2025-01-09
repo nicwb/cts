@@ -283,6 +283,17 @@ export class PensionModule {
             this.page.getByRole('button', { name: 'New Primary' })
         ).toBeVisible();
         await this.page.getByRole('button', { name: 'New Primary' }).click();
+        const element1 = this.page.locator('app-popup-table');
+        await expect(element1).toBeVisible();
+        await element1.click();
+        const dialog = this.page.getByLabel('Search', { exact: true });
+        await expect(dialog).toBeVisible();
+
+        const firstRow = dialog.locator('tbody tr:first-child');
+        await this.page.waitForSelector('tbody tr:first-child', {
+            timeout: 500,
+        });
+        await firstRow.click();
         await expect(
             this.page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();

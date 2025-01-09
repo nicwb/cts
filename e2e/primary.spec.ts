@@ -40,16 +40,11 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test.skip('duplicate primary category entry ', async ({
-    page,
-    pensionPage,
-}) => {
+test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     //FAILING TEST- CHROMIUM, FIREFOX
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement = page.locator('input[formControlName=accountHead]');
     await inputElement.waitFor({ state: 'visible' });
     const element1 = page.locator('app-popup-table');
     await expect(element1).toBeVisible();
@@ -83,14 +78,10 @@ test.skip('duplicate primary category entry ', async ({
     ).toBeHidden();
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement2 = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement2 = page.locator('input[formControlName=accountHead]');
     await inputElement2.waitFor({ state: 'visible' });
     await expect(inputElement2).not.toBeEmpty();
-    await page
-        .locator('input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]')
-        .fill(data1);
+    await page.locator('input[formControlName=accountHead]').fill(data1);
 
     const inputElement3 = page.locator(
         'input[formControlName=PrimaryCategoryName]'
