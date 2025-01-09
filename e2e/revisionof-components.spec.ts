@@ -26,14 +26,8 @@ test('should receive all component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Assert
-    const table1 = page
-        .locator('p-table')
-        .filter({ hasText: 'IdBreakup IDComponent' });
-    const table = page
-        .locator('p-table')
-        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
-    await expect(table).toBeVisible();
-    await expect(table1).toBeVisible();
+    await expect(page.getByText('Pensioner\'s Details :')).toBeVisible();
+    await expect(page.locator('div').filter({ hasText: /^Details :$/ }).nth(1)).toBeVisible();
 });
 
 test('should edit component Revision Details', async ({
@@ -45,22 +39,15 @@ test('should edit component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table1 = page
-        .locator('p-table')
-        .filter({ hasText: 'IdBreakup IDComponent' });
-    const table = page
-        .locator('p-table')
-        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
-    await expect(table).toBeVisible();
-    await expect(table1).toBeVisible();
+    await expect(page.getByText('Pensioner\'s Details :')).toBeVisible();
+    await expect(page.locator('div').filter({ hasText: /^Details :$/ }).nth(1)).toBeVisible();
     if (await page.getByRole('button', { name: 'Edit' }).first().isVisible()) {
         await page.getByRole('button', { name: 'Edit' }).first().click();
     } else {
         await page.getByRole('row').getByRole('button').first().click();
     }
     const amountInput = page
-        .locator('input[formControlName="amountPerMonth"]')
-        .first();
+        .locator('div').filter({ hasText: /^Amount \/ Month$/ }).getByRole('textbox');
     await amountInput.fill('1500');
     if (await page.getByRole('button', { name: 'Save' }).isVisible()) {
         await page.getByRole('button', { name: 'Save' }).click();
@@ -80,14 +67,8 @@ test('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table1 = page
-        .locator('p-table')
-        .filter({ hasText: 'IdBreakup IDComponent' });
-    const table = page
-        .locator('p-table')
-        .filter({ hasText: 'Ppo idPPO NumberPensioner' });
-    await expect(table).toBeVisible();
-    await expect(table1).toBeVisible();
+    await expect(page.getByText('Pensioner\'s Details :')).toBeVisible();
+    await expect(page.locator('div').filter({ hasText: /^Details :$/ }).nth(1)).toBeVisible();
     await page.getByRole('row').getByRole('button').nth(1).click();
     const dialog2 = page.locator('div[role="dialog"]');
     await expect(dialog2).toBeVisible();
@@ -119,7 +100,7 @@ test('should create a new component revision', async ({
         .textContent();
     await firstRow2.click();
     await expect(componentNameInput).toHaveValue(componentName ?? '');
-    await page.click('input[placeholder="dd/mm/yyyy"]');
+    await page.click('getByRole("textbox", { name: "dd-mm-yyyy" })');
     await page.waitForSelector('.p-datepicker-calendar');
     const allDateCells = page.locator('.p-datepicker-calendar tbody td');
     const dateCellCount = await allDateCells.count();

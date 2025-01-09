@@ -58,9 +58,7 @@ test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await expect(inputElement).not.toBeEmpty();
     const data1 = await inputElement.inputValue();
 
-    const inputElement1 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    const inputElement1 = page.getByPlaceholder('Description');
     await inputElement1.waitFor({ state: 'visible' });
     await expect(inputElement1).not.toBeEmpty();
     const data2 = await inputElement1.inputValue();
@@ -83,13 +81,11 @@ test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await expect(inputElement2).not.toBeEmpty();
     await page.locator('input[formControlName=accountHead]').fill(data1);
 
-    const inputElement3 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    const inputElement3 = page.getByPlaceholder('Description')
     await inputElement3.waitFor({ state: 'visible' });
     await expect(inputElement3).not.toBeEmpty();
     await page
-        .locator('input[formControlName=PrimaryCategoryName]')
+        .getByPlaceholder('Description')
         .fill(data2);
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
