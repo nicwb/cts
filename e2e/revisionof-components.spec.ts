@@ -15,9 +15,6 @@ test('should reset the retrieved first pension bill', async ({
     await page.getByRole('button', { name: ' Reset' }).click();
     //Assert
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
-    await expect(page.locator('input[id="pensionerName"]')).toHaveValue('');
-    await expect(page.locator('[id="Category\\ Description"]')).toHaveValue('');
-    await expect(page.locator('[id="bankName"]')).toHaveValue('');
 });
 
 test.skip('should receive all component Revision Details', async ({

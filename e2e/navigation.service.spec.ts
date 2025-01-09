@@ -20,7 +20,7 @@ test('Navigation Service', async ({ pensionPage, page }) => {
         .catch(() => false);
 
     if (isMessageVisible) {
-        await page.getByText('Yes').click();
+        await page.getByRole('button', { name: 'Yes' }).click();
         expect(page.url()).toContain(
             'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
         );
@@ -31,8 +31,7 @@ test('Navigation Service', async ({ pensionPage, page }) => {
         await expect(page.getByRole('button', { name: 'Yes' })).toBeVisible();
         await page.getByRole('button', { name: 'Yes' }).click();
         expect(page.url()).toContain('pension-process/ppo/entry/new');
-    } else {
-        await page.getByRole('button', { name: 'Save' }).click();
-        await pensionPage.okSuccess();
     }
+    await page.getByRole('button', { name: 'Save' }).click();
+    await pensionPage.okSuccess();
 });

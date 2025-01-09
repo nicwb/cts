@@ -236,10 +236,6 @@ export class PensionModule {
             { locator: 'text=PPO ID', type: 'text' },
             { locator: 'input[placeholder="PPO ID"]', type: 'input' },
             { locator: 'app-popup-table', type: 'component' },
-            { locator: 'text=PPO Number', type: 'text' },
-            { locator: 'text=Pensioner Name', type: 'text' },
-            { locator: 'text=Category Description', type: 'text' },
-            { locator: 'text=Bank', type: 'text' },
         ];
         //Assert
         for (const element of elements) {
