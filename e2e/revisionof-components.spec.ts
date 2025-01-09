@@ -17,7 +17,7 @@ test('should reset the retrieved first pension bill', async ({
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
 });
 
-test.skip('should receive all component Revision Details', async ({
+test('should receive all component Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -31,7 +31,7 @@ test.skip('should receive all component Revision Details', async ({
     await expect(table).toBeVisible();
 });
 
-test.skip('should edit component Revision Details', async ({
+test('should edit component Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -60,7 +60,7 @@ test.skip('should edit component Revision Details', async ({
     await pensionPage.okSuccess();
 });
 
-test.skip('should delete a component Revision Detail', async ({
+test('should delete a component Revision Detail', async ({
     page,
     pensionPage,
 }) => {
@@ -80,7 +80,7 @@ test.skip('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test.skip('should create a new component revision', async ({
+test('should create a new component revision', async ({
     page,
     pensionPage,
 }) => {
