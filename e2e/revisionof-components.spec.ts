@@ -4,7 +4,10 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
 });
 
-test.skip('should reset the retrieved first pension bill', async ({ page, pensionPage }) => {
+test('should reset the retrieved first pension bill', async ({
+    page,
+    pensionPage,
+}) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     //Act
@@ -16,7 +19,10 @@ test.skip('should reset the retrieved first pension bill', async ({ page, pensio
     await expect(page.locator('[id="bankName"]')).toHaveValue('');
 });
 
-test.skip('should receive all component Revision Details', async ({ page, pensionPage }) => {
+test('should receive all component Revision Details', async ({
+    page,
+    pensionPage,
+}) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     //Act
@@ -27,8 +33,10 @@ test.skip('should receive all component Revision Details', async ({ page, pensio
     await expect(table).toBeVisible();
 });
 
-
-test.skip('should edit component Revision Details', async ({ page, pensionPage }) => {
+test('should edit component Revision Details', async ({
+    page,
+    pensionPage,
+}) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
@@ -41,7 +49,9 @@ test.skip('should edit component Revision Details', async ({ page, pensionPage }
     } else {
         await page.getByRole('row').getByRole('button').first().click();
     }
-    const amountInput = page.locator('input[formControlName="amountPerMonth"]').first();
+    const amountInput = page
+        .locator('input[formControlName="amountPerMonth"]')
+        .first();
     await amountInput.fill('1500');
     if (await page.getByRole('button', { name: 'Save' }).isVisible()) {
         await page.getByRole('button', { name: 'Save' }).click();
@@ -52,8 +62,10 @@ test.skip('should edit component Revision Details', async ({ page, pensionPage }
     await pensionPage.okSuccess();
 });
 
-
-test.skip('should delete a component Revision Detail', async ({ page, pensionPage }) => {
+test('should delete a component Revision Detail', async ({
+    page,
+    pensionPage,
+}) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
@@ -70,21 +82,28 @@ test.skip('should delete a component Revision Detail', async ({ page, pensionPag
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test.skip('should create a new component revision', async ({ page, pensionPage }) => {
+test('should create a new component revision', async ({
+    page,
+    pensionPage,
+}) => {
     //Arrange
     const dialog = await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
     await page.getByRole('button', { name: ' Add' }).click();
-    const componentNameInput = page.locator('input[formControlName="componentname"]');
+    const componentNameInput = page.locator(
+        'input[formControlName="componentname"]'
+    );
     const fromDateInput = page.locator('input[placeholder="dd/mm/yyyy"]');
     const amountInput = page.locator('input[formControlName="amount"]');
     await expect(fromDateInput).toBeVisible();
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');
-    const componentName = await firstRow2.locator('td:nth-child(2)').textContent();
+    const componentName = await firstRow2
+        .locator('td:nth-child(2)')
+        .textContent();
     await firstRow2.click();
     await expect(componentNameInput).toHaveValue(componentName ?? '');
     await page.click('input[placeholder="dd/mm/yyyy"]');
@@ -94,7 +113,9 @@ test.skip('should create a new component revision', async ({ page, pensionPage }
     const randomIndex = Math.floor(Math.random() * dateCellCount);
     const randomDateCell = allDateCells.nth(randomIndex);
     await randomDateCell.click();
-    const randomAmount = (Math.floor(Math.random() * (9999 - 100 + 1)) + 100).toString();
+    const randomAmount = (
+        Math.floor(Math.random() * (9999 - 100 + 1)) + 100
+    ).toString();
     await amountInput.fill(randomAmount);
     await page.getByRole('button', { name: 'Submit' }).click();
     //Assert

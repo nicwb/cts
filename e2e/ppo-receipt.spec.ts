@@ -6,11 +6,16 @@ test.describe('PPO Receipt', () => {
         await page.goto('pension-process/ppo/ppo-receipt');
     });
 
-    test.skip('should fill out the form and submit successfully', async ({ pensionPage }) => {
+    test('should fill out the form and submit successfully', async ({
+        pensionPage,
+    }) => {
         await pensionPage.savePpoReceipt();
     });
 
-    test.skip('should display error for duplicate PPO number', async ({ page, pensionPage }) => {
+    test('should display error for duplicate PPO number', async ({
+        page,
+        pensionPage,
+    }) => {
         await page.click('button:has-text("PPO Receipt Entry")');
 
         const inputElement = page.locator('input[formControlName=ppoNo]');
@@ -24,7 +29,7 @@ test.describe('PPO Receipt', () => {
         await page.click('button:has-text("Cancel")');
 
         await page.click('button:has-text("PPO Receipt Entry")');
-        const inputElement1 = page.getByPlaceholder('Pensioner\'s Name');
+        const inputElement1 = page.getByPlaceholder("Pensioner's Name");
         await inputElement1.waitFor({ state: 'visible' });
         await expect(inputElement1).not.toBeEmpty();
         await page.locator('input[formControlName=ppoNo]').fill(ppoNo);
@@ -34,7 +39,7 @@ test.describe('PPO Receipt', () => {
         expect(true).toBeTruthy();
     });
 
-    test.skip('should edit an existing entry', async ({ page, pensionPage}) => {
+    test('should edit an existing entry', async ({ page, pensionPage }) => {
         await page.click('button:has-text("Load PPO Receipts")');
 
         await page.waitForSelector('tbody.p-element.p-datatable-tbody');
@@ -44,5 +49,4 @@ test.describe('PPO Receipt', () => {
         await page.click('button:has-text("Update")');
         await pensionPage.okSuccess();
     });
-
 });

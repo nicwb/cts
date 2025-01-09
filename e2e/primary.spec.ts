@@ -40,7 +40,7 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test.skip('duplicate primary category entry ', async ({ page, pensionPage }) => {
+test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement = page.locator(
