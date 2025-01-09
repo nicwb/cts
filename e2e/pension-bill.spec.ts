@@ -92,7 +92,9 @@ test('should generate PDF and handle errors appropriately', async ({
     const firstRow = await pensionPage.openPopupAndSelectFirstRow();
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
     // const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
-    const pensionerName = await firstRow.locator('td[data-column="Pensioner Name"]').textContent();
+    await firstRow.locator('td').nth(2).waitFor({ state: 'visible' });
+    const pensionerName = await firstRow.locator('td').nth(2).textContent();
+
 
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
         ppoIdValue ?? ''
