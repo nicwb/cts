@@ -401,14 +401,25 @@ export class PensionModule {
         const element = this.page.locator('form button').nth(1);
         await expect(element).toBeVisible();
         await element.click();
+
         const dialog = this.page.locator('div[role="dialog"]');
         await expect(dialog).toBeVisible();
 
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await this.page.waitForSelector('tbody tr:first-child', {
-            timeout: 500,
-        });
-        await firstRow.click();
+        // Get all available rows in the dialog
+        const rows = dialog.locator('tbody tr');
+        const rowCount = await rows.count();
+
+        // Ensure there are rows available to select
+        if (rowCount === 0) {
+            throw new Error('No available pension categories to select.');
+        }
+
+        // Generate a random index to select a row
+        const randomIndex = Math.floor(Math.random() * rowCount);
+        const randomRow = rows.nth(randomIndex);
+
+        // Click on the randomly selected row
+        await randomRow.click();
     }
 
     async fillComponentRateForm({
@@ -437,38 +448,12 @@ export class PensionModule {
             selectedDay = new Date().getDate();
         } else if (day) {
             selectedDay = parseInt(day, 10);
-            const isDisabled = await this.page
-                .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
-                .isVisible();
-
-            if (isDisabled) {
-                // Select a random enabled date
-                await this.selectRandomEnabledDate();
-            } else {
-                await this.page
-                    .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                    .locator(`text="${selectedDay}"`)
-                    .first()
-                    .click();
-            }
+            await this.selectDate(selectedDay);
         } else if (daysFromNow) {
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + daysFromNow);
             selectedDay = futureDate.getDate();
-            const isDisabled = await this.page
-                .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
-                .isVisible();
-
-            if (isDisabled) {
-                // Select a random enabled date
-                await this.selectRandomEnabledDate();
-            } else {
-                await this.page
-                    .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                    .locator(`text="${selectedDay}"`)
-                    .first()
-                    .click();
-            }
+            await this.selectDate(selectedDay);
         }
 
         const rate = this.page.locator(
@@ -482,6 +467,23 @@ export class PensionModule {
             'input[formControlName="rateAmount"]',
             rateAmount.toString()
         );
+    }
+
+    private async selectDate(selectedDay: number): Promise<void> {
+        const isDisabled = await this.page
+            .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
+            .isVisible();
+
+        if (isDisabled) {
+            // Select a random enabled date if the selected day is disabled
+            await this.selectRandomEnabledDate();
+        } else {
+            await this.page
+                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
+                .locator(`text="${selectedDay}"`)
+                .first()
+                .click();
+        }
     }
 
     private async selectRandomEnabledDate(): Promise<void> {

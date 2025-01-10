@@ -6,7 +6,8 @@ test.beforeEach(async ({ pensionPage }) => {
 });
 
 test('duplicate checking', async ({ page, pensionPage }) => {
-    await page.click('span.p-dialog-header-maximize-icon.pi.pi-window-minimize');
+    await page.locator('span.p-dialog-header-maximize-icon.pi.pi-window-minimize').waitFor({ state: 'visible' });
+    await page.locator('span.p-dialog-header-maximize-icon.pi.pi-window-minimize').click();
     await page.locator('#primary').getByLabel('dropdown trigger').click();
     await page.locator('p-dropdownitem.p-element').first().click();
 
