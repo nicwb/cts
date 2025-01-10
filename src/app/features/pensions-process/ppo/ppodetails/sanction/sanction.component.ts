@@ -11,7 +11,6 @@ import {
     PensionSanctionDetailsService,
     PpoSanctionDetailsResponseDTO,
 } from 'src/app/api';
-import { pensionerStatusDTO } from 'src/app/core/models/pensioner-status';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { environment } from 'src/environments/environment';
 

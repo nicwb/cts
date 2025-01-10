@@ -1,10 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    ActionButtonConfig,
-    DynamicTable,
-    DynamicTableQueryParameters,
-} from 'mh-prime-dynamic-table';
 import { SelectItem } from 'primeng/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import {
@@ -75,15 +70,6 @@ export class FamilyNomineeComponent implements OnInit {
 
     header: [] = [];
 
-    tableQueryParameters: DynamicTableQueryParameters = {
-        pageSize: 10,
-        pageIndex: 0,
-        filterParameters: [],
-        sortParameters: { field: '', order: '' },
-    };
-
-    tableActionButton: ActionButtonConfig[] = [];
-    tableData: DynamicTable<any> | undefined;
     modalData: any[] = [];
 
     nomineeDetailsForm: FormGroup = new FormGroup({});

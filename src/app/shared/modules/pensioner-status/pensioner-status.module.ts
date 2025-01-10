@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -29,7 +27,6 @@ import { PensionerStatusComponent } from './pensioner-status.component';
         CommonModule,
         ButtonModule,
         ReactiveFormsModule,
-        DynamicTableModule,
         OptionCardModule,
         ButtonModule,
         CommonHeaderModule,
@@ -48,7 +45,6 @@ import { PensionerStatusComponent } from './pensioner-status.component';
         ToastModule,
         SliderModule,
         RatingModule,
-        MhPrimeDynamicTableModule,
     ],
     exports: [PensionerStatusComponent],
 })

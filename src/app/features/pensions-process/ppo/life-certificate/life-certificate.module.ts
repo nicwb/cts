@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule, Routes } from '@angular/router';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -43,7 +42,6 @@ const routes: Routes = [{ path: '', component: LifeCertificateComponent }];
         RadioButtonModule,
         ButtonModule,
         InputTextareaModule,
-        DynamicTableModule,
         OptionCardModule,
         CommonHeaderModule,
         DropdownModule,

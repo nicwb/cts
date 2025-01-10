@@ -1,22 +1,16 @@
-import { PpoBillBreakupEntryDTO } from './../../../../api/model/ppo-bill-breakup-entry-dto';
-import { Result } from './../../../../core/models/pension-bill';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
     PensionFirstBillService,
     PensionBankBranchService,
-    ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse,
     APIResponseStatus,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { PdfGenerationService } from 'src/app/core/services/first-pension/pdf-generation.service';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FirstPensionPdfViewerComponent } from 'src/app/core/services/pdf-viewer/first-pension-pdf-viwer.component';
-import { table } from 'console';
 
 @Component({
     selector: 'app-first-pension-bill-print',

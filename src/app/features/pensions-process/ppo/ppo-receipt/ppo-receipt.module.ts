@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
@@ -54,7 +53,6 @@ const routes: Routes = [
         ToastModule,
         SliderModule,
         RatingModule,
-        MhPrimeDynamicTableModule,
         RouterModule.forChild(routes),
         DynamicTableModule,
     ],

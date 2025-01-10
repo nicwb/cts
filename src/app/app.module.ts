@@ -34,9 +34,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { PensionerStatusModule } from './shared/modules/pensioner-status/pensioner-status.module';
 import { PdfViewerComponent } from './core/services/pdf-viewer/pdf-viewer.component';
 import { DialogService } from 'primeng/dynamicdialog';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -60,7 +60,7 @@ import { DialogService } from 'primeng/dynamicdialog';
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        PensionerStatusModule,
+        // PensionerStatusModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },

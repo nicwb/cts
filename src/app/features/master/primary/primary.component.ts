@@ -7,12 +7,7 @@ import {
     ChangeDetectorRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    ActionButtonConfig,
-    DynamicTable,
-    DynamicTableQueryParameters,
-    TableHeader,
-} from 'mh-prime-dynamic-table';
+
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { SelectItem } from 'primeng/api';
@@ -34,7 +29,6 @@ import { Location } from '@angular/common';
 export class PrimaryComponent implements OnInit {
     displayInsertModal: boolean = false; //used to display insert modal
     primaryForm!: FormGroup;
-    tableQueryParameters!: DynamicTableQueryParameters | any;
     isTableDataLoading: boolean = false;
     selectedRow: any;
     called_from_pension = false;
@@ -61,10 +55,7 @@ export class PrimaryComponent implements OnInit {
 
     ngOnInit(): void {
         this.initializeForm();
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
+
         this.hoaService$ = this.service.getAccountHeads();
         this.check_if_called();
 
@@ -220,7 +211,6 @@ export class PrimaryComponent implements OnInit {
     }
 
     async getData() {
-        const data = this.tableQueryParameters;
         this.isTableDataLoading = true;
         this.isTableVisible = true;
         // this.isTableDataLoading = false;

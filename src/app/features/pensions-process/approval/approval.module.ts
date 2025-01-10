@@ -15,8 +15,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { PanelModule } from 'primeng/panel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { TableModule } from 'primeng/table';
@@ -81,8 +79,6 @@ const routes: Routes = [
         FieldsetModule,
         RadioButtonModule,
         TableModule,
-        MhPrimeDynamicTableModule,
-        DynamicTableModule,
         DropdownModule,
         TreasuryDropdownModule,
         ToggleButtonModule,

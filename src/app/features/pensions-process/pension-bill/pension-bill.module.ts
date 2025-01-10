@@ -11,7 +11,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { FirstPensionBillComponent } from './first-pension-bill/first-pension-bill.component';
 import { RegularPensionBillComponent } from './regular-pension-bill/regular-pension-bill.component';
@@ -62,7 +61,6 @@ const routes: NewType = [
         DialogModule,
         DropdownModule,
         CommonHeaderModule,
-        DynamicTableModule,
         TreasuryDropdownModule,
         RegularPensionBillModule,
         FirstPensionBillModule,
@@ -74,7 +72,6 @@ const routes: NewType = [
         DialogModule,
         DropdownModule,
         CommonHeaderModule,
-        DynamicTableModule,
         TreasuryDropdownModule,
         LifeTimeArrearPensionBillModule,
         RouterModule.forChild(routes),

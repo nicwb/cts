@@ -4,7 +4,6 @@ import { PensionsProcessComponent } from './pensions-process.component';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PensionsProcessRoutingModule } from './pensions-process-routing.module';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
 import { DropdownModule } from 'primeng/dropdown';
@@ -24,7 +23,6 @@ import { PensionBillModule } from './pension-bill/pension-bill.module';
         CommonModule,
         ButtonModule,
         PensionsProcessRoutingModule,
-        DynamicTableModule,
         OptionCardModule,
         CommonHeaderModule,
         DropdownModule,

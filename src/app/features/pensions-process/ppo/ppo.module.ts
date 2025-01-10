@@ -9,7 +9,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { PpoComponent } from './ppo.component';
@@ -79,7 +78,6 @@ const routes: Routes = [
         CommonModule,
         ButtonModule,
         ReactiveFormsModule,
-        DynamicTableModule,
         OptionCardModule,
         ButtonModule,
         CommonHeaderModule,
