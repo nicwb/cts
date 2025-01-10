@@ -3,10 +3,10 @@ import { test } from './fixtures';
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToPensionCategory();
-    //FAILING TEST- CHROMIUM, FIREFOX
 });
 
-test.skip('duplicate checking', async ({ page, pensionPage }) => {
+test('duplicate checking', async ({ page, pensionPage }) => {
+    await page.click('span.p-dialog-header-maximize-icon.pi.pi-window-minimize');
     await page.locator('#primary').getByLabel('dropdown trigger').click();
     await page.locator('p-dropdownitem.p-element').first().click();
 
@@ -20,7 +20,7 @@ test.skip('duplicate checking', async ({ page, pensionPage }) => {
             state: 'hidden',
             timeout: 5000,
         })
-        .catch(() => {});
+        .catch(() => { });
     await page.locator('p-dropdownitem.p-element').nth(1).click();
     // Submit button interaction
     await page.waitForLoadState('networkidle');

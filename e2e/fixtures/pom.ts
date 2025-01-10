@@ -377,16 +377,26 @@ export class PensionModule {
         const element1 = this.page.locator('form button').first();
         await expect(element1).toBeVisible();
         await element1.click();
+
         const dialog = this.page.locator('div[role="dialog"]');
         await expect(dialog).toBeVisible();
 
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await this.page.waitForSelector('tbody tr:first-child', {
-            timeout: 500,
-        });
-        await firstRow.click();
-    }
+        // Get all available rows in the dialog
+        const rows = dialog.locator('tbody tr');
+        const rowCount = await rows.count();
 
+        // Ensure there are rows available to select
+        if (rowCount === 0) {
+            throw new Error('No available components to select.');
+        }
+
+        // Generate a random index to select a row
+        const randomIndex = Math.floor(Math.random() * rowCount);
+        const randomRow = rows.nth(randomIndex);
+
+        // Click on the randomly selected row
+        await randomRow.click();
+    }
     async selectFirstPensionCategory(): Promise<void> {
         const element = this.page.locator('form button').nth(1);
         await expect(element).toBeVisible();

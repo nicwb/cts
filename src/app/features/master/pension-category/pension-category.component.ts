@@ -53,7 +53,7 @@ export class PensionCategoryComponent implements OnInit {
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
     Category$?: Observable<any>;
-    suffix="Category";
+    suffix = "Category";
 
     constructor(
         // private datePipe: DatePipe,
@@ -372,7 +372,7 @@ export class PensionCategoryComponent implements OnInit {
         };
 
         let response = await firstValueFrom(
-            this.service.getAllPrimaryCategories(data)
+            this.service.getPrimaryCategories()
         );
         this.isTableDataLoading = false;
 
@@ -408,7 +408,7 @@ export class PensionCategoryComponent implements OnInit {
             ],
         };
         let response = await firstValueFrom(
-            this.service.getAllSubCategories(data)
+            this.service.getSubCategories()
         );
         this.isTableDataLoading = false;
 
@@ -468,7 +468,7 @@ export class PensionCategoryComponent implements OnInit {
     async getData() {
         this.isTableVisible = true;
         this.isTableDataLoading = true;
-        this.Category$=this.service.getCategories();
+        this.Category$ = this.service.getCategories();
 
 
     }

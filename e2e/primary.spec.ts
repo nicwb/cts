@@ -41,7 +41,6 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
 });
 
 test('duplicate primary category entry ', async ({ page, pensionPage }) => {
-    //FAILING TEST- CHROMIUM, FIREFOX
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement = page.locator('input[formControlName=accountHead]');
