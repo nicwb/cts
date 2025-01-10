@@ -435,9 +435,7 @@ export class PensionModule {
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
-        const cal = this.page.locator(
-            'p-calendar[formControlName="effectiveFromDate"]'
-        );
+        const cal = this.page.locator('p-calendar[formControlName="effectiveFromDate"]');
         await expect(cal).toBeVisible();
         await cal.click();
 
@@ -456,17 +454,12 @@ export class PensionModule {
             await this.selectDate(selectedDay);
         }
 
-        const rate = this.page.locator(
-            'p-dropdown[formControlName="rateType"]'
-        );
+        const rate = this.page.locator('p-dropdown[formControlName="rateType"]');
         await expect(rate).toBeVisible();
         await rate.click();
         await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
 
-        await this.page.fill(
-            'input[formControlName="rateAmount"]',
-            rateAmount.toString()
-        );
+        await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
     }
 
     private async selectDate(selectedDay: number): Promise<void> {
@@ -478,11 +471,19 @@ export class PensionModule {
             console.log(`Selected day ${selectedDay} is disabled. Selecting a random enabled date instead.`);
             await this.selectRandomEnabledDate();
         } else {
-            await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                .locator(`text="${selectedDay}"`)
-                .first()
-                .click();
+            const isAvailable = await this.page
+                .locator(`.p-datepicker-calendar td:not(.p-disabled) >> text="${selectedDay}"`)
+                .isVisible();
+
+            if (isAvailable) {
+                await this.page
+                    .locator(`.p-datepicker-calendar td:not(.p-disabled) >> text="${selectedDay}"`)
+                    .first()
+                    .click();
+            } else {
+                console.log(`Selected day ${selectedDay} is not available. Selecting a random enabled date instead.`);
+                await this.selectRandomEnabledDate();
+            }
         }
     }
 
