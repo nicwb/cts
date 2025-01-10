@@ -78,34 +78,44 @@ test('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test('should create a new component revision', async ({
-    page,
-    pensionPage,
-}) => {
-    //Arrange
+test('should create a new component revision', async ({ page, pensionPage }) => {
+    // Arrange
     const dialog = await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
-    //Act
+
+    // Act
     await page.getByRole('button', { name: ' Add' }).click();
     const amountInput = page.locator('input[formControlName="amount"]');
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');
     await firstRow2.click();
+
     const dateInput = page.getByRole('textbox', { name: 'dd-MM-yyyy' });
     await dateInput.click();
     await page.waitForSelector('.p-datepicker-calendar');
-    const allDateCells = page.locator('.p-datepicker-calendar tbody td');
-    const dateCellCount = await allDateCells.count();
-    const randomIndex = Math.floor(Math.random() * dateCellCount);
-    const randomDateCell = allDateCells.nth(randomIndex);
-    await randomDateCell.click();
+
+    // Select a random enabled date
+    const allEnabledDates = page.locator(
+        '.p-datepicker-calendar tbody td:not([aria-disabled="true"])'
+    );
+    const enabledDateCount = await allEnabledDates.count();
+    if (enabledDateCount === 0) {
+        throw new Error("No enabled dates available to select.");
+    }
+    const randomIndex = Math.floor(Math.random() * enabledDateCount);
+    const randomEnabledDate = allEnabledDates.nth(randomIndex);
+    await randomEnabledDate.click();
+
+    // Fill random amount and submit
     const randomAmount = (
         Math.floor(Math.random() * (9999 - 100 + 1)) + 100
     ).toString();
     await amountInput.fill(randomAmount);
     await page.getByRole('button', { name: 'Submit' }).click();
-    //Assert
+
+    // Assert
     await pensionPage.okSuccess();
 });
+

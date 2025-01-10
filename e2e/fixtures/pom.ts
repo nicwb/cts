@@ -414,44 +414,62 @@ export class PensionModule {
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
-        const cal = this.page.locator(
-            'p-calendar[formControlName="effectiveFromDate"]'
-        );
-        await expect(cal).toBeVisible();
-        await cal.click();
+        const calendar = this.page.locator('p-calendar[formControlName="effectiveFromDate"]');
+        await expect(calendar).toBeVisible();
+        await calendar.click();
 
         if (useCurrentDate) {
-            await this.page.locator('.p-datepicker-today').click();
+            // Select today's date
+            await this.page.locator('.p-datepicker-today:not(.p-disabled)').click();
         } else if (day) {
-            await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                .locator(`text="${day}"`)
-                .first()
-                .click();
+            // Ensure the day is selectable
+            const dayLocator = this.page.locator(`.p-datepicker-calendar td:not(.p-disabled)`).locator(`text="${day}"`);
+            await expect(dayLocator).toBeVisible();
+            await dayLocator.click();
         } else if (daysFromNow) {
+            // Calculate future date
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + daysFromNow);
             const futureDay = futureDate.getDate();
-            await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                .locator(`text="${futureDay}"`)
-                .first()
-                .click();
+            const futureMonth = futureDate.getMonth();
+            const futureYear = futureDate.getFullYear();
+
+            // Navigate to the correct month/year and select the day
+            await this.selectDateInCalendar(futureDay, futureMonth, futureYear);
         }
 
-        const rate = this.page.locator(
-            'p-dropdown[formControlName="rateType"]'
-        );
-        await expect(rate).toBeVisible();
-        await rate.click();
+        const rateDropdown = this.page.locator('p-dropdown[formControlName="rateType"]');
+        await expect(rateDropdown).toBeVisible();
+        await rateDropdown.click();
         await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
 
-        await this.page.fill(
-            'input[formControlName="rateAmount"]',
-            rateAmount.toString()
-        );
+        await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
     }
-
+    async selectDateInCalendar(day: number, month: number, year: number): Promise<void> {
+        // Locate the header of the calendar
+        const calendarHeader = this.page.locator('.p-datepicker-header');
+        await expect(calendarHeader).toBeVisible();
+        // Keep navigating until the desired month and year are displayed
+        while (true) {
+            const displayedMonthYear = await this.page.locator('.p-datepicker-title').innerText();
+            const [displayedMonth, displayedYear] = displayedMonthYear.split(' ');
+            // Check if the displayed month and year match the target
+            const targetMonth = new Date(year, month).toLocaleString('default', { month: 'long' });
+            if (displayedMonth === targetMonth && parseInt(displayedYear, 10) === year) {
+                break;
+            }
+            // Navigate forward or backward based on the target date
+            if (new Date(year, month) > new Date(parseInt(displayedYear, 10), new Date().getMonth())) {
+                await this.page.locator('.p-datepicker-next').click();
+            } else {
+                await this.page.locator('.p-datepicker-prev').click();
+            }
+        }
+        // Select the day
+        const dayLocator = this.page.locator(`.p-datepicker-calendar td:not(.p-disabled)`).locator(`text="${day}"`);
+        await expect(dayLocator).toBeVisible();
+        await dayLocator.click();
+    }
     async verifyComponentRateFormFields(): Promise<void> {
         await expect(
             this.page.locator('input[formControlName="categoryName"]')

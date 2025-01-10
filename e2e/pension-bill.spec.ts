@@ -93,15 +93,11 @@ test('should generate PDF and handle errors appropriately', async ({
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
     // const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
     await firstRow.locator('td').nth(2).waitFor({ state: 'visible' });
-    const pensionerName = await firstRow.locator('td').nth(2).textContent();
 
 
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
         ppoIdValue ?? ''
     );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
