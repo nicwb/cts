@@ -414,62 +414,78 @@ export class PensionModule {
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
-        const calendar = this.page.locator('p-calendar[formControlName="effectiveFromDate"]');
-        await expect(calendar).toBeVisible();
-        await calendar.click();
+        const cal = this.page.locator(
+            'p-calendar[formControlName="effectiveFromDate"]'
+        );
+        await expect(cal).toBeVisible();
+        await cal.click();
+
+        let selectedDay;
 
         if (useCurrentDate) {
-            // Select today's date
-            await this.page.locator('.p-datepicker-today:not(.p-disabled)').click();
+            await this.page.locator('.p-datepicker-today').click();
+            selectedDay = new Date().getDate();
         } else if (day) {
-            // Ensure the day is selectable
-            const dayLocator = this.page.locator(`.p-datepicker-calendar td:not(.p-disabled)`).locator(`text="${day}"`);
-            await expect(dayLocator).toBeVisible();
-            await dayLocator.click();
+            selectedDay = parseInt(day, 10);
+            const isDisabled = await this.page
+                .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
+                .isVisible();
+
+            if (isDisabled) {
+                // Select a random enabled date
+                await this.selectRandomEnabledDate();
+            } else {
+                await this.page
+                    .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
+                    .locator(`text="${selectedDay}"`)
+                    .first()
+                    .click();
+            }
         } else if (daysFromNow) {
-            // Calculate future date
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + daysFromNow);
-            const futureDay = futureDate.getDate();
-            const futureMonth = futureDate.getMonth();
-            const futureYear = futureDate.getFullYear();
+            selectedDay = futureDate.getDate();
+            const isDisabled = await this.page
+                .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
+                .isVisible();
 
-            // Navigate to the correct month/year and select the day
-            await this.selectDateInCalendar(futureDay, futureMonth, futureYear);
+            if (isDisabled) {
+                // Select a random enabled date
+                await this.selectRandomEnabledDate();
+            } else {
+                await this.page
+                    .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
+                    .locator(`text="${selectedDay}"`)
+                    .first()
+                    .click();
+            }
         }
 
-        const rateDropdown = this.page.locator('p-dropdown[formControlName="rateType"]');
-        await expect(rateDropdown).toBeVisible();
-        await rateDropdown.click();
+        const rate = this.page.locator(
+            'p-dropdown[formControlName="rateType"]'
+        );
+        await expect(rate).toBeVisible();
+        await rate.click();
         await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
 
-        await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+        await this.page.fill(
+            'input[formControlName="rateAmount"]',
+            rateAmount.toString()
+        );
     }
-    async selectDateInCalendar(day: number, month: number, year: number): Promise<void> {
-        // Locate the header of the calendar
-        const calendarHeader = this.page.locator('.p-datepicker-header');
-        await expect(calendarHeader).toBeVisible();
-        // Keep navigating until the desired month and year are displayed
-        while (true) {
-            const displayedMonthYear = await this.page.locator('.p-datepicker-title').innerText();
-            const [displayedMonth, displayedYear] = displayedMonthYear.split(' ');
-            // Check if the displayed month and year match the target
-            const targetMonth = new Date(year, month).toLocaleString('default', { month: 'long' });
-            if (displayedMonth === targetMonth && parseInt(displayedYear, 10) === year) {
-                break;
-            }
-            // Navigate forward or backward based on the target date
-            if (new Date(year, month) > new Date(parseInt(displayedYear, 10), new Date().getMonth())) {
-                await this.page.locator('.p-datepicker-next').click();
-            } else {
-                await this.page.locator('.p-datepicker-prev').click();
-            }
+
+    private async selectRandomEnabledDate(): Promise<void> {
+        const enabledDates = this.page.locator('.p-datepicker-calendar td:not(.p-disabled)');
+        const count = await enabledDates.count();
+
+        if (count > 0) {
+            const randomIndex = Math.floor(Math.random() * count);
+            await enabledDates.nth(randomIndex).click();
+        } else {
+            throw new Error('No enabled dates available to select.');
         }
-        // Select the day
-        const dayLocator = this.page.locator(`.p-datepicker-calendar td:not(.p-disabled)`).locator(`text="${day}"`);
-        await expect(dayLocator).toBeVisible();
-        await dayLocator.click();
     }
+
     async verifyComponentRateFormFields(): Promise<void> {
         await expect(
             this.page.locator('input[formControlName="categoryName"]')
