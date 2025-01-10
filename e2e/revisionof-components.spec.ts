@@ -113,6 +113,7 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
         Math.floor(Math.random() * (9999 - 100 + 1)) + 100
     ).toString();
     await amountInput.fill(randomAmount);
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
 
     // Assert

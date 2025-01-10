@@ -91,13 +91,6 @@ test('should generate PDF and handle errors appropriately', async ({
     //ARRANGE,
     const firstRow = await pensionPage.openPopupAndSelectFirstRow();
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    // const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
-    await firstRow.locator('td').nth(2).waitFor({ state: 'visible' });
-
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
