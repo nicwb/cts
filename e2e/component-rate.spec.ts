@@ -10,9 +10,9 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill form with test data
+    // Fill form with test data, selecting a date from the 2nd row
     await pensionPage.fillComponentRateForm({
-        useCurrentDate: true,
+        row: 4, // Specify the row number (2nd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
@@ -36,17 +36,16 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     ]);
 });
 
-test('should add new component, submit form with valid date, and display success message', async ({
+test('should add new component, submit form with valid date from 2nd row, and display success message', async ({
     pensionPage,
 }) => {
     // Add component and category
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form with a valid date
-    const validDate = await pensionPage.getValidDate();
+    // Fill and submit form with a valid date from the 2nd row
     await pensionPage.fillComponentRateForm({
-        day: validDate.getDate().toString(),
+        row: 2, // Specify the row number (2nd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
@@ -56,16 +55,14 @@ test('should add new component, submit form with valid date, and display success
     await expect(pensionPage.page.locator('p-table')).toBeVisible();
 });
 
-test('should show correct table', async ({ pensionPage }) => {
+test('should show correct table after submitting form with valid date from 3rd row', async ({ pensionPage }) => {
     // Add component and category
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form with a valid future date
-    const randomDays = Math.floor(Math.random() * 100) + 1;
-    const futureDate = await pensionPage.getFutureDate(randomDays);
+    // Fill and submit form with a valid date from the 3rd row
     await pensionPage.fillComponentRateForm({
-        day: futureDate.getDate().toString(),
+        row: 3, // Specify the row number (3rd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });

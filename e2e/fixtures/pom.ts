@@ -423,15 +423,11 @@ export class PensionModule {
     }
 
     async fillComponentRateForm({
-        useCurrentDate,
-        day,
-        daysFromNow,
+        row,
         rateType,
         rateAmount,
     }: {
-        useCurrentDate?: boolean;
-        day?: string;
-        daysFromNow?: number;
+        row: number; // Row number to select the date from
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
@@ -439,19 +435,18 @@ export class PensionModule {
         await expect(cal).toBeVisible();
         await cal.click();
 
-        let selectedDay;
+        // Select a date from the specified row
+        const calendarRows = this.page.locator('.p-datepicker-calendar tr'); // Adjust the selector based on your calendar's structure
+        const selectedRow = calendarRows.nth(row - 1); // Convert to 0-based index
 
-        if (useCurrentDate) {
-            await this.page.locator('.p-datepicker-today').click();
-            selectedDay = new Date().getDate();
-        } else if (day) {
-            selectedDay = parseInt(day, 10);
-            await this.selectDate(selectedDay);
-        } else if (daysFromNow) {
-            const futureDate = new Date();
-            futureDate.setDate(futureDate.getDate() + daysFromNow);
-            selectedDay = futureDate.getDate();
-            await this.selectDate(selectedDay);
+        // Select the first available date in the specified row
+        const availableDates = selectedRow.locator('td:not(.p-disabled)'); // Select only enabled dates
+        const count = await availableDates.count();
+
+        if (count > 0) {
+            await availableDates.nth(0).click(); // Click the first available date in the row
+        } else {
+            throw new Error(`No available dates found in row ${row}.`);
         }
 
         const rate = this.page.locator('p-dropdown[formControlName="rateType"]');
@@ -462,77 +457,7 @@ export class PensionModule {
         await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
     }
 
-    private async selectDate(selectedDay: number): Promise<void> {
-        const isDisabled = await this.page
-            .locator(`.p-datepicker-calendar td.p-disabled >> text="${selectedDay}"`)
-            .isVisible();
 
-        if (isDisabled) {
-            console.log(`Selected day ${selectedDay} is disabled. Selecting a random enabled date instead.`);
-            await this.selectRandomEnabledDate();
-        } else {
-            const isAvailable = await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled) >> text="${selectedDay}"`)
-                .isVisible();
-
-            if (isAvailable) {
-                await this.page
-                    .locator(`.p-datepicker-calendar td:not(.p-disabled) >> text="${selectedDay}"`)
-                    .first()
-                    .click();
-            } else {
-                console.log(`Selected day ${selectedDay} is not available. Selecting a random enabled date instead.`);
-                await this.selectRandomEnabledDate();
-            }
-        }
-    }
-
-    private async selectRandomEnabledDate(): Promise<void> {
-        const enabledDates = this.page.locator('.p-datepicker-calendar td:not(.p-disabled)');
-        const count = await enabledDates.count();
-
-        if (count > 0) {
-            const randomIndex = Math.floor(Math.random() * count);
-            await enabledDates.nth(randomIndex).click();
-        } else {
-            throw new Error('No enabled dates available to select.');
-        }
-    }
-
-    // New method to get a valid date
-    async getValidDate(): Promise<Date> {
-        const today = new Date();
-        // Logic to find the next valid date
-        // This can be customized based on your application's date selection logic
-        const validDate = new Date(today);
-        while (true) {
-            const isDisabled = await this.page
-                .locator(`.p-datepicker-calendar td.p-disabled >> text="${validDate.getDate()}"`)
-                .isVisible();
-            if (!isDisabled) {
-                break; // Found a valid date
-            }
-            validDate.setDate(validDate.getDate() + 1); // Move to the next day
-        }
-        return validDate;
-    }
-
-    // New method to get a future date
-    async getFutureDate(daysFromNow: number): Promise<Date> {
-        const futureDate = new Date();
-        futureDate.setDate(futureDate.getDate() + daysFromNow);
-        // Ensure the future date is valid
-        while (true) {
-            const isDisabled = await this.page
-                .locator(`.p-datepicker-calendar td.p-disabled >> text="${futureDate.getDate()}"`)
-                .isVisible();
-            if (!isDisabled) {
-                break; // Found a valid future date
-            }
-            futureDate.setDate(futureDate.getDate() + 1); // Move to the next day
-        }
-        return futureDate;
-    }
 
     async verifyComponentRateFormFields(): Promise<void> {
         await expect(
