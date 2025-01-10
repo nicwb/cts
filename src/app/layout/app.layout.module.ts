@@ -15,8 +15,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppTopBarComponent } from './app.topbar.component';
 import { AppFooterComponent } from './app.footer.component';
 import { AppConfigModule } from './config/config.module';
-import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppLayoutComponent } from "./app.layout.component";
+import { AppSidebarComponent } from './app.sidebar.component';
+import { AppLayoutComponent } from './app.layout.component';
 import { LoadingIndeterminateComponent } from './loading-indeterminate/loading-indeterminate.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -77,9 +77,9 @@ import { ToastModule } from 'primeng/toast';
         SharedModule,
         OptionCardModule,
         PensionReportsModule,
-        ToastModule
+        ToastModule,
         // RouterModule.forChild(routes),
     ],
-    exports: [AppLayoutComponent,RouterModule]
+    exports: [AppLayoutComponent, RouterModule],
 })
-export class AppLayoutModule { }
+export class AppLayoutModule {}

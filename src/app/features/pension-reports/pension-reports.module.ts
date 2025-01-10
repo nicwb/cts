@@ -7,27 +7,25 @@ import { ManualPpoRegisterModule } from './manual-ppo-register/manual-ppo-regist
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-    { path: '', component: PensionReportsComponent, data: { breadcrumb: 'Pensionreport' }},
+    {
+        path: '',
+        component: PensionReportsComponent,
+        data: { breadcrumb: 'Pensionreport' },
+    },
     {
         path: 'manual-ppo-register', // This loads the ApprovalModule lazily
         component: ManualPpoRegisterComponent,
-        data: { breadcrumb: 'ManualPpoRegisterModule' }
+        data: { breadcrumb: 'ManualPpoRegisterModule' },
     },
 ];
 @NgModule({
-    declarations: [
-        PensionReportsComponent
-    ],
+    declarations: [PensionReportsComponent],
     imports: [
         CommonModule,
         OptionCardModule,
         ManualPpoRegisterModule,
         RouterModule.forChild(routes),
-
     ],
-    exports: [
-        PensionReportsComponent,
-        RouterModule
-    ]
+    exports: [PensionReportsComponent, RouterModule],
 })
-export class PensionReportsModule { }
+export class PensionReportsModule {}

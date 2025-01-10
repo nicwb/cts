@@ -13,16 +13,18 @@ import { ChequeList, NewChequeEntry } from '../../models/cheque';
     providedIn: 'root',
 })
 export class ChequeEntryService {
-    constructor(private http: HttpClient, private toastService: ToastService) { }
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 
     getCheques(
         queryParameters: DynamicTableQueryParameters
     ): Observable<IapiResponce<DynamicTable<ChequeList>>> {
         return this.http
-            .patch<IapiResponce<DynamicTable<ChequeList>>>(
-                'v1/Cheque/all-cheques',
-                queryParameters
-            )
+            .patch<
+                IapiResponce<DynamicTable<ChequeList>>
+            >('v1/Cheque/all-cheques', queryParameters)
             .pipe(
                 catchError((error) => {
                     throw this.toastService.showError(error.message);
@@ -30,10 +32,12 @@ export class ChequeEntryService {
             );
     }
     insertNewChequeEntry(paylod: NewChequeEntry): Observable<IapiResponce> {
-        return this.http.post<IapiResponce>('v1/Cheque/new-cheque-entry', paylod).pipe(
-            catchError((error) => {
-                throw this.toastService.showError(error.message);
-            })
-        );
+        return this.http
+            .post<IapiResponce>('v1/Cheque/new-cheque-entry', paylod)
+            .pipe(
+                catchError((error) => {
+                    throw this.toastService.showError(error.message);
+                })
+            );
     }
 }

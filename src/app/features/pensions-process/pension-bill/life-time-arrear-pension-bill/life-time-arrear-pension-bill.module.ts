@@ -20,8 +20,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { LifeCertificateComponent } from '../../ppo/life-certificate/life-certificate.component';
 import { LifeTimeArrearPensionBillComponent } from './life-time-arrear-pension-bill.component';
 
-
-
 @NgModule({
     declarations: [LifeTimeArrearPensionBillComponent],
     imports: [
@@ -43,7 +41,7 @@ import { LifeTimeArrearPensionBillComponent } from './life-time-arrear-pension-b
         RatingModule,
         PopupTableModule,
         DividerModule,
-        ProgressBarModule
-    ]
+        ProgressBarModule,
+    ],
 })
-export class LifeTimeArrearPensionBillModule { }
+export class LifeTimeArrearPensionBillModule {}

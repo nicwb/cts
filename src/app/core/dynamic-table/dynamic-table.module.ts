@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { FormsModule } from '@angular/forms';
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
 import { DynamicTableComponent } from './dynamic-table.component';
 
 @NgModule({
@@ -17,8 +17,7 @@ import { DynamicTableComponent } from './dynamic-table.component';
         TableModule,
         FormsModule,
         InputTextModule,
-
     ],
-    exports: [DynamicTableComponent]
+    exports: [DynamicTableComponent],
 })
-export class DynamicTableModule { }
+export class DynamicTableModule {}

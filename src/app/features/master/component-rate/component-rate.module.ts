@@ -13,13 +13,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { TableModule } from 'primeng/table';
 
-
 const routes: Routes = [
     {
         path: '',
         component: ComponentRateComponent,
-        data: { breadcrumb: 'ComponentRateComponent' }
-    }
+        data: { breadcrumb: 'ComponentRateComponent' },
+    },
 ];
 
 @NgModule({
@@ -34,7 +33,7 @@ const routes: Routes = [
         CalendarModule,
         DropdownModule,
         PopupTableModule,
-        TableModule,  // Add TableModule here
+        TableModule, // Add TableModule here
         RouterModule.forChild(routes),
     ],
     exports: [ComponentRateComponent],

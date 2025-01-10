@@ -23,7 +23,7 @@ import { PensionCategoryComponent } from './pension-category.component';
 //         path: '',
 //         component: PensionCategoryComponent,
 //         data: { breadcrumb: 'Pension Category' },
-        
+
 //     },
 //     {
 //         path: 'new',
@@ -34,6 +34,6 @@ import { PensionCategoryComponent } from './pension-category.component';
 
 @NgModule({
     // imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class PensionCategoryRoutingModule { }
+export class PensionCategoryRoutingModule {}

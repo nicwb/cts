@@ -19,17 +19,18 @@ import { DividerModule } from 'primeng/divider';
     declarations: [ComponentRateRevisionsComponent],
     imports: [
         CommonModule,
-        ReactiveFormsModule, 
+        ReactiveFormsModule,
         ButtonModule,
         RadioButtonModule,
         InputTextModule,
-        FieldsetModule, 
+        FieldsetModule,
         CalendarModule,
         DropdownModule,
         PopupTableModule,
-        TableModule,  
-        CommonHeaderModule ,
-        DividerModule   ],
+        TableModule,
+        CommonHeaderModule,
+        DividerModule,
+    ],
     exports: [ComponentRateRevisionsComponent],
 })
-export class ComponentRateRevisionsModule { }
+export class ComponentRateRevisionsModule {}

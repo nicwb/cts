@@ -4,22 +4,24 @@ import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NavigationService {
-
-    constructor(private router: Router, private location: Location) { }
+    constructor(
+        private router: Router,
+        private location: Location
+    ) {}
 
     navigateTo(targetUrl: string, returnUri: string, ask?: string) {
         this.router.navigate([targetUrl], {
-            queryParams: { 'return-uri': returnUri, 'ask': ask }
+            queryParams: { 'return-uri': returnUri, ask: ask },
         });
     }
 
     confirmReturnToCaller() {
         const returnUri = this.getReturnUri();
         const ask = this.getAskQuestion();
-        if (!ask){
+        if (!ask) {
             return;
         }
 
@@ -29,7 +31,7 @@ export class NavigationService {
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes',
-            cancelButtonText: 'No'
+            cancelButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
                 if (returnUri) {

@@ -64,7 +64,8 @@ export class ComponentRateComponent implements OnInit {
                 order: '',
             },
         };
-        this.allPensionCategory$ = this.pensionCategoryMasterService.getCategories();
+        this.allPensionCategory$ =
+            this.pensionCategoryMasterService.getCategories();
 
         this.pensionComponent$ = this.pensionComponentService.getComponents();
     }
@@ -202,7 +203,10 @@ export class ComponentRateComponent implements OnInit {
                 ).pipe(
                     tap((response: ComponentRateResponseDTOJsonAPIResponse) => {
                         if (response.message) {
-                            if (response.apiResponseStatus === APIResponseStatus.Success) {
+                            if (
+                                response.apiResponseStatus ===
+                                APIResponseStatus.Success
+                            ) {
                                 this.fetchAllDetails();
                                 this.toastService.showSuccess(response.message);
                             } else {

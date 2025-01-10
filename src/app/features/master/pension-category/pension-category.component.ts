@@ -20,7 +20,7 @@ import { Observable, filter, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { pathToFileURL } from 'url';
 import { Location } from '@angular/common';
-import { SessionStorageService } from 'src/app/core/services/session-storage.service'
+import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 interface expandedRows {
     [key: string]: boolean;
 }
@@ -53,7 +53,7 @@ export class PensionCategoryComponent implements OnInit {
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
     Category$?: Observable<any>;
-    suffix="Category";
+    suffix = 'Category';
 
     constructor(
         // private datePipe: DatePipe,
@@ -63,7 +63,7 @@ export class PensionCategoryComponent implements OnInit {
         private route: ActivatedRoute,
         private location: Location,
         private sessionStorageService: SessionStorageService
-    ) { }
+    ) {}
 
     @Output() PensionCategorySelected = new EventEmitter<any>();
 
@@ -75,7 +75,9 @@ export class PensionCategoryComponent implements OnInit {
             pageIndex: 0,
         };
         this.check_for_data();
-        const endpoint = this.route.snapshot.url.map(segment => segment.path).join('/');
+        const endpoint = this.route.snapshot.url
+            .map((segment) => segment.path)
+            .join('/');
         if (endpoint == 'pension-category/new') {
             this.showInsertDialog();
         }
@@ -340,7 +342,7 @@ export class PensionCategoryComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Pension Category Details added successfully'
                 );
-                this.sessionStorageService.remove('', '', `${this.suffix}`)
+                this.sessionStorageService.remove('', '', `${this.suffix}`);
 
                 this.displayInsertModal = false; // Close the dialog
                 this.PensionForm.reset();
@@ -457,7 +459,7 @@ export class PensionCategoryComponent implements OnInit {
         } else {
             this.toastService.showError(
                 response.message ||
-                'An unexpected error occurred. Please try again.'
+                    'An unexpected error occurred. Please try again.'
             );
         }
     }
@@ -468,9 +470,7 @@ export class PensionCategoryComponent implements OnInit {
     async getData() {
         this.isTableVisible = true;
         this.isTableDataLoading = true;
-        this.Category$=this.service.getCategories();
-
-
+        this.Category$ = this.service.getCategories();
     }
 
     // get id from  primary
@@ -478,61 +478,63 @@ export class PensionCategoryComponent implements OnInit {
         try {
             this.isTableDataLoading = true; // Start loading state
 
-            const primaryCategoryData = await this.sessionStorageService.cacheWithExpiry(
-                this,
-                async () => {
-                    const data = this.tableQueryParameters;
-                    const response = await firstValueFrom(this.service.getAllPrimaryCategories(data));
+            const primaryCategoryData =
+                await this.sessionStorageService.cacheWithExpiry(
+                    this,
+                    async () => {
+                        const data = this.tableQueryParameters;
+                        const response = await firstValueFrom(
+                            this.service.getAllPrimaryCategories(data)
+                        );
 
-                    if (response.result && response.result.data) {
-                        return response.result.data; // Return fetched data
-                    } else {
-                        throw new Error('Invalid response from API'); // Handle invalid response
-                    }
-                },
-                'primaryCategorys' // Optional suffix for cache key
-            );
+                        if (response.result && response.result.data) {
+                            return response.result.data; // Return fetched data
+                        } else {
+                            throw new Error('Invalid response from API'); // Handle invalid response
+                        }
+                    },
+                    'primaryCategorys' // Optional suffix for cache key
+                );
 
             this.populatePrimaryIdSelect(primaryCategoryData);
-
         } catch (error) {
             console.error('Error fetching primary categories:', error); // Log errors
-
         } finally {
             this.isTableDataLoading = false; // Ensure loading state resets
         }
     }
 
     populatePrimaryIdSelect(categories: any[]): void {
-        this.primary_id_select = categories.map(category => ({
+        this.primary_id_select = categories.map((category) => ({
             label: `${category.id}-${category.primaryCategoryName}`,
             value: category.id,
         }));
     }
 
-
     async get_id_from_sub_category(): Promise<void> {
         try {
             this.isTableDataLoading = true; // Set loading state to true
 
-            const subCategoryData = await this.sessionStorageService.cacheWithExpiry(
-                this,
-                async () => {
-                    const data = this.tableQueryParameters;
-                    const response = await firstValueFrom(this.service.getAllSubCategories(data));
+            const subCategoryData =
+                await this.sessionStorageService.cacheWithExpiry(
+                    this,
+                    async () => {
+                        const data = this.tableQueryParameters;
+                        const response = await firstValueFrom(
+                            this.service.getAllSubCategories(data)
+                        );
 
-                    if (response.result && response.result.data) {
-                        return response.result.data; // Return valid data
-                    } else {
-                        throw new Error('Invalid response from API'); // Handle invalid response
-                    }
-                },
-                'subCategoryCacheKey' // Optional custom cache key
-            );
+                        if (response.result && response.result.data) {
+                            return response.result.data; // Return valid data
+                        } else {
+                            throw new Error('Invalid response from API'); // Handle invalid response
+                        }
+                    },
+                    'subCategoryCacheKey' // Optional custom cache key
+                );
 
             this.populateSubIdSelect(subCategoryData); // Populate select options
             this.sub_table = true; // Show the table
-
         } catch (error) {
             console.error('Error fetching sub-category data:', error); // Log the error
         } finally {
@@ -540,7 +542,7 @@ export class PensionCategoryComponent implements OnInit {
         }
     }
     populateSubIdSelect(value: any[]): void {
-        this.sub_id_select = value.map(item => ({
+        this.sub_id_select = value.map((item) => ({
             label: `${item.id}-${item.subCategoryName}`,
             value: item.id,
         }));
@@ -618,30 +620,28 @@ export class PensionCategoryComponent implements OnInit {
     cancelPensionCategory() {
         this.PensionForm.reset();
         this.displayInsertModal = false;
-        this.onDialogClose()
+        this.onDialogClose();
     }
 
     getDialogHeight(): string {
         const width = window.innerWidth;
 
         if (width >= 1200) {
-            return '400px';  // Set height for larger screens
+            return '400px'; // Set height for larger screens
         } else {
-            return '400px';  // Set height for extra-small screens
+            return '400px'; // Set height for extra-small screens
         }
     }
 
     createpensioncategory() {
         //   this.navc.navigateTo('/pension/modules/pension-process/ppo/receipt/new','/pension/modules/pension-process/ppo/manualPpoReceipt')
         this.router.navigate(['/master/pension-category/new']);
-
     }
     onDialogClose() {
         if (this.router.url === '/master/pension-category/new') {
-            this.router.navigate(['/master/pension-category']);  // Go back if already on the intended route.
+            this.router.navigate(['/master/pension-category']); // Go back if already on the intended route.
         } else {
-            this.router.navigate(['/master/pension-category/new']);  // Navigate if not on the route.
+            this.router.navigate(['/master/pension-category/new']); // Navigate if not on the route.
         }
     }
-
 }

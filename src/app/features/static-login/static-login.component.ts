@@ -4,18 +4,19 @@ import { PensionService } from 'src/app/api';
 @Component({
     selector: 'app-static-login',
     templateUrl: './static-login.component.html',
-    styleUrls: ['./static-login.component.scss']
+    styleUrls: ['./static-login.component.scss'],
 })
 export class StaticLoginComponent {
-    public readonly baseUrl : string;
+    public readonly baseUrl: string;
     public readonly apiUrl;
-    public readonly playwrightUrl : string;
-    public readonly clientVersion :string;
-    constructor(private service : PensionService) {
+    public readonly playwrightUrl: string;
+    public readonly clientVersion: string;
+    constructor(private service: PensionService) {
         this.clientVersion = import.meta.env.NG_APP_VERSION;
         this.apiUrl = service.configuration.basePath;
-        this.baseUrl = import.meta.env.NG_APP_ENV_DOCKER ? import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL : import.meta.env.NG_APP_BASE_URL;
-        this.playwrightUrl = import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL
+        this.baseUrl = import.meta.env.NG_APP_ENV_DOCKER
+            ? import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL
+            : import.meta.env.NG_APP_BASE_URL;
+        this.playwrightUrl = import.meta.env.NG_APP_PLAYWRIGHT_BASE_URL;
     }
-
 }

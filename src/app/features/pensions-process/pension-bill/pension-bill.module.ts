@@ -1,8 +1,7 @@
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {PensionBillComponent} from './pension-bill.component';
-import {FirstPensionBillModule} from './first-pension-bill/first-pension-bill.module'
+import { PensionBillComponent } from './pension-bill.component';
+import { FirstPensionBillModule } from './first-pension-bill/first-pension-bill.module';
 import { first } from 'rxjs';
 import { RouterModule, Routes } from '@angular/router';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
@@ -25,32 +24,34 @@ import { LifeTimeArrearPensionBillModule } from './life-time-arrear-pension-bill
 type NewType = Routes;
 
 const routes: NewType = [
-    {path:'',component:PensionBillComponent,data: { breadcrumb: 'PensionBillComponent' },
+    {
+        path: '',
+        component: PensionBillComponent,
+        data: { breadcrumb: 'PensionBillComponent' },
     },
     {
         path: 'first-pension-bill',
         component: FirstPensionBillComponent,
         data: { breadcrumb: 'FirstPensionBillComponent' },
-
     },
     {
         path: 'regular-pension-bill',
         component: RegularPensionBillComponent,
-        data: { breadcrumb: 'RegularPensionBillComponent'}
+        data: { breadcrumb: 'RegularPensionBillComponent' },
     },
     {
         path: 'arrear-pension-bill',
         component: ArrearPensionBillComponent,
-        data: { breadcrumb: 'ArrearPensionBillComponent'}
+        data: { breadcrumb: 'ArrearPensionBillComponent' },
     },
     {
         path: 'life-time-arrear-pension-bill',
         component: LifeTimeArrearPensionBillComponent,
-        data: { breadcrumb: 'LifeTimeArrearPensionBillComponent'}
-    }
+        data: { breadcrumb: 'LifeTimeArrearPensionBillComponent' },
+    },
 ];
 @NgModule({
-    declarations: [PensionBillComponent],  // Declare components specific to this module
+    declarations: [PensionBillComponent], // Declare components specific to this module
     imports: [
         CommonModule,
         OptionCardModule,
@@ -76,8 +77,8 @@ const routes: NewType = [
         DynamicTableModule,
         TreasuryDropdownModule,
         LifeTimeArrearPensionBillModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
     ],
-    exports: [RouterModule] // Export if needed in other modules
+    exports: [RouterModule], // Export if needed in other modules
 })
-export class PensionBillModule { }
+export class PensionBillModule {}

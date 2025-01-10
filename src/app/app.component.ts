@@ -4,12 +4,15 @@ import { LayoutService } from './layout/service/app.layout.service';
 
 @Component({
     selector: 'app-root',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-    spinerColor : string = "";
-    spinerBgColor : string = "";
-    constructor(private primengConfig: PrimeNGConfig,private layoutService:LayoutService) { }
+    spinerColor: string = '';
+    spinerBgColor: string = '';
+    constructor(
+        private primengConfig: PrimeNGConfig,
+        private layoutService: LayoutService
+    ) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;

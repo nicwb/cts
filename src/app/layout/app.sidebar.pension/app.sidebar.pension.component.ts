@@ -2,113 +2,193 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 
 @Component({
-    selector: 'app-sidebar-pension',   //app-app.sidebar.pension
+    selector: 'app-sidebar-pension', //app-app.sidebar.pension
     templateUrl: './app.sidebar.pension.component.html',
-
 })
-
 export class AppSidebarPensionComponent implements OnInit {
     readonly clientVersion = import.meta.env.NG_APP_VERSION;
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) { }
+    constructor(public layoutService: LayoutService) {}
 
     ngOnInit() {
         this.model = [
             {
                 label: 'Pension',
                 items: [
-                    { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/'] }
-                ]
+                    {
+                        label: 'Dashboard',
+                        icon: 'pi pi-fw pi-home',
+                        routerLink: ['/'],
+                    },
+                ],
             },
             {
                 items: [
                     {
-                        label: 'Master', icon: 'assets/layout/images/icons/byte.png',
+                        label: 'Master',
+                        icon: 'assets/layout/images/icons/byte.png',
                         items: [
                             {
                                 label: 'Pension Category',
-                                routerLink: ['/master/pension-category']  // Ensure leading slash for absolute path
+                                routerLink: ['/master/pension-category'], // Ensure leading slash for absolute path
                             },
                             {
                                 label: 'Primary',
-                                routerLink: ['/master/primary']  // Absolute path
+                                routerLink: ['/master/primary'], // Absolute path
                             },
                             {
                                 label: 'Sub Category',
-                                routerLink: ['/master/sub-category']  // Absolute path
+                                routerLink: ['/master/sub-category'], // Absolute path
                             },
                             {
                                 label: 'Component',
-                                routerLink: ['/master/component']  // Absolute path
+                                routerLink: ['/master/component'], // Absolute path
                             },
                             {
                                 label: 'Component Rate',
-                                routerLink: ['/master/component-rate']  // Absolute path
+                                routerLink: ['/master/component-rate'], // Absolute path
                             },
                             {
                                 label: 'Component Rate Revision',
-                                routerLink: ['/master/component-rate-revision']  // Absolute path
-                            }
-                        ]
-                    }
-                ]
+                                routerLink: ['/master/component-rate-revision'], // Absolute path
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 items: [
                     {
-                        label: 'Pension Process', icon: 'assets/layout/images/icons/insurance.png',
+                        label: 'Pension Process',
+                        icon: 'assets/layout/images/icons/insurance.png',
                         items: [
                             {
-                                label: 'PPO', icon: 'assets/layout/images/icons/vendor-entry.png',
+                                label: 'PPO',
+                                icon: 'assets/layout/images/icons/vendor-entry.png',
                                 items: [
-                                    { label: 'Entry', routerLink: ['pension-process/ppo/entry'] },
-                                    { label: 'PPO Receipt',  routerLink: ['pension-process/ppo/ppo-receipt'] },
-                                    { label: 'Pensioner Status',  routerLink: ['pension-process/ppo/pensioner-status'] },
+                                    {
+                                        label: 'Entry',
+                                        routerLink: [
+                                            'pension-process/ppo/entry',
+                                        ],
+                                    },
+                                    {
+                                        label: 'PPO Receipt',
+                                        routerLink: [
+                                            'pension-process/ppo/ppo-receipt',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Pensioner Status',
+                                        routerLink: [
+                                            'pension-process/ppo/pensioner-status',
+                                        ],
+                                    },
 
                                     // { label: 'Convert to Family Pension', icon: 'pi pi-fw pi-bookmark', routerLink: ['/pension/modules/pension-process/ppo/convert-to-family-pension'] },
-                                    { label: 'Life Certificate',  routerLink: ['pension-process/ppo/life-certificate'] },
-                                    { label: 'Convert to family pension',  routerLink: ['pension-process/ppo/convart-to-family-pension'] },
-                                ]
+                                    {
+                                        label: 'Life Certificate',
+                                        routerLink: [
+                                            'pension-process/ppo/life-certificate',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Convert to family pension',
+                                        routerLink: [
+                                            'pension-process/ppo/convart-to-family-pension',
+                                        ],
+                                    },
+                                ],
                             },
                             {
-                                label: 'Pension Details', icon: 'assets/layout/images/icons/work-in-progress.png',
+                                label: 'Pension Details',
+                                icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'Revision of Components', routerLink: ['/pension-process/pension-details/revision'] },
+                                    {
+                                        label: 'Revision of Components',
+                                        routerLink: [
+                                            '/pension-process/pension-details/revision',
+                                        ],
+                                    },
                                     // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
-                                ]
+                                ],
                             },
                             {
-                                label: 'Pension Bill', icon: 'assets/layout/images/icons/work-in-progress.png',
+                                label: 'Pension Bill',
+                                icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
                                     {
                                         label: 'First Pension Bill',
-                                        routerLink: ['pension-process/pension-bill/first-pension-bill']
+                                        routerLink: [
+                                            'pension-process/pension-bill/first-pension-bill',
+                                        ],
                                     },
-                                    { label: 'Regular Pension', routerLink: ['pension-process/pension-bill/regular-pension-bill'] },
-                                    { label: 'Arrear Pension Bill', routerLink: ['pension-process/pension-bill/arrear-pension-bill'] },
-                                    { label: 'Life Time Arrear Pension Bill', routerLink: ['pension-process/pension-bill/life-time-arrear-pension-bill'] },
-
-                                ]
+                                    {
+                                        label: 'Regular Pension',
+                                        routerLink: [
+                                            'pension-process/pension-bill/regular-pension-bill',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Arrear Pension Bill',
+                                        routerLink: [
+                                            'pension-process/pension-bill/arrear-pension-bill',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Life Time Arrear Pension Bill',
+                                        routerLink: [
+                                            'pension-process/pension-bill/life-time-arrear-pension-bill',
+                                        ],
+                                    },
+                                ],
                             },
                             {
-                                label: 'Approval', icon: 'assets/layout/images/icons/work-in-progress.png',
+                                label: 'Approval',
+                                icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'PPO',  routerLink: ['/pension-process/approval/ppo-approval'] },
-                                    { label: 'First pension Bill', routerLink: ['pension-process/approval/firstpensionbill-approval'] },
-                                    { label: 'Family Pension Approval', routerLink: ['pension-process/approval/family-pension-approval'] },
-                                // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-                            },{
-                                label: 'Bill Print', icon: 'assets/layout/images/icons/work-in-progress.png',
+                                    {
+                                        label: 'PPO',
+                                        routerLink: [
+                                            '/pension-process/approval/ppo-approval',
+                                        ],
+                                    },
+                                    {
+                                        label: 'First pension Bill',
+                                        routerLink: [
+                                            'pension-process/approval/firstpensionbill-approval',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Family Pension Approval',
+                                        routerLink: [
+                                            'pension-process/approval/family-pension-approval',
+                                        ],
+                                    },
+                                    // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                ],
+                            },
+                            {
+                                label: 'Bill Print',
+                                icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
-                                    { label: 'First Pension',  routerLink: ['pension-process/bill-print/first-pension-bill-print'] },
-                                    { label: 'Regular Pension',  routerLink: ['pension-process/bill-print/regular-pension-bill-print'] },
-                                // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
-                                ]
-
-                            }
+                                    {
+                                        label: 'First Pension',
+                                        routerLink: [
+                                            'pension-process/bill-print/first-pension-bill-print',
+                                        ],
+                                    },
+                                    {
+                                        label: 'Regular Pension',
+                                        routerLink: [
+                                            'pension-process/bill-print/regular-pension-bill-print',
+                                        ],
+                                    },
+                                    // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
+                                ],
+                            },
 
                             //  { label: 'Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
                             // { label: 'Life Time Arrear', icon: 'pi pi-fw pi-bookmark' },
@@ -117,14 +197,18 @@ export class AppSidebarPensionComponent implements OnInit {
                             // { label: 'Extragia Pension', icon: 'pi pi-fw pi-bookmark' },
                             // { label: 'DA Arrear Pension', icon: 'pi pi-fw pi-bookmark' },
                             // { label: 'LTA Classification Bill', icon: 'pi pi-fw pi-bookmark' },
-                        ]
-                    },{
-                        label: 'Report', icon: 'assets/layout/images/icons/statistics.png',
+                        ],
+                    },
+                    {
+                        label: 'Report',
+                        icon: 'assets/layout/images/icons/statistics.png',
                         items: [
-                            { label: 'Manual PPO Register', routerLink: ['/pension-report'] },
-
-                        ]
-                    }
+                            {
+                                label: 'Manual PPO Register',
+                                routerLink: ['/pension-report'],
+                            },
+                        ],
+                    },
                     // {
                     //     label: 'Approval', icon: 'pi pi-fw pi-bookmark',
                     //     items: [
@@ -148,7 +232,6 @@ export class AppSidebarPensionComponent implements OnInit {
                     //     label: 'Court Case entry', icon: 'pi pi-fw pi-bookmark',
 
                     // },
-
 
                     // {
                     //     label: 'Reports', icon: 'pi pi-fw pi-box',
@@ -184,7 +267,6 @@ export class AppSidebarPensionComponent implements OnInit {
                     //         { label: 'Pension Component Rate-EC-123', icon: 'pi pi-fw pi-bookmark' },
                     //         { label: 'PPO Master-EC-124', icon: 'pi pi-fw pi-bookmark' },
 
-
                     //     ]
                     // },
                     // {
@@ -209,7 +291,7 @@ export class AppSidebarPensionComponent implements OnInit {
                     //     label: 'Festival Details', icon: 'pi pi-fw pi-box',
 
                     // },
-                ]
+                ],
             },
             // {
             //   label: 'UI Components',

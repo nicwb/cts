@@ -36,38 +36,34 @@ const routes: Routes = [
     {
         path: '',
         component: PpodetailsComponent,
-        data: {breadcrumb: 'PpodetailsComponent'}
+        data: { breadcrumb: 'PpodetailsComponent' },
     },
     {
         path: 'new',
         component: PpodetailsComponent,
-        data: {breadcrumb: 'PpodetailsComponent'}
+        data: { breadcrumb: 'PpodetailsComponent' },
     },
     {
         path: ':ppoId/bank-account',
         component: PpodetailsComponent,
-        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
+        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' },
     },
     {
         path: 'step/:step',
         component: PpodetailsComponent,
-        data: { breadcrumb: 'PpodetailsComponent' }
+        data: { breadcrumb: 'PpodetailsComponent' },
     },
     {
         path: ':ppoId/edit',
         component: PpodetailsComponent,
-        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
+        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' },
     },
     {
         path: ':stepNo/step',
         component: PpodetailsComponent,
-        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' }
-    }
-
+        data: { breadcrumb: 'PpodetailsComponent[:ppoId]' },
+    },
 ];
-
-
-
 
 @NgModule({
     declarations: [PpodetailsComponent, BankDetailsComponent, DetailsComponent],
@@ -103,10 +99,10 @@ const routes: Routes = [
         PopupTableModule,
         TableModule,
         RouterModule.forChild(routes),
-        DynamicTableModule
+        DynamicTableModule,
     ],
     providers: [],
     bootstrap: [PpodetailsComponent],
-    exports: [RouterModule,BankDetailsComponent]
+    exports: [RouterModule, BankDetailsComponent],
 })
-export class PpodetailsModule { }
+export class PpodetailsModule {}

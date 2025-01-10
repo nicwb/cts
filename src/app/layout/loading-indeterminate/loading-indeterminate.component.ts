@@ -3,9 +3,11 @@ import { LoadingIndeterminateService } from '../service/loading-indeterminate.se
 
 @Component({
     selector: 'app-loading-indeterminate',
-    templateUrl: './loading-indeterminate.component.html'
+    templateUrl: './loading-indeterminate.component.html',
 })
 export class LoadingIndeterminateComponent {
     loading$ = this.loadingIndeterminateService.loading$;
-    constructor(private loadingIndeterminateService: LoadingIndeterminateService) {}
+    constructor(
+        private loadingIndeterminateService: LoadingIndeterminateService
+    ) {}
 }

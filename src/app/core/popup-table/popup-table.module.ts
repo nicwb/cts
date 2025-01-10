@@ -6,7 +6,7 @@ import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { PopupTableComponent } from './popup-table.component';
 import { FormsModule } from '@angular/forms';
-import {InputTextModule} from 'primeng/inputtext';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
     declarations: [PopupTableComponent],
@@ -17,8 +17,7 @@ import {InputTextModule} from 'primeng/inputtext';
         TableModule,
         FormsModule,
         InputTextModule,
-    
     ],
-    exports: [PopupTableComponent]
+    exports: [PopupTableComponent],
 })
-export class PopupTableModule { }
+export class PopupTableModule {}

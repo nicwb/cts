@@ -19,17 +19,22 @@ import { LifeCertificateComponent } from './life-certificate/life-certificate.co
 import { LifeCertificateModule } from './life-certificate/life-certificate.module';
 import { DetailsComponent } from './ppodetails/details/details.component';
 import { PpodetailsComponent } from './ppodetails/ppodetails.component';
-import {ConvartToFamilyPensionComponent} from './convart-to-family-pension/convart-to-family-pension.component'
-import {ConvartToFamilyPensionModule} from './convart-to-family-pension/convart-to-family-pension.module'
+import { ConvartToFamilyPensionComponent } from './convart-to-family-pension/convart-to-family-pension.component';
+import { ConvartToFamilyPensionModule } from './convart-to-family-pension/convart-to-family-pension.module';
 import { PensionerStatusComponent } from './pensioner-status/pensioner-status.component';
 const routes: Routes = [
     {
-        path: '', component: PpoComponent, data: {breadcrumb: 'PpoComponent'}
+        path: '',
+        component: PpoComponent,
+        data: { breadcrumb: 'PpoComponent' },
     },
     {
         path: 'entry',
-        loadChildren: () => import('./ppodetails/ppodetails.module').then(m => m.PpodetailsModule),
-        data: {breadcrumb: 'PpodetailsModule'}
+        loadChildren: () =>
+            import('./ppodetails/ppodetails.module').then(
+                (m) => m.PpodetailsModule
+            ),
+        data: { breadcrumb: 'PpodetailsModule' },
     },
     {
         path: ':ppoId/edit', // Define the nested route here
@@ -38,42 +43,38 @@ const routes: Routes = [
     {
         path: 'ppo-receipt',
         component: PpoReceiptComponent,
-        data: { breadcrumb: 'PpoReceiptComponent'}
-
+        data: { breadcrumb: 'PpoReceiptComponent' },
     },
     {
         path: 'ppo-receipt/new',
         component: PpoReceiptComponent,
-        data: { breadcrumb: 'PpoReceiptComponent'}
-
+        data: { breadcrumb: 'PpoReceiptComponent' },
     },
     {
         path: 'life-certificate',
         component: LifeCertificateComponent,
-        data: { breadcrumb: 'LifeCertificateComponent'}
-
+        data: { breadcrumb: 'LifeCertificateComponent' },
     },
     {
         path: 'convart-to-family-pension',
         component: ConvartToFamilyPensionComponent,
-        data: {breadcrumb: 'ConvartToFamilyPensionComponent'}
+        data: { breadcrumb: 'ConvartToFamilyPensionComponent' },
     },
     {
         path: 'pensioner-status',
         component: PensionerStatusComponent,
-        data: { breadcrumb: 'PensionerStatusComponent'}
+        data: { breadcrumb: 'PensionerStatusComponent' },
     },
 
     {
         path: 'convart-to-family-pension/:id',
         component: ConvartToFamilyPensionComponent,
-        data: { breadcrumb: 'Convert to Family Pension:id' }
-    }
+        data: { breadcrumb: 'Convert to Family Pension:id' },
+    },
 ];
 
-
 @NgModule({
-    declarations: [PpoComponent ],
+    declarations: [PpoComponent],
     imports: [
         CommonModule,
         ButtonModule,
@@ -88,8 +89,8 @@ const routes: Routes = [
         TreasuryDropdownModule,
         FormsModule,
         ConvartToFamilyPensionModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
     ],
-    exports: [RouterModule, PpoComponent]
+    exports: [RouterModule, PpoComponent],
 })
-export class PpoModule { }
+export class PpoModule {}

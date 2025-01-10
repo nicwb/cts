@@ -30,9 +30,6 @@ import { PanelModule } from 'primeng/panel';
 import { FieldsetModule } from 'primeng/fieldset';
 import { DividerModule } from 'primeng/divider';
 
-
-
-
 @NgModule({
     declarations: [FamilyNomineeComponent],
     imports: [
@@ -59,11 +56,8 @@ import { DividerModule } from 'primeng/divider';
         RatingModule,
         PanelModule,
         FieldsetModule,
-        DividerModule
-
+        DividerModule,
     ],
-    exports: [FamilyNomineeComponent,
-        DynamicTableModule
-    ]
+    exports: [FamilyNomineeComponent, DynamicTableModule],
 })
-export class FamilyNomineeModule { }
+export class FamilyNomineeModule {}

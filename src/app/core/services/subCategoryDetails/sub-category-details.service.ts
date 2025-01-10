@@ -14,12 +14,15 @@ import { IapiResponce } from '../../models/iapi-responce';
 import { SubCategoryDetalis } from 'src/app/core/models/sub-category-detalis';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class SubCategoryDetailsService {
     apiUrl = 'v1/pension/sub-category';
 
-    constructor(private http: HttpClient, private toastService: ToastService) {}
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 
     get_all_Sub_details(
         queryParameters: DynamicTableQueryParameters
@@ -33,11 +36,8 @@ export class SubCategoryDetailsService {
             );
     }
 
-
     //Add New Sub Category
-    add_new_Sub_details(
-        dto: SubCategoryDetalis
-    ): Observable<IapiResponce> {
+    add_new_Sub_details(dto: SubCategoryDetalis): Observable<IapiResponce> {
         return this.http
             .post<IapiResponce>('v1/pension/sub-category', dto)
             .pipe(
@@ -47,6 +47,4 @@ export class SubCategoryDetailsService {
                 })
             );
     }
-
-
 }

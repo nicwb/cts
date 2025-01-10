@@ -19,8 +19,6 @@ import { DividerModule } from 'primeng/divider';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ArrearPensionBillComponent } from './arrear-pension-bill.component';
 
-
-
 @NgModule({
     declarations: [ArrearPensionBillComponent],
     imports: [
@@ -42,7 +40,7 @@ import { ArrearPensionBillComponent } from './arrear-pension-bill.component';
         RatingModule,
         PopupTableModule,
         DividerModule,
-        ProgressBarModule
-    ]
+        ProgressBarModule,
+    ],
 })
-export class ArrearPensionBillModule { }
+export class ArrearPensionBillModule {}

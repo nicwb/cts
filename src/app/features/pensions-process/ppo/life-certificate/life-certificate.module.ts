@@ -28,12 +28,7 @@ import { ToastModule } from 'primeng/toast';
 import { ChipsModule } from 'primeng/chips';
 // import { PensionerStatusModule } from '../pensioner-status/pensioner-status.module';
 
-
-
-const routes: Routes = [
-    {path: '',component: LifeCertificateComponent}
-];
-
+const routes: Routes = [{ path: '', component: LifeCertificateComponent }];
 
 @NgModule({
     declarations: [LifeCertificateComponent],
@@ -69,8 +64,4 @@ const routes: Routes = [
     ],
     exports: [LifeCertificateComponent],
 })
-
-
-
-
-export class LifeCertificateModule { }
+export class LifeCertificateModule {}

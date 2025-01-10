@@ -19,7 +19,10 @@ import { PrimaryCategoryDetails } from '../../models/primary-category-details';
 export class PrimaryCategoryDetailsService {
     apiUrl = 'v1/pension/primary-category';
 
-    constructor(private http: HttpClient, private toastService: ToastService) {}
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 
     get_all_primary_details(
         queryParameters: DynamicTableQueryParameters

@@ -1,14 +1,14 @@
 // Define the type of the environment variables.
 declare interface Env {
-  readonly NODE_ENV: string;
-  // Replace the following with your own environment variables.
-  // Example: NGX_VERSION: string;
+    readonly NODE_ENV: string;
+    // Replace the following with your own environment variables.
+    // Example: NGX_VERSION: string;
 
-  readonly NG_APP_VERSION: string;
-  readonly NG_APP_BASE_URL: string;
-  readonly NG_APP_API_BASE_URL: string;
-  readonly NG_APP_PLAYWRIGHT_BASE_URL: string;
-  readonly NG_APP_ENV_DOCKER: boolean;
+    readonly NG_APP_VERSION: string;
+    readonly NG_APP_BASE_URL: string;
+    readonly NG_APP_API_BASE_URL: string;
+    readonly NG_APP_PLAYWRIGHT_BASE_URL: string;
+    readonly NG_APP_ENV_DOCKER: boolean;
 }
 
 // Choose how to access the environment variables.
@@ -16,7 +16,7 @@ declare interface Env {
 
 // 1. Use import.meta.env.YOUR_ENV_VAR in your code. (conventional)
 declare interface ImportMeta {
-  readonly env: Env;
+    readonly env: Env;
 }
 
 // 2. Use _NGX_ENV_.YOUR_ENV_VAR in your code. (customizable)

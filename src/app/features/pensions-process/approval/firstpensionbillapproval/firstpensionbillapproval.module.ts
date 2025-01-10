@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {FirstpensionbillapprovalComponent} from './firstpensionbillapproval.component'
+import { FirstpensionbillapprovalComponent } from './firstpensionbillapproval.component';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DividerModule } from 'primeng/divider';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,13 +11,11 @@ import { ButtonModule } from 'primeng/button';
 const routes: Routes = [
     {
         path: '',
-        component: FirstpensionbillapprovalComponent // Use empty path for default route
-    }
+        component: FirstpensionbillapprovalComponent, // Use empty path for default route
+    },
 ];
 @NgModule({
-    declarations: [
-        FirstpensionbillapprovalComponent
-    ],
+    declarations: [FirstpensionbillapprovalComponent],
     imports: [
         CommonModule,
         PopupTableModule,
@@ -25,11 +23,8 @@ const routes: Routes = [
         ReactiveFormsModule,
         TableModule,
         ButtonModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
     ],
-    exports:[
-        FirstpensionbillapprovalComponent,
-        RouterModule
-    ]
+    exports: [FirstpensionbillapprovalComponent, RouterModule],
 })
-export class FirstpensionbillapprovalModule { }
+export class FirstpensionbillapprovalModule {}

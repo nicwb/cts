@@ -11,7 +11,6 @@ import { DividerModule } from 'primeng/divider';
 
 import { RadioButtonModule } from 'primeng/radiobutton';
 
-
 @NgModule({
     declarations: [FirstPensionBillPrintComponent],
     imports: [
@@ -23,7 +22,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         PopupTableModule,
         ReactiveFormsModule,
         DividerModule,
-        RadioButtonModule
-    ]
+        RadioButtonModule,
+    ],
 })
-export class FirstPensionBillPrintModule { }
+export class FirstPensionBillPrintModule {}

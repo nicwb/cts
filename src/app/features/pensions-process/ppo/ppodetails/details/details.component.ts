@@ -361,12 +361,12 @@ export class DetailsComponent implements OnInit, OnChanges {
             healthScheme: [null],
             employedPensioner: [null],
             reEmployedPensioner: [null],
-            doublePension: [false, ],
-            adhocPension: [false, ],
-            provisionalPension: [false, ],
-            interimAllowance: [false, ],
-            sharedPension: [false, ],
-            remarks: ['',],
+            doublePension: [false],
+            adhocPension: [false],
+            provisionalPension: [false],
+            interimAllowance: [false],
+            sharedPension: [false],
+            remarks: [''],
         });
     }
 

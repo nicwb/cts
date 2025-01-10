@@ -34,4 +34,23 @@ export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
 export * from './pension-sanction-details.service';
 import { PensionSanctionDetailsService } from './pension-sanction-details.service';
-export const APIS = [MessageQueueWorkerService, PensionService, PensionBankBranchService, PensionCategoryMasterService, PensionComponentService, PensionComponentRateService, PensionComponentRevisionService, PensionEPPOReceiptService, PensionFactoryService, PensionFileStorageService, PensionFirstBillService, PensionLifeCertificateService, PensionManualPPOReceiptService, PensionNomineeDetailsService, PensionPPODetailsService, PensionPPOStatusService, PensionRegularBillService, PensionSanctionDetailsService];
+export const APIS = [
+    MessageQueueWorkerService,
+    PensionService,
+    PensionBankBranchService,
+    PensionCategoryMasterService,
+    PensionComponentService,
+    PensionComponentRateService,
+    PensionComponentRevisionService,
+    PensionEPPOReceiptService,
+    PensionFactoryService,
+    PensionFileStorageService,
+    PensionFirstBillService,
+    PensionLifeCertificateService,
+    PensionManualPPOReceiptService,
+    PensionNomineeDetailsService,
+    PensionPPODetailsService,
+    PensionPPOStatusService,
+    PensionRegularBillService,
+    PensionSanctionDetailsService,
+];

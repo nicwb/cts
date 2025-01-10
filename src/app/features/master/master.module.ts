@@ -27,7 +27,7 @@ import { PensionCategoryModule } from './pension-category/pension-category.modul
 import { SubCategoryModule } from './sub-category/sub-category.module';
 
 @NgModule({
-    declarations: [MasterComponent],  // Declare components specific to this module
+    declarations: [MasterComponent], // Declare components specific to this module
     imports: [
         CommonModule,
         MasterRoutingModule,
@@ -37,8 +37,8 @@ import { SubCategoryModule } from './sub-category/sub-category.module';
         SubCategoryModule,
         PensionCategoryModule,
         ComponentRateRevisionsModule,
-        ComponentRateModule
+        ComponentRateModule,
     ],
-    exports: [MasterComponent] // Export if needed in other modules
+    exports: [MasterComponent], // Export if needed in other modules
 })
-export class MasterModule { }
+export class MasterModule {}

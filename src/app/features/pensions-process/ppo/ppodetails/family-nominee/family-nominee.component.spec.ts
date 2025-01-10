@@ -8,9 +8,8 @@ describe('FamilyNomineeComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ FamilyNomineeComponent ]
-        })
-            .compileComponents();
+            declarations: [FamilyNomineeComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(FamilyNomineeComponent);
         component = fixture.componentInstance;

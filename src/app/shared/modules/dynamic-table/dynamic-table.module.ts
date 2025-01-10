@@ -6,13 +6,13 @@ import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
-import {DividerModule} from 'primeng/divider';
-import {DataViewModule} from 'primeng/dataview';
-import {ToolbarModule} from 'primeng/toolbar';
+import { DividerModule } from 'primeng/divider';
+import { DataViewModule } from 'primeng/dataview';
+import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import {TooltipModule} from 'primeng/tooltip';
-import {FormsModule} from '@angular/forms';
-import {InputTextModule} from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
     declarations: [DynamicTableComponent],
@@ -29,10 +29,8 @@ import {InputTextModule} from 'primeng/inputtext';
         SplitButtonModule,
         TooltipModule,
         FormsModule,
-        InputTextModule
+        InputTextModule,
     ],
-    exports:[
-        DynamicTableComponent
-    ]
+    exports: [DynamicTableComponent],
 })
-export class DynamicTableModule { }
+export class DynamicTableModule {}

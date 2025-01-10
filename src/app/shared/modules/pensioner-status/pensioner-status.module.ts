@@ -23,14 +23,12 @@ import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { PensionerStatusComponent } from './pensioner-status.component';
 
-
-
 @NgModule({
     declarations: [PensionerStatusComponent],
     imports: [
         CommonModule,
         ButtonModule,
-        ReactiveFormsModule,    
+        ReactiveFormsModule,
         DynamicTableModule,
         OptionCardModule,
         ButtonModule,
@@ -50,8 +48,8 @@ import { PensionerStatusComponent } from './pensioner-status.component';
         ToastModule,
         SliderModule,
         RatingModule,
-        MhPrimeDynamicTableModule
+        MhPrimeDynamicTableModule,
     ],
-    exports: [PensionerStatusComponent]
+    exports: [PensionerStatusComponent],
 })
-export class PensionerStatusModule { }
+export class PensionerStatusModule {}

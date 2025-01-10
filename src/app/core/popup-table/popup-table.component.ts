@@ -1,132 +1,145 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 
 @Component({
     selector: 'app-popup-table',
     templateUrl: './popup-table.html',
-    styleUrls: []
+    styleUrls: [],
 })
-export class PopupTableComponent{
-  @Input() service$?: Observable<any> | null | undefined; // Optional service
-  @Input() data: { headers: any, data: any } = { headers: [], data: [] }; // Optional data
-  @Input() title: string = "Search"; // Optional data
-  @Input() name: string = ""; // Optional data
-  @Input() style: any = { width: 'auto' }; // optional data
-  @Input() buttonStyle: any = [];
-  @Output() return = new EventEmitter<any>(); // Emit selected row
-  @Output() loads = new EventEmitter<any>();
-  @ViewChild('searchPopupDIT') table: ElementRef | undefined;
+export class PopupTableComponent {
+    @Input() service$?: Observable<any> | null | undefined; // Optional service
+    @Input() data: { headers: any; data: any } = { headers: [], data: [] }; // Optional data
+    @Input() title: string = 'Search'; // Optional data
+    @Input() name: string = ''; // Optional data
+    @Input() style: any = { width: 'auto' }; // optional data
+    @Input() buttonStyle: any = [];
+    @Output() return = new EventEmitter<any>(); // Emit selected row
+    @Output() loads = new EventEmitter<any>();
+    @ViewChild('searchPopupDIT') table: ElementRef | undefined;
 
-  display: boolean = false;
-  records: any[] = [];
-  cols: any[] = [];
-  searchTerm?: string;
-  onresult: string = '';
-  totalRecords = 0;
-  isLoading: boolean = false;
+    display: boolean = false;
+    records: any[] = [];
+    cols: any[] = [];
+    searchTerm?: string;
+    onresult: string = '';
+    totalRecords = 0;
+    isLoading: boolean = false;
 
-  debugState?: boolean;
-  debug(msg: any) {
-      // this.debugState = true; // Set debugState to true to enable debug logging
-      if (this.debugState) {
-          console.log(msg);
-      }
-  }
+    debugState?: boolean;
+    debug(msg: any) {
+        // this.debugState = true; // Set debugState to true to enable debug logging
+        if (this.debugState) {
+            console.log(msg);
+        }
+    }
 
+    async showDialog() {
+        this.debug('Showing SearchDialog...');
+        this.isLoading = true;
+        await this.callService();
 
-  async showDialog() {
-      this.debug("Showing SearchDialog...");
-      this.isLoading = true;
-      await this.callService();
+        if (this.data) {
+            const { headers, data } = this.data;
+            this.records = this.data.data;
 
+            if (headers) {
+                this.cols = this.data.headers.map((header: any) => ({
+                    field: header.fieldName,
+                    header: header.name,
+                }));
+            }
+        }
 
-      if (this.data) {
-          const { headers, data } = this.data;
-          this.records = this.data.data;
+        this.display = true;
+    }
 
-          if (headers) {
-              this.cols = this.data.headers.map((header: any) => ({
-                  field: header.fieldName,
-                  header: header.name
-              }));
-          }
-      }
+    async callService() {
+        if (this.service$) {
+            await firstValueFrom(
+                this.service$.pipe(
+                    tap((response) => {
+                        this.debug(['serviceSearchPopUp', response]);
+                        if (response && response.result) {
+                            this.data = response.result;
+                        } else {
+                            this.debug(response);
+                        }
+                    })
+                )
+            );
+            this.isLoading = false;
+        }
+    }
 
-      this.display = true;
-  }
+    closeDialog() {
+        this.display = false;
+        this.debug('Closing SearchDialog');
+    }
 
-  async callService(){
-      if (this.service$) {
-          await firstValueFrom(this.service$.pipe(
-              tap(response => {
-                  this.debug(["serviceSearchPopUp", response]);
-                  if (response && response.result) {
-                      this.data = response.result;
-                  } else {
-                      this.debug(response);
-                  }
-              })
-          ));
-          this.isLoading = false;
-      }
-  }
+    onRowSelect(event: any) {
+        this.closeDialog();
+        if (event) {
+            this.return.emit(event);
+        }
+    }
 
-  closeDialog() {
-      this.display = false;
-      this.debug('Closing SearchDialog');
-  }
+    searchRecords(): void {
+        const lowerCaseSearchTerm = this.searchTerm
+            ? this.searchTerm.toLowerCase()
+            : '';
+        if (this.searchTerm) {
+            this.data.data = this.records.filter((record) => {
+                // Get the value of the first column
+                const firstColumnValue = record[this.cols[0].field]; // Ensure cols is populated correctly
+                // Check if the first column matches the search term exactly
+                return (
+                    firstColumnValue &&
+                    firstColumnValue.toString().toLowerCase() ===
+                        lowerCaseSearchTerm
+                );
+            });
 
-  onRowSelect(event: any) {
-      this.closeDialog();
-      if (event) {
-          this.return.emit(event);
-      }
-  }
+            if (this.data.data.length === 0) {
+                this.onresult = 'No records found';
+            } else {
+                this.onresult = '';
+            }
+        } else {
+            this.data.data = [...this.records];
+            this.onresult = '';
+        }
+    }
+    loadMore(event: any) {
+        this.debug(this.totalRecords);
+    }
 
-  searchRecords(): void {
-      const lowerCaseSearchTerm = this.searchTerm ? this.searchTerm.toLowerCase() : '';
-      if (this.searchTerm) {
-          this.data.data = this.records.filter(record => {
-              // Get the value of the first column
-              const firstColumnValue = record[this.cols[0].field]; // Ensure cols is populated correctly
-              // Check if the first column matches the search term exactly
-              return firstColumnValue && firstColumnValue.toString().toLowerCase() === lowerCaseSearchTerm;
-          });
+    async onPage(event: any) {
+        this.debug(event);
+        const pageIndex = event.page; // Current page index
+        const rowsPerPage = event.rows; // Rows per page
 
-          if (this.data.data.length === 0) {
-              this.onresult = 'No records found';
-          } else {
-              this.onresult = '';
-          }
-
-      } else {
-          this.data.data = [...this.records];
-          this.onresult = '';
-      }
-  }
-  loadMore(event: any) {
-      this.debug(this.totalRecords);
-  }
-
-  async onPage(event: any) {
-      this.debug(event);
-      const pageIndex = event.page; // Current page index
-      const rowsPerPage = event.rows; // Rows per page
-
-      // Update your service call to fetch data based on the current page and rows per page
-      this.totalRecords = event.rows * (event.page + 1);
-      if (this.service$) {
-          const response = await firstValueFrom(this.service$.pipe(
-              tap(response => {
-                  this.debug(["serviceSearchPopUp", response]);
-                  if (response && response.result) {
-                      this.data = response.result; // Update data for the current page
-                  } else {
-                      this.debug(response);
-                  }
-              })
-          ));
-      }
-  }
-
+        // Update your service call to fetch data based on the current page and rows per page
+        this.totalRecords = event.rows * (event.page + 1);
+        if (this.service$) {
+            const response = await firstValueFrom(
+                this.service$.pipe(
+                    tap((response) => {
+                        this.debug(['serviceSearchPopUp', response]);
+                        if (response && response.result) {
+                            this.data = response.result; // Update data for the current page
+                        } else {
+                            this.debug(response);
+                        }
+                    })
+                )
+            );
+        }
+    }
 }

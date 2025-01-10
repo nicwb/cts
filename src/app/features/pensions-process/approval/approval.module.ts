@@ -38,29 +38,33 @@ import { FamilyPensionApprovalComponent } from './family-pension-approval/family
 
 // Routes for lazy loading the modules
 const routes: Routes = [
-    { path: '', component: ApprovalComponent, data: { breadcrumb: 'ApprovalComponent' } },
+    {
+        path: '',
+        component: ApprovalComponent,
+        data: { breadcrumb: 'ApprovalComponent' },
+    },
     {
         path: 'ppo-approval',
         component: PpoApprovalComponent,
-        data: { breadcrumb: 'PpoApprovalComponent' }
+        data: { breadcrumb: 'PpoApprovalComponent' },
     },
     {
         path: 'firstpensionbill-approval',
         component: FirstpensionbillapprovalComponent,
-        data: { breadcrumb: 'FirstpensionbillapprovalComponent' }
+        data: { breadcrumb: 'FirstpensionbillapprovalComponent' },
     },
     {
         path: 'ppo-approval/:ppoId',
-        component: PpoApprovalComponent
+        component: PpoApprovalComponent,
     },
     {
         path: 'family-pension-approval',
-        component: FamilyPensionApprovalComponent
-    }
+        component: FamilyPensionApprovalComponent,
+    },
 ];
 
 @NgModule({
-    declarations: [ApprovalComponent,FamilyPensionApprovalComponent],
+    declarations: [ApprovalComponent, FamilyPensionApprovalComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -94,8 +98,8 @@ const routes: Routes = [
         OptionCardModule,
         // PpoApprovalModule,
         // FirstpensionbillapprovalModule,
-        RouterModule.forChild(routes) // Lazy loading routes
+        RouterModule.forChild(routes), // Lazy loading routes
     ],
-    exports: [ApprovalComponent]
+    exports: [ApprovalComponent],
 })
-export class ApprovalModule { }
+export class ApprovalModule {}

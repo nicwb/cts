@@ -12,7 +12,7 @@ import {
     InitiateFirstPensionBillResponseDTOJsonAPIResponse,
     PpoPaymentListItemDTO,
     ObjectJsonAPIResponse,
-    PensionBankBranchService
+    PensionBankBranchService,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
@@ -101,10 +101,9 @@ export class FirstPensionBillComponent implements OnInit {
             this.period = storedPeriodTo;
             this.pensionForm.patchValue({
                 ppoId: this.ppoId,
-                periodTo: this.period
+                periodTo: this.period,
             });
             this.getvalue();
-
 
             sessionStorage.removeItem('storedPpoId');
             sessionStorage.removeItem('storedPeriodTo');
@@ -150,9 +149,12 @@ export class FirstPensionBillComponent implements OnInit {
                     this.service.generateFirstPensionBill(payload2)
                 );
 
-                if (this.response.apiResponseStatus === APIResponseStatus.Error &&
-                    this.response.message === "Pensioner bank account not found!") {
-
+                if (
+                    this.response.apiResponseStatus ===
+                        APIResponseStatus.Error &&
+                    this.response.message ===
+                        'Pensioner bank account not found!'
+                ) {
                     const result = await Swal.fire({
                         title: 'Aww! Snap...',
                         text: 'Pensioner bank account not found!',
@@ -161,12 +163,15 @@ export class FirstPensionBillComponent implements OnInit {
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Go to Bank Account Page',
-                        cancelButtonText: 'Stay Here'
+                        cancelButtonText: 'Stay Here',
                     });
 
                     if (result.isConfirmed) {
                         // Store current values before navigation
-                        sessionStorage.setItem('storedPpoId', this.ppoId.toString());
+                        sessionStorage.setItem(
+                            'storedPpoId',
+                            this.ppoId.toString()
+                        );
                         sessionStorage.setItem('storedPeriodTo', this.period);
 
                         // Navigate to bank account page
@@ -174,8 +179,9 @@ export class FirstPensionBillComponent implements OnInit {
                             ['ppo/entry', this.ppoId, 'bank-account'],
                             {
                                 queryParams: {
-                                    returnUri: '/pension/modules/pension-process/pension-bill'
-                                }
+                                    returnUri:
+                                        '/pension/modules/pension-process/pension-bill',
+                                },
                             }
                         );
                         return;
@@ -192,32 +198,42 @@ export class FirstPensionBillComponent implements OnInit {
                     this.ppoInput = true;
                     this.pensionForm.patchValue({
                         ppoNo: this.response.result?.pensioner?.ppoNo,
-                        pensionerName: this.response.result?.pensioner?.pensionerName,
-                        periodFrom: this.response.result?.pensioner?.dateOfCommencement,
+                        pensionerName:
+                            this.response.result?.pensioner?.pensionerName,
+                        periodFrom:
+                            this.response.result?.pensioner?.dateOfCommencement,
                         accountNo: this.response?.result?.pensioner?.bankAcNo,
                         bankName: this.response.result?.bankBranchName, // Use the retrieved bank name
                         periodTo: this.response.result?.toDate,
                         billDate: this.response.result?.billDate,
                     });
-                    this.payments = this.response?.result?.pensionerPayments || [];
-                    this.pensioncategory = this.response?.result?.pensioner?.category;
+                    this.payments =
+                        this.response?.result?.pensionerPayments || [];
+                    this.pensioncategory =
+                        this.response?.result?.pensioner?.category;
                     this.totalDueAmount = this.response.result?.netAmount ?? 0;
-                    this.totalGrossAmount = this.response.result?.grossAmount ?? 0;
+                    this.totalGrossAmount =
+                        this.response.result?.grossAmount ?? 0;
                     this.isDataLoaded = true;
                     this.hasSaved = true;
                     this.massage = '';
-                    this.toastService.showSuccess(this.response.message ?? 'Success');
-                }
-                else if (
+                    this.toastService.showSuccess(
+                        this.response.message ?? 'Success'
+                    );
+                } else if (
                     this.response.apiResponseStatus === APIResponseStatus.Error
                 ) {
                     this.hasSaved = false;
                     this.isApiResponseStatus1 = false;
                     this.ppoInput = false;
-                    this.toastService.showError(this.response.message ?? 'Something Went wrong!');
+                    this.toastService.showError(
+                        this.response.message ?? 'Something Went wrong!'
+                    );
                 }
             } catch (err) {
-                this.toastService.showError(this.response.message ?? 'Something Went wrong!');
+                this.toastService.showError(
+                    this.response.message ?? 'Something Went wrong!'
+                );
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -228,7 +244,7 @@ export class FirstPensionBillComponent implements OnInit {
                 this.ppoInput = false;
             }
         }
-        this.isGenerateClicked=true;
+        this.isGenerateClicked = true;
     }
 
     // save function
@@ -246,7 +262,7 @@ export class FirstPensionBillComponent implements OnInit {
                             icon: 'success',
                             showCancelButton: true,
                             confirmButtonText: 'Yes',
-                            cancelButtonText: 'No'
+                            cancelButtonText: 'No',
                         });
 
                         if (result.isConfirmed) {
@@ -261,7 +277,9 @@ export class FirstPensionBillComponent implements OnInit {
                 error instanceof Error
                     ? error.message
                     : 'An unexpected error occurred.';
-            this.toastService.showError(this.response.message ?? 'Something Went wrong!');
+            this.toastService.showError(
+                this.response.message ?? 'Something Went wrong!'
+            );
         }
     }
 
@@ -277,34 +295,48 @@ export class FirstPensionBillComponent implements OnInit {
                 this.service.saveFirstPensionBill(saveFirstBill)
             );
             if (this.res?.apiResponseStatus === APIResponseStatus.Success) {
-                this.toastService.showSuccess(this.response.message ?? 'First bill saved');
+                this.toastService.showSuccess(
+                    this.response.message ?? 'First bill saved'
+                );
                 this.hasSaved = false;
                 this.isPrint = true;
             }
             if (this.res.apiResponseStatus === APIResponseStatus.Error) {
-                if (this.res.message && this.res.message.toLowerCase().includes('not approved')) {
+                if (
+                    this.res.message &&
+                    this.res.message.toLowerCase().includes('not approved')
+                ) {
                     const result = await Swal.fire({
                         title: 'Approval Required',
-                        text: this.res.message ?? 'This pension bill requires approval.',
+                        text:
+                            this.res.message ??
+                            'This pension bill requires approval.',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Go to Approval Page',
-                        cancelButtonText: 'Stay Here'
+                        cancelButtonText: 'Stay Here',
                     });
 
                     if (result.isConfirmed) {
                         this.storeCurrentState();
                         // Store response object before navigating away
-                        sessionStorage.setItem('response', JSON.stringify(this.response));
+                        sessionStorage.setItem(
+                            'response',
+                            JSON.stringify(this.response)
+                        );
 
                         this.router.navigate(
-                            ['/pension/modules/pension-process/approval/ppo-approval/', this.response?.result?.pensioner?.ppoId],
+                            [
+                                '/pension/modules/pension-process/approval/ppo-approval/',
+                                this.response?.result?.pensioner?.ppoId,
+                            ],
                             {
                                 queryParams: {
-                                    returnUri: '/pension/modules/pension-process/pension-bill'
-                                }
+                                    returnUri:
+                                        '/pension/modules/pension-process/pension-bill',
+                                },
                             }
                         );
                         return;
@@ -312,17 +344,20 @@ export class FirstPensionBillComponent implements OnInit {
                 } else {
                     Swal.fire({
                         title: 'Error',
-                        text: this.res.message ?? 'Failed to save the first pension bill!',
+                        text:
+                            this.res.message ??
+                            'Failed to save the first pension bill!',
                         icon: 'error',
                     });
                 }
             }
         } catch (billError) {
-            this.toastService.showError(this.response.message ?? 'Failed to save the first pension bill!');
+            this.toastService.showError(
+                this.response.message ??
+                    'Failed to save the first pension bill!'
+            );
         }
     }
-
-
 
     // check ppoid is valid or not
     massageColor: string = '';
@@ -362,7 +397,6 @@ export class FirstPensionBillComponent implements OnInit {
     //     ) || 0; // Fallback to 0 if payments is undefined
     // }
 
-
     // generate button cuntrol
     get isgenerate(): boolean {
         return (
@@ -391,7 +425,7 @@ export class FirstPensionBillComponent implements OnInit {
             this.massage = '';
             this.massageColor = '';
         }
-        this.isGenerateClicked=false;
+        this.isGenerateClicked = false;
     }
 
     // date calculate in p-calendar html propaty
@@ -407,9 +441,9 @@ export class FirstPensionBillComponent implements OnInit {
         this.router.navigate(
             this.ppoId
                 ? [
-                    'pension-process/bill-print/first-pension-bill-print',
-                    this.ppoId,
-                ]
+                      'pension-process/bill-print/first-pension-bill-print',
+                      this.ppoId,
+                  ]
                 : ['pension-process/bill-print/first-pension-bill-print']
         );
     }
@@ -426,8 +460,11 @@ export class FirstPensionBillComponent implements OnInit {
             isApiResponseStatus1: this.isApiResponseStatus1,
             ppoInput: this.ppoInput,
             isSearch: this.isSearch,
-            hasSaved: this.hasSaved
+            hasSaved: this.hasSaved,
         };
-        sessionStorage.setItem('pensionBillState', JSON.stringify(currentState));
+        sessionStorage.setItem(
+            'pensionBillState',
+            JSON.stringify(currentState)
+        );
     }
 }

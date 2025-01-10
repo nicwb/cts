@@ -1,7 +1,15 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+    APP_INITIALIZER,
+    CUSTOM_ELEMENTS_SCHEMA,
+    NgModule,
+} from '@angular/core';
 import { ApiModule, BASE_PATH } from './api';
 import { environment } from 'src/environments/environment';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import {
+    HashLocationStrategy,
+    LocationStrategy,
+    PathLocationStrategy,
+} from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -31,7 +39,12 @@ import { PdfViewerComponent } from './core/services/pdf-viewer/pdf-viewer.compon
 import { DialogService } from 'primeng/dynamicdialog';
 @NgModule({
     declarations: [
-        AppComponent, ServerDownComponent, LoginComponent, NotFoundComponent, StaticLoginComponent, PdfViewerComponent,
+        AppComponent,
+        ServerDownComponent,
+        LoginComponent,
+        NotFoundComponent,
+        StaticLoginComponent,
+        PdfViewerComponent,
     ],
     imports: [
         ApiModule,
@@ -47,29 +60,43 @@ import { DialogService } from 'primeng/dynamicdialog';
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
-        PensionerStatusModule
+        PensionerStatusModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
-        { provide: BASE_PATH, useValue: environment.OpenApiBaseURL},
+        { provide: BASE_PATH, useValue: environment.OpenApiBaseURL },
         {
             provide: APP_INITIALIZER,
-            useFactory: (authTokenService: AuthTokenService, rolesService: NgxRolesService) => function () {
-                return authTokenService.loadRolesAndPermissions().subscribe((roles) => {
-                    if (roles != null) {
-                        roles.forEach(role => {
-                            rolesService.addRoleWithPermissions(role.Name, role.Permissions);
+            useFactory: (
+                authTokenService: AuthTokenService,
+                rolesService: NgxRolesService
+            ) =>
+                function () {
+                    return authTokenService
+                        .loadRolesAndPermissions()
+                        .subscribe((roles) => {
+                            if (roles != null) {
+                                roles.forEach((role) => {
+                                    rolesService.addRoleWithPermissions(
+                                        role.Name,
+                                        role.Permissions
+                                    );
+                                });
+                            }
                         });
-                    }
-                })
-            },
+                },
             deps: [AuthTokenService, NgxRolesService],
-            multi: true
+            multi: true,
         },
-        MessageService, LoadingIndeterminateService, DatePipe, DividerModule, StepsModule, DialogService
+        MessageService,
+        LoadingIndeterminateService,
+        DatePipe,
+        DividerModule,
+        StepsModule,
+        DialogService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

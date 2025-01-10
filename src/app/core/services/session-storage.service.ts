@@ -40,7 +40,7 @@ export class SessionStorageService {
     ): Promise<T> {
         const cacheKey = key ?? this.generateCacheKey(context, suffix); // Use provided key or generate one
         const cachedData = this.get<T>(cacheKey);
-        console.log(cacheKey,cachedData);
+        console.log(cacheKey, cachedData);
         if (cachedData) {
             return cachedData;
         }

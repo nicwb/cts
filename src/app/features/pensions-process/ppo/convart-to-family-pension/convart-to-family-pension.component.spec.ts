@@ -8,9 +8,8 @@ describe('ConvartToFamilyPensionComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ ConvartToFamilyPensionComponent ]
-        })
-            .compileComponents();
+            declarations: [ConvartToFamilyPensionComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ConvartToFamilyPensionComponent);
         component = fixture.componentInstance;

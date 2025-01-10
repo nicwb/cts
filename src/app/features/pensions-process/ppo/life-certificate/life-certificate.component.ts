@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { APIResponseStatus, BankResponseDTO, LifeCertificateEntryDTO, LifeCertificateListResponseDTOJsonAPIResponse, LifeCertificateResponseDTOJsonAPIResponse, PensionBankBranchService, PensionLifeCertificateService } from 'src/app/api';
+import {
+    APIResponseStatus,
+    BankResponseDTO,
+    LifeCertificateEntryDTO,
+    LifeCertificateListResponseDTOJsonAPIResponse,
+    LifeCertificateResponseDTOJsonAPIResponse,
+    PensionBankBranchService,
+    PensionLifeCertificateService,
+} from 'src/app/api';
 import { firstValueFrom } from 'rxjs';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ChangeDetectorRef } from '@angular/core';
@@ -7,7 +15,7 @@ import { ChangeDetectorRef } from '@angular/core';
 @Component({
     selector: 'app-life-certificate',
     templateUrl: './life-certificate.component.html',
-    styleUrls: ['./life-certificate.component.scss']
+    styleUrls: ['./life-certificate.component.scss'],
 })
 export class LifeCertificateComponent implements OnInit {
     bankName: { label: string; value: number }[] = [];
@@ -30,9 +38,7 @@ export class LifeCertificateComponent implements OnInit {
         private certificate: PensionLifeCertificateService,
         private ToastService: ToastService,
         private cdr: ChangeDetectorRef
-    ) {
-
-    }
+    ) {}
     ngOnInit(): void {
         this.fetchAllBank();
     }
@@ -41,22 +47,24 @@ export class LifeCertificateComponent implements OnInit {
         const banks = bank.result?.banks ?? [];
         this.bankName = banks.map((item) => ({
             label: item.bankName ?? '',
-            value: item.id ?? 0
+            value: item.id ?? 0,
         }));
     }
 
     async fetchBranchName(data: number) {
         try {
             if (data) {
-                const bankBranch = await firstValueFrom(this.bankService.getBranchesByBankId(data));
+                const bankBranch = await firstValueFrom(
+                    this.bankService.getBranchesByBankId(data)
+                );
                 const bankBranchName = bankBranch.result?.branches ?? [];
                 this.branchName = bankBranchName.map((item) => ({
                     label: item.branchName ?? '',
-                    value: item.id ?? 0
+                    value: item.id ?? 0,
                 }));
             }
         } catch {
-            this.ToastService.showError("Something went wrong");
+            this.ToastService.showError('Something went wrong');
         }
     }
     async getNewPpo() {
@@ -70,16 +78,23 @@ export class LifeCertificateComponent implements OnInit {
         }
 
         try {
-            const data: LifeCertificateListResponseDTOJsonAPIResponse = await firstValueFrom(
-                this.certificate.getLifeCertificatesByBranchId(this.selectedBranchId)
-            );
+            const data: LifeCertificateListResponseDTOJsonAPIResponse =
+                await firstValueFrom(
+                    this.certificate.getLifeCertificatesByBranchId(
+                        this.selectedBranchId
+                    )
+                );
             if (data.apiResponseStatus === APIResponseStatus.Success) {
-                this.pensionerData = (data.result?.lifeCertificates ?? []).map((item) => {
-                    if (item.id === 0) {
-                        item.certificateSubmitted = null as unknown as boolean | undefined;
+                this.pensionerData = (data.result?.lifeCertificates ?? []).map(
+                    (item) => {
+                        if (item.id === 0) {
+                            item.certificateSubmitted = null as unknown as
+                                | boolean
+                                | undefined;
+                        }
+                        return item;
                     }
-                    return item;
-                });
+                );
                 this.isTable = false;
                 this.isReadonly = false;
                 this.isSearch = false;
@@ -88,27 +103,45 @@ export class LifeCertificateComponent implements OnInit {
                 this.ToastService.showError('' + data.message);
             }
         } catch (error) {
-            this.ToastService.showError('An unexpected error occurred while fetching data.');
+            this.ToastService.showError(
+                'An unexpected error occurred while fetching data.'
+            );
         }
     }
     filterPensionerData() {
         if (this.selectedPpoType === 'NewPPO') {
-            this.filteredPensionerData = this.pensionerData.filter((item) => item.id === 0);
-            this._oldData = JSON.parse(JSON.stringify(this.pensionerData.filter((item) => item.id === 0)));
+            this.filteredPensionerData = this.pensionerData.filter(
+                (item) => item.id === 0
+            );
+            this._oldData = JSON.parse(
+                JSON.stringify(
+                    this.pensionerData.filter((item) => item.id === 0)
+                )
+            );
             Object.freeze(this._oldData);
-
         } else if (this.selectedPpoType === 'UpdatedPPO') {
-            this.filteredPensionerData = this.pensionerData.filter((item) => item.id !== 0);
-            this._oldData = JSON.parse(JSON.stringify(this.pensionerData.filter((item) => item.id !== 0)));
+            this.filteredPensionerData = this.pensionerData.filter(
+                (item) => item.id !== 0
+            );
+            this._oldData = JSON.parse(
+                JSON.stringify(
+                    this.pensionerData.filter((item) => item.id !== 0)
+                )
+            );
             Object.freeze(this._oldData); // Make sure _oldData is frozen
         }
     }
 
     isSaveEnabled(rowData: any): boolean {
         if (!rowData || !rowData.ppoId) return false;
-        const previousRecord = this._oldData.find((item) => item.ppoId === rowData.ppoId);
+        const previousRecord = this._oldData.find(
+            (item) => item.ppoId === rowData.ppoId
+        );
         if (previousRecord) {
-            return previousRecord.certificateSubmitted !== rowData.certificateSubmitted;
+            return (
+                previousRecord.certificateSubmitted !==
+                rowData.certificateSubmitted
+            );
         }
         return true;
     }
@@ -119,26 +152,40 @@ export class LifeCertificateComponent implements OnInit {
             return;
         }
         if (data.certificateSubmitted === null) {
-            this.ToastService.showError('Please select life certificate submitted or not ');
+            this.ToastService.showError(
+                'Please select life certificate submitted or not '
+            );
             return;
         }
         try {
             const payload: LifeCertificateEntryDTO = {
                 financialYear: this.currentYear,
                 ppoId: data.ppoId,
-                certificateSubmitted: data.certificateSubmitted ?? false // Default to `false` if not provided
+                certificateSubmitted: data.certificateSubmitted ?? false, // Default to `false` if not provided
             };
-            const result: LifeCertificateResponseDTOJsonAPIResponse = await firstValueFrom(this.certificate.submitLifeCertificate(payload));
+            const result: LifeCertificateResponseDTOJsonAPIResponse =
+                await firstValueFrom(
+                    this.certificate.submitLifeCertificate(payload)
+                );
             if (result.apiResponseStatus === APIResponseStatus.Success) {
-                this.ToastService.showSuccess(result.message || 'Life certificate submitted successfully.');
+                this.ToastService.showSuccess(
+                    result.message || 'Life certificate submitted successfully.'
+                );
                 this.getNewPpo();
             } else if (result.apiResponseStatus === APIResponseStatus.Warning) {
-                this.ToastService.showWarning(result.message || 'Submission partially successful. Please review.');
+                this.ToastService.showWarning(
+                    result.message ||
+                        'Submission partially successful. Please review.'
+                );
             } else {
-                this.ToastService.showError(result.message || 'Failed to submit the life certificate.');
+                this.ToastService.showError(
+                    result.message || 'Failed to submit the life certificate.'
+                );
             }
         } catch (error) {
-            this.ToastService.showError('An unexpected error occurred. Please try again later.');
+            this.ToastService.showError(
+                'An unexpected error occurred. Please try again later.'
+            );
         }
     }
     async updateRow(data: any): Promise<void> {
@@ -152,25 +199,41 @@ export class LifeCertificateComponent implements OnInit {
                 ppoId: data.ppoId,
                 certificateSubmitted: data.certificateSubmitted ?? false,
             };
-            const result: LifeCertificateResponseDTOJsonAPIResponse = await firstValueFrom(
-                this.certificate.updateLifeCertificateByPpoId(data.ppoId, payload)
-            );
+            const result: LifeCertificateResponseDTOJsonAPIResponse =
+                await firstValueFrom(
+                    this.certificate.updateLifeCertificateByPpoId(
+                        data.ppoId,
+                        payload
+                    )
+                );
             if (result.apiResponseStatus === APIResponseStatus.Success) {
-                this.ToastService.showSuccess(result.message || 'Life certificate updated successfully.');
+                this.ToastService.showSuccess(
+                    result.message || 'Life certificate updated successfully.'
+                );
                 this.getNewPpo();
             } else if (result.apiResponseStatus === APIResponseStatus.Warning) {
-                this.ToastService.showWarning(result.message || 'Update partially successful. Please review.');
+                this.ToastService.showWarning(
+                    result.message ||
+                        'Update partially successful. Please review.'
+                );
             } else {
-                this.ToastService.showError(result.message || 'Failed to update the life certificate.');
+                this.ToastService.showError(
+                    result.message || 'Failed to update the life certificate.'
+                );
             }
         } catch (error) {
-            this.ToastService.showError('An unexpected error occurred. Please try again later.');
+            this.ToastService.showError(
+                'An unexpected error occurred. Please try again later.'
+            );
         }
     }
     get hasUnsavedChanges(): boolean {
         return this.filteredPensionerData.some((row, index) => {
             if (!this._oldData[index]) return false;
-            return row.certificateSubmitted !== this._oldData[index].certificateSubmitted;
+            return (
+                row.certificateSubmitted !==
+                this._oldData[index].certificateSubmitted
+            );
         });
     }
     async saveAllRows(): Promise<void> {
@@ -180,12 +243,14 @@ export class LifeCertificateComponent implements OnInit {
         }
 
         this.isSavingAll = true; // Disable UI interactions during the operation
-        this.saveProgress = 0;  // Initialize progress
+        this.saveProgress = 0; // Initialize progress
         this.isDialogVisible = true;
 
         // Filter rows with changes
         const rowsToSave = this.filteredPensionerData.filter(
-            (row, index) => row.certificateSubmitted !== this._oldData[index]?.certificateSubmitted
+            (row, index) =>
+                row.certificateSubmitted !==
+                this._oldData[index]?.certificateSubmitted
         );
         const totalRowsToSave = rowsToSave.length; // Total rows to save
         let totalRowsSaved = 0; // Track successfully saved rows
@@ -193,7 +258,10 @@ export class LifeCertificateComponent implements OnInit {
         for (const [index, row] of this.filteredPensionerData.entries()) {
             try {
                 // Skip rows with no changes
-                if (row.certificateSubmitted === this._oldData[index]?.certificateSubmitted) {
+                if (
+                    row.certificateSubmitted ===
+                    this._oldData[index]?.certificateSubmitted
+                ) {
                     row.saveStatus = 'skipped';
                     continue;
                 }
@@ -203,9 +271,10 @@ export class LifeCertificateComponent implements OnInit {
                     certificateSubmitted: row.certificateSubmitted ?? false,
                 };
 
-                const result: LifeCertificateResponseDTOJsonAPIResponse = await firstValueFrom(
-                    this.certificate.submitLifeCertificate(payload)
-                );
+                const result: LifeCertificateResponseDTOJsonAPIResponse =
+                    await firstValueFrom(
+                        this.certificate.submitLifeCertificate(payload)
+                    );
 
                 if (result.apiResponseStatus === APIResponseStatus.Success) {
                     row.saveStatus = 'success';
@@ -215,9 +284,13 @@ export class LifeCertificateComponent implements OnInit {
                 }
             } catch (error) {
                 row.saveStatus = 'failure';
-                this.ToastService.showError(`An unexpected error occurred for row ${index + 1}.`);
+                this.ToastService.showError(
+                    `An unexpected error occurred for row ${index + 1}.`
+                );
             }
-            this.saveProgress = Math.round((totalRowsSaved / totalRowsToSave) * 100);
+            this.saveProgress = Math.round(
+                (totalRowsSaved / totalRowsToSave) * 100
+            );
         }
 
         this.isSavingAll = false;
@@ -233,11 +306,13 @@ export class LifeCertificateComponent implements OnInit {
     }
     async updateAllRows(): Promise<void> {
         this.isSavingAll = true; // Disable UI interactions during the operation
-        this.saveProgress = 0;  // Initialize progress
+        this.saveProgress = 0; // Initialize progress
         this.isDialogVisible = true;
         let totalRowsSaved = 0; // Track successfully saved rows
         const rowsToSave = this.filteredPensionerData.filter(
-            (row, index) => row.certificateSubmitted !== this._oldData[index]?.certificateSubmitted
+            (row, index) =>
+                row.certificateSubmitted !==
+                this._oldData[index]?.certificateSubmitted
         );
 
         const totalRowsToSave = rowsToSave.length;
@@ -246,7 +321,9 @@ export class LifeCertificateComponent implements OnInit {
             try {
                 if (!row.ppoId || row.certificateSubmitted === null) {
                     row.saveStatus = 'skipped';
-                    this.ToastService.showWarning(`Row ${index + 1} skipped: Missing PPO ID or Certificate Submitted.`);
+                    this.ToastService.showWarning(
+                        `Row ${index + 1} skipped: Missing PPO ID or Certificate Submitted.`
+                    );
                     continue;
                 }
                 const payload: LifeCertificateEntryDTO = {
@@ -254,21 +331,31 @@ export class LifeCertificateComponent implements OnInit {
                     ppoId: row.ppoId,
                     certificateSubmitted: row.certificateSubmitted ?? false,
                 };
-                const result: LifeCertificateResponseDTOJsonAPIResponse = await firstValueFrom(
-                    this.certificate.updateLifeCertificateByPpoId(row.ppoId, payload)
-                );
+                const result: LifeCertificateResponseDTOJsonAPIResponse =
+                    await firstValueFrom(
+                        this.certificate.updateLifeCertificateByPpoId(
+                            row.ppoId,
+                            payload
+                        )
+                    );
                 if (result.apiResponseStatus === APIResponseStatus.Success) {
                     row.saveStatus = 'success';
                     totalRowsSaved++;
                 } else {
                     row.saveStatus = 'failure';
-                    this.ToastService.showError(`Row ${index + 1} failed: ${result.message}`);
+                    this.ToastService.showError(
+                        `Row ${index + 1} failed: ${result.message}`
+                    );
                 }
             } catch (error) {
                 row.saveStatus = 'failure';
-                this.ToastService.showError(`An unexpected error occurred for row ${index + 1}.`);
+                this.ToastService.showError(
+                    `An unexpected error occurred for row ${index + 1}.`
+                );
             }
-            this.saveProgress = Math.round((totalRowsSaved / totalRowsToSave) * 100);
+            this.saveProgress = Math.round(
+                (totalRowsSaved / totalRowsToSave) * 100
+            );
             this.cdr.detectChanges();
         }
         this.isSavingAll = false;
@@ -291,7 +378,10 @@ export class LifeCertificateComponent implements OnInit {
             if (!this._oldData[index]) {
                 return false; // Handle cases where _oldData doesn't exist for the index
             }
-            return row.certificateSubmitted !== this._oldData[index].certificateSubmitted;
+            return (
+                row.certificateSubmitted !==
+                this._oldData[index].certificateSubmitted
+            );
         });
     }
 
@@ -302,7 +392,7 @@ export class LifeCertificateComponent implements OnInit {
         this.selectedPpoType = '';
     }
 
-    cancle(){
+    cancle() {
         this.isDialogVisible = false;
         this._oldData = [];
         this.cdr.detectChanges();

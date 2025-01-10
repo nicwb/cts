@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
     selector: 'app-approval',
     templateUrl: './approval.component.html',
-    styleUrls: ['./approval.component.scss']
+    styleUrls: ['./approval.component.scss'],
 })
 export class ApprovalComponent {
     //   isComponentVisible = false;
@@ -14,6 +13,5 @@ export class ApprovalComponent {
     //   this.selectedComponent = component;
     //   this.isComponentVisible = true;
     // }
-    constructor() { }
-
+    constructor() {}
 }

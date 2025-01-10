@@ -8,9 +8,8 @@ describe('ManualPpoRegisterComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ ManualPpoRegisterComponent ]
-        })
-            .compileComponents();
+            declarations: [ManualPpoRegisterComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ManualPpoRegisterComponent);
         component = fixture.componentInstance;

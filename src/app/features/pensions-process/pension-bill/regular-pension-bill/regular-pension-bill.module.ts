@@ -15,8 +15,6 @@ import { DialogModule } from 'primeng/dialog';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DividerModule } from 'primeng/divider';
 
-
-
 @NgModule({
     declarations: [RegularPensionBillComponent],
     imports: [
@@ -35,6 +33,6 @@ import { DividerModule } from 'primeng/divider';
         PopupTableModule,
         DividerModule,
         ProgressBarModule,
-    ]
+    ],
 })
-export class RegularPensionBillModule { }
+export class RegularPensionBillModule {}

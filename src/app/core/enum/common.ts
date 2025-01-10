@@ -7,7 +7,7 @@ export enum TokenStatus {
     ForwardedByTreasuryOfficer = 6,
     ObjectedByTreasuryOfficer = 7,
     BillClear = 8,
-    ReturnMemoGenerated = 9
+    ReturnMemoGenerated = 9,
 }
 export enum TokenStatusSlug {
     BillReceived = 'bill_received',
@@ -18,10 +18,9 @@ export enum TokenStatusSlug {
     ForwardedByTreasuryOfficer = 'to_froward',
     ObjectedByTreasuryOfficer = 'to_objected',
     BillClear = 'bill_clear',
-    ReturnMemoGenerated = 'retrun_memo_generated'
+    ReturnMemoGenerated = 'retrun_memo_generated',
 }
-export enum StatusType
-{
+export enum StatusType {
     BillChecking = 1,
     ReturnMemo = 2,
 }

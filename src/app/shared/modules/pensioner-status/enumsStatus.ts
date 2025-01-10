@@ -3,6 +3,5 @@ export enum PensionStatusFlag {
     FirstPensionBillGenerated = 2,
     PpoRunning = 4,
     PpoSuspended = 8,
-    PpoBankAccountApproved = 16
-  }
-  
+    PpoBankAccountApproved = 16,
+}

@@ -1,6 +1,20 @@
-import { ChangeDetectorRef, Component, Host, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Host,
+    HostBinding,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+    animate,
+    state,
+    style,
+    transition,
+    trigger,
+} from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MenuService } from './app.menu.service';
@@ -11,26 +25,36 @@ import { LayoutService } from './service/app.layout.service';
     templateUrl: './app.menuitem.component.html',
     animations: [
         trigger('children', [
-            state('collapsed', style({
-                height: '0'
-            })),
-            state('expanded', style({
-                height: '*'
-            })),
-            transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-        ])
+            state(
+                'collapsed',
+                style({
+                    height: '0',
+                })
+            ),
+            state(
+                'expanded',
+                style({
+                    height: '*',
+                })
+            ),
+            transition(
+                'collapsed <=> expanded',
+                animate('400ms cubic-bezier(0.86, 0, 0.07, 1)')
+            ),
+        ]),
     ],
-    styles: [`
-        .layout-menuitem-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: 0.5rem;
-            vertical-align: middle;
-        }
-    `]
+    styles: [
+        `
+            .layout-menuitem-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin-right: 0.5rem;
+                vertical-align: middle;
+            }
+        `,
+    ],
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {
-
     @Input() item: any;
 
     @Input() index!: number;
@@ -45,28 +69,44 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
 
     menuResetSubscription: Subscription;
 
-    key: string = "";
+    key: string = '';
 
-    constructor(public layoutService: LayoutService, private cd: ChangeDetectorRef, public router: Router, private menuService: MenuService) {
-        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
-            Promise.resolve(null).then(() => {
-                if (value.routeEvent) {
-                    this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
-                }
-                else {
-                    if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
-                        this.active = false;
+    constructor(
+        public layoutService: LayoutService,
+        private cd: ChangeDetectorRef,
+        public router: Router,
+        private menuService: MenuService
+    ) {
+        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
+            (value) => {
+                Promise.resolve(null).then(() => {
+                    if (value.routeEvent) {
+                        this.active =
+                            value.key === this.key ||
+                            value.key.startsWith(this.key + '-')
+                                ? true
+                                : false;
+                    } else {
+                        if (
+                            value.key !== this.key &&
+                            !value.key.startsWith(this.key + '-')
+                        ) {
+                            this.active = false;
+                        }
                     }
-                }
-            });
-        });
+                });
+            }
+        );
 
-        this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
-            this.active = false;
-        });
+        this.menuResetSubscription = this.menuService.resetSource$.subscribe(
+            () => {
+                this.active = false;
+            }
+        );
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe(params => {
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe((params) => {
                 if (this.item.routerLink) {
                     this.updateActiveStateFromRoute();
                 }
@@ -74,7 +114,9 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
+        this.key = this.parentKey
+            ? this.parentKey + '-' + this.index
+            : String(this.index);
 
         if (this.item.routerLink) {
             this.updateActiveStateFromRoute();
@@ -82,10 +124,18 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     }
 
     updateActiveStateFromRoute() {
-        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
+        let activeRoute = this.router.isActive(this.item.routerLink[0], {
+            paths: 'exact',
+            queryParams: 'ignored',
+            matrixParams: 'ignored',
+            fragment: 'ignored',
+        });
 
         if (activeRoute) {
-            this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
+            this.menuService.onMenuStateChange({
+                key: this.key,
+                routeEvent: true,
+            });
         }
     }
 
@@ -110,11 +160,16 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
     }
 
     isImagePath(icon: string): boolean {
-        return icon.endsWith('.png') || icon.endsWith('.jpg') || icon.endsWith('.jpeg') || icon.endsWith('.svg');
+        return (
+            icon.endsWith('.png') ||
+            icon.endsWith('.jpg') ||
+            icon.endsWith('.jpeg') ||
+            icon.endsWith('.svg')
+        );
     }
 
     get submenuAnimation() {
-        return this.root ? 'expanded' : (this.active ? 'expanded' : 'collapsed');
+        return this.root ? 'expanded' : this.active ? 'expanded' : 'collapsed';
     }
 
     @HostBinding('class.active-menuitem')

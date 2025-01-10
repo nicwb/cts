@@ -79,7 +79,9 @@ export class SubCategoryComponent implements OnInit {
     check_if_called() {
         let todo = null;
         this.route.queryParams.subscribe((params) => {
-            (todo = params['todo']),(this.primary = params['primary']),(this.sub = params['sub']);
+            (todo = params['todo']),
+                (this.primary = params['primary']),
+                (this.sub = params['sub']);
         });
         console.log(todo);
         if (todo == 'create') {
@@ -144,11 +146,7 @@ export class SubCategoryComponent implements OnInit {
                     '',
                     'subCategoryCacheKey'
                 );
-                this.SessionStorageService.remove(
-                    '',
-                    '',
-                    `${this.suffix}`
-                );
+                this.SessionStorageService.remove('', '', `${this.suffix}`);
 
                 this.toastService.showSuccess('' + response.message);
                 if (this.called_from_pension == true) {
@@ -192,7 +190,6 @@ export class SubCategoryComponent implements OnInit {
     emitSubCategory(): void {
         this.Sub_Category_Details.emit(this.SubForm.value);
     }
-
 
     cancelSubCategory() {
         this.SubForm.reset();

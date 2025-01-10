@@ -17,10 +17,14 @@ import {
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
-import { APIResponseStatus, PensionComponentService, PensionFactoryService } from 'src/app/api';
-import { firstValueFrom,Observable,observable } from 'rxjs';
+import {
+    APIResponseStatus,
+    PensionComponentService,
+    PensionFactoryService,
+} from 'src/app/api';
+import { firstValueFrom, Observable, observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 interface expandedRows {
@@ -41,17 +45,14 @@ export class ComponentComponent implements OnInit {
     component$?: Observable<any>;
     suffix = 'component';
 
-
-
-
     constructor(
         private datePipe: DatePipe,
         private toastService: ToastService,
         private fb: FormBuilder,
         private cd: ChangeDetectorRef,
         private Service: PensionComponentService,
-        private pensionFactoryService : PensionFactoryService,
-        private route:ActivatedRoute,
+        private pensionFactoryService: PensionFactoryService,
+        private route: ActivatedRoute,
         private router: Router,
         private location: Location,
         private SessionStorageService: SessionStorageService
@@ -66,45 +67,43 @@ export class ComponentComponent implements OnInit {
             { value: 'D', label: 'Deduction' },
         ];
 
-        const url = this.route.snapshot.url.map(sagment => sagment.path).join('/');
-        if(url == 'component/new'){
+        const url = this.route.snapshot.url
+            .map((sagment) => sagment.path)
+            .join('/');
+        if (url == 'component/new') {
             this.showInsertDialog();
         }
     }
-
 
     showInsertDialog() {
         this.displayInsertModal = true;
         this.isTableVisible = false;
         this.ComponentForm.reset();
-        this.ComponentForm.patchValue({reliefFlag : false});
-        if(!environment.production){
+        this.ComponentForm.patchValue({ reliefFlag: false });
+        if (!environment.production) {
             this.generateNewData();
         }
     }
 
-    async generateNewData(): Promise<void>{
-        try{
-            const data = await firstValueFrom(this.pensionFactoryService.createFake("PensionBreakupEntryDTO"));
+    async generateNewData(): Promise<void> {
+        try {
+            const data = await firstValueFrom(
+                this.pensionFactoryService.createFake('PensionBreakupEntryDTO')
+            );
             this.ComponentForm.patchValue({
-                componentName:data.result.componentName,
-                componentType:data.result.componentType,
-                reliefFlag:data.result.reliefFlag
+                componentName: data.result.componentName,
+                componentType: data.result.componentType,
+                reliefFlag: data.result.reliefFlag,
             });
-        }
-        catch(error){
+        } catch (error) {
             this.toastService.showError('Failed to fetch component details.');
         }
     }
 
-
     initializeForm(): void {
         this.ComponentForm = this.fb.group({
             componentName: ['', [Validators.required]],
-            componentType: [
-                '',
-                [Validators.required],
-            ],
+            componentType: ['', [Validators.required]],
             reliefFlag: ['', [Validators.required]],
         });
     }
@@ -112,8 +111,6 @@ export class ComponentComponent implements OnInit {
     clear(table: any) {
         table.clear();
     }
-
-
 
     // Add Component Detalis
     async addComponentDetails() {
@@ -128,12 +125,10 @@ export class ComponentComponent implements OnInit {
                 this.toastService.showSuccess(
                     'Component Details added successfully'
                 );
-                this.SessionStorageService.remove('', '', `${this.suffix}`)
-
+                this.SessionStorageService.remove('', '', `${this.suffix}`);
             } else {
                 this.handleErrorResponse(response);
             }
-
         } else {
             this.toastService.showError(
                 'Please fill all required fields correctly.'
@@ -179,7 +174,7 @@ export class ComponentComponent implements OnInit {
         // this.tableData = response.result;
         this.isTableVisible = true;
         // this.isTableDataLoading = false;
-        this.component$=this.Service.getComponents();
+        this.component$ = this.Service.getComponents();
     }
 
     emitComponent(): void {
@@ -190,11 +185,10 @@ export class ComponentComponent implements OnInit {
         this.ComponentForm.reset();
         this.displayInsertModal = false;
     }
-    createNewcomponent(){
+    createNewcomponent() {
         this.router.navigate(['/master/component/new']);
     }
-    onDiloagclose(){
+    onDiloagclose() {
         this.location.back();
     }
-
 }

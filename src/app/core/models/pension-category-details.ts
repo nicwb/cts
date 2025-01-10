@@ -1,4 +1,4 @@
 export interface PensionCategoryDetails {
-    PrimaryCategoryId:Number;
+    PrimaryCategoryId: Number;
     SubCategoryId: Number;
 }

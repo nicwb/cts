@@ -4,14 +4,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TreasuryDropdownComponent } from './treasury-dropdown.component';
 import { FormsModule } from '@angular/forms';
 
-
 @NgModule({
     declarations: [TreasuryDropdownComponent],
-    imports: [
-        CommonModule,
-        DropdownModule,
-        FormsModule
-    ],
-    exports:[TreasuryDropdownComponent]
+    imports: [CommonModule, DropdownModule, FormsModule],
+    exports: [TreasuryDropdownComponent],
 })
-export class TreasuryDropdownModule { }
+export class TreasuryDropdownModule {}

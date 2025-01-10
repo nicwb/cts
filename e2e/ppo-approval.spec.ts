@@ -8,4 +8,3 @@ test.skip('should approve PPO successfully', async ({ pensionPage }) => {
     // Arrange
     await pensionPage.savePpoDetailsAndApprove();
 });
-

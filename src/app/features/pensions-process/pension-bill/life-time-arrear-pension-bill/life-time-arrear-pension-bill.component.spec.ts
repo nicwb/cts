@@ -8,9 +8,8 @@ describe('LifeTimeArrearPensionBillComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ LifeTimeArrearPensionBillComponent ]
-        })
-            .compileComponents();
+            declarations: [LifeTimeArrearPensionBillComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(LifeTimeArrearPensionBillComponent);
         component = fixture.componentInstance;

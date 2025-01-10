@@ -2,8 +2,17 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';  // Import debounceTime and distinctUntilChanged
-import { APIResponseStatus, PensionComponentRevisionService, PensionComponentService, PensionFirstBillService, PensionPPODetailsService, PpoBillResponseDTOJsonAPIResponse, PpoComponentRevisionEntryDTO, PensionBankBranchService } from 'src/app/api';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators'; // Import debounceTime and distinctUntilChanged
+import {
+    APIResponseStatus,
+    PensionComponentRevisionService,
+    PensionComponentService,
+    PensionFirstBillService,
+    PensionPPODetailsService,
+    PpoBillResponseDTOJsonAPIResponse,
+    PpoComponentRevisionEntryDTO,
+    PensionBankBranchService,
+} from 'src/app/api';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -15,9 +24,9 @@ import Swal from 'sweetalert2';
 })
 export class RevisionofComponentsComponent implements OnInit {
     revisionOfComponentsForm: FormGroup = new FormGroup({});
-    pensionForm: FormGroup = new FormGroup({});  // Declare pensionForm
-    tableForm: FormGroup = new FormGroup({});  // Declare pensionForm
-    componentForm: FormGroup = new FormGroup({});  // Declare pensionForm
+    pensionForm: FormGroup = new FormGroup({}); // Declare pensionForm
+    tableForm: FormGroup = new FormGroup({}); // Declare pensionForm
+    componentForm: FormGroup = new FormGroup({}); // Declare pensionForm
     ppoList$: Observable<any>;
     pensionComponent$: Observable<any>;
     showTable: boolean = false;
@@ -52,27 +61,26 @@ export class RevisionofComponentsComponent implements OnInit {
         private datePipe: DatePipe,
         private toastService: ToastService,
         private bank: PensionBankBranchService
-
     ) {
-        this.ppoList$ = this.revisionOfComponentsService.getAllPposForComponentRevisions();
+        this.ppoList$ =
+            this.revisionOfComponentsService.getAllPposForComponentRevisions();
 
         this.pensionComponent$ = this.pensionComponentService.getComponents();
-
     }
 
     ngOnInit(): void {
         this.pensionForm = this.fb.group({
-            ppoId: ['', [Validators.required, Validators.pattern("^[0-9]*$")]], // PPO ID must be a number
+            ppoId: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // PPO ID must be a number
         });
         this.componentForm = this.fb.group({
             componentname: ['', Validators.required],
             fromDate: ['', Validators.required],
-            amount: ['', Validators.required]
+            amount: ['', Validators.required],
         });
         this.tableForm = this.fb.group({
-            revisions: this.fb.array([])  // Create an empty FormArray for table rows
+            revisions: this.fb.array([]), // Create an empty FormArray for table rows
         });
-        this.pensionForm.get('ppoId')?.valueChanges.subscribe(value => {
+        this.pensionForm.get('ppoId')?.valueChanges.subscribe((value) => {
             this.ppoId = value;
         });
         this.isMobileView = window.innerWidth <= 900; // Set on init
@@ -103,11 +111,19 @@ export class RevisionofComponentsComponent implements OnInit {
 
     async SearchComponent() {
         if (this.ppoId) {
-            const responce = await firstValueFrom(this.revisionOfComponentsService.getPpoComponentRevisionsByPpoId(this.ppoId));
+            const responce = await firstValueFrom(
+                this.revisionOfComponentsService.getPpoComponentRevisionsByPpoId(
+                    this.ppoId
+                )
+            );
             if (responce.apiResponseStatus === APIResponseStatus.Success) {
                 this.toastService.showSuccess('' + responce.message);
                 if (Array.isArray(responce.result)) {
-                    this.responce = responce.result.sort((a: any, b: any) => new Date(a.fromDate).getTime() - new Date(b.fromDate).getTime());
+                    this.responce = responce.result.sort(
+                        (a: any, b: any) =>
+                            new Date(a.fromDate).getTime() -
+                            new Date(b.fromDate).getTime()
+                    );
                 }
                 this.showTable = true;
                 this.isPopupTableDisabled = !this.pensionForm.valid;
@@ -122,17 +138,20 @@ export class RevisionofComponentsComponent implements OnInit {
         this.revisions.clear();
         revisions.forEach((revision, index) => {
             const parsedDate = new Date(revision.fromDate);
-            this.revisions.push(this.fb.group({
-                id: [revision.id],
-                breakupId: [revision.rate.breakupId],
-                componentName: [revision.rate.breakup.componentName],
-                fromDate: [this.datePipe.transform(parsedDate, 'dd-MM-yyyy')], // Use 'yyyy-MM-dd'
-                toDate: [this.getToDate(index)],
-                amountPerMonth: [revision.amountPerMonth]
-            }));
+            this.revisions.push(
+                this.fb.group({
+                    id: [revision.id],
+                    breakupId: [revision.rate.breakupId],
+                    componentName: [revision.rate.breakup.componentName],
+                    fromDate: [
+                        this.datePipe.transform(parsedDate, 'dd-MM-yyyy'),
+                    ], // Use 'yyyy-MM-dd'
+                    toDate: [this.getToDate(index)],
+                    amountPerMonth: [revision.amountPerMonth],
+                })
+            );
         });
     }
-
 
     // Enable edit for specific row by id
     enableEdit(rowId: number) {
@@ -140,29 +159,39 @@ export class RevisionofComponentsComponent implements OnInit {
         this.isEditMode = true;
         this.dialogHeader = 'Update Component';
         this.isInsertModalVisible = true;
-        const revisionForm = this.revisions.controls.find(control => control.get('id')?.value === this.editRowId);
+        const revisionForm = this.revisions.controls.find(
+            (control) => control.get('id')?.value === this.editRowId
+        );
         this.componentForm.patchValue({
             fromDate: revisionForm?.value.fromDate,
-            amount: revisionForm?.value.amountPerMonth
-        })
-
+            amount: revisionForm?.value.amountPerMonth,
+        });
     }
 
     // Save changes and disable edit mode
     async saveRow() {
         if (this.editRowId) {
-            const revisionForm = this.revisions.controls.find(control => control.get('id')?.value === this.editRowId);
+            const revisionForm = this.revisions.controls.find(
+                (control) => control.get('id')?.value === this.editRowId
+            );
             if (revisionForm) {
-                const value = this.convertToDateFormat(this.componentForm.get('fromDate')?.value);
+                const value = this.convertToDateFormat(
+                    this.componentForm.get('fromDate')?.value
+                );
                 const payload = {
                     fromDate: value,
                     amountPerMonth: this.componentForm.get('amount')?.value,
                 };
                 try {
                     const response = await firstValueFrom(
-                        this.revisionOfComponentsService.updatePpoComponentRevisionById(this.editRowId, payload)
+                        this.revisionOfComponentsService.updatePpoComponentRevisionById(
+                            this.editRowId,
+                            payload
+                        )
                     );
-                    if (response.apiResponseStatus === APIResponseStatus.Success) {
+                    if (
+                        response.apiResponseStatus === APIResponseStatus.Success
+                    ) {
                         this.toastService.showSuccess('' + response.message);
                         this.loadComponentRevisions();
                     }
@@ -175,28 +204,32 @@ export class RevisionofComponentsComponent implements OnInit {
     // Delete Component
     async delete(rowId: number) {
         Swal.fire({
-            title: "Are you sure?",
-            text: "Delete this component!",
-            icon: "warning",
+            title: 'Are you sure?',
+            text: 'Delete this component!',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 const response = await firstValueFrom(
-                    this.revisionOfComponentsService.deletePpoComponentRevisionById(rowId)
+                    this.revisionOfComponentsService.deletePpoComponentRevisionById(
+                        rowId
+                    )
                 );
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess('' + response.message);
                     this.loadComponentRevisions();
-                } else if (response.apiResponseStatus === APIResponseStatus.Error) {
+                } else if (
+                    response.apiResponseStatus === APIResponseStatus.Error
+                ) {
                     this.toastService.showSuccess('' + response.message);
                 }
                 Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
+                    title: 'Deleted!',
+                    text: 'Your file has been deleted.',
+                    icon: 'success',
                 });
             }
         });
@@ -205,19 +238,28 @@ export class RevisionofComponentsComponent implements OnInit {
     async saveComponent() {
         const payload: PpoComponentRevisionEntryDTO = {
             rateId: this.rateid,
-            fromDate: this.datePipe.transform(this.componentForm.get('fromDate')?.value, 'yyyy-MM-dd') || '',
-            amountPerMonth: this.componentForm.get('amount')?.value
+            fromDate:
+                this.datePipe.transform(
+                    this.componentForm.get('fromDate')?.value,
+                    'yyyy-MM-dd'
+                ) || '',
+            amountPerMonth: this.componentForm.get('amount')?.value,
         };
         if (this.ppoId && this.componentForm.valid) {
             try {
                 const response = await firstValueFrom(
-                    this.revisionOfComponentsService.createSinglePpoComponentRevision(this.ppoId, payload)
+                    this.revisionOfComponentsService.createSinglePpoComponentRevision(
+                        this.ppoId,
+                        payload
+                    )
                 );
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess('' + response.message);
                     this.componentForm.reset();
                     this.loadComponentRevisions();
-                } else if (response.apiResponseStatus === APIResponseStatus.Error) {
+                } else if (
+                    response.apiResponseStatus === APIResponseStatus.Error
+                ) {
                     this.toastService.showSuccess('' + response.message);
                 }
             } catch (error) {
@@ -236,33 +278,43 @@ export class RevisionofComponentsComponent implements OnInit {
         this.pensionData = [];
     }
     handleSelectedRowByPensionComponent(event: any) {
-        this.rateid = event.id
+        this.rateid = event.id;
         this.componentForm.patchValue({
-            componentname: event.componentName
-        })
+            componentname: event.componentName,
+        });
     }
 
     addcomponent() {
         this.isInsertModalVisible = true;
         this.isEditMode = false;
         this.dialogHeader = 'Component Rate';
-
     }
 
     // Load component revision when table in modify
     loadComponentRevisions() {
         if (this.ppoId) {
-            this.revisionOfComponentsService.getPpoComponentRevisionsByPpoId(this.ppoId).subscribe(
-                (response) => {
-                    if (response.apiResponseStatus === APIResponseStatus.Success) {
-                        this.responce = response?.result?.sort((a: any, b: any) => new Date(a.fromDate).getTime() - new Date(b.fromDate).getTime());
-                        this.patchFormValues(this.responce);
+            this.revisionOfComponentsService
+                .getPpoComponentRevisionsByPpoId(this.ppoId)
+                .subscribe(
+                    (response) => {
+                        if (
+                            response.apiResponseStatus ===
+                            APIResponseStatus.Success
+                        ) {
+                            this.responce = response?.result?.sort(
+                                (a: any, b: any) =>
+                                    new Date(a.fromDate).getTime() -
+                                    new Date(b.fromDate).getTime()
+                            );
+                            this.patchFormValues(this.responce);
+                        }
+                    },
+                    (error) => {
+                        this.toastService.showError(
+                            '' + APIResponseStatus.Error
+                        );
                     }
-                },
-                (error) => {
-                    this.toastService.showError('' + APIResponseStatus.Error);
-                }
-            );
+                );
         }
     }
     cancelEdit(rowId: number) {
@@ -283,10 +335,9 @@ export class RevisionofComponentsComponent implements OnInit {
 
             return `${day}-${month}-${year}`;
         } else {
-            return 'N/A';  // If it's the last row
+            return 'N/A'; // If it's the last row
         }
     }
-
 
     resetAndCloseDialog(): void {
         this.componentForm.reset();
@@ -308,7 +359,9 @@ export class RevisionofComponentsComponent implements OnInit {
             } else {
                 // Return the date in 'yyyy-MM-dd' format
                 const year = parsedDate.getFullYear();
-                const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+                const month = (parsedDate.getMonth() + 1)
+                    .toString()
+                    .padStart(2, '0');
                 const day = parsedDate.getDate().toString().padStart(2, '0');
                 return `${year}-${month}-${day}`; // Return the formatted date string
             }

@@ -3,18 +3,23 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
-import { APIResponseStatus, PensionerResponseDTOJsonAPIResponse, PensionFactoryService, PensionPPODetailsService, PensionSanctionDetailsService, PpoSanctionDetailsResponseDTO } from 'src/app/api';
+import {
+    APIResponseStatus,
+    PensionerResponseDTOJsonAPIResponse,
+    PensionFactoryService,
+    PensionPPODetailsService,
+    PensionSanctionDetailsService,
+    PpoSanctionDetailsResponseDTO,
+} from 'src/app/api';
 import { pensionerStatusDTO } from 'src/app/core/models/pensioner-status';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { environment } from 'src/environments/environment';
 
-
 @Component({
     selector: 'app-sanction',
     templateUrl: './sanction.component.html',
-    styleUrls: ['./sanction.component.scss']
+    styleUrls: ['./sanction.component.scss'],
 })
-
 export class SanctionComponent implements OnInit {
     sanctionDetails: FormGroup = new FormGroup({});
     ppoId?: any;
@@ -25,16 +30,15 @@ export class SanctionComponent implements OnInit {
 
     response!: PensionerResponseDTOJsonAPIResponse;
 
-    constructor(private fb: FormBuilder,
+    constructor(
+        private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
         private PensionPPODetailsService: PensionPPODetailsService,
         private PensionSanctionDetailsService: PensionSanctionDetailsService,
         private toastservice: ToastService,
         private fakeservice: PensionFactoryService
-    ) {
-
-    }
+    ) {}
     async ngOnInit(): Promise<void> {
         this.sanctionDetails = this.fb.group({
             ppoId: [null, Validators.required],
@@ -59,10 +63,10 @@ export class SanctionComponent implements OnInit {
             qualifyingServiceGrossDays: [null],
             qualifyingServiceNetYears: [null],
             qualifyingServiceNetMonths: [],
-            qualifyingServiceNetDays: []
+            qualifyingServiceNetDays: [],
         });
 
-        this.route.paramMap.subscribe(params => {
+        this.route.paramMap.subscribe((params) => {
             this.ppoId = params.get('ppoId') || undefined; // Get ppoId from the route parameters
             if (this.ppoId) {
                 const ppoidNumber = Number(this.ppoId);
@@ -88,41 +92,78 @@ export class SanctionComponent implements OnInit {
                     this.PensionPPODetailsService.getPensionerByPpoId(ppoId)
                 );
                 if (this.response) {
-                    if (this.response.apiResponseStatus == APIResponseStatus.Success) {
+                    if (
+                        this.response.apiResponseStatus ==
+                        APIResponseStatus.Success
+                    ) {
                         this.sanctionDetails.patchValue({
                             employeeName: this.response.result?.pensionerName,
                             ppoId: this.response.result?.ppoId,
-                            pensionerId: this.response.result?.id
+                            pensionerId: this.response.result?.id,
                         });
                         if (this.response.result?.ppoSanctionDetails?.[0]?.id) {
-                            this.sanctionId = this.response.result.ppoSanctionDetails[0].id;
+                            this.sanctionId =
+                                this.response.result.ppoSanctionDetails[0].id;
 
                             try {
                                 const sanction = await firstValueFrom(
-                                    this.PensionSanctionDetailsService.getSanctionDetailsById(this.sanctionId)
+                                    this.PensionSanctionDetailsService.getSanctionDetailsById(
+                                        this.sanctionId
+                                    )
                                 );
 
-                                if (sanction.apiResponseStatus === APIResponseStatus.Success && sanction.result) {
+                                if (
+                                    sanction.apiResponseStatus ===
+                                        APIResponseStatus.Success &&
+                                    sanction.result
+                                ) {
                                     this.sanctionDetails.patchValue({
                                         ...sanction.result, // Spread the result to avoid multiple patchValue calls
-                                        sanctionDate: this.convertYyyyMmDdToDdMmYyyy(sanction.result.sanctionDate), // Include sanctionDate explicitly if needed
-                                        employeeDob: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDob ?? ''),
-                                        issuingLetterDate: this.convertYyyyMmDdToDdMmYyyy(sanction.result.issuingLetterDate ?? ''),
-                                        employeeDateOfAppointment: this.convertYyyyMmDdToDdMmYyyy(sanction.result.employeeDateOfAppointment ?? '')
+                                        sanctionDate:
+                                            this.convertYyyyMmDdToDdMmYyyy(
+                                                sanction.result.sanctionDate
+                                            ), // Include sanctionDate explicitly if needed
+                                        employeeDob:
+                                            this.convertYyyyMmDdToDdMmYyyy(
+                                                sanction.result.employeeDob ??
+                                                    ''
+                                            ),
+                                        issuingLetterDate:
+                                            this.convertYyyyMmDdToDdMmYyyy(
+                                                sanction.result
+                                                    .issuingLetterDate ?? ''
+                                            ),
+                                        employeeDateOfAppointment:
+                                            this.convertYyyyMmDdToDdMmYyyy(
+                                                sanction.result
+                                                    .employeeDateOfAppointment ??
+                                                    ''
+                                            ),
                                     });
 
-                                    this.originalValues = { ...sanction.result }; // Ensure a new reference is created
+                                    this.originalValues = {
+                                        ...sanction.result,
+                                    }; // Ensure a new reference is created
                                     this.isShowButton = true;
                                 } else {
-                                    console.warn('Sanction details fetch failed with status:', sanction.apiResponseStatus);
+                                    console.warn(
+                                        'Sanction details fetch failed with status:',
+                                        sanction.apiResponseStatus
+                                    );
                                 }
                             } catch (error) {
-                                console.error('Error fetching sanction details:', error);
+                                console.error(
+                                    'Error fetching sanction details:',
+                                    error
+                                );
                             }
                         }
                     }
                 } else {
-                    console.warn('No pensioner details found for PPO ID:', this.ppoId);
+                    console.warn(
+                        'No pensioner details found for PPO ID:',
+                        this.ppoId
+                    );
                 }
             } catch (error) {
                 console.error('Failed to fetch pensioner details:', error);
@@ -136,50 +177,77 @@ export class SanctionComponent implements OnInit {
         if (this.sanctionDetails.valid) {
             try {
                 const sanctionDetails = this.sanctionDetails.value;
-                ['employeeDateOfAppointment', 'employeeDob', 'issuingLetterDate', 'sanctionDate'].forEach(dateField => {
+                [
+                    'employeeDateOfAppointment',
+                    'employeeDob',
+                    'issuingLetterDate',
+                    'sanctionDate',
+                ].forEach((dateField) => {
                     if (sanctionDetails[dateField]) {
-                        sanctionDetails[dateField] = this.formatDate(sanctionDetails[dateField]);
+                        sanctionDetails[dateField] = this.formatDate(
+                            sanctionDetails[dateField]
+                        );
                     } else if (dateField === 'sanctionDate') {
                         throw new Error('Sanction Date is required'); // Ensure sanctionDate is present.
                     } else {
                         sanctionDetails[dateField] = null; // Set other dates to null if not provided.
                     }
                 });
-                const response = await firstValueFrom(this.PensionSanctionDetailsService.createSanctionDetails(sanctionDetails));
+                const response = await firstValueFrom(
+                    this.PensionSanctionDetailsService.createSanctionDetails(
+                        sanctionDetails
+                    )
+                );
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastservice.showSuccess(response.message ?? '');
                     this.isShowButton = true;
-                } else if (response.apiResponseStatus === APIResponseStatus.Error) {
+                } else if (
+                    response.apiResponseStatus === APIResponseStatus.Error
+                ) {
                     this.toastservice.showError(response.message ?? '');
                 }
             } catch {
-                this.toastservice.showError("Something went wrong. Please try again.");
+                this.toastservice.showError(
+                    'Something went wrong. Please try again.'
+                );
             }
         }
     }
-
 
     async updateSanctionDetails() {
         try {
             const formValue = this.sanctionDetails.value;
             formValue.employeeDob = this.formatDate(formValue.employeeDob);
             formValue.sanctionDate = this.formatDate(formValue.sanctionDate);
-            formValue.employeeDateOfAppointment = this.formatDate(formValue.employeeDateOfAppointment);
-            formValue.issuingLetterDate = this.formatDate(formValue.issuingLetterDate);
+            formValue.employeeDateOfAppointment = this.formatDate(
+                formValue.employeeDateOfAppointment
+            );
+            formValue.issuingLetterDate = this.formatDate(
+                formValue.issuingLetterDate
+            );
             const update = await firstValueFrom(
-                this.PensionSanctionDetailsService.updateSanctionDetailsById(this.sanctionId, formValue)
+                this.PensionSanctionDetailsService.updateSanctionDetailsById(
+                    this.sanctionId,
+                    formValue
+                )
             );
 
             // Handle the response
             if (update.apiResponseStatus === APIResponseStatus.Success) {
-                this.toastservice.showSuccess(update.message ?? 'Sanction details updated successfully!');
+                this.toastservice.showSuccess(
+                    update.message ?? 'Sanction details updated successfully!'
+                );
                 this.originalValues = formValue; // Update original values to the new values
             } else if (update.apiResponseStatus === APIResponseStatus.Error) {
-                this.toastservice.showError(update.message ?? 'Failed to update sanction details.');
+                this.toastservice.showError(
+                    update.message ?? 'Failed to update sanction details.'
+                );
             }
         } catch (error) {
             console.error('Error updating sanction details:', error);
-            this.toastservice.showError('Something went wrong. Please try again.');
+            this.toastservice.showError(
+                'Something went wrong. Please try again.'
+            );
         }
     }
     formatDate(dateString: string): string | null {
@@ -210,14 +278,16 @@ export class SanctionComponent implements OnInit {
     }
     // get fake data for new sanction entry
     async getFakedata() {
-        const fake = await firstValueFrom(this.fakeservice.createFake('PpoSanctionDetailsEntryDTO'));
+        const fake = await firstValueFrom(
+            this.fakeservice.createFake('PpoSanctionDetailsEntryDTO')
+        );
         if (fake.apiResponseStatus === APIResponseStatus.Success) {
             if (fake && fake.result) {
                 this.sanctionDetails.patchValue({
                     ...fake.result,
                     ppoId: this.response.result?.ppoId,
                     pensionerId: this.response.result?.id,
-                    employeeName: this.response.result?.pensionerName
+                    employeeName: this.response.result?.pensionerName,
                 });
                 this.isShowButton = false;
             } else {
@@ -226,6 +296,3 @@ export class SanctionComponent implements OnInit {
         }
     }
 }
-
-
-

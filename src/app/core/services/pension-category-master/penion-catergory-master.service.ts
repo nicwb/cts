@@ -4,24 +4,33 @@ import { ToastService } from '../toast.service';
 import { DynamicTableQueryParameters } from 'mh-prime-dynamic-table';
 import { catchError, Observable } from 'rxjs';
 import { IapiResponce } from '../../models/iapi-responce';
-import { PrimaryCategoryEntryDTO, PrimaryCategoryResponseDTO, SubCategoryEntryDTO,SubCategoryResponseDTO, CategoryEntryDTO, CategoryResponseDTO } from '../../models/pension-category-master';
+import {
+    PrimaryCategoryEntryDTO,
+    PrimaryCategoryResponseDTO,
+    SubCategoryEntryDTO,
+    SubCategoryResponseDTO,
+    CategoryEntryDTO,
+    CategoryResponseDTO,
+} from '../../models/pension-category-master';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
-export class PenionCatergoryMasterService {apiUrl = "v1/manual-ppo/receipts";
+export class PenionCatergoryMasterService {
+    apiUrl = 'v1/manual-ppo/receipts';
 
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 
-    constructor(private http: HttpClient, private toastService: ToastService) {}
-  
     getAllPrimaryCategory(
         queryParameters: DynamicTableQueryParameters
     ): Observable<IapiResponce<PrimaryCategoryResponseDTO>> {
         return this.http
-            .patch<IapiResponce<PrimaryCategoryResponseDTO>>(
-                'v1/pension/primary-category',
-                queryParameters
-            )
+            .patch<
+                IapiResponce<PrimaryCategoryResponseDTO>
+            >('v1/pension/primary-category', queryParameters)
             .pipe(
                 catchError((error) => {
                     throw this.toastService.showError(error.message);
@@ -33,10 +42,9 @@ export class PenionCatergoryMasterService {apiUrl = "v1/manual-ppo/receipts";
         queryParameters: DynamicTableQueryParameters
     ): Observable<IapiResponce<SubCategoryResponseDTO>> {
         return this.http
-            .patch<IapiResponce<SubCategoryResponseDTO>>(
-                'v1/pension/sub-category',
-                queryParameters
-            )
+            .patch<
+                IapiResponce<SubCategoryResponseDTO>
+            >('v1/pension/sub-category', queryParameters)
             .pipe(
                 catchError((error) => {
                     throw this.toastService.showError(error.message);
@@ -48,10 +56,9 @@ export class PenionCatergoryMasterService {apiUrl = "v1/manual-ppo/receipts";
         queryParameters: DynamicTableQueryParameters
     ): Observable<IapiResponce<CategoryResponseDTO>> {
         return this.http
-            .patch<IapiResponce<CategoryResponseDTO>>(
-                'v1/pension/category',
-                queryParameters
-            )
+            .patch<
+                IapiResponce<CategoryResponseDTO>
+            >('v1/pension/category', queryParameters)
             .pipe(
                 catchError((error) => {
                     throw this.toastService.showError(error.message);
@@ -59,24 +66,26 @@ export class PenionCatergoryMasterService {apiUrl = "v1/manual-ppo/receipts";
             );
     }
 
-
-  
     addPrimaryCategory(dto: PrimaryCategoryEntryDTO): Observable<IapiResponce> {
-        return this.http.post<IapiResponce>('v1/pension/primary-category', dto).pipe(
-            catchError((error) => {
-                this.toastService.showError(error.message);
-                throw error;
-            }) 
-        );
+        return this.http
+            .post<IapiResponce>('v1/pension/primary-category', dto)
+            .pipe(
+                catchError((error) => {
+                    this.toastService.showError(error.message);
+                    throw error;
+                })
+            );
     }
 
     addSubCategory(dto: SubCategoryEntryDTO): Observable<IapiResponce> {
-        return this.http.post<IapiResponce>('v1/pension/sub-category', dto).pipe(
-            catchError((error) => {
-                this.toastService.showError(error.message);
-                throw error;
-            }) 
-        );
+        return this.http
+            .post<IapiResponce>('v1/pension/sub-category', dto)
+            .pipe(
+                catchError((error) => {
+                    this.toastService.showError(error.message);
+                    throw error;
+                })
+            );
     }
 
     addCategory(dto: CategoryEntryDTO): Observable<IapiResponce> {
@@ -84,10 +93,7 @@ export class PenionCatergoryMasterService {apiUrl = "v1/manual-ppo/receipts";
             catchError((error) => {
                 this.toastService.showError(error.message);
                 throw error;
-            }) 
+            })
         );
     }
-
-
-  
 }

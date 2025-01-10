@@ -27,8 +27,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        component: PpoReceiptComponent
-    }
+        component: PpoReceiptComponent,
+    },
 ];
 
 @NgModule({
@@ -56,7 +56,7 @@ const routes: Routes = [
         RatingModule,
         MhPrimeDynamicTableModule,
         RouterModule.forChild(routes),
-        DynamicTableModule
-    ]
+        DynamicTableModule,
+    ],
 })
-export class PpoReceiptModule { }
+export class PpoReceiptModule {}

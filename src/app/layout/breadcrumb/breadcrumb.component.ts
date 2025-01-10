@@ -22,8 +22,8 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
         private location: Location,
         public router: Router
     ) {
-        this.navigationSubscription = this.breadcrumbService.routeChangeHandler$
-            .subscribe(() => {
+        this.navigationSubscription =
+            this.breadcrumbService.routeChangeHandler$.subscribe(() => {
                 this.updateBreadcrumbs();
             });
     }
@@ -43,28 +43,32 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
     }
 
     updateBreadcrumbs() {
-        const allBreadcrumbs = this.breadcrumbService.breadcrumbs.map((crumb, index) => {
-            return {
-                label: crumb.label,
-                routerLink: crumb.url,
-                command: (event: any) => {
-                    event.originalEvent?.preventDefault();
+        const allBreadcrumbs = this.breadcrumbService.breadcrumbs.map(
+            (crumb, index) => {
+                return {
+                    label: crumb.label,
+                    routerLink: crumb.url,
+                    command: (event: any) => {
+                        event.originalEvent?.preventDefault();
 
-                    // If clicking the current page's breadcrumb, do nothing
-                    if (this.router.url === crumb.url) {
-                        return;
-                    }
+                        // If clicking the current page's breadcrumb, do nothing
+                        if (this.router.url === crumb.url) {
+                            return;
+                        }
 
-                    // Otherwise, navigate to the clicked breadcrumb's page
-                    this.router.navigate([crumb.url])
-                        .catch(() => this.location.back());
-                }
-            };
-        });
+                        // Otherwise, navigate to the clicked breadcrumb's page
+                        this.router
+                            .navigate([crumb.url])
+                            .catch(() => this.location.back());
+                    },
+                };
+            }
+        );
 
-        this.breadcrumbs = this.viewportWidth <= 678 ?
-            allBreadcrumbs.slice(-2) :
-            allBreadcrumbs;
+        this.breadcrumbs =
+            this.viewportWidth <= 678
+                ? allBreadcrumbs.slice(-2)
+                : allBreadcrumbs;
     }
 
     pageReload() {

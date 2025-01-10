@@ -26,43 +26,42 @@ import * as FileSaver from 'file-saver';
     selector: 'app-dynamic-table',
     templateUrl: './dynamic-table.component.html',
     styleUrls: ['./dynamic-table.component.scss'],
-
 })
 export class DynamicTableComponent implements OnInit {
     [x: string]: any;
     /**
      * small
-     * normal 
+     * normal
      * large
      */
     @Input()
-        size: string = '';
+    size: string = '';
     @Input()
-        headers: TableHeader[] = [];
+    headers: TableHeader[] = [];
     @Input()
-        data: any;
+    data: any;
     @Input()
-        dataCount: number = 0;
+    dataCount: number = 0;
     @Input()
-        numberRowsShown: number = 10;
+    numberRowsShown: number = 10;
     @Input()
-        rowsPerPageOptions: any[] = [10, 20, 30];
+    rowsPerPageOptions: any[] = [10, 20, 30];
     @Input()
-        actionButtons: ActionButtonConfig[]=[];
+    actionButtons: ActionButtonConfig[] = [];
     /**
      * none
-     * single 
+     * single
      * multiple
      */
     @Input()
-        rowSelectionMode: string = 'none';
+    rowSelectionMode: string = 'none';
 
     @Output()
-        rowSelect = new EventEmitter<any>();
+    rowSelect = new EventEmitter<any>();
     @Output()
-        actionButtonClicked = new EventEmitter<any>();
+    actionButtonClicked = new EventEmitter<any>();
     @Output()
-        queryParameterChange = new EventEmitter<any>();
+    queryParameterChange = new EventEmitter<any>();
     sizes!: any[];
     filterParams: FilterParameter[] = [];
     selectedRows: any;
@@ -74,37 +73,53 @@ export class DynamicTableComponent implements OnInit {
     errors: Message[] = [];
     items!: MenuItem[];
     items1!: MenuItem[];
-    @Output() searchKeyChange: EventEmitter<string> = new EventEmitter<string>();
+    @Output() searchKeyChange: EventEmitter<string> =
+        new EventEmitter<string>();
     searchKey: string = '';
     cols!: any[];
     exportColumns!: any[];
     ngOnInit(): void {
         // console.log('header', this.headers);
         console.log('header', this.data);
-        this.exportColumns = this.headers.map(col => ({ title: col.name, dataKey: col.fieldName }));
+        this.exportColumns = this.headers.map((col) => ({
+            title: col.name,
+            dataKey: col.fieldName,
+        }));
         if (this.headers.length == 0) {
-            this.errors.push({ severity: 'error', summary: 'Header Miesing!', detail: 'Message Content' });
+            this.errors.push({
+                severity: 'error',
+                summary: 'Header Miesing!',
+                detail: 'Message Content',
+            });
         }
         if (this.dataCount == 0) {
-            this.errors.push({ severity: 'error', summary: 'Data Count mesing', detail: 'Message Content' });
+            this.errors.push({
+                severity: 'error',
+                summary: 'Data Count mesing',
+                detail: 'Message Content',
+            });
         }
         // console.log(this.errors);
 
         this.sizes = [
             { name: 'small', class: 'p-datatable-sm' },
             { name: 'normal', class: '' },
-            { name: 'large', class: 'p-datatable-lg' }
+            { name: 'large', class: 'p-datatable-lg' },
         ];
         this.items = [
             {
                 label: 'Export All',
                 icon: 'pi pi-copy',
-                command: () => { this.exportExcel()}
+                command: () => {
+                    this.exportExcel();
+                },
             },
             {
                 label: 'Export Selected',
                 icon: 'pi pi-check-square',
-                command: () =>{this.exportExcelSelected()}
+                command: () => {
+                    this.exportExcelSelected();
+                },
             },
         ];
 
@@ -112,12 +127,16 @@ export class DynamicTableComponent implements OnInit {
             {
                 label: 'Export All',
                 icon: 'pi pi-copy',
-                command: () => {this.exportPdf() }
+                command: () => {
+                    this.exportPdf();
+                },
             },
             {
                 label: 'Export Selected',
                 icon: 'pi pi-check-square',
-                command: () =>{this.exportPdfSelected()}
+                command: () => {
+                    this.exportPdfSelected();
+                },
             },
         ];
     }
@@ -233,87 +252,99 @@ export class DynamicTableComponent implements OnInit {
         return `${firstLetter.toLocaleUpperCase()}${rest.join('')}`;
     }
     getFilterField(fieldName: string, objects: TableHeader[]): string {
-        const foundObject = objects.find(obj => obj.fieldName === fieldName);
-        return foundObject ? foundObject.filterField : "";
+        const foundObject = objects.find((obj) => obj.fieldName === fieldName);
+        return foundObject ? foundObject.filterField : '';
     }
     getEnumStyle(enumValue: number, objects: FilterEnum[]): string {
-        const foundObject = objects.find(obj => obj.value === enumValue);
-        return foundObject ? foundObject.styleClass : "";
+        const foundObject = objects.find((obj) => obj.value === enumValue);
+        return foundObject ? foundObject.styleClass : '';
     }
     getTableSizeClass(size: string) {
-        const foundObject = this.sizes.find(obj => obj.name === size);
-        return foundObject ? foundObject.class : "";
+        const foundObject = this.sizes.find((obj) => obj.name === size);
+        return foundObject ? foundObject.class : '';
     }
 
     globalSearch(searchKey: string) {
         this.searchKeyChange.emit(searchKey);
     }
 
-    clearFilters() {
-
-    }
+    clearFilters() {}
 
     // exportHandler(type: string) {
     //     if (type === 'excel') {
-           
+
     //             this.exportExcel();
-           
+
     //     } else if (type === 'pdf') {
-         
-          
+
     //             this.exportPdf();
-           
+
     //     }
     // }
-    
 
     exportPdf() {
         console.log('d');
-        import("jspdf").then(jsPDF => {
-            import("jspdf-autotable").then(x => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then((x) => {
                 const doc = new jsPDF.default('p', 'px', 'a4');
                 (doc as any).autoTable(this.exportColumns, this.data);
                 doc.save('products.pdf');
-            })
-        })
+            });
+        });
     }
 
     exportPdfSelected() {
         console.log('d');
-        import("jspdf").then(jsPDF => {
-            import("jspdf-autotable").then(x => {
+        import('jspdf').then((jsPDF) => {
+            import('jspdf-autotable').then((x) => {
                 const doc = new jsPDF.default('p', 'px', 'a4');
                 (doc as any).autoTable(this.exportColumns, this.selectedRows);
                 doc.save('products.pdf');
-            })
-        })
+            });
+        });
     }
 
     saveAsExcelFile(buffer: any, fileName: string): void {
-        let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        let EXCEL_TYPE =
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         let EXCEL_EXTENSION = '.xlsx';
         const data: Blob = new Blob([buffer], {
-            type: EXCEL_TYPE
+            type: EXCEL_TYPE,
         });
-        FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+        FileSaver.saveAs(
+            data,
+            fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
+        );
     }
 
     exportExcel() {
-        import("xlsx").then(xlsx => {
+        import('xlsx').then((xlsx) => {
             const worksheet = xlsx.utils.json_to_sheet(this.data);
-            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-            const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-            this.saveAsExcelFile(excelBuffer, "data");
-        });    
+            const workbook = {
+                Sheets: { data: worksheet },
+                SheetNames: ['data'],
+            };
+            const excelBuffer: any = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+            this.saveAsExcelFile(excelBuffer, 'data');
+        });
     }
 
     exportExcelSelected() {
-        import("xlsx").then(xlsx => {
+        import('xlsx').then((xlsx) => {
             const worksheet = xlsx.utils.json_to_sheet(this.selectedRows);
-            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-            const excelBuffer: any = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
-            this.saveAsExcelFile(excelBuffer, "data");
-        });    
+            const workbook = {
+                Sheets: { data: worksheet },
+                SheetNames: ['data'],
+            };
+            const excelBuffer: any = xlsx.write(workbook, {
+                bookType: 'xlsx',
+                type: 'array',
+            });
+            this.saveAsExcelFile(excelBuffer, 'data');
+        });
     }
     trackByFunc: TrackByFunction<ActionButtonConfig> = (index, item) => {
         return index; // Assuming each actionButton has a unique 'id' property

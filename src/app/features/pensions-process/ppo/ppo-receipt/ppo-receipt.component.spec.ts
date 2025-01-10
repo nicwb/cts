@@ -8,9 +8,8 @@ describe('ManualPpoReceiptComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ PpoReceiptComponent ]
-        })
-            .compileComponents();
+            declarations: [PpoReceiptComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(PpoReceiptComponent);
         component = fixture.componentInstance;

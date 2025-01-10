@@ -9,71 +9,70 @@ export class ToastService {
     constructor(private messageService: MessageService) {}
     showAlert(message: string, alertType: number) {
         switch (alertType) {
-        case AlertType.Success:
-            this.showSuccess(message);
-            break;
-        case AlertType.Warning:
-            this.showWarning(message);
-            break;
-        case AlertType.Error:
-            this.showError(message);
-            break;
-        case AlertType.Info:
-            this.showInfo(message);
-            break;
-        default:
-            break;
+            case AlertType.Success:
+                this.showSuccess(message);
+                break;
+            case AlertType.Warning:
+                this.showWarning(message);
+                break;
+            case AlertType.Error:
+                this.showError(message);
+                break;
+            case AlertType.Info:
+                this.showInfo(message);
+                break;
+            default:
+                break;
         }
     }
     showSuccess(message: string, swal: boolean = true) {
         swal
             ? Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: '' + message,
-            })
+                  icon: 'success',
+                  title: 'Success',
+                  text: '' + message,
+              })
             : this.messageService.add({
-                severity: 'success',
-                summary: 'Success',
-                detail: message,
-            });
-
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: message,
+              });
     }
 
     showError(message: string, swal: boolean = true) {
         swal
             ? Swal.fire({
-                icon: 'error',
-                title: 'Aww! Snap...',
-                text: '' + message,
-            })
+                  icon: 'error',
+                  title: 'Aww! Snap...',
+                  text: '' + message,
+              })
             : this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: message,
-            });
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: message,
+              });
     }
     showWarning(message: string, swal: boolean = true) {
         swal
             ? Swal.fire({
-                icon: 'warning',
-                title: 'Heads up...',
-                text: '' + message,
-            })
+                  icon: 'warning',
+                  title: 'Heads up...',
+                  text: '' + message,
+              })
             : this.messageService.add({
-                severity: 'warn',
-                summary: 'Warn',
-                detail: message,
-            });
+                  severity: 'warn',
+                  summary: 'Warn',
+                  detail: message,
+              });
     }
     showInfo(message: string, swal: boolean = true) {
         swal
             ? Swal.fire({ icon: 'info', title: 'Info', text: '' + message })
             : this.messageService.add({
-                severity: 'info',
-                summary: 'Info',
-                detail: message,
-            });
+                  severity: 'info',
+                  summary: 'Info',
+                  detail: message,
+              });
     }
 
     needConfirmation(message: string): Promise<boolean> {
@@ -86,14 +85,12 @@ export class ToastService {
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes',
-                cancelButtonText: 'Cancel'
+                cancelButtonText: 'Cancel',
             }).then((result) => {
-                resolve(result.isConfirmed);  // Resolve with true if confirmed, false otherwise
+                resolve(result.isConfirmed); // Resolve with true if confirmed, false otherwise
             });
-
         });
     }
-
 }
 export enum AlertType {
     Success = 1,

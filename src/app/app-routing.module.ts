@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AppLayoutComponent } from "./layout/app.layout.component";
+import { AppLayoutComponent } from './layout/app.layout.component';
 import { ServerDownComponent } from './shared/components/server-down/server-down.component';
 import { LoginComponent } from './features/login/login.component';
 import { AuthGuard } from './core/guard/auth.guard';
@@ -10,36 +10,60 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
 
 @NgModule({
     imports: [
-        RouterModule.forRoot([
+        RouterModule.forRoot(
+            [
+                {
+                    path: '',
+                    component: AppLayoutComponent,
+                    children: [
+                        {
+                            path: 'master',
+                            loadChildren: () =>
+                                import('./features/master/master.module').then(
+                                    (m) => m.MasterModule
+                                ),
+                            data: { breadcrumb: 'MasterModule' },
+                        },
+                        {
+                            path: 'pension-process',
+                            loadChildren: () =>
+                                import(
+                                    './features/pensions-process/pensions-process.module'
+                                ).then((m) => m.PensionsProcessModule),
+                            data: { breadcrumb: 'PensionsProcessModule' },
+                        },
+                        {
+                            path: 'pension-report',
+                            loadChildren: () =>
+                                import(
+                                    './features/pension-reports/pension-reports.module'
+                                ).then((m) => m.PensionReportsModule),
+                            data: { breadcrumb: 'PensionReportsModule' },
+                        },
+                    ],
+                    data: { breadcrumb: 'CTS AppLayoutComponent' },
+                },
+                {
+                    path: 'login',
+                    component: LoginComponent,
+                    data: { breadcrumb: 'LoginComponent' },
+                },
+                {
+                    path: 'static-login',
+                    component: StaticLoginComponent,
+                    data: { breadcrumb: 'StaticLoginComponent' },
+                },
+                { path: 'notfound', component: NotFoundComponent },
+                { path: 'server-down', component: ServerDownComponent },
+                // { path: '**', redirectTo: '/notfound' },
+            ],
             {
-                path: '', component: AppLayoutComponent,
-                children: [
-                    {
-                        path: 'master',
-                        loadChildren: () => import('./features/master/master.module').then(m => m.MasterModule),
-                        data: { breadcrumb: 'MasterModule' }
-                    },
-                    {
-                        path: 'pension-process',
-                        loadChildren: () => import('./features/pensions-process/pensions-process.module').then(m => m.PensionsProcessModule),
-                        data: {breadcrumb: 'PensionsProcessModule'}
-                    },
-                    {
-                        path: 'pension-report',
-                        loadChildren: () => import('./features/pension-reports/pension-reports.module').then(m => m.PensionReportsModule),
-                        data: {breadcrumb: 'PensionReportsModule'}
-                    },
-                ],
-                data: { breadcrumb: 'CTS AppLayoutComponent' }
-            },
-            {path:'login',component:LoginComponent, data: { breadcrumb: 'LoginComponent' }},
-            {path:'static-login',component:StaticLoginComponent, data: { breadcrumb: 'StaticLoginComponent' }},
-            { path: 'notfound', component: NotFoundComponent },
-            { path: 'server-down', component: ServerDownComponent },
-            // { path: '**', redirectTo: '/notfound' },
-        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
+                scrollPositionRestoration: 'enabled',
+                anchorScrolling: 'enabled',
+                onSameUrlNavigation: 'reload',
+            }
+        ),
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

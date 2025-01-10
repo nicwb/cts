@@ -1,26 +1,26 @@
 export interface PrimaryCategoryEntryDTO {
-    HoaId: string,
-    PrimaryCategoryName: string
+    HoaId: string;
+    PrimaryCategoryName: string;
 }
 
 export interface SubCategoryEntryDTO {
-    SubCategoryName: string
+    SubCategoryName: string;
 }
 
 export interface CategoryEntryDTO {
-    PrimaryCategoryId: number,
-    SubCategoryId: number
+    PrimaryCategoryId: number;
+    SubCategoryId: number;
 }
 
 export interface CategoryResponseDTO {
-    Id: number,
-    CategoryName: string
+    Id: number;
+    CategoryName: string;
 }
 
 export interface PrimaryCategoryResponseDTO {
-    Id: number
+    Id: number;
 }
 
 export interface SubCategoryResponseDTO {
-    Id: number
+    Id: number;
 }

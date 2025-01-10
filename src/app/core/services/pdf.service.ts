@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PdfService {
-
-    constructor() { }
+    constructor() {}
 
     // Function to convert base64 string to a PDF and open it in a new window
     base64ToPdf(base64String: string, fileName: string = 'document.pdf'): void {

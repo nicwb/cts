@@ -7,5 +7,8 @@ import { ToastService } from '../toast.service';
 })
 export class ComponentRateService {
     // http requst service
-    constructor(private http:HttpClient, private toastService:ToastService) {}
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 }

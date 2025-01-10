@@ -11,7 +11,6 @@ export class HasRoleDirective {
         private viewContainer: ViewContainerRef
     ) {}
     @Input() set appHasRole(roles: Array<string>) {
-      
         if (1) {
             this.viewContainer.createEmbeddedView(this.templateRef);
         } else {

@@ -20,18 +20,16 @@ import { ProgressBarModule } from 'primeng/progressbar';
 const routes: Routes = [
     {
         path: '',
-        component: FirstPensionBillComponent
+        component: FirstPensionBillComponent,
     },
     {
         path: '/:ppoId',
-        component: FirstPensionBillComponent
-    }
+        component: FirstPensionBillComponent,
+    },
 ];
 
 @NgModule({
-    declarations: [
-        FirstPensionBillComponent,
-    ],
+    declarations: [FirstPensionBillComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -48,10 +46,9 @@ const routes: Routes = [
         PopupTableModule,
         DividerModule,
         ProgressBarModule,
-
     ],
     providers: [MessageService],
-  
+
     exports: [],
 })
-export class FirstPensionBillModule { }
+export class FirstPensionBillModule {}

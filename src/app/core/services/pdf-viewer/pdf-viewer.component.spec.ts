@@ -8,9 +8,8 @@ describe('PdfViewerComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ PdfViewerComponent ]
-        })
-            .compileComponents();
+            declarations: [PdfViewerComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(PdfViewerComponent);
         component = fixture.componentInstance;

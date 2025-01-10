@@ -7,7 +7,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 @Component({
     selector: 'app-arrear-pension-bill',
     templateUrl: './arrear-pension-bill.component.html',
-    styleUrls: ['./arrear-pension-bill.component.scss']
+    styleUrls: ['./arrear-pension-bill.component.scss'],
 })
 export class ArrearPensionBillComponent implements OnInit {
     allManualPPOReceipt$?: Observable<any>;
@@ -31,7 +31,7 @@ export class ArrearPensionBillComponent implements OnInit {
             periodFrom: ['', Validators.required],
             periodTo: ['', Validators.required],
             bankName: ['', Validators.required],
-            bankAcNo: ['', Validators.required]
+            bankAcNo: ['', Validators.required],
         });
     }
 
@@ -40,16 +40,13 @@ export class ArrearPensionBillComponent implements OnInit {
     }
 
     onGenerate() {
-        console.log("Generation Button is clicked");
+        console.log('Generation Button is clicked');
     }
 
     async handelManualEntrySelect(event: any) {
         console.log(event);
-
     }
     async saveData() {
-        console.log("Save Button is clicked");
-
+        console.log('Save Button is clicked');
     }
-
 }

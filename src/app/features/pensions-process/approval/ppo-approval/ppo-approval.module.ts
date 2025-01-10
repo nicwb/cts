@@ -11,8 +11,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
     {
         path: '',
-        component: PpoApprovalComponent // Use empty path for default route
-    }
+        component: PpoApprovalComponent, // Use empty path for default route
+    },
 ];
 @NgModule({
     declarations: [PpoApprovalComponent],
@@ -25,12 +25,8 @@ const routes: Routes = [
         ToggleButtonModule,
         ButtonModule,
         RouterModule,
-        RouterModule.forChild(routes) // Lazy loading routes
-
+        RouterModule.forChild(routes), // Lazy loading routes
     ],
-    exports:[
-        PpoApprovalComponent
-    ]
-
+    exports: [PpoApprovalComponent],
 })
-export class PpoApprovalModule { }
+export class PpoApprovalModule {}

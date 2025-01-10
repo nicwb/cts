@@ -6,20 +6,21 @@ import { Observable, catchError } from 'rxjs';
 import { StampWalletRefill, StampWalletGet } from '../../models/stamp';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class StampWalletService {
-
-    constructor(private http: HttpClient, private toastService: ToastService) { }
-
+    constructor(
+        private http: HttpClient,
+        private toastService: ToastService
+    ) {}
 
     getStampWalletBalanceByTreasuryCode(
         treasuryCode: string
     ): Observable<IapiResponce<StampWalletGet>> {
         return this.http
-            .get<IapiResponce<StampWalletGet>>(
-                'v1/StampWallet/getStampWalletBalanceByTreasuryCode?treasuryCode=' + treasuryCode        
-            )
+            .get<
+                IapiResponce<StampWalletGet>
+            >('v1/StampWallet/getStampWalletBalanceByTreasuryCode?treasuryCode=' + treasuryCode)
             .pipe(
                 catchError((error) => {
                     throw this.toastService.showError(error.message);
@@ -27,11 +28,18 @@ export class StampWalletService {
             );
     }
 
-    createOrUpdateStampWallet(payload: StampWalletRefill): Observable<IapiResponce> {
-        return this.http.post<IapiResponce>('v1/StampWallet/CreateOrUpdateStampWallet', payload).pipe(
-            catchError((error) => {
-                throw this.toastService.showError(error.message);
-            })
-        );
+    createOrUpdateStampWallet(
+        payload: StampWalletRefill
+    ): Observable<IapiResponce> {
+        return this.http
+            .post<IapiResponce>(
+                'v1/StampWallet/CreateOrUpdateStampWallet',
+                payload
+            )
+            .pipe(
+                catchError((error) => {
+                    throw this.toastService.showError(error.message);
+                })
+            );
     }
 }

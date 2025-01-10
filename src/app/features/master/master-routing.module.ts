@@ -9,16 +9,19 @@ import { ComponentRateComponent } from './component-rate/component-rate.componen
 import { ComponentRateRevisionsComponent } from './component-rate-revisions/component-rate-revisions.component';
 
 const routes: Routes = [
-    {path:'',component:MasterComponent,data: { breadcrumb: 'MasterComponent' },
+    {
+        path: '',
+        component: MasterComponent,
+        data: { breadcrumb: 'MasterComponent' },
     },
     {
         path: 'pension-category',
-        component: PensionCategoryComponent,  // Directly load the PensionCategoryComponent
+        component: PensionCategoryComponent, // Directly load the PensionCategoryComponent
         data: { breadcrumb: 'PensionCategoryComponent' },
     },
     {
         path: 'pension-category/new',
-        component: PensionCategoryComponent,  // Reuse PensionCategoryComponent for 'new'
+        component: PensionCategoryComponent, // Reuse PensionCategoryComponent for 'new'
         data: { breadcrumb: 'PensionCategoryComponent' },
     },
     {
@@ -65,6 +68,6 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule] // Export RouterModule for use in MasterModule
+    exports: [RouterModule], // Export RouterModule for use in MasterModule
 })
-export class MasterRoutingModule { }
+export class MasterRoutingModule {}

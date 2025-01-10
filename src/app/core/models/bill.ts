@@ -5,12 +5,12 @@ export interface IBills {
     ddoDesignation?: string | null;
     billNo?: string | null;
     billDate?: Date | null;
-    grossAmount: number,
-    netAmount: number,
-    hoaChain: HoaChain
+    grossAmount: number;
+    netAmount: number;
+    hoaChain: HoaChain;
 }
 
-export interface IOnlineBillDetailsRefNo{
+export interface IOnlineBillDetailsRefNo {
     billDetailsDetails: any;
     ddoCode: string;
     referenceNo: string;
@@ -37,23 +37,23 @@ export interface HoaChain {
     votedCharged: string;
     detailHead: string;
     subDetailHead: string;
-  }
+}
 export interface subDeatilsHead {
     subDeatils: string;
     description: string;
     amount: number;
     allotment: IAllotment;
-  }
-  interface IAllotment {
+}
+interface IAllotment {
     hoaChain: {
-      demand: string;
-      majorHead: string;
-      subMajorHead: string;
-      minorHead: string;
-      schemeHead: string;
-      votedCharged: string;
-      detailHead: string;
-      subDetailHead: string;
+        demand: string;
+        majorHead: string;
+        subMajorHead: string;
+        minorHead: string;
+        schemeHead: string;
+        votedCharged: string;
+        detailHead: string;
+        subDetailHead: string;
     };
     allotmentAmount: number;
     previousBalance: number;
@@ -62,15 +62,15 @@ export interface subDeatilsHead {
     subDetailHead: string;
     overDrawalAmount: number;
     finalProjectDetails: string;
-  }
-  interface TokenDetails {
+}
+interface TokenDetails {
     tokenNumber: number;
     tokenDate: string;
     referenceNo: string;
     status: string;
-  }
-  
-  interface BillDetails {
+}
+
+interface BillDetails {
     ddoCode: string;
     referenceNo: string;
     billNo: string;
@@ -80,7 +80,7 @@ export interface subDeatilsHead {
     ddoDesignation: string;
     payeeDepartment: string;
     hoaChain: HoaChain;
-    subDeatilsHead:subDeatilsHead[];
+    subDeatilsHead: subDeatilsHead[];
     transferAmount: number;
     grossAmount: number;
     netAmount: number;
@@ -88,50 +88,50 @@ export interface subDeatilsHead {
     treasuryBTAmount: number;
     totalBTAmount: number;
     sanctionNo: string;
-    sanctionDate: string
-  }
+    sanctionDate: string;
+}
 export interface IBillDetails {
     tokenDetails: TokenDetails;
     billDetailsDetails: BillDetails;
-  }
+}
 
 export interface IBillCheck {
-  tokenId: number;
-  referenceNo: string;
-  billObjections?: {
-    globalObjections?: ISelectedObjection[]; 
-    localObjections?: ISelectedObjection[];
-  };
-  overruledObjections?:ISelectedObjectionsForOverrule[];
+    tokenId: number;
+    referenceNo: string;
+    billObjections?: {
+        globalObjections?: ISelectedObjection[];
+        localObjections?: ISelectedObjection[];
+    };
+    overruledObjections?: ISelectedObjectionsForOverrule[];
 }
-export interface ISelectedObjectionsForOverrule{
-  tokenObjectionId?: number;
-  remark?:string;
+export interface ISelectedObjectionsForOverrule {
+    tokenObjectionId?: number;
+    remark?: string;
 }
-export interface ISelectedObjection{
-  id?:number,
-  description:string,
-  remark?:string
-  exiestObjectionId?:number,
-  isOverruled?:boolean,
-  OverruledBy?:string,
-  overruledRemark?:string,
-  objectionType?:string,
-  objectionBy?:string,
+export interface ISelectedObjection {
+    id?: number;
+    description: string;
+    remark?: string;
+    exiestObjectionId?: number;
+    isOverruled?: boolean;
+    OverruledBy?: string;
+    overruledRemark?: string;
+    objectionType?: string;
+    objectionBy?: string;
 }
 
-export interface IRetunMemoBillDetils{
-  tokenId :number,
-  tokenNumber :number,
-  tokenDate :string,
-  billNo :string,
-  billDate :string,
-  ddoCode :string,
-  hoaChain  :HoaChain,
-  grossAmount :number,
-  netAmount :number
+export interface IRetunMemoBillDetils {
+    tokenId: number;
+    tokenNumber: number;
+    tokenDate: string;
+    billNo: string;
+    billDate: string;
+    ddoCode: string;
+    hoaChain: HoaChain;
+    grossAmount: number;
+    netAmount: number;
 }
-export interface IReturnMemoCount{
-  generatedReturnMemo: number,
-  awatingReturnMemo: number
+export interface IReturnMemoCount {
+    generatedReturnMemo: number;
+    awatingReturnMemo: number;
 }

@@ -90,13 +90,15 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
             if (event instanceof NavigationEnd) {
                 const stepParam = this.route.snapshot.queryParamMap.get('step'); // Get 'step' query param
                 this.route.url.subscribe((segments) => {
-                    if (segments.length > 0 && segments[segments.length - 1].path === 'new') {
+                    if (
+                        segments.length > 0 &&
+                        segments[segments.length - 1].path === 'new'
+                    ) {
                         this.newPPOEntry();
                     }
                 });
             }
         });
-
     }
 
     async loadById() {
@@ -128,7 +130,6 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         this.currentStepIndex = stepParam ? parseInt(stepParam, 10) : 0;
     }
 
-
     next(): void {
         if (!this.ppoId) {
             console.warn('PPO ID is missing. Cannot proceed to the next step.');
@@ -144,14 +145,16 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         }
 
         // Navigate to the next step.
-        this.router.navigate(
-            ['pension-process/ppo', this.ppoId, 'edit'],
-            { queryParams: { step: nextStep } }
-        ).then(() => {
-            this.currentStepIndex = nextStep;
-        }).catch((error) => {
-            console.error('Navigation error:', error);
-        });
+        this.router
+            .navigate(['pension-process/ppo', this.ppoId, 'edit'], {
+                queryParams: { step: nextStep },
+            })
+            .then(() => {
+                this.currentStepIndex = nextStep;
+            })
+            .catch((error) => {
+                console.error('Navigation error:', error);
+            });
     }
 
     private getLastPathSegment(url: string): string | null {
@@ -255,7 +258,15 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         const lowerCaseSearchTerm = this.ppoSearchField.toLowerCase();
 
         this.data.data = this.records.filter((record) =>
-            Object.values(record).some((value) =>typeof value === 'string' || typeof value === 'number'? value.toString().toLowerCase().includes(lowerCaseSearchTerm): false));
+            Object.values(record).some((value) =>
+                typeof value === 'string' || typeof value === 'number'
+                    ? value
+                          .toString()
+                          .toLowerCase()
+                          .includes(lowerCaseSearchTerm)
+                    : false
+            )
+        );
 
         if (this.data.data.length === 0) {
             this.tableMsg = 'No records found';

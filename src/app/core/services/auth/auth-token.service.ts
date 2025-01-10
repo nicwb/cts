@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Application, IJwtDecodedToken, IJwtToken, Role } from '../../models/jwt-token';
+import {
+    Application,
+    IJwtDecodedToken,
+    IJwtToken,
+    Role,
+} from '../../models/jwt-token';
 import { Observable, from, map, of, retry } from 'rxjs';
 import { IRolesPermissions } from '../../models/roles-permissions';
 
@@ -24,17 +29,17 @@ export class AuthTokenService {
     destroyToken(): void {
         window.localStorage.removeItem('jwtToken');
     }
-    getDecodeToken(): Application|any {
+    getDecodeToken(): Application | any {
         this.jwtToken = this.jwtHelper.decodeToken(this.getToken());
         // console.log('->jwt',this.jwtToken);
-        if(this.jwtToken!=null){
+        if (this.jwtToken != null) {
             this.decodedToken = JSON.parse(this.jwtToken.application);
             return this.decodedToken;
         }
     }
     getRolesWithPermissions(): Role[] {
         this.decodedToken = this.getDecodeToken();
-        if(this.decodedToken!=null){
+        if (this.decodedToken != null) {
             return this.decodedToken.Roles;
         }
         return [];

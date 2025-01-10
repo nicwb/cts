@@ -15,7 +15,6 @@ import { ApprovalModule } from './approval/approval.module';
 import { PensionerDetailsModule } from './pensioner-details/pensioner-details.module';
 import { PensionBillModule } from './pension-bill/pension-bill.module';
 
-
 @NgModule({
     declarations: [
         PensionsProcessComponent,
@@ -37,6 +36,6 @@ import { PensionBillModule } from './pension-bill/pension-bill.module';
         ApprovalModule,
         PensionerDetailsModule,
         // PensionBillModule,
-    ]
+    ],
 })
-export class PensionsProcessModule { }
+export class PensionsProcessModule {}

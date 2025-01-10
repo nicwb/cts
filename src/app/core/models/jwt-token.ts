@@ -34,9 +34,9 @@ export interface Application {
     Roles: Role[];
 }
 
-export interface IUserDetails{
-    Id:number;
-    Name:string;
-    Role:string;
-    Level:Level
+export interface IUserDetails {
+    Id: number;
+    Name: string;
+    Role: string;
+    Level: Level;
 }

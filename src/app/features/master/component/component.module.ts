@@ -11,7 +11,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
-import {  ComponentComponent } from './component.component';
+import { ComponentComponent } from './component.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
@@ -23,20 +23,20 @@ import { CalendarModule } from 'primeng/calendar';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { RadioButtonModule } from 'primeng/radiobutton';
 
-import { AutoCompleteModule } from "primeng/autocomplete";
-import { ChipsModule } from "primeng/chips";
-import { ChipModule } from "primeng/chip";
-import { InputMaskModule } from "primeng/inputmask";
-import { InputNumberModule } from "primeng/inputnumber";
-import { CascadeSelectModule } from "primeng/cascadeselect";
-import { InputTextareaModule } from "primeng/inputtextarea";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ChipsModule } from 'primeng/chips';
+import { ChipModule } from 'primeng/chip';
+import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { KnobModule } from 'primeng/knob';
 import { ListboxModule } from 'primeng/listbox';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ColorPickerModule } from 'primeng/colorpicker';
-import {DynamicTableModule} from 'src/app/core/dynamic-table/dynamic-table.module'
+import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 @NgModule({
     declarations: [ComponentComponent],
     imports: [
@@ -75,9 +75,8 @@ import {DynamicTableModule} from 'src/app/core/dynamic-table/dynamic-table.modul
         CheckboxModule,
         InputSwitchModule,
         ColorPickerModule,
-        DynamicTableModule
-
+        DynamicTableModule,
     ],
-    exports:[ComponentComponent]
+    exports: [ComponentComponent],
 })
-export class ComponentModule { }
+export class ComponentModule {}

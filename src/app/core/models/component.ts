@@ -1,6 +1,5 @@
-export interface Component_interface{
-    ComponentName: string,
-    ComponentType: string,
-    ReliefFlag: boolean,
-    
+export interface Component_interface {
+    ComponentName: string;
+    ComponentType: string;
+    ReliefFlag: boolean;
 }

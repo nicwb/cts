@@ -8,9 +8,8 @@ describe('OptionCardComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ OptionCardComponent ]
-        })
-            .compileComponents();
+            declarations: [OptionCardComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(OptionCardComponent);
         component = fixture.componentInstance;

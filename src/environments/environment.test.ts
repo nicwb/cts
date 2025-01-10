@@ -4,9 +4,9 @@
 
 export const environment = {
     production: false,
-    BaseURL:'http://dotnet:8081/api/',
+    BaseURL: 'http://dotnet:8081/api/',
     OpenApiBaseURL: 'http://dotnet:8081',
-//    BaseURL:'https://localhost:7249/api/',
+    //    BaseURL:'https://localhost:7249/api/',
 };
 
 /*

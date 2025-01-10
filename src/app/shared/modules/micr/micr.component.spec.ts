@@ -8,9 +8,8 @@ describe('MicrComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ MicrComponent ]
-        })
-            .compileComponents();
+            declarations: [MicrComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(MicrComponent);
         component = fixture.componentInstance;

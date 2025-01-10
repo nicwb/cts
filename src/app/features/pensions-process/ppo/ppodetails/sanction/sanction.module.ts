@@ -45,4 +45,4 @@ import { DividerModule } from 'primeng/divider';
     ],
     exports: [SanctionComponent],
 })
-export class SanctionModule { }
+export class SanctionModule {}

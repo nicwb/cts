@@ -14,7 +14,7 @@ import { DividerModule } from 'primeng/divider';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
-import {RevisionofComponentsModule} from './revisionof-components/revisionof-component.module'
+import { RevisionofComponentsModule } from './revisionof-components/revisionof-component.module';
 import { SharedModule } from 'primeng/api';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { CardModule } from 'primeng/card';
@@ -22,12 +22,11 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PensionerDetailsComponent } from './pensioner-details.component';
 
-
 @NgModule({
     declarations: [PensionerDetailsComponent],
     imports: [
         CommonModule,
-        FieldsetModule,  //for panel module
+        FieldsetModule, //for panel module
         RadioButtonModule, //for radio button module
         FormsModule, //for form module
         ReactiveFormsModule,
@@ -44,9 +43,7 @@ import { PensionerDetailsComponent } from './pensioner-details.component';
         SharedModule,
         OptionCardModule,
         CardModule,
-        RouterModule
-
-    
+        RouterModule,
     ],
     exports: [],
 })

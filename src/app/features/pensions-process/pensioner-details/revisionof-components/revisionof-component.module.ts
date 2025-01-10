@@ -15,8 +15,6 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 
-
-
 @NgModule({
     declarations: [RevisionofComponentsComponent],
     imports: [
@@ -33,9 +31,7 @@ import { InputTextModule } from 'primeng/inputtext';
         DividerModule,
         DialogModule,
         CalendarModule,
-        InputTextModule
-
-    
+        InputTextModule,
     ],
     exports: [],
 })

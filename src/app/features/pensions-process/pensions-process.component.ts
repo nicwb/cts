@@ -3,10 +3,8 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'app-pensions',
     templateUrl: './pensions-process.component.html',
-    styleUrls: ['./pensions-process.component.scss']
+    styleUrls: ['./pensions-process.component.scss'],
 })
 export class PensionsProcessComponent {
-
-    constructor() { }
-
+    constructor() {}
 }

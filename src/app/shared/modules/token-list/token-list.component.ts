@@ -30,7 +30,7 @@ export class TokenListComponent implements OnInit {
     listData: DynamicTable<tokenDetails> | any;
     loading: boolean = false;
     filterParams: FilterParameter[] = [];
-    sortParams: SortParameter|any;
+    sortParams: SortParameter | any;
     refreshTable: boolean = false;
     sortOrder: number | any;
     pageSize: number = 10;
@@ -74,7 +74,7 @@ export class TokenListComponent implements OnInit {
             pageSize: this.pageSize,
             pageIndex: this.pageIndex,
             filterParameters: this.filterParams,
-            sortParameters:this.sortParams
+            sortParameters: this.sortParams,
         };
         this.tokenServices
             .getTokens(this.apiPath, queryParameters)

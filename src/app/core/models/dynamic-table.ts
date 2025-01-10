@@ -1,7 +1,7 @@
 export interface DynamicTable<T> {
     headers: TableHeader[];
     data: T[];
-    dataCount:number;
+    dataCount: number;
 }
 
 export interface TableHeader {
@@ -14,10 +14,10 @@ export interface TableHeader {
     filterEnums?: FilterEnum[];
     objectTypeValueField?: number;
 }
-export interface FilterEnum{
-     value:Number
-     label:string
-     styleClass:string
+export interface FilterEnum {
+    value: Number;
+    label: string;
+    styleClass: string;
 }
 export interface FilterParameter {
     field: string;
@@ -27,7 +27,7 @@ export interface FilterParameter {
 
 export interface SortParameter {
     field: string;
-    order:string;
+    order: string;
 }
 
 export interface DynamicTableQueryParameters {
@@ -37,14 +37,14 @@ export interface DynamicTableQueryParameters {
     filterParameters: FilterParameter[];
     sortParameters: SortParameter;
 }
-export interface ActionButtonConfig<T=any>{
-    lable:string,
-    icon:string,
-    class:string,
-    buttonIdentifier:string,
-    renderButton?: (data:T)=>boolean,
+export interface ActionButtonConfig<T = any> {
+    lable: string;
+    icon: string;
+    class: string;
+    buttonIdentifier: string;
+    renderButton?: (data: T) => boolean;
 }
-export interface ActionButtonEvent{
-    rowData:any,
-    buttonIdentifier:string
+export interface ActionButtonEvent {
+    rowData: any;
+    buttonIdentifier: string;
 }

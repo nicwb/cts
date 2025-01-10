@@ -6,10 +6,9 @@ import { PensionPPODetailsService } from 'src/app/api';
 @Component({
     selector: 'app-life-time-arrear-pension-bill',
     templateUrl: './life-time-arrear-pension-bill.component.html',
-    styleUrls: ['./life-time-arrear-pension-bill.component.scss']
+    styleUrls: ['./life-time-arrear-pension-bill.component.scss'],
 })
 export class LifeTimeArrearPensionBillComponent implements OnInit {
-
     allManualPPOReceipt$?: Observable<any>;
     lifeTimeArrearPensionBillForm: FormGroup = new FormGroup({});
     constructor(
@@ -29,20 +28,19 @@ export class LifeTimeArrearPensionBillComponent implements OnInit {
             periodFrom: ['', Validators.required],
             periodTo: ['', Validators.required],
             bankName: ['', Validators.required],
-            bankAcNo: ['', Validators.required]
+            bankAcNo: ['', Validators.required],
         });
     }
     onRefresh(): void {
-        this. lifeTimeArrearPensionBillForm.reset();
+        this.lifeTimeArrearPensionBillForm.reset();
     }
     onGenerate() {
-        console.log("Generation Button is clicked");
+        console.log('Generation Button is clicked');
     }
     async handelManualEntrySelect(event: any) {
         console.log(event);
     }
     async saveData() {
-        console.log("Save Button is clicked");
+        console.log('Save Button is clicked');
     }
-
 }

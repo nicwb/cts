@@ -6,8 +6,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MicrComponent } from './micr.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
     declarations: [MicrComponent],
     imports: [
@@ -16,8 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         ButtonModule,
         DropdownModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
     ],
-    exports:[MicrComponent]
+    exports: [MicrComponent],
 })
-export class MicrModule { }
+export class MicrModule {}

@@ -32,8 +32,8 @@ export class ApiInterceptor implements HttpInterceptor {
         }
 
         let baseURL = environment.BaseURL;
-        if (request.url.startsWith("http")) {
-            baseURL = "";
+        if (request.url.startsWith('http')) {
+            baseURL = '';
         }
 
         request = request.clone({

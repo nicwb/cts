@@ -30,7 +30,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SliderModule } from 'primeng/slider';
 
-
 @NgModule({
     declarations: [SubCategoryComponent],
     imports: [
@@ -66,9 +65,8 @@ import { SliderModule } from 'primeng/slider';
         ProgressBarModule,
         SliderModule,
         MhPrimeDynamicTableModule,
-        DynamicTableModule
-
+        DynamicTableModule,
     ],
-    exports: [SubCategoryComponent]
+    exports: [SubCategoryComponent],
 })
-export class SubCategoryModule { }
+export class SubCategoryModule {}

@@ -8,9 +8,8 @@ describe('ArrearPensionBillComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ ArrearPensionBillComponent ]
-        })
-            .compileComponents();
+            declarations: [ArrearPensionBillComponent],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(ArrearPensionBillComponent);
         component = fixture.componentInstance;

@@ -7,18 +7,16 @@ import Swal from 'sweetalert2';
 @Component({
     selector: 'app-family-pension-approval',
     templateUrl: './family-pension-approval.component.html',
-    styleUrls: ['./family-pension-approval.component.scss']
+    styleUrls: ['./family-pension-approval.component.scss'],
 })
-export class FamilyPensionApprovalComponent implements OnInit{
-
+export class FamilyPensionApprovalComponent implements OnInit {
     pensionForm: FormGroup = new FormGroup({});
     getpensionbill: any;
     ppoList$?: Observable<any>;
 
     constructor(
-    private fb: FormBuilder,
-    private ppoListService: PensionPPODetailsService,
-
+        private fb: FormBuilder,
+        private ppoListService: PensionPPODetailsService
     ) {}
     ngOnInit(): void {
         this.initializer();
@@ -34,39 +32,36 @@ export class FamilyPensionApprovalComponent implements OnInit{
         };
         this.ppoList$ = this.ppoListService.getAllPensioners(payload);
     }
-    initializer(){
+    initializer() {
         this.pensionForm = this.fb.group({
-            ppoId: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+            ppoId: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
             ppoNo: ['', Validators.required],
             enhancedFamilyPension: ['', Validators.required],
-            efpUptoDate:['', Validators.required],
-            familyPension: ['', Validators.required]
+            efpUptoDate: ['', Validators.required],
+            familyPension: ['', Validators.required],
         });
     }
 
     handleSelectedRow(event: any) {
         this.pensionForm.patchValue({
             ppoId: event.ppoId,
-            ppoNo: event.ppoNo
+            ppoNo: event.ppoNo,
         });
     }
 
     async approve(): Promise<void> {
-        console.log("Approve Button is clicked");
-
+        console.log('Approve Button is clicked');
     }
     refreshTable() {
         this.getpensionbill = null;
         this.pensionForm.reset();
     }
 
-    save(){
-        console.log("Save button is clicked");
+    save() {
+        console.log('Save button is clicked');
     }
 
-    search(){
-        console.log("Search button is clicked");
-
+    search() {
+        console.log('Search button is clicked');
     }
-
 }

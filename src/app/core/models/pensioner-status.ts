@@ -1,7 +1,5 @@
 export interface pensionerStatusDTO {
-    ppoId: number
-    statusFlag: number,
-    statusWef: string
+    ppoId: number;
+    statusFlag: number;
+    statusWef: string;
 }
-
-  

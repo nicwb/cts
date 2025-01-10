@@ -82,7 +82,7 @@ export class NotificationService {
 
     // ---------------------------------------------------------------------------- NORMAL SWEET ALERTS STARTS
     // *******************************************************************************************************
-    success(title:string="",msg: string="") {
+    success(title: string = '', msg: string = '') {
         swal.fire({ icon: 'success', title: title, html: msg });
     }
 
@@ -108,7 +108,7 @@ export class NotificationService {
             })
             .then((result) => {
                 console.log(result);
-                
+
                 return result.value === true ? true : false;
             });
     }

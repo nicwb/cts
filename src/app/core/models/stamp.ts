@@ -64,7 +64,6 @@ export interface AddStampVendors {
     vendorLicencePhoto: File;
 }
 
-
 export interface GetStampDiscountDetails {
     discountId?: number;
     denominationFrom: number;
@@ -85,18 +84,17 @@ export interface AddStampDiscountDetails {
 }
 
 export interface GetStampCombinations {
-        stampCombinationId: number,
-        stampCategory1: string,
-        description: string,
-        denomination: number,
-        stampDenominationId: number,
-        noLabelPerSheet: number,
-        stampLabelId: number,
-        isActive: true,
-        createdAt?: string;
-        createdBy?: number;
+    stampCombinationId: number;
+    stampCategory1: string;
+    description: string;
+    denomination: number;
+    stampDenominationId: number;
+    noLabelPerSheet: number;
+    stampLabelId: number;
+    isActive: true;
+    createdAt?: string;
+    createdBy?: number;
 }
-
 
 export interface GetStampIndents {
     stampIndentId: number;
@@ -115,19 +113,19 @@ export interface GetStampIndents {
     amount: number;
     status: string;
     createdAt: string;
-  }
+}
 
 export interface AddStampIndent {
     memoNumber: string;
     memoDate: string;
     remarks: string;
     stampCombinationId: number;
-    raisedToTreasuryCode: string
+    raisedToTreasuryCode: string;
     sheet: number;
     label: number;
     quantity: number;
     amount: number;
-  }
+}
 
 export interface GetStampInvoices {
     stampIndentId: number;
@@ -150,7 +148,7 @@ export interface GetStampInvoices {
     invoiceNumber: string;
     invoiceDate: string;
     // createdBy: number;
-  }
+}
 
 export interface AddStampInvoice {
     stampIndentId: number;
@@ -160,11 +158,11 @@ export interface AddStampInvoice {
     invoiceDate: string;
     amount: number;
     quantity: number;
-  }
+}
 export interface StampWalletGet {
-    clearBalance: number
-  }
+    clearBalance: number;
+}
 export interface StampWalletRefill {
-    treasuryCode: string,
-    clearBalance: number
-  }
+    treasuryCode: string;
+    clearBalance: number;
+}

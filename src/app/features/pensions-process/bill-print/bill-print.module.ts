@@ -16,23 +16,27 @@ const routes: Routes = [
     {
         path: '',
         component: BillPrintComponent,
-        data: { breadcrumb: 'BillPrintComponent' }
+        data: { breadcrumb: 'BillPrintComponent' },
     },
     {
-        path: 'first-pension-bill-print', component: FirstPensionBillPrintComponent, data : {breadcrumb: 'FirstPensionBillPrintComponent'}
+        path: 'first-pension-bill-print',
+        component: FirstPensionBillPrintComponent,
+        data: { breadcrumb: 'FirstPensionBillPrintComponent' },
     },
     {
-        path: 'regular-pension-bill-print', component: RegularPensionBillPrintComponent, data: {breadcrumb : 'RegularPensionBillPrintComponent'}
+        path: 'regular-pension-bill-print',
+        component: RegularPensionBillPrintComponent,
+        data: { breadcrumb: 'RegularPensionBillPrintComponent' },
     },
     {
         path: 'first-pension-bill-print/:ppoId',
         component: FirstPensionBillPrintComponent,
-        data: { breadcrumb: 'FirstPensionBillPrintComponent' }
+        data: { breadcrumb: 'FirstPensionBillPrintComponent' },
     },
 ];
 
 @NgModule({
-    declarations: [BillPrintComponent],  // Declare BillPrintComponent here only
+    declarations: [BillPrintComponent], // Declare BillPrintComponent here only
     imports: [
         CommonModule,
         OptionCardModule,
@@ -41,9 +45,9 @@ const routes: Routes = [
         DynamicDialogModule,
         BreadcrumbModule,
         FirstPensionBillPrintModule,
-        RegularPensionBillPrintModule
+        RegularPensionBillPrintModule,
     ],
     providers: [DialogService],
-    exports: [RouterModule, BillPrintComponent]
+    exports: [RouterModule, BillPrintComponent],
 })
-export class BillPrintModule { }
+export class BillPrintModule {}
