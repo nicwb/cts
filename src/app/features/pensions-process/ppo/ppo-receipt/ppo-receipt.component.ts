@@ -10,10 +10,6 @@ import {
     PensionFactoryService,
     APIResponseStatus,
 } from 'src/app/api';
-import {
-    ActionButtonConfig,
-    DynamicTableQueryParameters,
-} from 'mh-prime-dynamic-table';
 import { SelectItem } from 'primeng/api';
 import { DatePipe, Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
@@ -39,13 +35,6 @@ export class PpoReceiptComponent implements OnDestroy {
     private navigationSubscription: Subscription;
     isInsertModalVisible = false;
     manualPpoForm!: FormGroup;
-    tableQueryParameters: DynamicTableQueryParameters = {
-        pageSize: 10,
-        pageIndex: 0,
-        filterParameters: [],
-        sortParameters: { field: '', order: '' },
-    };
-    actionButtons: ActionButtonConfig[] = [];
     tableData: {
         headers: any;
         data: ManualPpoReceiptResponseDTO[];
@@ -115,7 +104,6 @@ export class PpoReceiptComponent implements OnDestroy {
         if (endpoint == 'ppo-receipt/new') {
             this.openNewPpoReceiptForm();
         }
-        this.actionButtons = this.getActionButtonConfig();
 
         // Set the initial returnUri only if it hasn't been set before
         this.route.queryParamMap.pipe(take(1)).subscribe((params) => {
@@ -283,17 +271,6 @@ export class PpoReceiptComponent implements OnDestroy {
         } else {
             console.error('receiptId is undefined');
         }
-    }
-
-    getActionButtonConfig(): ActionButtonConfig[] {
-        return [
-            {
-                buttonIdentifier: 'edit',
-                class: 'p-button-rounded p-button-raised',
-                icon: 'pi pi-pencil',
-                lable: 'Edit',
-            },
-        ];
     }
 
     async loadInitialTableData(): Promise<void> {
@@ -489,16 +466,6 @@ export class PpoReceiptComponent implements OnDestroy {
 
     onActionButtonClick(event: any) {
         this.initializeEditForm(event);
-    }
-
-    onQueryParametersChange(event: DynamicTableQueryParameters): void {
-        this.tableQueryParameters = {
-            pageSize: event.pageSize,
-            pageIndex: event.pageIndex / 10,
-            filterParameters: event.filterParameters || [],
-            sortParameters: event.sortParameters,
-        };
-        this.loadInitialTableData();
     }
 
     async initializeEditForm(

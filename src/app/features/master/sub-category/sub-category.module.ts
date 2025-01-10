@@ -17,7 +17,6 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 
 import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
@@ -64,7 +63,6 @@ import { SliderModule } from 'primeng/slider';
         MultiSelectModule,
         ProgressBarModule,
         SliderModule,
-        MhPrimeDynamicTableModule,
         DynamicTableModule,
     ],
     exports: [SubCategoryComponent],

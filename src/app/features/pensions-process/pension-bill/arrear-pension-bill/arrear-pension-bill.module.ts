@@ -8,7 +8,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { TreasuryDropdownModule } from 'src/app/shared/modules/treasury-dropdown/treasury-dropdown.module';
 import { ChipsModule } from 'primeng/chips';
 import { TableModule } from 'primeng/table';
@@ -32,7 +31,6 @@ import { ArrearPensionBillComponent } from './arrear-pension-bill.component';
         DialogModule,
         DropdownModule,
         CommonHeaderModule,
-        DynamicTableModule,
         TreasuryDropdownModule,
         ChipsModule,
         TableModule,

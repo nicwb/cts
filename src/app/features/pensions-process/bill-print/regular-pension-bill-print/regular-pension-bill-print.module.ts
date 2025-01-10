@@ -7,7 +7,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { FieldsetModule } from 'primeng/fieldset';
 import { ButtonModule } from 'primeng/button';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ChipModule } from 'primeng/chip';
@@ -37,7 +36,6 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
-import { DynamicTableModule } from 'src/app/shared/modules/dynamic-table/dynamic-table.module';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 
 @NgModule({
@@ -79,9 +77,7 @@ import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card
         ToastModule,
         ToggleButtonModule,
         CommonHeaderModule,
-        DynamicTableModule,
         OptionCardModule,
-        MhPrimeDynamicTableModule,
         PopupTableModule,
     ],
     providers: [DialogService],

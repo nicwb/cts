@@ -16,11 +16,7 @@
         </app-common-header>
     </div>
     <div class="col-12">
-        <!-- <mh-prime-dynamic-table *ngIf="isTableVisible" size="small" [data]="tableData" [numberRowsShown]="10"
-            [rowsPerPageOptions]="[10, 30, 50, 100]" [showTopMenubar]="true" [isLoading]="isTableDataLoading"
-            [actionButtons]="tableActionButton" [childActionButtons]="tableChildActionButton"
-            (rowSelect)="handleRowSelection($event)" (queryParameterChange)="handQueryParameterChange($event)"
-            (searchKeyChange)="handsearchKeyChange($event)"></mh-prime-dynamic-table> -->
+
         <app-dynamic-table
             *ngIf="isTableVisible"
             name=""

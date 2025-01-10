@@ -7,13 +7,6 @@ import {
     ChangeDetectorRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    ActionButtonConfig,
-    DynamicTable,
-    DynamicTableQueryParameters,
-    TableHeader,
-} from 'mh-prime-dynamic-table';
-
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { SelectItem } from 'primeng/api';

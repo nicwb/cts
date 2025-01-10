@@ -13,7 +13,6 @@ import { DialogModule } from 'primeng/dialog';
 import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { MhPrimeDynamicTableModule } from 'mh-prime-dynamic-table';
 import { PrimaryRoutingModule } from './primary-routing.module';
 import { PrimaryComponent } from './primary.component';
 import { CommonHeaderModule } from 'src/app/shared/modules/common-header/common-header.module';
@@ -37,7 +36,6 @@ import { DynamicTableModule } from 'src/app/core/dynamic-table/dynamic-table.mod
         DialogModule,
         DynamicDialogModule,
         CommonHeaderModule,
-        MhPrimeDynamicTableModule,
         DynamicTableModule,
     ],
     exports: [RouterModule, PrimaryComponent],

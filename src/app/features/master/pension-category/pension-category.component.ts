@@ -8,10 +8,6 @@ import {
     ViewChild,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-    ActionButtonConfig,
-    DynamicTableQueryParameters,
-} from 'mh-prime-dynamic-table';
 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
@@ -32,7 +28,6 @@ interface expandedRows {
 export class PensionCategoryComponent implements OnInit {
     displayInsertModal: boolean = false;
     PensionForm!: FormGroup;
-    tableQueryParameters!: DynamicTableQueryParameters | any;
     tableData: any;
     isTableDataLoading: boolean = false;
     primary_id_select: SelectItem[] = [];
@@ -70,10 +65,7 @@ export class PensionCategoryComponent implements OnInit {
     // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnInit(): void {
         this.initializeForm();
-        this.tableQueryParameters = {
-            pageSize: 100,
-            pageIndex: 0,
-        };
+
         this.check_for_data();
         const endpoint = this.route.snapshot.url
             .map((segment) => segment.path)
@@ -92,32 +84,6 @@ export class PensionCategoryComponent implements OnInit {
         console.log('Row selected:', $event);
     }
 
-    handQueryParameterChange(event: any) {
-        console.log('Query parameter changed:', event);
-        if (this.searching.val == true) {
-            this.tableQueryParameters = {
-                pageSize: event.pageSize,
-                pageIndex: event.pageIndex / 10,
-                filterParameters: [
-                    {
-                        field: 'CategoryName',
-                        value: this.searching.data,
-                        operator: 'contains',
-                    },
-                ],
-                sortParameters: event.sortParameters,
-            };
-        } else {
-            this.tableQueryParameters = {
-                pageSize: event.pageSize,
-                pageIndex: event.pageIndex / 10,
-                filterParameters: event.filterParameters || [],
-                sortParameters: event.sortParameters,
-            };
-        }
-
-        // this.getData();
-    }
     async check_for_data() {
         let primary;
         let sub;
@@ -482,9 +448,9 @@ export class PensionCategoryComponent implements OnInit {
                 await this.sessionStorageService.cacheWithExpiry(
                     this,
                     async () => {
-                        const data = this.tableQueryParameters;
+                        // const data = this.tableQueryParameters;
                         const response = await firstValueFrom(
-                            this.service.getAllPrimaryCategories(data)
+                            this.service.getAllPrimaryCategories()
                         );
 
                         if (response.result && response.result.data) {
@@ -519,9 +485,9 @@ export class PensionCategoryComponent implements OnInit {
                 await this.sessionStorageService.cacheWithExpiry(
                     this,
                     async () => {
-                        const data = this.tableQueryParameters;
+                        // const data = this.tableQueryParameters;
                         const response = await firstValueFrom(
-                            this.service.getAllSubCategories(data)
+                            this.service.getAllSubCategories()
                         );
 
                         if (response.result && response.result.data) {
@@ -549,15 +515,8 @@ export class PensionCategoryComponent implements OnInit {
     }
 
     async findById(id: any) {
-        let payload = this.tableQueryParameters;
-        payload.filterParameters = [
-            { field: 'CategoryName', value: id, operator: 'contains' },
-        ];
-        payload.pageIndex = 0;
         this.isTableDataLoading = true;
-        let response = await firstValueFrom(
-            this.service.getAllCategories(payload)
-        );
+        let response = await firstValueFrom(this.service.getAllCategories());
         if (response.result?.data?.length != 0) {
             this.tableData = response.result;
             this.refresh_b = true;
@@ -570,10 +529,7 @@ export class PensionCategoryComponent implements OnInit {
     }
     fun_refresh() {
         this.refresh_b = false;
-        this.tableQueryParameters = {
-            pageSize: 10,
-            pageIndex: 0,
-        };
+
         this.searching.val = false;
         this.searching.data = null;
         this.getData();
