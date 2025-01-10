@@ -91,6 +91,15 @@ test('should generate PDF and handle errors appropriately', async ({
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
+    const element1 = page.locator('app-popup-table');
+    await expect(element1).toBeVisible();
+    await element1.click();
+    const dialog = page.getByLabel('Search', { exact: true });
+    await expect(dialog).toBeVisible();
+
+    const firstRow = dialog.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow.click();
     await page.locator('button:has-text("Generate Report")').click();
     //ASSERT
     const toastLocator = page.locator('.swal2-popup');
