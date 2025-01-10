@@ -499,6 +499,41 @@ export class PensionModule {
         }
     }
 
+    // New method to get a valid date
+    async getValidDate(): Promise<Date> {
+        const today = new Date();
+        // Logic to find the next valid date
+        // This can be customized based on your application's date selection logic
+        const validDate = new Date(today);
+        while (true) {
+            const isDisabled = await this.page
+                .locator(`.p-datepicker-calendar td.p-disabled >> text="${validDate.getDate()}"`)
+                .isVisible();
+            if (!isDisabled) {
+                break; // Found a valid date
+            }
+            validDate.setDate(validDate.getDate() + 1); // Move to the next day
+        }
+        return validDate;
+    }
+
+    // New method to get a future date
+    async getFutureDate(daysFromNow: number): Promise<Date> {
+        const futureDate = new Date();
+        futureDate.setDate(futureDate.getDate() + daysFromNow);
+        // Ensure the future date is valid
+        while (true) {
+            const isDisabled = await this.page
+                .locator(`.p-datepicker-calendar td.p-disabled >> text="${futureDate.getDate()}"`)
+                .isVisible();
+            if (!isDisabled) {
+                break; // Found a valid future date
+            }
+            futureDate.setDate(futureDate.getDate() + 1); // Move to the next day
+        }
+        return futureDate;
+    }
+
     async verifyComponentRateFormFields(): Promise<void> {
         await expect(
             this.page.locator('input[formControlName="categoryName"]')

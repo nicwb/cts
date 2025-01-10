@@ -43,9 +43,10 @@ test('should add new component, submit form with valid date, and display success
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form
+    // Fill and submit form with a valid date
+    const validDate = await pensionPage.getValidDate();
     await pensionPage.fillComponentRateForm({
-        day: Math.floor(Math.random() * 31) + 1 + '',
+        day: validDate.getDate().toString(),
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
@@ -60,10 +61,11 @@ test('should show correct table', async ({ pensionPage }) => {
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form with random future date
+    // Fill and submit form with a valid future date
     const randomDays = Math.floor(Math.random() * 100) + 1;
+    const futureDate = await pensionPage.getFutureDate(randomDays);
     await pensionPage.fillComponentRateForm({
-        daysFromNow: randomDays,
+        day: futureDate.getDate().toString(),
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
