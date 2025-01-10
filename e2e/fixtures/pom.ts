@@ -475,7 +475,7 @@ export class PensionModule {
             .isVisible();
 
         if (isDisabled) {
-            // Select a random enabled date if the selected day is disabled
+            console.log(`Selected day ${selectedDay} is disabled. Selecting a random enabled date instead.`);
             await this.selectRandomEnabledDate();
         } else {
             await this.page

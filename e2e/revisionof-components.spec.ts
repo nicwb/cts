@@ -1,3 +1,4 @@
+import { Locator } from '@playwright/test';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
@@ -94,24 +95,33 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
 
     const dateInput = page.getByRole('textbox', { name: 'dd-MM-yyyy' });
     await dateInput.click();
-    await page.waitForSelector('.p-datepicker-calendar');
+
+    // Wait for the datepicker to be visible
+    await page.waitForSelector('.p-datepicker-calendar', { state: 'visible' });
 
     // Select a random enabled date
-    const allEnabledDates = page.locator(
-        '.p-datepicker-calendar tbody td:not([aria-disabled="true"])'
-    );
+    const allEnabledDates = page.locator('.p-datepicker-calendar tbody td:not([aria-disabled="true"])');
     const enabledDateCount = await allEnabledDates.count();
+    console.log(`Enabled dates count: ${enabledDateCount}`); // Debugging information
+
     if (enabledDateCount === 0) {
         throw new Error("No enabled dates available to select.");
     }
+
     const randomIndex = Math.floor(Math.random() * enabledDateCount);
     const randomEnabledDate = allEnabledDates.nth(randomIndex);
-    await randomEnabledDate.click();
+
+    // Check if the selected date is visible and enabled
+    const isDisabled = await randomEnabledDate.evaluate(date => date.getAttribute('aria-disabled') === 'true');
+    if (isDisabled) {
+        console.log(`Selected date is disabled. Selecting another enabled date.`);
+        await selectRandomEnabledDate(allEnabledDates);
+    } else {
+        await randomEnabledDate.click();
+    }
 
     // Fill random amount and submit
-    const randomAmount = (
-        Math.floor(Math.random() * (9999 - 100 + 1)) + 100
-    ).toString();
+    const randomAmount = (Math.floor(Math.random() * (9999 - 100 + 1)) + 100).toString();
     await amountInput.fill(randomAmount);
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
@@ -119,4 +129,15 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
     // Assert
     await pensionPage.okSuccess();
 });
+
+// Helper function to select a random enabled date if the initially selected date is disabled
+async function selectRandomEnabledDate(dateLocator: Locator) {
+    const count = await dateLocator.count();
+    if (count > 0) {
+        const randomIndex = Math.floor(Math.random() * count);
+        await dateLocator.nth(randomIndex).click();
+    } else {
+        throw new Error('No enabled dates available to select.');
+    }
+}
 
