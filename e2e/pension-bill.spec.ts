@@ -85,7 +85,6 @@ test('should generate PDF and show error toast if failed', async ({ page }) => {
 
 test('should generate PDF and handle errors appropriately', async ({
     page,
-    pensionPage,
     browserName,
 }) => {
     //ARRANGE
