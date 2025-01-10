@@ -56,7 +56,6 @@ test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
     await firstRow.click();
     await expect(inputElement).not.toBeEmpty();
-    const data1 = await inputElement.inputValue();
 
     const inputElement1 = page.getByPlaceholder('Description');
     await inputElement1.waitFor({ state: 'visible' });
@@ -77,9 +76,17 @@ test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement2 = page.locator('input[formControlName=accountHead]');
+    const element2 = page.locator('app-popup-table');
+    await expect(element2).toBeVisible();
+    await element2.click();
+    const dialog2 = page.getByLabel('Search', { exact: true });
+    await expect(dialog2).toBeVisible();
+
+    const firstRow2 = dialog2.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow2.click();
     await inputElement2.waitFor({ state: 'visible' });
     await expect(inputElement2).not.toBeEmpty();
-    await page.locator('input[formControlName=accountHead]').fill(data1);
 
     const inputElement3 = page.getByPlaceholder('Description')
     await inputElement3.waitFor({ state: 'visible' });

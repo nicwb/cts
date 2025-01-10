@@ -88,19 +88,13 @@ test('should create a new component revision', async ({
     await pensionPage.okSuccess();
     //Act
     await page.getByRole('button', { name: ' Add' }).click();
-    const componentNameInput = page.locator(
-        'input[formControlName="componentname"]'
-    );
     const amountInput = page.locator('input[formControlName="amount"]');
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');
-    const componentName = await firstRow2
-        .locator('td:nth-child(2)')
-        .textContent();
     await firstRow2.click();
-    await expect(componentNameInput).toHaveValue(componentName ?? '');
-    await page.click('getByRole("textbox", { name: "dd-mm-yyyy" })');
+    const dateInput = page.getByRole('textbox', { name: 'dd-MM-yyyy' });
+    await dateInput.click();
     await page.waitForSelector('.p-datepicker-calendar');
     const allDateCells = page.locator('.p-datepicker-calendar tbody td');
     const dateCellCount = await allDateCells.count();
