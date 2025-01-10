@@ -88,9 +88,7 @@ test('should generate PDF and handle errors appropriately', async ({
     pensionPage,
     browserName,
 }) => {
-    //ARRANGE,
-    const firstRow = await pensionPage.openPopupAndSelectFirstRow();
-    const ppoIdValue = await firstRow.locator('td:first-child').textContent();
+    //ARRANGE
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
