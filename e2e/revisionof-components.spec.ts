@@ -111,17 +111,26 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
     await allEnabledDates.nth(0).click();
     console.log(`Selected the first available date.`);
 
-    // Fill a random amount and submit
-    const randomAmount = (Math.floor(Math.random() * (9999 - 100 + 1)) + 100).toString();
-    await amountInput.fill(randomAmount);
+    const randomAmount = Math.floor(Math.random() * 10000);
     console.log(`Filling amount: ${randomAmount}`);
+    await amountInput.fill(randomAmount.toString());
+    console.log(`Amount filled.`);
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
+    console.log(`Submit button is visible.`);
     await page.getByRole('button', { name: 'Submit' }).click();
     console.log(`Form submitted.`);
-
-    // Assert
     await pensionPage.okSuccess(); // Ensure this is correctly implemented
     console.log(`Success message should be visible after submission.`);
+    // Check for validation errors
+    const errorMessages = page.locator('.error-message'); // Adjust selector as needed
+    const errorCount = await errorMessages.count();
+    if (errorCount > 0) {
+        console.log(`Validation errors found: ${errorCount}`);
+        const errorTexts = await errorMessages.allTextContents();
+        console.log(`Error messages: ${errorTexts.join(', ')}`);
+    }
+
+    await expect(pensionPage.page.locator('p-table')).toBeVisible();
 });
 

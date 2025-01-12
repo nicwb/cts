@@ -36,9 +36,7 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     ]);
 });
 
-test('should add new component, submit form with valid date from 2nd row, and display success message', async ({
-    pensionPage,
-}) => {
+test('should add new component, submit form with valid date from 2nd row, and display success message', async ({ pensionPage }) => {
     // Add component and category
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
@@ -52,6 +50,7 @@ test('should add new component, submit form with valid date from 2nd row, and di
 
     // Submit form and handle success
     await pensionPage.submitComponentRateForm();
+    console.log(`Form submitted.`);
     await expect(pensionPage.page.locator('p-table')).toBeVisible();
 });
 
