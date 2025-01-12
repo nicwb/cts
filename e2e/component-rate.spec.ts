@@ -36,7 +36,7 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     ]);
 });
 
-test('should add new component, submit form with valid date from 2nd row, and display success message', async ({ pensionPage }) => {
+test('should add new component, submit form with valid date from 2nd row, and display success message', async ({ page, pensionPage }) => {
     // Add component and category
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
@@ -51,6 +51,19 @@ test('should add new component, submit form with valid date from 2nd row, and di
     // Submit form and handle success
     await pensionPage.submitComponentRateForm();
     console.log(`Form submitted.`);
+
+    // Check for validation errors
+    const errorMessages = page.locator('.error-message'); // Adjust selector as needed
+    const errorCount = await errorMessages.count();
+    if (errorCount > 0) {
+        const errorTexts = await errorMessages.allTextContents();
+        console.log(`Validation errors found: ${errorCount}`);
+        console.log(`Error messages: ${errorTexts.join(', ')}`);
+    }
+
+    // Check for success message
+    await pensionPage.okSuccess();
+
     await expect(pensionPage.page.locator('p-table')).toBeVisible();
 });
 

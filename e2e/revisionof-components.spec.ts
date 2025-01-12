@@ -120,17 +120,23 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
     console.log(`Submit button is visible.`);
     await page.getByRole('button', { name: 'Submit' }).click();
     console.log(`Form submitted.`);
-    await pensionPage.okSuccess(); // Ensure this is correctly implemented
-    console.log(`Success message should be visible after submission.`);
+
     // Check for validation errors
     const errorMessages = page.locator('.error-message'); // Adjust selector as needed
     const errorCount = await errorMessages.count();
     if (errorCount > 0) {
-        console.log(`Validation errors found: ${errorCount}`);
         const errorTexts = await errorMessages.allTextContents();
+        console.log(`Validation errors found: ${errorCount}`);
         console.log(`Error messages: ${errorTexts.join(', ')}`);
     }
 
-    await expect(pensionPage.page.locator('p-table')).toBeVisible();
+    await pensionPage.okSuccess();
+    // Inspect application state
+    const componentList = page.locator('.component-list'); // Adjust selector as needed
+    await expect(componentList).toContainText(randomAmount.toString()); // Verify if the amount is reflected in the UI
+
+    // Final assertions
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
+    console.log(`Test completed for creating a new component revision.`);
 });
 
