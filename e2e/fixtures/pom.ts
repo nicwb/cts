@@ -434,31 +434,48 @@ export class PensionModule {
         const calendar = this.page.locator('.p-datepicker-calendar');
         await expect(calendar).toBeVisible();
 
-        // Get the specific row (2nd row in this case)
+        // Get the specific row
         const selectedRow = calendar.locator('tr').nth(row - 1);
         await expect(selectedRow).toBeVisible();
 
-        // Get all enabled dates in the specified row
-        const enabledDatesInRow = selectedRow.locator('td:not(.p-disabled)');
+        // Get all dates in the row
+        const datesInRow = selectedRow.locator('td');
+        const dateCount = await datesInRow.count();
 
-        // Get the first enabled date in the row
-        const firstEnabledDate = enabledDatesInRow.first();
+        // Check each date in the row to find first enabled one
+        for (let i = 0; i < dateCount; i++) {
+            const dateCell = datesInRow.nth(i);
+            const classAttr = await dateCell.getAttribute('class') || '';
+            const isDisabled = classAttr.includes('p-disabled') ||
+                classAttr.includes('disabled') ||
+                classAttr.includes('p-datepicker-other-month');
 
-        // Verify the date exists and is enabled
-        await expect(firstEnabledDate).toBeVisible();
-        await expect(firstEnabledDate).toBeEnabled();
+            if (!isDisabled) {
+                // Found an enabled date - verify it's clickable
+                await expect(dateCell).toBeVisible();
+                await expect(dateCell).toBeEnabled();
 
-        // Click the first enabled date in the row
-        await firstEnabledDate.click();
+                // Perform the click
+                await dateCell.click();
 
-        // Fill in rate type
-        const rate = this.page.locator('p-dropdown[formControlName="rateType"]');
-        await expect(rate).toBeVisible();
-        await rate.click();
-        await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
+                // Verify calendar closed (indicating successful selection)
+                await expect(calendar).toBeHidden();
 
-        // Fill in rate amount
-        await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+                // Fill in rate type
+                const rate = this.page.locator('p-dropdown[formControlName="rateType"]');
+                await expect(rate).toBeVisible();
+                await rate.click();
+                await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
+
+                // Fill in rate amount
+                await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
+
+                return;
+            }
+        }
+
+        // If we get here, no enabled dates were found in the row
+        throw new Error(`No enabled dates found in row ${row}. All dates in this row are disabled or unavailable.`);
     }
 
 
