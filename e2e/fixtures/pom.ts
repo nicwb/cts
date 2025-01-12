@@ -385,7 +385,6 @@ export class PensionModule {
         const rows = dialog.locator('tbody tr');
         const rowCount = await rows.count();
 
-        // Ensure there are rows available to select
         if (rowCount === 0) {
             throw new Error('No available components to select.');
         }
@@ -394,9 +393,9 @@ export class PensionModule {
         const randomIndex = Math.floor(Math.random() * rowCount);
         const randomRow = rows.nth(randomIndex);
 
-        // Click on the randomly selected row
         await randomRow.click();
     }
+
     async selectFirstPensionCategory(): Promise<void> {
         const element = this.page.locator('form button').nth(1);
         await expect(element).toBeVisible();
@@ -405,29 +404,23 @@ export class PensionModule {
         const dialog = this.page.locator('div[role="dialog"]');
         await expect(dialog).toBeVisible();
 
-        // Get all available rows in the dialog
         const rows = dialog.locator('tbody tr');
         const rowCount = await rows.count();
 
-        // Ensure there are rows available to select
         if (rowCount === 0) {
             throw new Error('No available pension categories to select.');
         }
 
-        // Generate a random index to select a row
         const randomIndex = Math.floor(Math.random() * rowCount);
         const randomRow = rows.nth(randomIndex);
 
-        // Click on the randomly selected row
         await randomRow.click();
     }
 
     async fillComponentRateForm({
-        row,
         rateType,
         rateAmount,
     }: {
-        row: number; // Row number to select the date from
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
@@ -435,25 +428,33 @@ export class PensionModule {
         await expect(cal).toBeVisible();
         await cal.click();
 
-        // Select a date from the specified row
-        const calendarRows = this.page.locator('.p-datepicker-calendar tr'); // Adjust the selector based on your calendar's structure
-        const selectedRow = calendarRows.nth(row - 1); // Convert to 0-based index
+        // Improved date selection logic without loops
+        const calendar = this.page.locator('.p-datepicker-calendar');
+        await expect(calendar).toBeVisible();
 
-        // Select the first available date in the specified row
-        const availableDates = selectedRow.locator('td:not(.p-disabled)'); // Select only enabled dates
-        const count = await availableDates.count();
+        // Get the first enabled date cell
+        const firstEnabledDate = calendar.locator('td:not(.p-disabled)').first();
 
-        if (count > 0) {
-            await availableDates.nth(0).click(); // Click the first available date in the row
-        } else {
-            throw new Error(`No available dates found in row ${row}.`);
+        // Verify the date is actually enabled and exists
+        await expect(firstEnabledDate).toBeVisible();
+        await expect(firstEnabledDate).toBeEnabled();
+
+        // Additional verification that it's not disabled through other means
+        const className = await firstEnabledDate.getAttribute('class');
+        if (className?.includes('disabled')) {
+            throw new Error('Selected date is disabled despite matching enabled selector.');
         }
 
+        // Click the verified enabled date
+        await firstEnabledDate.click();
+
+        // Fill in rate type
         const rate = this.page.locator('p-dropdown[formControlName="rateType"]');
         await expect(rate).toBeVisible();
         await rate.click();
         await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
 
+        // Fill in rate amount
         await this.page.fill('input[formControlName="rateAmount"]', rateAmount.toString());
     }
 
