@@ -418,9 +418,11 @@ export class PensionModule {
     }
 
     async fillComponentRateForm({
+        row,
         rateType,
         rateAmount,
     }: {
+        row: number;
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
@@ -428,24 +430,25 @@ export class PensionModule {
         await expect(cal).toBeVisible();
         await cal.click();
 
-        // Improved date selection logic without loops
+        // Get the calendar and ensure it's visible
         const calendar = this.page.locator('.p-datepicker-calendar');
         await expect(calendar).toBeVisible();
 
-        // Get the first enabled date cell
-        const firstEnabledDate = calendar.locator('td:not(.p-disabled)').first();
+        // Get the specific row (2nd row in this case)
+        const selectedRow = calendar.locator('tr').nth(row - 1);
+        await expect(selectedRow).toBeVisible();
 
-        // Verify the date is actually enabled and exists
+        // Get all enabled dates in the specified row
+        const enabledDatesInRow = selectedRow.locator('td:not(.p-disabled)');
+
+        // Get the first enabled date in the row
+        const firstEnabledDate = enabledDatesInRow.first();
+
+        // Verify the date exists and is enabled
         await expect(firstEnabledDate).toBeVisible();
         await expect(firstEnabledDate).toBeEnabled();
 
-        // Additional verification that it's not disabled through other means
-        const className = await firstEnabledDate.getAttribute('class');
-        if (className?.includes('disabled')) {
-            throw new Error('Selected date is disabled despite matching enabled selector.');
-        }
-
-        // Click the verified enabled date
+        // Click the first enabled date in the row
         await firstEnabledDate.click();
 
         // Fill in rate type

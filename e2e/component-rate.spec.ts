@@ -12,6 +12,7 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
 
     // Fill form with test data, selecting a date from the 2nd row
     await pensionPage.fillComponentRateForm({
+        row: 4, // Specify the row number (2nd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
@@ -42,8 +43,9 @@ test('should add new component, submit form with valid date from 2nd row, and di
     await pensionPage.selectFirstComponent();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form with a valid date
+    // Fill and submit form with a valid date from the 2nd row
     await pensionPage.fillComponentRateForm({
+        row: 2, // Maintaining the requirement to use 2nd row
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
@@ -60,6 +62,7 @@ test('should show correct table after submitting form with valid date from 3rd r
 
     // Fill and submit form with a valid date from the 3rd row
     await pensionPage.fillComponentRateForm({
+        row: 3, // Specify the row number (3rd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
