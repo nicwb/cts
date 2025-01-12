@@ -45,7 +45,7 @@ test('should add new component, submit form with valid date from 2nd row, and di
 
     // Fill and submit form with a valid date from the 2nd row
     await pensionPage.fillComponentRateForm({
-        row: 2,
+        row: 2, // Specify the row number (2nd row)
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
