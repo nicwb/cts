@@ -435,14 +435,16 @@ export class PensionModule {
         await expect(cal).toBeVisible();
         await cal.click();
 
-        const calendarRows = this.page.locator('.p-datepicker-calendar tr'); // Get all calendar rows
-        const selectedRow = calendarRows.nth(row - 1); // Select the specified row
+        const calendarRows = this.page.locator('.p-datepicker-calendar tr');
+        const rowCount = await calendarRows.count();
+        console.log(`Total calendar rows: ${rowCount}`);
 
-        // Select available dates in the specified row
-        const availableDates = selectedRow.locator('td:not(.p-disabled)'); // Select only enabled dates
+        const selectedRow = calendarRows.nth(row - 1); // Select the specified row
+        const availableDates = selectedRow.locator('td:not(.p-disabled)');
         const count = await availableDates.count();
 
-        // Check if there are available dates
+        console.log(`Row ${row} has ${count} available dates.`);
+
         if (count > 0) {
             await availableDates.nth(0).click(); // Click the first available date
             console.log(`Selected date from row ${row}.`);

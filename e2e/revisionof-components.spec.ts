@@ -101,7 +101,7 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
     // Select the first enabled date
     const allEnabledDates = page.locator('.p-datepicker-calendar tbody td:not([aria-disabled="true"])');
     const enabledDateCount = await allEnabledDates.count();
-    console.log(`Enabled dates count: ${enabledDateCount}`); // Debugging information
+    console.log(`Enabled dates count: ${enabledDateCount}`);
 
     if (enabledDateCount === 0) {
         throw new Error("No enabled dates available to select.");
@@ -109,14 +109,19 @@ test('should create a new component revision', async ({ page, pensionPage }) => 
 
     // Click the first available enabled date
     await allEnabledDates.nth(0).click();
+    console.log(`Selected the first available date.`);
 
     // Fill a random amount and submit
     const randomAmount = (Math.floor(Math.random() * (9999 - 100 + 1)) + 100).toString();
     await amountInput.fill(randomAmount);
+    console.log(`Filling amount: ${randomAmount}`);
+
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
+    console.log(`Form submitted.`);
 
     // Assert
-    await pensionPage.okSuccess();
+    await pensionPage.okSuccess(); // Ensure this is correctly implemented
+    console.log(`Success message should be visible after submission.`);
 });
 
