@@ -1,3 +1,4 @@
+import { Result } from './../../../../../core/models/pension-bill';
 import {
     ChangeDetectorRef,
     Component,
@@ -32,6 +33,8 @@ import {
     PensionStatusFlag,
     ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse,
     PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
+    PensionEPPOReceiptService,
+    EPpoReceiptDetailDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { async, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -51,6 +54,8 @@ export class DetailsComponent implements OnInit, OnChanges {
     ManualEntrySearchForm: FormGroup = new FormGroup({});
     allManualPPOReceipt$?: Observable<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>;
     catDescription$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
+    allEPpo$?: Observable<EPpoReceiptDetailDTOTableResponseDTOJsonAPIResponse>;
+
     eppoid?: any;
     categoryDescriptionFelid: string = '';
     @Input() ppoId?: string | undefined | null;
@@ -102,7 +107,8 @@ export class DetailsComponent implements OnInit, OnChanges {
 
         private cdr: ChangeDetectorRef,
         private route: ActivatedRoute,
-        private statusService: PensionPPOStatusService
+        private statusService: PensionPPOStatusService,
+        private epposervice: PensionEPPOReceiptService
     ) {
         this.ininalizer();
         this.religionOptions = [
@@ -130,15 +136,16 @@ export class DetailsComponent implements OnInit, OnChanges {
             await this.factory();
         }
 
-        this.route.paramMap.subscribe((params) => {
+        this.route.paramMap.subscribe(async (params) => {
             this.ppoId = params.get('ppoId') || undefined;
             if (this.ppoId) {
                 const ppoidNumber = Number(this.ppoId);
-                this.getData(ppoidNumber);
-                this.ppoStatus(ppoidNumber);
+                await this.getData(ppoidNumber);
+                await this.ppoStatus(ppoidNumber);
             }
         });
         this.MEDetailsSearch();
+        this.allEPpo$ = this.epposervice.getUnusedEPpoReceipts();
         this.getReceipt();
         this.checkIfEditModeFromUrl();
         this.fetchCatDescription();
@@ -173,6 +180,37 @@ export class DetailsComponent implements OnInit, OnChanges {
                 })
             )
         );
+    }
+    async handleEPPO($event: any) {
+        const Id = $event.id;
+        const data = await firstValueFrom(
+            this.epposervice.getEPpoReceiptById(Id)
+        );
+        console.log(data);
+        this.setDataEppo(data);
+    }
+    setDataEppo(data: any) {
+        if (data.result) {
+            const result = data.result;
+            this.ppoFormDetails.patchValue({
+                id: result.id, /// null
+                ppoNo: result.ppoNo, /// null
+                pensionerName: result.pensionerName, // null
+                ppoType: result.ppoTypeCode,
+
+                dateOfRetirement: result.dateOfRetirement,
+
+                effectFrom: result.issuingLetterDate,
+
+                mobileNumber: result.mobileNumber, // null
+                dateOfBirth: result.dateOfBirth,
+
+                dateOfDeath: result.dateOfDeath,
+                religion: result.religion,
+                pensionerAddress: result.pensionerAddress, // null
+                // additional
+            });
+        }
     }
 
     async getReceipt() {

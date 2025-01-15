@@ -48,4 +48,8 @@
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   }
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
 }
