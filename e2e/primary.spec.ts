@@ -40,15 +40,10 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test.skip('duplicate primary category entry ', async ({
-    page,
-    pensionPage,
-}) => {
+test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement = page.locator('input[formControlName=accountHead]');
     await inputElement.waitFor({ state: 'visible' });
     const element1 = page.locator('app-popup-table');
     await expect(element1).toBeVisible();
@@ -60,11 +55,8 @@ test.skip('duplicate primary category entry ', async ({
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
     await firstRow.click();
     await expect(inputElement).not.toBeEmpty();
-    const data1 = await inputElement.inputValue();
 
-    const inputElement1 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    const inputElement1 = page.getByPlaceholder('Description');
     await inputElement1.waitFor({ state: 'visible' });
     await expect(inputElement1).not.toBeEmpty();
     const data2 = await inputElement1.inputValue();
@@ -82,23 +74,23 @@ test.skip('duplicate primary category entry ', async ({
     ).toBeHidden();
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement2 = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement2 = page.locator('input[formControlName=accountHead]');
+    const element2 = page.locator('app-popup-table');
+    await expect(element2).toBeVisible();
+    await element2.click();
+    const dialog2 = page.getByLabel('Search', { exact: true });
+    await expect(dialog2).toBeVisible();
+
+    const firstRow2 = dialog2.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow2.click();
     await inputElement2.waitFor({ state: 'visible' });
     await expect(inputElement2).not.toBeEmpty();
-    await page
-        .locator('input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]')
-        .fill(data1);
 
-    const inputElement3 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    const inputElement3 = page.getByPlaceholder('Description');
     await inputElement3.waitFor({ state: 'visible' });
     await expect(inputElement3).not.toBeEmpty();
-    await page
-        .locator('input[formControlName=PrimaryCategoryName]')
-        .fill(data2);
+    await page.getByPlaceholder('Description').fill(data2);
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();

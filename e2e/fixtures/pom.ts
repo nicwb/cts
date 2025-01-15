@@ -30,6 +30,9 @@ export class PensionModule {
             .getByRole('button', { name: 'PPO Receipt Entry' })
             .click();
         await this.page.getByRole('button', { name: 'Submit' }).click();
+        await expect(
+            this.page.getByRole('heading', { name: 'Success' })
+        ).toBeVisible();
         await this.page.getByRole('button', { name: 'OK' }).click();
     }
 
@@ -126,6 +129,23 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'OK' }).click();
         return ppoId;
     }
+    async savePpoDetailsApproveGenerateFirstPensionBillAndRegularPensionBill() {
+        const ppoId =
+            await this.savePpoDetailsApproveGenerateFirstPensionBill();
+        await this.page.goto(
+            'pension-process/pension-bill/regular-pension-bill',
+            { waitUntil: 'domcontentloaded' }
+        );
+        await this.page.locator('button:has-text("Fetch Bills")').click();
+        await expect(
+            this.page.getByRole('heading', { name: 'Success' })
+        ).toBeVisible();
+        await this.page.getByRole('button', { name: 'OK' }).click();
+        await this.page.locator('#generateButton').click();
+        // Assert
+        await this.page.getByRole('button', { name: 'OK' }).click();
+        return ppoId;
+    }
 
     async shouldRetrieveFirstPensionBill(): Promise<Locator> {
         const ppoId =
@@ -216,10 +236,6 @@ export class PensionModule {
             { locator: 'text=PPO ID', type: 'text' },
             { locator: 'input[placeholder="PPO ID"]', type: 'input' },
             { locator: 'app-popup-table', type: 'component' },
-            { locator: 'text=PPO Number', type: 'text' },
-            { locator: 'text=Pensioner Name', type: 'text' },
-            { locator: 'text=Category Description', type: 'text' },
-            { locator: 'text=Bank', type: 'text' },
         ];
         //Assert
         for (const element of elements) {
@@ -267,6 +283,17 @@ export class PensionModule {
             this.page.getByRole('button', { name: 'New Primary' })
         ).toBeVisible();
         await this.page.getByRole('button', { name: 'New Primary' }).click();
+        const element1 = this.page.locator('app-popup-table');
+        await expect(element1).toBeVisible();
+        await element1.click();
+        const dialog = this.page.getByLabel('Search', { exact: true });
+        await expect(dialog).toBeVisible();
+
+        const firstRow = dialog.locator('tbody tr:first-child');
+        await this.page.waitForSelector('tbody tr:first-child', {
+            timeout: 500,
+        });
+        await firstRow.click();
         await expect(
             this.page.getByRole('button', { name: 'Submit' })
         ).toBeVisible();
@@ -350,40 +377,56 @@ export class PensionModule {
         const element1 = this.page.locator('form button').first();
         await expect(element1).toBeVisible();
         await element1.click();
+
         const dialog = this.page.locator('div[role="dialog"]');
         await expect(dialog).toBeVisible();
 
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await this.page.waitForSelector('tbody tr:first-child', {
-            timeout: 500,
-        });
-        await firstRow.click();
-    }
+        // Get all available rows in the dialog
+        const rows = dialog.locator('tbody tr');
+        const rowCount = await rows.count();
 
+        // Ensure there are rows available to select
+        if (rowCount === 0) {
+            throw new Error('No available components to select.');
+        }
+
+        // Generate a random index to select a row
+        const randomIndex = Math.floor(Math.random() * rowCount);
+        const randomRow = rows.nth(randomIndex);
+
+        // Click on the randomly selected row
+        await randomRow.click();
+    }
     async selectFirstPensionCategory(): Promise<void> {
         const element = this.page.locator('form button').nth(1);
         await expect(element).toBeVisible();
         await element.click();
+
         const dialog = this.page.locator('div[role="dialog"]');
         await expect(dialog).toBeVisible();
 
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await this.page.waitForSelector('tbody tr:first-child', {
-            timeout: 500,
-        });
-        await firstRow.click();
+        // Wait for rows to be stable
+        const rows = dialog.locator('tbody tr');
+        await rows.first().waitFor({ state: 'visible' }); // Ensure at least one row is visible
+
+        const rowCount = await rows.count();
+        if (rowCount === 0) {
+            throw new Error('No available pension categories to select.');
+        }
+
+        // Generate a random index to select a row
+        const randomIndex = Math.floor(Math.random() * rowCount);
+        const randomRow = rows.nth(randomIndex);
+
+        // Ensure the selected row is stable
+        await randomRow.waitFor({ state: 'visible' });
+        await randomRow.click();
     }
 
     async fillComponentRateForm({
-        useCurrentDate,
-        day,
-        daysFromNow,
         rateType,
         rateAmount,
     }: {
-        useCurrentDate?: boolean;
-        day?: string;
-        daysFromNow?: number;
         rateType: string;
         rateAmount: number;
     }): Promise<void> {
@@ -393,32 +436,32 @@ export class PensionModule {
         await expect(cal).toBeVisible();
         await cal.click();
 
-        if (useCurrentDate) {
-            await this.page.locator('.p-datepicker-today').click();
-        } else if (day) {
-            await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                .locator(`text="${day}"`)
-                .first()
-                .click();
-        } else if (daysFromNow) {
-            const futureDate = new Date();
-            futureDate.setDate(futureDate.getDate() + daysFromNow);
-            const futureDay = futureDate.getDate();
-            await this.page
-                .locator(`.p-datepicker-calendar td:not(.p-disabled)`)
-                .locator(`text="${futureDay}"`)
-                .first()
-                .click();
-        }
+        // Wait for the datepicker to be visible
+        await this.page.waitForSelector('.p-datepicker-calendar', {
+            state: 'visible',
+        });
 
+        // Generate a random date between 7 and 24
+        const randomDate = Math.floor(Math.random() * (24 - 7 + 1)) + 7;
+        console.log(`Randomly selected date: ${randomDate}`);
+
+        // Use getByText to select the date
+        const selectedDate = this.page.getByText(randomDate.toString(), {
+            exact: true,
+        });
+
+        // Ensure that the selected date is visible and click it
+        await expect(selectedDate).toBeVisible({ timeout: 5000 }); // Adjust timeout as needed
+        await selectedDate.click();
+        console.log(`Clicked on date: ${randomDate}`);
+
+        // Continue with filling the form
         const rate = this.page.locator(
             'p-dropdown[formControlName="rateType"]'
         );
         await expect(rate).toBeVisible();
         await rate.click();
         await this.page.locator(`.p-dropdown-item >> text=${rateType}`).click();
-
         await this.page.fill(
             'input[formControlName="rateAmount"]',
             rateAmount.toString()

@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToFirstPensionBillPrint();
 });
 
-test.skip('should validate form fields', async ({ page, pensionPage }) => {
+test('should validate form fields', async ({ page, pensionPage }) => {
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
@@ -17,7 +17,7 @@ test.skip('should validate form fields', async ({ page, pensionPage }) => {
     ).toBeEnabled();
 });
 
-test.skip('should select PPO and display details correctly', async ({
+test('should select PPO and display details correctly', async ({
     page,
     pensionPage,
 }) => {
@@ -37,10 +37,7 @@ test.skip('should select PPO and display details correctly', async ({
     ).toHaveValue(pensionerName ?? '');
 });
 
-test.skip('should refresh page and clear PPO ID', async ({
-    page,
-    pensionPage,
-}) => {
+test('should refresh page and clear PPO ID', async ({ page, pensionPage }) => {
     await pensionPage.openPopupAndSelectFirstRow();
     await page.click('button:has-text("Refresh")');
 
@@ -59,9 +56,7 @@ test('should show "No records found" for invalid search', async ({
     await expect(page.locator('text="No records found"')).toBeVisible();
 });
 
-test.skip('should generate PDF and show error toast if failed', async ({
-    page,
-}) => {
+test('should generate PDF and show error toast if failed', async ({ page }) => {
     await page.click('app-popup-table');
     const dialog = page.locator('div[role="dialog"]');
     await expect(dialog).toBeVisible();
@@ -88,26 +83,23 @@ test.skip('should generate PDF and show error toast if failed', async ({
     await expect(dialog1).toBeVisible({ timeout: 10000 });
 });
 
-test.skip('should generate PDF and handle errors appropriately', async ({
+test('should generate PDF and handle errors appropriately', async ({
     page,
-    pensionPage,
     browserName,
 }) => {
-    //ARRANGE,
-    const firstRow = await pensionPage.openPopupAndSelectFirstRow();
-    const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    // const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
-    const pensionerName = await firstRow.locator('td').nth(2).textContent();
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
+    //ARRANGE
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
+    const element1 = page.locator('app-popup-table');
+    await expect(element1).toBeVisible();
+    await element1.click();
+    const dialog = page.getByLabel('Search', { exact: true });
+    await expect(dialog).toBeVisible();
+
+    const firstRow = dialog.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow.click();
     await page.locator('button:has-text("Generate Report")').click();
     //ASSERT
     const toastLocator = page.locator('.swal2-popup');

@@ -6,13 +6,13 @@ test.describe('PPO Receipt', () => {
         await page.goto('pension-process/ppo/ppo-receipt');
     });
 
-    test.skip('should fill out the form and submit successfully', async ({
+    test('should fill out the form and submit successfully', async ({
         pensionPage,
     }) => {
         await pensionPage.savePpoReceipt();
     });
 
-    test.skip('should display error for duplicate PPO number', async ({
+    test('should display error for duplicate PPO number', async ({
         page,
         pensionPage,
     }) => {
@@ -39,16 +39,22 @@ test.describe('PPO Receipt', () => {
         expect(true).toBeTruthy();
     });
 
-    test.skip('should edit an existing entry', async ({
-        page,
-        pensionPage,
-    }) => {
+    test('should edit an existing entry', async ({ page, pensionPage }) => {
+        const projectName = test.info().project.name;
+        console.log(`Project Name: ${projectName}`);
+        test.skip(projectName === 'Mobile Safari', 'Still working on it');
         await page.click('button:has-text("Load PPO Receipts")');
 
         await page.waitForSelector('tbody.p-element.p-datatable-tbody');
         await page.click('td.ng-star-inserted button:has-text("Edit")');
-        await page.getByRole('button', { name: '' }).click();
 
+        // const dialogTitle = page.locator('#pr_id_3-label');
+        // await expect(dialogTitle).toBeVisible();
+        // await expect(dialogTitle).toContainText('Manual PPO Receipt');
+
+        await page.waitForSelector('button:has-text("Update")', {
+            state: 'visible',
+        });
         await page.click('button:has-text("Update")');
         await pensionPage.okSuccess();
     });

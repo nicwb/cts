@@ -2,10 +2,9 @@ import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
-    //NEEDS FIX
 });
 
-test.skip('Navigation Service', async ({ pensionPage, page }) => {
+test('Navigation Service', async ({ pensionPage, page }) => {
     await page.goto('pension-process/ppo/entry', {
         waitUntil: 'domcontentloaded',
     });
@@ -20,7 +19,7 @@ test.skip('Navigation Service', async ({ pensionPage, page }) => {
         .catch(() => false);
 
     if (isMessageVisible) {
-        await page.getByText('Yes').click();
+        await page.getByRole('button', { name: 'Yes' }).click();
         expect(page.url()).toContain(
             'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
         );
@@ -31,8 +30,7 @@ test.skip('Navigation Service', async ({ pensionPage, page }) => {
         await expect(page.getByRole('button', { name: 'Yes' })).toBeVisible();
         await page.getByRole('button', { name: 'Yes' }).click();
         expect(page.url()).toContain('pension-process/ppo/entry/new');
-    } else {
-        await page.getByRole('button', { name: 'Save' }).click();
-        await pensionPage.okSuccess();
     }
+    await page.getByRole('button', { name: 'Save' }).click();
+    await pensionPage.okSuccess();
 });

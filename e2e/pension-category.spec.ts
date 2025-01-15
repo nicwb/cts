@@ -1,11 +1,13 @@
-import { test } from './fixtures';
+import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToPensionCategory();
 });
 
-test.skip('duplicate checking', async ({ page, pensionPage }) => {
+test('duplicate checking', async ({ page, pensionPage }) => {
+    await expect(page.getByText('Primary Category Name:')).toBeVisible();
+
     await page.locator('#primary').getByLabel('dropdown trigger').click();
     await page.locator('p-dropdownitem.p-element').first().click();
 

@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div
-                *ngIf="showCategoryInput()"
+                *ngIf="shouldShowCategoryInputControl()"
                 class="grid align-items-center mt-2"
             >
                 <label
@@ -112,7 +112,10 @@
                     ></app-popup-table>
                 </div>
             </div>
-            <div *ngIf="showBankInput()" class="grid align-items-center mt-2">
+            <div
+                *ngIf="shouldShowBankInputControl()"
+                class="grid align-items-center mt-2"
+            >
                 <label
                     for="bank"
                     class="text-lg md:w-auto w-full gap-2 md:col-2 my-2"
@@ -146,7 +149,7 @@
             </div>
             <!-- Dropdown for bank selection for branches -->
             <div
-                *ngIf="showBankForBranches()"
+                *ngIf="shouldShowBankForBranchesControl()"
                 class="grid align-items-center mt-2"
             >
                 <label
@@ -166,7 +169,11 @@
             </div>
             <!-- MultiSelect for branches -->
             <div
-                *ngIf="banksBranch && banksBranch.length > 0"
+                *ngIf="
+                    banksBranch &&
+                    banksBranch.branches &&
+                    banksBranch.branches.length > 0
+                "
                 class="grid align-items-center mt-2"
             >
                 <label class="text-lg md:w-auto w-full gap-2 md:col-2 my-2"
@@ -174,7 +181,7 @@
                 >
                 <div class="col-12 md:col-4">
                     <p-multiSelect
-                        [options]="banksBranch"
+                        [options]="banksBranch.branches"
                         optionLabel="branchName"
                         [filter]="true"
                         [showClear]="true"
