@@ -1,0 +1,123 @@
+<div class="card flex " (click)="changed()">
+    <!-- add 3 radio button here -->
+    <div class="w-5 sdHide "></div>
+    <div class="w-full flex ">
+        <div class="w-full field-radiobutton">
+            <p-radioButton name="pages" value="page1" [(ngModel)]="pages" inputId="page1"></p-radioButton>
+            <label for="pages1">
+                E-PPO from DPPG</label>
+        </div>
+        <div class="w-full field-radiobutton">
+            <p-radioButton name="pages" value="page2" [(ngModel)]="pages" inputId="page2"></p-radioButton>
+            <label for="pages2">Transferred PPOs from Treasuries </label>
+        </div>
+        <div class="w-full field-radiobutton">
+            <p-radioButton name="pages" value="page3" [(ngModel)]="pages" inputId="page3"></p-radioButton>
+            <label for="pages3">Revised PPO from DPPG/PSA Sanction</label>
+        </div>
+    </div>
+    <div class="w-5 sdHide "></div>
+
+</div>
+
+<div class="card" *ngIf="pages === 'page1'">
+    <p-divider align="left" type="solid" class="bt-0 pt-0">
+        <div class="inline-flex align-items-center  mb-0">
+            <i class="pi pi-clone mr-2"></i>
+            <b>Search By:</b>
+        </div>
+    </p-divider>
+    <div class="p-fluid formgrid grid">
+        <div class="field col-12 md:col-4">
+            <label for=""><b> Financial Year:</b></label>
+            <p-dropdown [options]="years" [(ngModel)]="selectedYear" optionLabel="label" [filter]="true" filterBy="name"
+                [showClear]="true" placeholder="Select a Financial Year">
+                <ng-template pTemplate="selectedItem">
+                    <div class="year-item country-item-value" *ngIf="selectedYear">
+                        <div>{{selectedYear.label}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-year pTemplate="item">
+                    <div class="year-item">
+                        <div>{{year.label}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        <div class="field col-12 md:col-2">
+            <label for="type"><b>Month :</b></label>
+            <p-dropdown [options]="[
+                    { label: 'January', value: 'jan' },
+                    { label: 'February', value: 'feb' },
+                    { label: 'March', value: 'mar' },
+                    { label: 'April', value: 'apr' },
+                    { label: 'May', value: 'may' },
+                    { label: 'June', value: 'jun' },
+                    { label: 'July', value: 'jul' },
+                    { label: 'August', value: 'aug' },
+                    { label: 'September', value: 'Sep' },
+                    { label: 'October', value: 'oct' },
+                    { label: 'November', value: 'nov' },
+                    { label: 'December', value: 'dec' }
+                ]" [(ngModel)]="selectedMonth" placeholder="Select Month" class="w-full p-2"></p-dropdown>
+        </div>
+        <div class="field  col-12 md:col-2">
+            <label>&nbsp;</label>
+            <button pButton type="button" label="Search" class=" w-full" (click)="search()"></button>
+        </div>
+
+    </div>
+    <div *ngIf="searched" class="text-center">
+        <app-dynamic-table [service$]="myService$" [suffix]="suffix"></app-dynamic-table>
+        <div class="p-fluid formgrid grid text-center mt-4 align-items-center">
+            <div class="field col-12 md:col-2">
+                <button pButton type="button" label="Accept" class="w-full p-button-success"
+                    icon="pi pi-check"></button>
+            </div>
+            <div class="field col-12 md:col-2">
+                <button pButton type="button" label="Refresh" class="w-full" icon="pi pi-refresh"></button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="card" *ngIf="pages === 'page2'">
+    <p-divider align="left" type="solid" class="bt-0 pt-0">
+        <div class="inline-flex align-items-center  mb-0">
+            <i class="pi pi-clone mr-2"></i>
+            <b>
+                Transferred PPOs Details List</b>
+        </div>
+    </p-divider>
+    <app-dynamic-table [service$]="myService$" [suffix]="suffix"></app-dynamic-table>
+    <div class="p-fluid formgrid grid text-center mt-4 align-items-center">
+        <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Accept" class="w-full p-button-success" icon="pi pi-check"></button>
+        </div>
+        <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Refresh" class="w-full" icon="pi pi-refresh"></button>
+        </div>
+    </div>
+</div>
+<div class="card" *ngIf="pages === 'page3'">
+    <p-divider align="left" type="solid" class="bt-0 pt-0">
+        <div class="inline-flex align-items-center  mb-0">
+            <i class="pi pi-clone mr-2"></i>
+            <b>
+                Revised PPO Detail List</b>
+        </div>
+    </p-divider>
+    <app-dynamic-table [service$]="myService$" [suffix]="suffix"></app-dynamic-table>
+    <div class="p-fluid formgrid grid text-center mt-4 align-items-center">
+        <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Search" class="w-full " icon="pi pi-search"></button>
+        </div>
+        <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Accept" class="w-full p-button-success" icon="pi pi-check"></button>
+        </div>
+        <div class="field col-12 md:col-2">
+            <button pButton type="button" label="Refresh" class="w-full" icon="pi pi-refresh"></button>
+        </div>
+    </div>
+</div>
