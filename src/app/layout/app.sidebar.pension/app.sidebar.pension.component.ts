@@ -103,6 +103,12 @@ export class AppSidebarPensionComponent implements OnInit {
                                             'pension-process/ppo/convart-to-family-pension',
                                         ],
                                     },
+                                    {
+                                        label: 'ePPO',
+                                        routerLink: [
+                                            'pension-process/ppo/e-ppo',
+                                        ],
+                                    },
                                 ],
                             },
                             {

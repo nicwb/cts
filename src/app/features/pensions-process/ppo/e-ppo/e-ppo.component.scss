@@ -1,0 +1,45 @@
+// Variables for breakpoints
+$phone: 600px;
+$tablet: 768px;
+$laptop: 1024px;
+
+// Base styles
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.sdHide {
+    display: inline-block;
+}
+
+// Phone display
+@media (max-width: $phone) {
+    .sdHide {
+        display: none;
+    }
+}
+
+// Tablet display
+@media (min-width: $phone) and (max-width: $tablet) {
+    .sdHide {
+        display: inline-block;
+    }
+}
+
+// Laptop display
+@media (min-width: $tablet) {
+    .sdHide {
+        display: inline-block;
+    }
+}
+
+// Desktop display
+.p-fluid.formgrid.grid.text-center {
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+}
+
+.field button {
+    margin: auto; /* Center buttons within their column */
+}
