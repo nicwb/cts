@@ -1,0 +1,131 @@
+<h2 class="bg-color text-xl"><b> Pension By Transfer</b></h2>
+
+
+<p-dialog [header]="dialogHeader" [(visible)]="isInsertModalVisible" [style]="{'width': '700px'}"
+  [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw'}" [maximizable]="true">
+  <form [formGroup]="byTransferForm" class="flex flex-column gap-4">
+    <div class="flex gap-2 xl:flex-row flex-column">
+      <div class="flex-auto">
+        <label for="dateOfCommencement" class="block mb-1 text-color text-lg">PPO ID</label>
+        <input type="text" pInputText placeholder="" formControlName="ppoId" class="w-full p-2">
+
+      </div>
+
+      <div class="flex-auto">
+        <label for="pensionerName" class="block mb-1 text-color text-lg">Form Date:</label>
+        <p-calendar formControlName="fromDate" placeholder="dd-MM-yyyy" [dateFormat]="'dd-mm-yy'" appendTo="body"
+          [showIcon]="true"></p-calendar>
+      </div>
+
+      <div class="flex-auto">
+        <label for="pensionerName" class="block mb-1 text-color text-lg">To Date:</label>
+        <p-calendar formControlName="toDate" placeholder="dd-MM-yyyy" [dateFormat]="'dd-mm-yy'" appendTo="body"
+          [showIcon]="true"></p-calendar>
+      </div>
+    </div>
+
+    <div class="flex gap-2 xl:flex-row flex-column">
+      <div class="flex-auto">
+        <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T No</label>
+        <input type="text" pInputText placeholder="" formControlName="btNo" class="w-full p-2">
+      </div>
+
+      <div class="flex-auto">
+        <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T Head</label>
+        <input type="text" pInputText placeholder="" formControlName="btHead" class="w-full p-2">
+      </div>
+    </div>
+
+    <div class="flex gap-2 xl:flex-row flex-column">
+      <div class="flex-auto">
+        <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Amount</label>
+        <input type="text" pInputText placeholder="" formControlName="amount" class="w-full p-2">
+      </div>
+
+      <div class="flex-auto">
+        <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Remarks</label>
+        <input type="text" pInputText placeholder="" formControlName="remarks" class="w-full p-2">
+      </div>
+    </div>
+  </form>
+  <div class="flex gap-2 justify-content-end pt-3">
+    <button pButton label="Insert" class="p-button-rounded" [disabled]="" (click)="insertData()"></button>
+    <button pButton label="Cancel" class="p-button-rounded" (click)="cancle()"></button>
+  </div>
+</p-dialog>
+
+<div class="card py-2">
+
+  <p-divider align="left" type="solid">
+    <div class="inline-flex align-items-center">
+      <i class="pi pi-clone mr-2"></i>
+      <b>Search By ppoId :</b>
+    </div>
+  </p-divider>
+  <div class="flex-auto gap-2">
+    <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Ppo Id :</label>
+    <input type="text" pInputText placeholder="" class="p-2 border rounded">
+    <p-button icon="pi pi-search"></p-button>
+  </div>
+  <!-- <div class="flex justify-end items-center gap-2">
+    <label for="dateOfCommencement" class="text-color text-lg">Ppo Id :</label>
+    <input type="text" pInputText placeholder="" class="p-2 border rounded">
+    <p-button icon="pi pi-search"></p-button>
+  </div> -->
+
+
+
+  <p-divider align="left" type="solid">
+    <div class="inline-flex align-items-center">
+      <i class="pi pi-clone mr-2"></i>
+      <b>Add By Transfer Details :</b>
+    </div>
+  </p-divider>
+
+  <p-table [value]="emptyPpoData" [responsive]="true" [scrollable]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Ppo ID</th>
+        <th>Sl No.</th>
+        <th>From Date</th>
+        <th>To Date</th>
+        <th>B.T No</th>
+        <th>B.T Head</th>
+        <th>Amount</th>
+        <th>Remarks</th>
+        <th>Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+      <tr>
+        <td>{{ rowData.ppoId }}</td>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ rowData.fromDate | date:'yyyy-MM-dd' }}</td>
+        <td>{{ rowData.toDate | date:'yyyy-MM-dd' }}</td>
+        <td>{{ rowData.btNo }}</td>
+        <td>{{ rowData.btHead }}</td>
+        <td>{{ rowData.amount }}</td>
+        <td>{{ rowData.remarks }}</td>
+        <td class="fixed-width">
+          <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"
+            (click)="deleteRow(rowIndex)"></button>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <div style="
+                    border-bottom: 1px solid rgba(139, 167, 184, 0.514);
+                    margin: 20px 0;
+                "></div>
+
+  <div class="flex gap-2 justify-content-center pt-3">
+    <p-button label="Add" icon="pi pi-plus" styleClass="p-button-success" (click)="openpopup()"><i
+        class="pi pi-success mr-2"></i>
+    </p-button>
+    <p-button label="Save All" icon="pi pi-save" styleClass="w-fit"><i class="pi pi-success mr-2"></i>
+    </p-button>
+  </div>
+
+</div>

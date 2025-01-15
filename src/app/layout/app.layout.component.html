@@ -1,7 +1,6 @@
-
 <div class="layout-wrapper" [ngClass]="containerClass">
     <app-topbar></app-topbar>
-    <div class="layout-sidebar" style=" padding-top: 15px;">
+    <div class="layout-sidebar">
         <app-sidebar-pension></app-sidebar-pension>
         <!-- <app-sidebar></app-sidebar> -->
     </div>
@@ -26,5 +25,5 @@
         <app-footer></app-footer>
     </div>
     <app-config></app-config>
-    <div class="layout-mask"(click)="layoutService.onMenuToggle()"></div>
+    <div class="layout-mask" (click)="layoutService.onMenuToggle()"></div>
 </div>

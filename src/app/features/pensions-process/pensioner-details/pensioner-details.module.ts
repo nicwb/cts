@@ -21,6 +21,8 @@ import { CardModule } from 'primeng/card';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PensionerDetailsComponent } from './pensioner-details.component';
+import { ByTransferComponent } from './by-transfer/by-transfer.component';
+import { ByTransferComponentModule } from './by-transfer/by-transfer.module';
 
 @NgModule({
     declarations: [PensionerDetailsComponent],
@@ -40,6 +42,7 @@ import { PensionerDetailsComponent } from './pensioner-details.component';
         CalendarModule,
         InputTextModule,
         RevisionofComponentsModule,
+        ByTransferComponentModule,
         SharedModule,
         OptionCardModule,
         CardModule,

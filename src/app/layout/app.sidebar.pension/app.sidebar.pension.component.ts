@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar-pension', //app-app.sidebar.pension
@@ -9,7 +10,10 @@ export class AppSidebarPensionComponent implements OnInit {
     readonly clientVersion = import.meta.env.NG_APP_VERSION;
     model: any[] = [];
 
-    constructor(public layoutService: LayoutService) {}
+    constructor(
+        public layoutService: LayoutService,
+        private router: Router
+    ) {}
 
     ngOnInit() {
         this.model = [
@@ -111,6 +115,13 @@ export class AppSidebarPensionComponent implements OnInit {
                                             '/pension-process/pension-details/revision',
                                         ],
                                     },
+                                    {
+                                        label: 'By Transfer',
+                                        routerLink: [
+                                            '/pension-process/pension-details/by-transfer',
+                                        ],
+                                    },
+
                                     // { label: 'By Transfer', icon: 'pi pi-fw pi-bookmark' },
                                     // { label: 'EFP/CVP/ Age calc', icon: 'pi pi-fw pi-bookmark' },
                                 ],
