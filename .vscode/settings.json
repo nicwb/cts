@@ -44,5 +44,8 @@
   "playwright.reuseBrowser": true,
   "files.trimTrailingWhitespace": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
 }

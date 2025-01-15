@@ -99,7 +99,7 @@
 
 // }
 
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 export interface AppConfig {
@@ -205,15 +205,55 @@ export class LayoutService {
     // Outside click listener
     private clickOutsideListener: any;
 
+    // bindClickOutsideListener() {
+    //     if (!this.clickOutsideListener) {
+    //         this.clickOutsideListener = (event: any) => {
+    //             const sidebar = document.querySelector('.sidebar'); // Change selector to match your sidebar class or ID
+    //             if (sidebar && !sidebar.contains(event.target)) {
+    //                 this.state.staticMenuMobileActive = false;
+    //                 this.unbindClickOutsideListener();
+    //             }
+    //         };
+    //         document.addEventListener('click', this.clickOutsideListener);
+    //     }
+    // }
+
+    // bindClickOutsideListener() {
+    //     if (!this.clickOutsideListener) {
+    //         this.clickOutsideListener = (event: any) => {
+    //             const sidebar = document.querySelector('.sidebar'); // Find the sidebar element
+
+    //             if (!sidebar) {
+    //                 console.error('Sidebar element is undefined');
+    //                 return; // Exit if sidebar is not found
+    //             }
+
+    //             if (!sidebar.contains(event.target)) {
+    //                 this.state.staticMenuMobileActive = false;
+    //                 this.unbindClickOutsideListener(); // Remove listener once menu is closed
+    //             }
+    //         };
+
+    //         document.addEventListener('click', this.clickOutsideListener);
+    //     }
+    // }
     bindClickOutsideListener() {
         if (!this.clickOutsideListener) {
-            this.clickOutsideListener = (event: any) => {
-                const sidebar = document.querySelector('.sidebar'); // Change selector to match your sidebar class or ID
-                if (sidebar && !sidebar.contains(event.target)) {
+            this.clickOutsideListener = (event: MouseEvent) => {
+                const sidebar = document.querySelector('.sidebar');
+
+                if (!sidebar) {
+                    // console.warn('Sidebar element not found. Ignoring click event.');
+                    this.unbindClickOutsideListener(); // Cleanup listener
+                    return;
+                }
+
+                if (!sidebar.contains(event.target as Node)) {
                     this.state.staticMenuMobileActive = false;
                     this.unbindClickOutsideListener();
                 }
             };
+
             document.addEventListener('click', this.clickOutsideListener);
         }
     }
