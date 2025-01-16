@@ -6,7 +6,10 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToFirstPensionBillPrint();
 });
 
-test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({ page, pensionPage }) => {
+test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({
+    page,
+    pensionPage,
+}) => {
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
@@ -18,7 +21,9 @@ test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Gen
     ).toBeEnabled();
 
     await expect(page.locator('input[placeholder="PPO ID"]')).not.toBeEmpty();
-    await expect(page.locator('input[placeholder="Pensioner Name"]')).not.toBeEmpty();
+    await expect(
+        page.locator('input[placeholder="Pensioner Name"]')
+    ).not.toBeEmpty();
 
     await page.click('button:has-text("Refresh")');
 
@@ -28,7 +33,7 @@ test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Gen
     ).toHaveValue('');
 });
 
-test('Generate PDF Report', async ({ page, pensionPage, }) => {
+test('Generate PDF Report', async ({ page, pensionPage }) => {
     const dialog = await pensionPage.openPopup();
     const firstRow = dialog.locator('tbody tr:first-child');
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();

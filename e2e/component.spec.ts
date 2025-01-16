@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures';
 
-test.beforeEach(async ({ pensionPage, page, }) => {
+test.beforeEach(async ({ pensionPage, page }) => {
     await pensionPage.staticLogin();
     await page.goto('/master/component', {
         waitUntil: 'domcontentloaded',

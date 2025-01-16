@@ -194,10 +194,16 @@ export class PensionModule {
         const searchButton = this.page.getByRole('button', { name: 'Search' });
         await expect(searchButton).toBeVisible();
         await expect(searchButton).toBeDisabled();
-        await expect(this.page.getByText('Pension Component Rate Details')).toBeVisible();
-        await expect(this.page.getByPlaceholder('Pension Category ID')).toBeVisible();
+        await expect(
+            this.page.getByText('Pension Component Rate Details')
+        ).toBeVisible();
+        await expect(
+            this.page.getByPlaceholder('Pension Category ID')
+        ).toBeVisible();
         await expect(this.page.getByPlaceholder('Description')).toBeVisible();
-        await expect(this.page.getByRole('button', { name: 'Refresh' })).toBeVisible();
+        await expect(
+            this.page.getByRole('button', { name: 'Refresh' })
+        ).toBeVisible();
     }
 
     async goToRevisionOfComponents(): Promise<void> {
@@ -227,17 +233,31 @@ export class PensionModule {
     }
 
     async goToFirstPensionBillPrint(): Promise<void> {
-        await this.page.goto('/pension-process/bill-print/first-pension-bill-print');
+        await this.page.goto(
+            '/pension-process/bill-print/first-pension-bill-print'
+        );
 
         await expect(this.page.locator('text=General Bill')).toBeVisible();
-        await expect(this.page.locator('text=Classification Bill')).toBeVisible();
+        await expect(
+            this.page.locator('text=Classification Bill')
+        ).toBeVisible();
         await expect(this.page.locator('text=PPO Bill')).toBeVisible();
-        await expect(this.page.locator('input[placeholder="PPO ID"]')).toBeVisible();
-        await expect(this.page.locator('input[placeholder="Pensioner Name"]')).toBeVisible();
+        await expect(
+            this.page.locator('input[placeholder="PPO ID"]')
+        ).toBeVisible();
+        await expect(
+            this.page.locator('input[placeholder="Pensioner Name"]')
+        ).toBeVisible();
         await expect(this.page.locator('app-popup-table')).toBeVisible();
-        await expect(this.page.locator('button >> text="Generate Report"')).toBeVisible();
-        await expect(this.page.locator('button >> text="Refresh"')).toBeVisible();
-        await expect(this.page.locator('button:has-text("Generate Report")')).toBeDisabled();
+        await expect(
+            this.page.locator('button >> text="Generate Report"')
+        ).toBeVisible();
+        await expect(
+            this.page.locator('button >> text="Refresh"')
+        ).toBeVisible();
+        await expect(
+            this.page.locator('button:has-text("Generate Report")')
+        ).toBeDisabled();
     }
 
     async goToPensionCategory(): Promise<void> {

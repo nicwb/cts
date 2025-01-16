@@ -38,10 +38,7 @@ test('Verify Component Rate Form Functionality', async ({
     ]);
 });
 
-test('Successfully Add New Component Rate', async ({
-    pensionPage,
-    page,
-}) => {
+test('Successfully Add New Component Rate', async ({ pensionPage, page }) => {
     // Add component and category
     const categoryId = await pensionPage.selectFirstComponent();
     await expect(page.getByText('Select Component')).toBeVisible();
@@ -62,7 +59,9 @@ test('Successfully Add New Component Rate', async ({
     expect(rowCount).toBeGreaterThan(0);
     const lastRow = rows.nth(rowCount - 1);
     const lastCategoryId = await lastRow.locator('td:nth-child(2)').innerText();
-    const lastBillBreakupId = await lastRow.locator('td:nth-child(3)').innerText();
+    const lastBillBreakupId = await lastRow
+        .locator('td:nth-child(3)')
+        .innerText();
     expect(lastCategoryId).toBe(categoryId);
     expect(lastBillBreakupId).toBe(billBreakupId);
 });

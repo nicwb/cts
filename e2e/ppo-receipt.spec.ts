@@ -6,9 +6,7 @@ test.describe('PPO Receipt', () => {
         await page.goto('pension-process/ppo/ppo-receipt');
     });
 
-    test('Submit PPO Receipt Form Successfully', async ({
-        pensionPage,
-    }) => {
+    test('Submit PPO Receipt Form Successfully', async ({ pensionPage }) => {
         await pensionPage.savePpoReceipt();
     });
 
@@ -39,7 +37,10 @@ test.describe('PPO Receipt', () => {
         expect(true).toBeTruthy();
     });
 
-    test('Edit Existing PPO Receipt Successfully', async ({ page, pensionPage }) => {
+    test('Edit Existing PPO Receipt Successfully', async ({
+        page,
+        pensionPage,
+    }) => {
         const projectName = test.info().project.name;
         console.log(`Project Name: ${projectName}`);
         test.skip(projectName === 'Mobile Safari', 'Still working on it');

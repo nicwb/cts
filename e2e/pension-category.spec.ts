@@ -5,7 +5,10 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToPensionCategory();
 });
 
-test('Prevent Duplicate Pension Category Selection', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Pension Category Selection', async ({
+    page,
+    pensionPage,
+}) => {
     await expect(page.getByText('Primary Category Name:')).toBeVisible();
 
     await page.locator('#primary').getByLabel('dropdown trigger').click();
@@ -20,7 +23,7 @@ test('Prevent Duplicate Pension Category Selection', async ({ page, pensionPage 
             state: 'hidden',
             timeout: 500,
         })
-        .catch(() => { });
+        .catch(() => {});
     await page.locator('p-dropdownitem.p-element').nth(1).click();
     // Submit button interaction
     await page.waitForLoadState('networkidle');

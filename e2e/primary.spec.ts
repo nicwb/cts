@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToPrimaryComponent();
 });
 
-test('Create New Entry Using New Button', async ({ page, pensionPage, }) => {
+test('Create New Entry Using New Button', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
     await pensionPage.openPopupAndSelectFirstRow();
 
@@ -13,7 +13,10 @@ test('Create New Entry Using New Button', async ({ page, pensionPage, }) => {
     await expect(page.getByText('Description:')).toBeVisible();
 });
 
-test('Submit Primary Component Form Successfully Using New Button', async ({ page, pensionPage }) => {
+test('Submit Primary Component Form Successfully Using New Button', async ({
+    page,
+    pensionPage,
+}) => {
     await page.getByRole('button', { name: 'New' }).click();
     await pensionPage.openPopupAndSelectFirstRow();
 

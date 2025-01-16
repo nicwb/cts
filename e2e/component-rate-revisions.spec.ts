@@ -5,13 +5,17 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToComponentRateRevision();
 });
 
-test('Verifies successful navigation to the "Component Rate" page after clicking "New Component Rate" button', async ({ page }) => {
+test('Verifies successful navigation to the "Component Rate" page after clicking "New Component Rate" button', async ({
+    page,
+}) => {
     // Arrange
     // Act
     await page.getByRole('button', { name: 'New Component Rate' }).click();
     // Assert
     await expect(page).toHaveURL('/master/component-rate');
-    await expect(page.getByRole('heading', { name: 'Component Rate' }).locator('b')).toBeVisible();
+    await expect(
+        page.getByRole('heading', { name: 'Component Rate' }).locator('b')
+    ).toBeVisible();
 });
 
 test('Verifies form validation, reset, and refresh functionality', async ({
@@ -31,9 +35,7 @@ test('Verifies form validation, reset, and refresh functionality', async ({
     ).toBeDisabled();
 });
 
-test('Check "no records found" message', async ({
-    page,
-}) => {
+test('Check "no records found" message', async ({ page }) => {
     // ARRANGE
     const dialog = page.locator('div[role="dialog"]');
     const table = page.locator('p-table');
@@ -81,9 +83,7 @@ test('Check "no records found" message', async ({
     expect(firstRowText).toBeTruthy();
     expect(firstRowText).toContain('No records found');
 });
-test('Verify Successful Search Functionality', async ({
-    page,
-}) => {
+test('Verify Successful Search Functionality', async ({ page }) => {
     // ARRANGE
     const dialog = page.locator('div[role="dialog"]');
     const table = page.locator('p-table');
@@ -130,5 +130,4 @@ test('Verify Successful Search Functionality', async ({
 
     expect(firstRowText).toBeTruthy();
     expect(firstRowText).not.toContain('No records found');
-
 });

@@ -19,7 +19,10 @@ test('Check Input Box Visibility and Submit Successfully', async ({
     expect(true).toBeTruthy();
 });
 
-test('Prevent Duplicate Entry Submission In Sub Category ', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Entry Submission In Sub Category ', async ({
+    page,
+    pensionPage,
+}) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New' }).click();
 
