@@ -21,10 +21,12 @@ test('should navigate to next page and display different records if pagination i
 }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
-    const maxRecordsPerPage = 12;
+    console.log('initialRecordsCount', initialRecordsCount);
+    const maxRecordsPerPage = 10;
 
     // Act & Assert
     if (initialRecordsCount < maxRecordsPerPage) {
+        console.log('no pagination');
         const nextButton = page.locator('.p-paginator-next');
         const prevButton = page.locator('.p-paginator-prev');
 
@@ -45,6 +47,8 @@ test('should navigate to next page and display different records if pagination i
         expect(isNextDisabled).toBe(true);
         expect(isPrevDisabled).toBe(true);
     } else {
+        console.log('pagination');
+
         const firstPageRecords = await page
             .locator('p-table tbody tr')
             .allTextContents();
@@ -66,10 +70,14 @@ test('should navigate to previous page if pagination is possible', async ({
 }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
-    const maxRecordsPerPage = 12;
+    console.log('initialRecordsCount', initialRecordsCount);
+
+    const maxRecordsPerPage = 10;
 
     // Act & Assert
     if (initialRecordsCount < maxRecordsPerPage) {
+        console.log('no pagination');
+
         const nextButton = page.locator('.p-paginator-next');
         const prevButton = page.locator('.p-paginator-prev');
 
@@ -89,6 +97,8 @@ test('should navigate to previous page if pagination is possible', async ({
         expect(isNextDisabled).toBe(true);
         expect(isPrevDisabled).toBe(true);
     } else {
+        console.log('pagination');
+
         await page.click('.p-paginator-next:not([disabled]):not(.p-disabled)');
         await page.waitForSelector(
             '.p-paginator-prev:not([disabled]):not(.p-disabled)'
@@ -114,10 +124,11 @@ test('should navigate to previous page if pagination is possible', async ({
 test('should jump to last page if pagination is possible', async ({ page }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
-    const maxRecordsPerPage = 12;
+    const maxRecordsPerPage = 10;
 
     // Act & Assert
     if (initialRecordsCount < maxRecordsPerPage) {
+        console.log('no pagination');
         const lastButton = page.locator('.p-paginator-last');
         const isDisabled = await lastButton.evaluate(
             (el) =>
@@ -127,6 +138,7 @@ test('should jump to last page if pagination is possible', async ({ page }) => {
         );
         expect(isDisabled).toBe(true);
     } else {
+        console.log('pagination');
         await page.click('.p-paginator-last:not([disabled]):not(.p-disabled)');
 
         const nextButton = page.locator('.p-paginator-next');
