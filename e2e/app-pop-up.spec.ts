@@ -18,7 +18,6 @@ test('should display correct number of records per page', async ({ page }) => {
 
 test('should navigate to next page and display different records if pagination is possible', async ({
     page,
-    pensionPage,
 }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
@@ -64,7 +63,6 @@ test('should navigate to next page and display different records if pagination i
 
 test('should navigate to previous page if pagination is possible', async ({
     page,
-    pensionPage,
 }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
