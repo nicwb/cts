@@ -146,6 +146,8 @@ test('should navigate to previous page if pagination is possible', async ({
 test('should jump to last page if pagination is possible', async ({ page }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
+    console.log('initialRecordsCount', initialRecordsCount);
+
     const maxRecordsPerPage = 10;
     const totalRecords = await page
         .locator('.p-paginator-totalrecords')
