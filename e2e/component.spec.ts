@@ -1,8 +1,10 @@
 import { test, expect } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, page, }) => {
     await pensionPage.staticLogin();
-    await pensionPage.goToComponent();
+    await page.goto('/master/component', {
+        waitUntil: 'domcontentloaded',
+    });
 });
 
 test('Pension component can be saved', async ({ page, pensionPage }) => {
@@ -15,7 +17,7 @@ test('Pension component can be saved', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test('Duplicate data Checking', async ({ page, pensionPage }) => {
+test('Verify Duplicate Data Checking', async ({ page, pensionPage }) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New Entry' }).click();
 

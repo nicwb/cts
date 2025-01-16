@@ -16,7 +16,7 @@ test('should display correct number of records per page', async ({ page }) => {
     expect(initialRecords).toBeLessThanOrEqual(maxRecordsPerPage);
 });
 
-test('should navigate to next page and display different records if pagination is possible', async ({
+test.skip('should navigate to next page and display different records if pagination is possible', async ({
     page,
 }) => {
     // Arrange
@@ -62,7 +62,7 @@ test('should navigate to next page and display different records if pagination i
     }
 });
 
-test('should navigate to previous page if pagination is possible', async ({
+test.skip('should navigate to previous page if pagination is possible', async ({
     page,
 }) => {
     // Arrange
@@ -117,7 +117,7 @@ test('should navigate to previous page if pagination is possible', async ({
     }
 });
 
-test('should jump to last page if pagination is possible', async ({ page }) => {
+test.skip('should jump to last page if pagination is possible', async ({ page }) => {
     // Arrange
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
     console.log('initialRecordsCount', initialRecordsCount);

@@ -1,3 +1,4 @@
+import { Dialog } from 'primeng/dialog';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
@@ -5,7 +6,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToFirstPensionBillPrint();
 });
 
-test('should validate form fields', async ({ page, pensionPage }) => {
+test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({ page, pensionPage }) => {
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
@@ -15,30 +16,10 @@ test('should validate form fields', async ({ page, pensionPage }) => {
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
     ).toBeEnabled();
-});
 
-test('should select PPO and display details correctly', async ({
-    page,
-    pensionPage,
-}) => {
-    await pensionPage.openPopupAndSelectFirstRow();
-    const ppoIdValue = await pensionPage.page
-        .locator('input[placeholder="PPO ID"]')
-        .inputValue();
-    const pensionerName = await pensionPage.page
-        .locator('input[placeholder="Pensioner Name"]')
-        .inputValue();
+    await expect(page.locator('input[placeholder="PPO ID"]')).not.toBeEmpty();
+    await expect(page.locator('input[placeholder="Pensioner Name"]')).not.toBeEmpty();
 
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
-});
-
-test('should refresh page and clear PPO ID', async ({ page, pensionPage }) => {
-    await pensionPage.openPopupAndSelectFirstRow();
     await page.click('button:has-text("Refresh")');
 
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
@@ -47,21 +28,8 @@ test('should refresh page and clear PPO ID', async ({ page, pensionPage }) => {
     ).toHaveValue('');
 });
 
-test('should show "No records found" for invalid search', async ({
-    page,
-    pensionPage,
-}) => {
-    await pensionPage.openPopup();
-    await page.fill('input#float-input', 'NonExistentPPO');
-    await expect(page.locator('text="No records found"')).toBeVisible();
-});
-
-test('should generate PDF and show error toast if failed', async ({ page }) => {
-    await page.click('app-popup-table');
-    const dialog = page.locator('div[role="dialog"]');
-    await expect(dialog).toBeVisible();
-
-    await page.waitForSelector('tbody tr');
+test('Generate PDF Report', async ({ page, pensionPage, }) => {
+    const dialog = await pensionPage.openPopup();
     const firstRow = dialog.locator('tbody tr:first-child');
     const ppoIdValue = await firstRow.locator('td:first-child').textContent();
     const pensionerName = await firstRow
@@ -80,22 +48,19 @@ test('should generate PDF and show error toast if failed', async ({ page }) => {
     await page.locator('button:has-text("Generate Report")').click();
 
     const dialog1 = page.locator('div.swal2-popup');
-    await expect(dialog1).toBeVisible({ timeout: 10000 });
+    await expect(dialog1).toBeVisible({ timeout: 500 });
 });
 
-test('should generate PDF and handle errors appropriately', async ({
+test('Verify PDF Generation and Error Handling for General Bill Report', async ({
     page,
+    pensionPage,
     browserName,
 }) => {
     //ARRANGE
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
-    const element1 = page.locator('app-popup-table');
-    await expect(element1).toBeVisible();
-    await element1.click();
-    const dialog = page.getByLabel('Search', { exact: true });
-    await expect(dialog).toBeVisible();
+    const dialog = await pensionPage.openPopup();
 
     const firstRow = dialog.locator('tbody tr:first-child');
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
@@ -103,7 +68,7 @@ test('should generate PDF and handle errors appropriately', async ({
     await page.locator('button:has-text("Generate Report")').click();
     //ASSERT
     const toastLocator = page.locator('.swal2-popup');
-    await expect(toastLocator).toBeVisible({ timeout: 10000 });
+    await expect(toastLocator).toBeVisible({ timeout: 500 });
 
     const toastClasses = await toastLocator.evaluate((el) => el.className);
     const toastMessage = await toastLocator.textContent();

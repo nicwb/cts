@@ -4,7 +4,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
 });
 
-test('should reset the retrieved first pension bill', async ({
+test('Verify Reset Button Clears First Pension Bill Data', async ({
     page,
     pensionPage,
 }) => {
@@ -16,7 +16,7 @@ test('should reset the retrieved first pension bill', async ({
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
 });
 
-test('should receive all component Revision Details', async ({
+test('Verify Retrieval of Pension Bill Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -35,7 +35,7 @@ test('should receive all component Revision Details', async ({
     ).toBeVisible();
 });
 
-test('should edit component Revision Details', async ({
+test('Verify Editing of Pension Bill Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -70,7 +70,7 @@ test('should edit component Revision Details', async ({
     await pensionPage.okSuccess();
 });
 
-test('should delete a component Revision Detail', async ({
+test('Delete Pensioner Revision Detail Successfully', async ({
     page,
     pensionPage,
 }) => {
@@ -95,7 +95,7 @@ test('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test('should create a new component revision', async ({
+test('Create New Pensioner Revision Successfully', async ({
     page,
     pensionPage,
 }) => {
@@ -128,7 +128,7 @@ test('should create a new component revision', async ({
         .filter({ hasText: new RegExp(`^${randomDate}$`) });
 
     // Ensure that the selected date is visible and click it
-    await expect(selectedDate).toBeVisible({ timeout: 5000 }); // Adjust timeout as needed
+    await expect(selectedDate).toBeVisible({ timeout: 500 });
     await selectedDate.click();
     console.log(`Clicked on date: ${randomDate}`);
 

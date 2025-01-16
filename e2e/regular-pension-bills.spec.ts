@@ -6,7 +6,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToRegularPensionBillPrint();
 });
 
-test('Generate and verify pension bill PDF with dynamic values', async ({
+test('Generate Pension Bill PDF with Dynamic Values and Verify Contents', async ({
     page,
 }) => {
     // ARRANGE
@@ -32,7 +32,7 @@ test('Generate and verify pension bill PDF with dynamic values', async ({
     await expect(generateReportButton).toBeEnabled();
     await generateReportButton.click();
     const dialog = page.locator('.p-dialog');
-    await dialog.waitFor({ state: 'visible', timeout: 30000 });
+    await dialog.waitFor({ state: 'visible' });
 
     // ASSERT
     const dialogMessage = await dialog.innerText();

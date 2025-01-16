@@ -5,33 +5,17 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToPrimaryComponent();
 });
 
-test('new button', async ({ page }) => {
+test('Create New Entry Using New Button', async ({ page, pensionPage, }) => {
     await page.getByRole('button', { name: 'New' }).click();
-    const element1 = page.locator('app-popup-table');
-    await expect(element1).toBeVisible();
-    await element1.click();
-    const dialog = page.getByLabel('Search', { exact: true });
-    await expect(dialog).toBeVisible();
-
-    const firstRow = dialog.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow.click();
+    await pensionPage.openPopupAndSelectFirstRow();
 
     await expect(page.getByText('Head Of Account:')).toBeVisible();
     await expect(page.getByText('Description:')).toBeVisible();
 });
 
-test('testing the form and submit button', async ({ page, pensionPage }) => {
+test('Submit Primary Component Form Successfully Using New Button', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
-    const element1 = page.locator('app-popup-table');
-    await expect(element1).toBeVisible();
-    await element1.click();
-    const dialog = page.getByLabel('Search', { exact: true });
-    await expect(dialog).toBeVisible();
-
-    const firstRow = dialog.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow.click();
+    await pensionPage.openPopupAndSelectFirstRow();
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
@@ -40,20 +24,12 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test('duplicate primary category entry ', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Entry Submission ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement = page.locator('input[formControlName=accountHead]');
     await inputElement.waitFor({ state: 'visible' });
-    const element1 = page.locator('app-popup-table');
-    await expect(element1).toBeVisible();
-    await element1.click();
-    const dialog = page.getByLabel('Search', { exact: true });
-    await expect(dialog).toBeVisible();
-
-    const firstRow = dialog.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow.click();
+    await pensionPage.openPopupAndSelectFirstRow();
     await expect(inputElement).not.toBeEmpty();
 
     const inputElement1 = page.getByPlaceholder('Description');
@@ -75,15 +51,7 @@ test('duplicate primary category entry ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement2 = page.locator('input[formControlName=accountHead]');
-    const element2 = page.locator('app-popup-table');
-    await expect(element2).toBeVisible();
-    await element2.click();
-    const dialog2 = page.getByLabel('Search', { exact: true });
-    await expect(dialog2).toBeVisible();
-
-    const firstRow2 = dialog2.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow2.click();
+    await pensionPage.openPopupAndSelectFirstRow();
     await inputElement2.waitFor({ state: 'visible' });
     await expect(inputElement2).not.toBeEmpty();
 

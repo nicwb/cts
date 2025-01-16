@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToComponentRate();
 });
 
-test('Check form validation, reset, and refresh', async ({
+test('Verify Component Rate Form Functionality', async ({
     pensionPage,
     page,
 }) => {
@@ -38,35 +38,14 @@ test('Check form validation, reset, and refresh', async ({
     ]);
 });
 
-test('should add new component, submit form with valid random date, and display success message', async ({
+test('Successfully Add New Component Rate', async ({
     pensionPage,
     page,
 }) => {
     // Add component and category
-    await pensionPage.selectFirstComponent();
+    const categoryId = await pensionPage.selectFirstComponent();
     await expect(page.getByText('Select Component')).toBeVisible();
-    await pensionPage.selectFirstPensionCategory();
-
-    // Fill and submit form with a valid random date
-    await pensionPage.fillComponentRateForm({
-        rateType: 'A',
-        rateAmount: Math.floor(Math.random() * 100),
-    });
-
-    // Submit form and handle success
-    await pensionPage.submitComponentRateForm();
-
-    await expect(pensionPage.page.locator('p-table')).toBeVisible();
-});
-
-test('should show correct table after submitting form with valid random date', async ({
-    pensionPage,
-    page,
-}) => {
-    // Add component and category
-    await pensionPage.selectFirstComponent();
-    await expect(page.getByText('Select Component')).toBeVisible();
-    await pensionPage.selectFirstPensionCategory();
+    const billBreakupId = await pensionPage.selectFirstPensionCategory();
 
     // Fill and submit form with a valid random date
     await pensionPage.fillComponentRateForm({
@@ -75,6 +54,15 @@ test('should show correct table after submitting form with valid random date', a
     });
 
     // Submit form and verify table
-    await pensionPage.submitComponentRateForm();
-    await pensionPage.verifyComponentRateTableData();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await pensionPage.okSuccess();
+    const table = page.locator('p-table');
+    const rows = table.locator('tbody tr');
+    const rowCount = await rows.count();
+    expect(rowCount).toBeGreaterThan(0);
+    const lastRow = rows.nth(rowCount - 1);
+    const lastCategoryId = await lastRow.locator('td:nth-child(2)').innerText();
+    const lastBillBreakupId = await lastRow.locator('td:nth-child(3)').innerText();
+    expect(lastCategoryId).toBe(categoryId);
+    expect(lastBillBreakupId).toBe(billBreakupId);
 });
