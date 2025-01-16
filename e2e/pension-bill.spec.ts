@@ -1,4 +1,3 @@
-import { Dialog } from 'primeng/dialog';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
