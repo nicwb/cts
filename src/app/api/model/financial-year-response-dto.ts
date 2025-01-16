@@ -8,7 +8,7 @@
  * Do not edit the class manually.
  */
 
-export interface DropdownDTO {
-    name?: string | null;
-    code?: number;
+export interface FinancialYearResponseDTO {
+    dataSource?: { [key: string]: any } | null;
+    currentYear?: number;
 }

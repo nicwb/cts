@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom, Observable } from 'rxjs';
-import { APIResponseStatus, PensionPPODetailsService } from 'src/app/api';
+import {
+    APIResponseStatus,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionPPODetailsService,
+} from 'src/app/api';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -12,7 +16,7 @@ import Swal from 'sweetalert2';
 export class FamilyPensionApprovalComponent implements OnInit {
     pensionForm: FormGroup = new FormGroup({});
     getpensionbill: any;
-    ppoList$?: Observable<any>;
+    ppoList$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
 
     constructor(
         private fb: FormBuilder,
@@ -20,17 +24,8 @@ export class FamilyPensionApprovalComponent implements OnInit {
     ) {}
     ngOnInit(): void {
         this.initializer();
-        const payload = {
-            listType: 'type1',
-            pageSize: 200,
-            pageIndex: 0,
-            filterParameters: [],
-            sortParameters: {
-                field: 'ppoNo',
-                order: 'asc',
-            },
-        };
-        this.ppoList$ = this.ppoListService.getAllPensioners(payload);
+
+        this.ppoList$ = this.ppoListService.getPensioners();
     }
     initializer() {
         this.pensionForm = this.fb.group({

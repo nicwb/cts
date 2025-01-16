@@ -16,6 +16,7 @@ import {
     PensionerResponseDTOJsonAPIResponse,
     APIResponseStatus,
     PensionStatusFlag,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
@@ -28,7 +29,7 @@ import Swal from 'sweetalert2';
 })
 export class PpoApprovalComponent implements OnInit {
     ApprovalForm: FormGroup = new FormGroup({});
-    idList$?: Observable<any>;
+    idList$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     isTableDataLoading = false;
     selectedRow: any;
     showTable = false;

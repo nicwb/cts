@@ -23,11 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { DynamicListQueryParameters } from '../model/dynamic-list-query-parameters';
-// @ts-ignore
 import { PensionerEntryDTO } from '../model/pensioner-entry-dto';
-// @ts-ignore
-import { PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pensioner-list-item-dtoi-enumerable-dynamic-list-result-json-api-response';
 // @ts-ignore
 import { PensionerListItemDTOTableResponseDTOJsonAPIResponse } from '../model/pensioner-list-item-dto-table-response-dto-json-api-response';
 // @ts-ignore
@@ -260,7 +256,7 @@ export class PensionPPODetailsService {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     public getAllNotApprovedPensioners(
         observe?: 'response',
         reportProgress?: boolean,
@@ -269,7 +265,7 @@ export class PensionPPODetailsService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionerListItemDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllNotApprovedPensioners(
         observe?: 'events',
@@ -279,7 +275,7 @@ export class PensionPPODetailsService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionerListItemDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllNotApprovedPensioners(
         observe: any = 'body',
@@ -336,7 +332,7 @@ export class PensionPPODetailsService {
         }
 
         let localVarPath = `/api/v1/ppo/details/not-approved`;
-        return this.httpClient.request<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
             {
@@ -351,22 +347,19 @@ export class PensionPPODetailsService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllPensioners(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     public getAllPensioners(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -374,10 +367,9 @@ export class PensionPPODetailsService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionerListItemDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPensioners(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -385,10 +377,9 @@ export class PensionPPODetailsService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionerListItemDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPensioners(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -429,21 +420,6 @@ export class PensionPPODetailsService {
             localVarHttpContext = new HttpContext();
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -458,12 +434,11 @@ export class PensionPPODetailsService {
         }
 
         let localVarPath = `/api/v1/ppo/details`;
-        return this.httpClient.request<PensionerListItemDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

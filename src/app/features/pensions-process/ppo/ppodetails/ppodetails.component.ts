@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { firstValueFrom, Observable, tap, catchError, EMPTY } from 'rxjs';
-import { APIResponseStatus, PensionPPODetailsService } from 'src/app/api';
+import {
+    APIResponseStatus,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionPPODetailsService,
+} from 'src/app/api';
 import { ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -30,7 +34,7 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
         { label: 'Family Nominee' },
     ];
     isFormValid = false;
-    allPPOs$?: Observable<any>;
+    allPPOs$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     viewMode = true;
     ppoSearchField = '';
     records: PPORecord[] = [];
@@ -46,7 +50,7 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
 
     routeOb: any;
     pathOb: any;
-    ppoDetails$!: Observable<any>;
+    ppoDetails$!: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'ppoDetails';
 
     constructor(
@@ -172,7 +176,7 @@ export class PpodetailsComponent implements OnInit, OnDestroy {
                 sortParameters: { field: '', order: '' },
             };
 
-            this.allPPOs$ = this.ppoDetialsService.getAllPensioners(payload);
+            this.allPPOs$ = this.ppoDetialsService.getPensioners();
             await firstValueFrom(
                 this.allPPOs$.pipe(
                     tap((result) => this.handleResponse(result)),

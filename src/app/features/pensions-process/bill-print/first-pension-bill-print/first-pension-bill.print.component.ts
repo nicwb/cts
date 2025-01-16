@@ -4,6 +4,7 @@ import {
     PensionFirstBillService,
     PensionBankBranchService,
     APIResponseStatus,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -21,7 +22,7 @@ export class FirstPensionBillPrintComponent implements OnInit {
     FirstPensionForm!: FormGroup;
     selectedPension: any;
     pdfData: any;
-    pensionComponent$?: Observable<any>;
+    pensionComponent$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     @Input() ppoId?: string;
 
     constructor(

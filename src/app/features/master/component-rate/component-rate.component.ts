@@ -5,8 +5,9 @@ import {
     PensionComponentRateService,
     ComponentRateEntryDTO,
     ComponentRateResponseDTOJsonAPIResponse,
-    PensionBreakupResponseDTO,
     APIResponseStatus,
+    PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
+    PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { PensionCategoryMasterService } from 'src/app/api';
 import { PensionComponentService } from 'src/app/api';
@@ -20,8 +21,8 @@ import { ToastService } from 'src/app/core/services/toast.service';
     styleUrls: ['./component-rate.component.scss'],
 })
 export class ComponentRateComponent implements OnInit {
-    allPensionCategory$?: Observable<any>;
-    pensionComponent$?: Observable<any>;
+    allPensionCategory$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
+    pensionComponent$?: Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
 
     ComponentRateForm: FormGroup = new FormGroup({});
     amountLabel: string = 'Amount/Percentage';
@@ -164,7 +165,7 @@ export class ComponentRateComponent implements OnInit {
         };
 
         await firstValueFrom(
-            this.PensionComponentRateService.getAllComponentRates(payload).pipe(
+            this.PensionComponentRateService.getAllComponentRates().pipe(
                 tap((response) => {
                     if (response && response.result) {
                         console.log(response.result);

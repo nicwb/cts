@@ -12,6 +12,7 @@ import {
     BankResponseDTO,
     BranchListResponseDTOJsonAPIResponse,
     BranchResponseDTO,
+    NomineeResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import {
     catchError,
@@ -52,8 +53,8 @@ export class FamilyNomineeComponent implements OnInit {
     showFamilyNomineeTable: boolean = false;
     showNomineeDetailsTable: boolean = false;
     // showPensionHolderTable: boolean = false;
-    familyNomineeService$?: Observable<any>;
-    nomineeDetailsService$?: Observable<any>;
+    familyNomineeService$?: Observable<NomineeResponseDTOTableResponseDTOJsonAPIResponse>;
+    nomineeDetailsService$?: Observable<NomineeResponseDTOTableResponseDTOJsonAPIResponse>;
     // pensionHolderService$: Observable<any>;
     // Table suffix identifiers
     readonly FAMILY_NOMINEE_SUFFIX = 'family-nominee';
@@ -65,8 +66,8 @@ export class FamilyNomineeComponent implements OnInit {
     popupHeader: string = '';
     NomineePopupHeader: string = '';
 
-    filteredDataA: [] = [];
-    filteredDataB: [] = [];
+    filteredDataA: any[] = [];
+    filteredDataB: any[] = [];
 
     header: [] = [];
 
@@ -92,9 +93,7 @@ export class FamilyNomineeComponent implements OnInit {
     bankBranch1: string = '';
     nomineeId: number = 0;
     age: number = 0;
-    filteredNomineeDetails$: Observable<any> | undefined;
 
-    // filteredNomineeDetails$: Observable<any[]> | undefined;
     constructor(
         private toastService: ToastService,
         private pensionNomineeDetailsService: PensionNomineeDetailsService,
@@ -396,7 +395,7 @@ export class FamilyNomineeComponent implements OnInit {
                 );
             const data = await firstValueFrom(this.familyNomineeService$);
             // Extract and map the relationship
-            this.filteredDataA = data.result.data
+            this.filteredDataA = (data.result?.data ?? [])
                 .filter((item: any) => String(item.nomineeType).trim() === '0')
                 .map((item: any) => {
                     // Find the relation name using the mapping
@@ -414,7 +413,7 @@ export class FamilyNomineeComponent implements OnInit {
             // Assign to staticDataA
             this.staticDataA = {
                 data: this.filteredDataA,
-                headers: data.result.headers,
+                headers: data.result?.headers,
             };
         } else if (formType === 'B') {
             this.showNomineeDetailsTable = true; // Show the table for Nominee Details
@@ -425,7 +424,7 @@ export class FamilyNomineeComponent implements OnInit {
             const data = await firstValueFrom(this.nomineeDetailsService$);
 
             // Extract and map the relationship
-            this.filteredDataB = data.result.data
+            this.filteredDataB = (data.result?.data ?? [])
                 .filter((item: any) => String(item.nomineeType).trim() !== '0')
                 .map((item: any) => {
                     // Find the relation name using the mapping
@@ -442,7 +441,7 @@ export class FamilyNomineeComponent implements OnInit {
             // Assign to staticDataA
             this.staticDataB = {
                 data: this.filteredDataB,
-                headers: data.result.headers,
+                headers: data?.result?.headers,
             };
         }
     }

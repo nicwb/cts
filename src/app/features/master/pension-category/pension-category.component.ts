@@ -1,4 +1,8 @@
-import { APIResponseStatus, PensionCategoryMasterService } from 'src/app/api';
+import {
+    APIResponseStatus,
+    PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
+    PensionCategoryMasterService,
+} from 'src/app/api';
 import {
     Component,
     OnInit,
@@ -47,7 +51,7 @@ export class PensionCategoryComponent implements OnInit {
     sub_from_url!: string;
     @ViewChild('subFilterSearch', { static: false }) dropdownRef!: ElementRef;
 
-    Category$?: Observable<any>;
+    Category$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'Category';
 
     constructor(
@@ -95,27 +99,27 @@ export class PensionCategoryComponent implements OnInit {
         if (primary && sub) {
             this.primary_from_url = primary;
             this.sub_from_url = sub;
-            let dataP = {
-                pageSize: 1,
-                pageIndex: 0,
-                filterParameters: [
-                    {
-                        field: 'PrimaryCategoryName',
-                        value: primary,
-                        operator: 'contains',
-                    },
-                ],
-            };
-            let response = await firstValueFrom(
-                this.service.getAllPrimaryCategories(dataP)
+            // const dataP = {
+            //     pageSize: 1,
+            //     pageIndex: 0,
+            //     filterParameters: [
+            //         {
+            //             field: 'PrimaryCategoryName',
+            //             value: primary,
+            //             operator: 'contains',
+            //         },
+            //     ],
+            // };
+            const response = await firstValueFrom(
+                this.service.getPrimaryCategories()
             );
             this.PensionForm.patchValue({
                 PrimaryCategoryId: response.result?.data?.[0]?.id,
             });
             if (response.result && response.result.data) {
-                let value = response.result.data;
+                const value = response.result.data;
                 if (value.length != 0) {
-                    let len_val = value.length;
+                    const len_val = value.length;
                     this.primary_id_select = [];
                     for (let i = 0; i < len_val; i++) {
                         this.primary_id_select.push({
@@ -135,28 +139,28 @@ export class PensionCategoryComponent implements OnInit {
 
             this.displayInsertModal = true;
 
-            let dataS = {
-                pageSize: 1,
-                pageIndex: 0,
-                filterParameters: [
-                    {
-                        field: 'SubCategoryName',
-                        value: sub,
-                        operator: 'contains',
-                    },
-                ],
-            };
+            // let dataS = {
+            //     pageSize: 1,
+            //     pageIndex: 0,
+            //     filterParameters: [
+            //         {
+            //             field: 'SubCategoryName',
+            //             value: sub,
+            //             operator: 'contains',
+            //         },
+            //     ],
+            // };
 
-            let responseS = await firstValueFrom(
-                this.service.getAllSubCategories(dataS)
+            const responseS = await firstValueFrom(
+                this.service.getSubCategories()
             );
             this.PensionForm.patchValue({
                 PrimaryCategoryId: responseS.result?.data?.[0]?.id,
             });
             if (responseS.result && responseS.result.data) {
-                let value = responseS.result.data;
+                const value = responseS.result.data;
                 if (value.length != 0) {
-                    let len_val = value.length;
+                    const len_val = value.length;
                     this.sub_id_select = [];
                     for (let i = 0; i < len_val; i++) {
                         this.sub_id_select.push({
@@ -175,34 +179,34 @@ export class PensionCategoryComponent implements OnInit {
             );
 
             this.displayInsertModal = true;
-            let value_for_patch = {
+            const value_for_patch = {
                 PrimaryCategoryId: this.primary_id.value,
                 SubCategoryId: this.sub_id.value, // Fixed the error here
             };
             this.PensionForm.patchValue(value_for_patch);
         } else if (primary) {
             this.primary_from_url = primary;
-            let dataP = {
-                pageSize: 1,
-                pageIndex: 0,
-                filterParameters: [
-                    {
-                        field: 'PrimaryCategoryName',
-                        value: primary,
-                        operator: 'contains',
-                    },
-                ],
-            };
-            let response = await firstValueFrom(
-                this.service.getAllPrimaryCategories(dataP)
+            // const dataP = {
+            //     pageSize: 1,
+            //     pageIndex: 0,
+            //     filterParameters: [
+            //         {
+            //             field: 'PrimaryCategoryName',
+            //             value: primary,
+            //             operator: 'contains',
+            //         },
+            //     ],
+            // };
+            const response = await firstValueFrom(
+                this.service.getPrimaryCategories()
             );
             this.PensionForm.patchValue({
                 PrimaryCategoryId: response.result?.data?.[0]?.id,
             });
             if (response.result && response.result.data) {
-                let value = response.result.data;
+                const value = response.result.data;
                 if (value.length != 0) {
-                    let len_val = value.length;
+                    const len_val = value.length;
                     this.primary_id_select = [];
                     for (let i = 0; i < len_val; i++) {
                         this.primary_id_select.push({
@@ -220,34 +224,34 @@ export class PensionCategoryComponent implements OnInit {
                     `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`
             );
             this.displayInsertModal = true;
-            let value_for_patch = {
+            const value_for_patch = {
                 PrimaryCategoryId: this.primary_id.value,
             };
             this.PensionForm.patchValue(value_for_patch);
         } else if (sub) {
             this.sub_from_url = sub;
-            let dataS = {
-                pageSize: 1,
-                pageIndex: 0,
-                filterParameters: [
-                    {
-                        field: 'SubCategoryName',
-                        value: sub,
-                        operator: 'contains',
-                    },
-                ],
-            };
+            // const dataS = {
+            //     pageSize: 1,
+            //     pageIndex: 0,
+            //     filterParameters: [
+            //         {
+            //             field: 'SubCategoryName',
+            //             value: sub,
+            //             operator: 'contains',
+            //         },
+            //     ],
+            // };
 
-            let responseS = await firstValueFrom(
-                this.service.getAllSubCategories(dataS)
+            const responseS = await firstValueFrom(
+                this.service.getSubCategories()
             );
             this.PensionForm.patchValue({
                 PrimaryCategoryId: responseS.result?.data?.[0]?.id,
             });
             if (responseS.result && responseS.result.data) {
-                let value = responseS.result.data;
+                const value = responseS.result.data;
                 if (value.length != 0) {
-                    let len_val = value.length;
+                    const len_val = value.length;
                     this.sub_id_select = [];
                     for (let i = 0; i < len_val; i++) {
                         this.sub_id_select.push({
@@ -262,11 +266,11 @@ export class PensionCategoryComponent implements OnInit {
             this.sub_id = this.sub_id_select.find(
                 (val) =>
                     val.label ==
-                    `${responseS.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
+                    `${responseS?.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
             );
 
             this.displayInsertModal = true;
-            let value_for_patch = {
+            const value_for_patch = {
                 SubCategoryId: this.sub_id.value, // Fixed the error here
             };
             this.PensionForm.patchValue(value_for_patch);
@@ -274,22 +278,22 @@ export class PensionCategoryComponent implements OnInit {
         //
     }
     // searching without get api
-    handsearchKeyChange(event: string): void {
-        if (event == '') {
-            this.toastService.showError(`Search can not be empty`);
-            return;
-        }
-        this.findById(event);
-    }
+    // handsearchKeyChange(event: string): void {
+    //     if (event == '') {
+    //         this.toastService.showError(`Search can not be empty`);
+    //         return;
+    //     }
+    //     void this.findById(event);
+    // }
     initializeForm(): void {
         this.PensionForm = new FormGroup({
             PrimaryCategoryId: new FormControl('', [Validators.required]),
             SubCategoryId: new FormControl('', [Validators.required]),
         });
     }
-    clear(table: any) {
-        table.clear();
-    }
+    // clear(table: any) {
+    //     table.clear();
+    // }
     onGlobalFilter(dt: any, event: any): void {
         if (event && event.target) {
             const input = event.target as HTMLInputElement;
@@ -300,7 +304,7 @@ export class PensionCategoryComponent implements OnInit {
     async add_Pension_category() {
         if (this.PensionForm.valid) {
             const formData = this.PensionForm.value;
-            let response = await firstValueFrom(
+            const response = await firstValueFrom(
                 this.service.createCategory(formData)
             );
             if (response.apiResponseStatus === APIResponseStatus.Success) {
@@ -327,27 +331,27 @@ export class PensionCategoryComponent implements OnInit {
             return;
         }
         console.log(id);
-        let data = {
-            pageSize: 10000,
-            pageIndex: 0,
-            filterParameters: [
-                {
-                    field: 'PrimaryCategoryName',
-                    value: id,
-                    operator: 'contains',
-                },
-            ],
-        };
+        // let data = {
+        //     pageSize: 10000,
+        //     pageIndex: 0,
+        //     filterParameters: [
+        //         {
+        //             field: 'PrimaryCategoryName',
+        //             value: id,
+        //             operator: 'contains',
+        //         },
+        //     ],
+        // };
 
-        let response = await firstValueFrom(
-            this.service.getAllPrimaryCategories(data)
+        const response = await firstValueFrom(
+            this.service.getPrimaryCategories()
         );
         this.isTableDataLoading = false;
 
         if (response.result && response.result.data) {
-            let value = response.result.data;
+            const value = response.result.data;
             if (value.length != 0) {
-                let len_val = value.length;
+                const len_val = value.length;
                 this.primary_id_select = [];
                 for (let i = 0; i < len_val; i++) {
                     this.primary_id_select.push({
@@ -368,22 +372,20 @@ export class PensionCategoryComponent implements OnInit {
             return;
         }
         console.log(id);
-        let data = {
-            pageSize: 10000,
-            pageIndex: 0,
-            filterParameters: [
-                { field: 'SubCategoryName', value: id, operator: 'contains' },
-            ],
-        };
-        let response = await firstValueFrom(
-            this.service.getAllSubCategories(data)
-        );
+        // const data = {
+        //     pageSize: 10000,
+        //     pageIndex: 0,
+        //     filterParameters: [
+        //         { field: 'SubCategoryName', value: id, operator: 'contains' },
+        //     ],
+        // };
+        const response = await firstValueFrom(this.service.getSubCategories());
         this.isTableDataLoading = false;
 
-        if (response.result && response.result.data) {
-            let value = response.result.data;
+        if (response?.result && response.result?.data) {
+            const value = response?.result?.data;
             if (value.length != 0) {
-                let len_val = value.length;
+                const len_val = value.length;
                 this.sub_id_select = [];
                 for (let i = 0; i < len_val; i++) {
                     this.sub_id_select.push({
@@ -398,14 +400,14 @@ export class PensionCategoryComponent implements OnInit {
             console.error('Invalid response from API');
         }
     }
-    clicked_Primary(name: any) {
-        let value_for_patch = {
+    clicked_Primary() {
+        const value_for_patch = {
             PrimaryCategoryId: this.primary_id.value,
         };
         this.PensionForm.patchValue(value_for_patch);
     }
-    clicked_Sub(name: any) {
-        let value_for_patch = {
+    clicked_Sub() {
+        const value_for_patch = {
             SubCategoryId: this.sub_id.value, // Fixed the error here
         };
         this.PensionForm.patchValue(value_for_patch);
@@ -450,7 +452,7 @@ export class PensionCategoryComponent implements OnInit {
                     async () => {
                         // const data = this.tableQueryParameters;
                         const response = await firstValueFrom(
-                            this.service.getAllPrimaryCategories()
+                            this.service.getPrimaryCategories()
                         );
 
                         if (response.result && response.result.data) {
@@ -487,7 +489,7 @@ export class PensionCategoryComponent implements OnInit {
                     async () => {
                         // const data = this.tableQueryParameters;
                         const response = await firstValueFrom(
-                            this.service.getAllSubCategories()
+                            this.service.getSubCategories()
                         );
 
                         if (response.result && response.result.data) {
@@ -516,7 +518,7 @@ export class PensionCategoryComponent implements OnInit {
 
     async findById(id: any) {
         this.isTableDataLoading = true;
-        let response = await firstValueFrom(this.service.getAllCategories());
+        const response = await firstValueFrom(this.service.getCategories());
         if (response.result?.data?.length != 0) {
             this.tableData = response.result;
             this.refresh_b = true;

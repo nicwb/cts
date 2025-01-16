@@ -23,11 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { DynamicListQueryParameters } from '../model/dynamic-list-query-parameters';
-// @ts-ignore
 import { PensionBreakupEntryDTO } from '../model/pension-breakup-entry-dto';
-// @ts-ignore
-import { PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pension-breakup-response-dtoi-enumerable-dynamic-list-result-json-api-response';
 // @ts-ignore
 import { PensionBreakupResponseDTOJsonAPIResponse } from '../model/pension-breakup-response-dto-json-api-response';
 // @ts-ignore
@@ -250,22 +246,19 @@ export class PensionComponentService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllComponents(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
     public getAllComponents(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -273,10 +266,9 @@ export class PensionComponentService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllComponents(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -284,10 +276,9 @@ export class PensionComponentService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllComponents(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -328,21 +319,6 @@ export class PensionComponentService {
             localVarHttpContext = new HttpContext();
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -357,12 +333,11 @@ export class PensionComponentService {
         }
 
         let localVarPath = `/api/v1/pension/component`;
-        return this.httpClient.request<PensionBreakupResponseDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom, Observable } from 'rxjs';
 import {
     APIResponseStatus,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
     PensionFirstBillService,
     PensionPPODetailsService,
     PensionPPOStatusService,
@@ -20,7 +21,7 @@ export class FirstpensionbillapprovalComponent {
     pensionForm: FormGroup;
     getpensionbill: any;
     pensioncategory: any = {};
-    ppoList$: Observable<any>;
+    ppoList$: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
 
     constructor(
         private fb: FormBuilder,
@@ -31,17 +32,8 @@ export class FirstpensionbillapprovalComponent {
         this.pensionForm = this.fb.group({
             ppoId: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // PPO ID must be a number
         });
-        const payload = {
-            listType: 'type1',
-            pageSize: 200,
-            pageIndex: 0,
-            filterParameters: [],
-            sortParameters: {
-                field: 'ppoNo',
-                order: 'asc',
-            },
-        };
-        this.ppoList$ = this.ppoListService.getAllPensioners(payload);
+
+        this.ppoList$ = this.ppoListService.getPensioners();
     }
 
     pensionbill() {

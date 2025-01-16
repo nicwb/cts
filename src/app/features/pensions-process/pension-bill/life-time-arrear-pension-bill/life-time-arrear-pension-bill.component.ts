@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { PensionPPODetailsService } from 'src/app/api';
+import {
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionPPODetailsService,
+} from 'src/app/api';
 
 @Component({
     selector: 'app-life-time-arrear-pension-bill',
@@ -9,7 +12,7 @@ import { PensionPPODetailsService } from 'src/app/api';
     styleUrls: ['./life-time-arrear-pension-bill.component.scss'],
 })
 export class LifeTimeArrearPensionBillComponent implements OnInit {
-    allManualPPOReceipt$?: Observable<any>;
+    allManualPPOReceipt$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     lifeTimeArrearPensionBillForm: FormGroup = new FormGroup({});
     constructor(
         private ServiceForId: PensionPPODetailsService,

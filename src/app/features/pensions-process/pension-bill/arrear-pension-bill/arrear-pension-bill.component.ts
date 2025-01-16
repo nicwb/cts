@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { firstValueFrom, Observable } from 'rxjs';
-import { PensionPPODetailsService } from 'src/app/api';
+import {
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionPPODetailsService,
+} from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -10,7 +13,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
     styleUrls: ['./arrear-pension-bill.component.scss'],
 })
 export class ArrearPensionBillComponent implements OnInit {
-    allManualPPOReceipt$?: Observable<any>;
+    allManualPPOReceipt$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     arrearPensionBillForm: FormGroup = new FormGroup({});
 
     constructor(

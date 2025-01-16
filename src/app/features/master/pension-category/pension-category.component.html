@@ -96,7 +96,7 @@
                 placeholder="Select a Primary CategoryName"
                 (click)="get_id_from_primary_category()"
                 (onFilter)="find_extra_primary_id($event)"
-                (onChange)="clicked_Primary($event)"
+                (onChange)="clicked_Primary()"
                 (ngModelChange)="onClearPrimary($event)"
                 id="primary"
             >
@@ -129,7 +129,7 @@
                 placeholder="Select a SubCategoryName"
                 (click)="get_id_from_sub_category()"
                 (onFilter)="find_extra_sub_id($event)"
-                (onChange)="clicked_Sub($event)"
+                (onChange)="clicked_Sub()"
                 (ngModelChange)="onClearSub($event)"
                 id="sub"
             >
