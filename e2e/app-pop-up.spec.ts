@@ -25,7 +25,7 @@ test('should navigate to next page and display different records if pagination i
     const maxRecordsPerPage = 10;
 
     // Act & Assert
-    if (initialRecordsCount < maxRecordsPerPage) {
+    if (initialRecordsCount <= maxRecordsPerPage) {
         console.log('no pagination');
         const nextButton = page.locator('.p-paginator-next');
         const prevButton = page.locator('.p-paginator-prev');
@@ -75,7 +75,7 @@ test('should navigate to previous page if pagination is possible', async ({
     const maxRecordsPerPage = 10;
 
     // Act & Assert
-    if (initialRecordsCount < maxRecordsPerPage) {
+    if (initialRecordsCount <= maxRecordsPerPage) {
         console.log('no pagination');
 
         const nextButton = page.locator('.p-paginator-next');
@@ -127,7 +127,7 @@ test('should jump to last page if pagination is possible', async ({ page }) => {
     const maxRecordsPerPage = 10;
 
     // Act & Assert
-    if (initialRecordsCount < maxRecordsPerPage) {
+    if (initialRecordsCount <= maxRecordsPerPage) {
         console.log('no pagination');
         const lastButton = page.locator('.p-paginator-last');
         const isDisabled = await lastButton.evaluate(
