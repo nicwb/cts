@@ -15,6 +15,7 @@ import {
     APIResponseStatus,
     PensionCategoryMasterService,
     PensionFactoryService,
+    PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -40,7 +41,7 @@ export class SubCategoryComponent implements OnInit {
     sub!: string;
     called_from_pension = false;
 
-    subCategory$?: Observable<any>;
+    subCategory$?: Observable<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'subCategory';
 
     constructor(

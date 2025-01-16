@@ -8,10 +8,13 @@
  * Do not edit the class manually.
  */
 
-export interface EPpoNFPEntryDTO {
+export interface EPpoNomineeEntryDTO {
     dataSource?: { [key: string]: any } | null;
-    ropa?: number;
-    nfpAmount?: number;
-    nfpFromDate?: string;
-    nfpUpToDate?: string;
+    nomineeType: string;
+    serialNo: number;
+    nomineeName: string;
+    dateOfBirth: string;
+    relation: string;
+    nomineeShare?: number | null;
+    nomineeAdultMinor: string;
 }

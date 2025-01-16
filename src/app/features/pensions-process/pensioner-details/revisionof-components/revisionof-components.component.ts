@@ -12,6 +12,8 @@ import {
     PpoBillResponseDTOJsonAPIResponse,
     PpoComponentRevisionEntryDTO,
     PensionBankBranchService,
+    PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
@@ -27,8 +29,8 @@ export class RevisionofComponentsComponent implements OnInit {
     pensionForm: FormGroup = new FormGroup({}); // Declare pensionForm
     tableForm: FormGroup = new FormGroup({}); // Declare pensionForm
     componentForm: FormGroup = new FormGroup({}); // Declare pensionForm
-    ppoList$: Observable<any>;
-    pensionComponent$: Observable<any>;
+    ppoList$: Observable<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>;
+    pensionComponent$: Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
     showTable: boolean = false;
     getpensionbill!: PpoBillResponseDTOJsonAPIResponse;
     ppoId?: number;

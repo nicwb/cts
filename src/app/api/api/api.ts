@@ -12,6 +12,8 @@ export * from './pension-component-rate.service';
 import { PensionComponentRateService } from './pension-component-rate.service';
 export * from './pension-component-revision.service';
 import { PensionComponentRevisionService } from './pension-component-revision.service';
+export * from './pension-convert-to-family-pension.service';
+import { PensionConvertToFamilyPensionService } from './pension-convert-to-family-pension.service';
 export * from './pension-eppo-receipt.service';
 import { PensionEPPOReceiptService } from './pension-eppo-receipt.service';
 export * from './pension-factory.service';
@@ -42,6 +44,7 @@ export const APIS = [
     PensionComponentService,
     PensionComponentRateService,
     PensionComponentRevisionService,
+    PensionConvertToFamilyPensionService,
     PensionEPPOReceiptService,
     PensionFactoryService,
     PensionFileStorageService,

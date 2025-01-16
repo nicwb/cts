@@ -23,10 +23,6 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { DynamicListQueryParameters } from '../model/dynamic-list-query-parameters';
-// @ts-ignore
-import { ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/list-all-ppo-receipts-response-dtoi-enumerable-dynamic-list-result-json-api-response';
-// @ts-ignore
 import { ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse } from '../model/list-all-ppo-receipts-response-dto-table-response-dto-json-api-response';
 // @ts-ignore
 import { ManualPpoReceiptEntryDTO } from '../model/manual-ppo-receipt-entry-dto';
@@ -252,22 +248,19 @@ export class PensionManualPPOReceiptService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllPpoReceipts(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>;
     public getAllPpoReceipts(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -275,10 +268,9 @@ export class PensionManualPPOReceiptService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPpoReceipts(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -286,10 +278,9 @@ export class PensionManualPPOReceiptService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPpoReceipts(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -330,21 +321,6 @@ export class PensionManualPPOReceiptService {
             localVarHttpContext = new HttpContext();
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -359,12 +335,11 @@ export class PensionManualPPOReceiptService {
         }
 
         let localVarPath = `/api/v1/manual-ppo/receipts`;
-        return this.httpClient.request<ListAllPpoReceiptsResponseDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

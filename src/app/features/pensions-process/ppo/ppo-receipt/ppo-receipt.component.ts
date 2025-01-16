@@ -9,6 +9,7 @@ import {
     ManualPpoReceiptResponseDTO,
     PensionFactoryService,
     APIResponseStatus,
+    ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { SelectItem } from 'primeng/api';
 import { DatePipe, Location } from '@angular/common';
@@ -72,7 +73,7 @@ export class PpoReceiptComponent implements OnDestroy {
         { label: 'PSA Sanction', value: 'P' },
         { label: 'Other', value: 'O' },
     ];
-    ppoRecipt$!: Observable<any>;
+    ppoRecipt$!: Observable<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'ppoRecipt';
 
     constructor(

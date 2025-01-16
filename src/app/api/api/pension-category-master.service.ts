@@ -25,11 +25,7 @@ import { Observable } from 'rxjs';
 // @ts-ignore
 import { AccountHeadListItemResponseDTOTableResponseDTOJsonAPIResponse } from '../model/account-head-list-item-response-dto-table-response-dto-json-api-response';
 // @ts-ignore
-import { DynamicListQueryParameters } from '../model/dynamic-list-query-parameters';
-// @ts-ignore
 import { PensionCategoryEntryDTO } from '../model/pension-category-entry-dto';
-// @ts-ignore
-import { PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pension-category-list-dtoi-enumerable-dynamic-list-result-json-api-response';
 // @ts-ignore
 import { PensionCategoryListDTOTableResponseDTOJsonAPIResponse } from '../model/pension-category-list-dto-table-response-dto-json-api-response';
 // @ts-ignore
@@ -37,15 +33,11 @@ import { PensionCategoryResponseDTOJsonAPIResponse } from '../model/pension-cate
 // @ts-ignore
 import { PensionPrimaryCategoryEntryDTO } from '../model/pension-primary-category-entry-dto';
 // @ts-ignore
-import { PensionPrimaryCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pension-primary-category-response-dtoi-enumerable-dynamic-list-result-json-api-response';
-// @ts-ignore
 import { PensionPrimaryCategoryResponseDTOJsonAPIResponse } from '../model/pension-primary-category-response-dto-json-api-response';
 // @ts-ignore
 import { PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse } from '../model/pension-primary-category-response-dto-table-response-dto-json-api-response';
 // @ts-ignore
 import { PensionSubCategoryEntryDTO } from '../model/pension-sub-category-entry-dto';
-// @ts-ignore
-import { PensionSubCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/pension-sub-category-response-dtoi-enumerable-dynamic-list-result-json-api-response';
 // @ts-ignore
 import { PensionSubCategoryResponseDTOJsonAPIResponse } from '../model/pension-sub-category-response-dto-json-api-response';
 // @ts-ignore
@@ -607,22 +599,19 @@ export class PensionCategoryMasterService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
     public getAllCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -630,10 +619,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -641,10 +629,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -683,21 +670,6 @@ export class PensionCategoryMasterService {
             options && options.context;
         if (localVarHttpContext === undefined) {
             localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -714,12 +686,11 @@ export class PensionCategoryMasterService {
         }
 
         let localVarPath = `/api/v1/pension/category`;
-        return this.httpClient.request<PensionCategoryListDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -730,22 +701,19 @@ export class PensionCategoryMasterService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllPrimaryCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionPrimaryCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>;
     public getAllPrimaryCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -753,10 +721,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionPrimaryCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPrimaryCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -764,10 +731,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionPrimaryCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllPrimaryCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -806,21 +772,6 @@ export class PensionCategoryMasterService {
             options && options.context;
         if (localVarHttpContext === undefined) {
             localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -837,12 +788,11 @@ export class PensionCategoryMasterService {
         }
 
         let localVarPath = `/api/v1/pension/primary-category`;
-        return this.httpClient.request<PensionPrimaryCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -853,22 +803,19 @@ export class PensionCategoryMasterService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllSubCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PensionSubCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>;
     public getAllSubCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -876,10 +823,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PensionSubCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllSubCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -887,10 +833,9 @@ export class PensionCategoryMasterService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PensionSubCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllSubCategories(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -931,21 +876,6 @@ export class PensionCategoryMasterService {
             localVarHttpContext = new HttpContext();
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -960,12 +890,11 @@ export class PensionCategoryMasterService {
         }
 
         let localVarPath = `/api/v1/pension/sub-category`;
-        return this.httpClient.request<PensionSubCategoryResponseDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

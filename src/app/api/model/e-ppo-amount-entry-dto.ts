@@ -8,10 +8,13 @@
  * Do not edit the class manually.
  */
 
-export interface EPpoEFPEntryDTO {
+export interface EPpoAmountEntryDTO {
     dataSource?: { [key: string]: any } | null;
-    ropa?: number;
-    efpAmount?: number;
-    efpFromDate?: string;
-    efpUpToDate?: string;
+    amountType: string;
+    classificationId?: number | null;
+    fromDate?: string | null;
+    toDate?: string | null;
+    amount?: number;
+    consolidated?: boolean;
+    categoryId?: number | null;
 }

@@ -11,8 +11,8 @@
 export interface ListAllPpoReceiptsResponseDTO {
     id?: number;
     treasuryReceiptNo?: string | null;
-    ppoNo?: string | null;
-    pensionerName?: string | null;
-    receiptDate?: string;
-    dateOfCommencement?: string;
+    ppoNo: string | null;
+    pensionerName: string | null;
+    receiptDate: string;
+    dateOfCommencement: string;
 }

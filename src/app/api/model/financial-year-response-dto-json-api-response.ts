@@ -8,11 +8,11 @@
  * Do not edit the class manually.
  */
 import { APIResponseStatus } from './api-response-status';
-import { NomineeListResponseDTO } from './nominee-list-response-dto';
+import { FinancialYearResponseDTO } from './financial-year-response-dto';
 
-export interface NomineeListResponseDTOJsonAPIResponse {
-    result?: NomineeListResponseDTO;
+export interface FinancialYearResponseDTOJsonAPIResponse {
+    result?: FinancialYearResponseDTO;
     apiResponseStatus?: APIResponseStatus;
     message?: string | null;
 }
-export namespace NomineeListResponseDTOJsonAPIResponse {}
+export namespace FinancialYearResponseDTOJsonAPIResponse {}

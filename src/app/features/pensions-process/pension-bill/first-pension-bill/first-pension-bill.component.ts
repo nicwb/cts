@@ -13,6 +13,7 @@ import {
     PpoPaymentListItemDTO,
     ObjectJsonAPIResponse,
     PensionBankBranchService,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
@@ -34,7 +35,7 @@ export class FirstPensionBillComponent implements OnInit {
     isPrint: boolean = false;
     isDataLoaded: boolean = false;
     billdate = new Date().toISOString().split('T')[0];
-    ppoList$: Observable<any>;
+    ppoList$: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
     response!: InitiateFirstPensionBillResponseDTOJsonAPIResponse;
     hasGenerated: boolean = true;
     hasSaved: boolean = false;

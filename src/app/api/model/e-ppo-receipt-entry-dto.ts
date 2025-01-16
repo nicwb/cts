@@ -8,14 +8,14 @@
  * Do not edit the class manually.
  */
 import { FileEntryDTO } from './file-entry-dto';
-import { EPpoEFPEntryDTO } from './e-ppo-efp-entry-dto';
-import { NomineeListResponseDTO } from './nominee-list-response-dto';
-import { EPpoNFPEntryDTO } from './e-ppo-nfp-entry-dto';
+import { EPpoNomineeEntryDTO } from './e-ppo-nominee-entry-dto';
+import { EPpoAmountEntryDTO } from './e-ppo-amount-entry-dto';
 
 export interface EPpoReceiptEntryDTO {
     dataSource?: { [key: string]: any } | null;
     ppoNo: string;
     pensionApplnNo: string;
+    treasuryCode: string;
     freshRevisionFlag: string;
     ppoTypeCode: string;
     issuingLetterNo: string;
@@ -38,10 +38,9 @@ export interface EPpoReceiptEntryDTO {
     qualifyingServiceGrossDays?: number | null;
     employeeLastPay?: number | null;
     employeeLastPayNotional?: number | null;
-    commutedPensionAmount: number;
-    efp?: EPpoEFPEntryDTO;
-    nfp?: EPpoNFPEntryDTO;
-    nominees?: NomineeListResponseDTO;
+    commutedPensionAmount?: number;
+    eppoAmounts?: Array<EPpoAmountEntryDTO> | null;
+    eppoNominees?: Array<EPpoNomineeEntryDTO> | null;
     photoFile?: FileEntryDTO;
     signatureFile?: FileEntryDTO;
     ePpoFile?: FileEntryDTO;

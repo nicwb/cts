@@ -14,6 +14,8 @@ import { DatePipe } from '@angular/common';
 import { SelectItem } from 'primeng/api';
 import {
     APIResponseStatus,
+    PensionBreakupResponseDTOTableResponseDTO,
+    PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse,
     PensionComponentService,
     PensionFactoryService,
 } from 'src/app/api';
@@ -37,7 +39,7 @@ export class ComponentComponent implements OnInit {
     Payment_Deduction: SelectItem[] = [];
     isTableVisible: boolean = false;
 
-    component$?: Observable<any>;
+    component$?: Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'component';
 
     constructor(

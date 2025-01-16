@@ -4,7 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import {
     PensionComponentRateService,
     PensionCategoryMasterService,
-    ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse,
+    PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { Router } from '@angular/router';
@@ -15,14 +15,14 @@ import { Router } from '@angular/router';
     styleUrls: ['./component-rate-revisions.component.scss'],
 })
 export class ComponentRateRevisionsComponent implements OnInit {
-    pensionCategoryIdComponent$?: Observable<any>;
+    pensionCategoryIdComponent$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
     PensionComponentRateForm: FormGroup;
-    responseData?: ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse;
     cols: any[] = [];
     records: any[] = [];
     tableData: any[] = [];
     loading: boolean = false;
     showTable = false;
+    responseData: undefined;
 
     constructor(
         private pensionCategoryMasterService: PensionCategoryMasterService,
@@ -42,18 +42,8 @@ export class ComponentRateRevisionsComponent implements OnInit {
     }
 
     initializeCategoryIdComponent(): void {
-        const payload = {
-            pageSize: 10,
-            pageIndex: 0,
-            filterParameters: [],
-            sortParameters: {
-                field: '',
-                order: '',
-            },
-        };
-
         this.pensionCategoryIdComponent$ =
-            this.pensionCategoryMasterService.getAllCategories(payload);
+            this.pensionCategoryMasterService.getCategories();
     }
 
     openNewComponentRateForm(): void {
@@ -92,27 +82,20 @@ export class ComponentRateRevisionsComponent implements OnInit {
                     categoryId
                 )
             )
-                .then(
-                    (
-                        response: ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse
-                    ) => {
-                        if (
-                            response.apiResponseStatus === 'Success' &&
-                            response.result
-                        ) {
-                            this.tableData = response.result.data || [];
-                            this.setupTableColumns(
-                                response.result.headers || []
-                            );
-                        } else {
-                            this.toastService.showError(
-                                response.message ||
-                                    'Error fetching component rates'
-                            );
-                        }
-                        this.loading = false;
+                .then((response) => {
+                    if (
+                        response.apiResponseStatus === 'Success' &&
+                        response.result
+                    ) {
+                        this.tableData = response.result.data || [];
+                        this.setupTableColumns(response.result.headers || []);
+                    } else {
+                        this.toastService.showError(
+                            response.message || 'Error fetching component rates'
+                        );
                     }
-                )
+                    this.loading = false;
+                })
                 .catch((error) => {
                     this.toastService.showError(error);
                     this.loading = false;

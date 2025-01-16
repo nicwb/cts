@@ -12,10 +12,12 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { SelectItem } from 'primeng/api';
 import {
+    AccountHeadListItemResponseDTOTableResponseDTOJsonAPIResponse,
     APIResponseStatus,
     PensionCategoryMasterService,
     PensionFactoryService,
     PensionPrimaryCategoryEntryDTO,
+    PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,9 +37,9 @@ export class PrimaryComponent implements OnInit {
     primary!: string;
     sub!: string;
     isTableVisible: boolean = false;
-    primaryCategory$?: Observable<any>;
+    primaryCategory$?: Observable<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>;
     suffix = 'primaryCategory';
-    hoaService$?: Observable<any>;
+    hoaService$?: Observable<AccountHeadListItemResponseDTOTableResponseDTOJsonAPIResponse>;
     accountHeadId: any; //used to fetch accountHeadId for saving primary category
 
     constructor(

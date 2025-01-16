@@ -30,6 +30,8 @@ import {
     PensionStatusDTOJsonAPIResponse,
     PensionPPOStatusService,
     PensionStatusFlag,
+    ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse,
+    PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { async, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -47,8 +49,8 @@ export class DetailsComponent implements OnInit, OnChanges {
     subDivOptions: SelectItem[];
     ppoFormDetails: FormGroup = new FormGroup({});
     ManualEntrySearchForm: FormGroup = new FormGroup({});
-    allManualPPOReceipt$?: Observable<any>;
-    catDescription$?: Observable<any>;
+    allManualPPOReceipt$?: Observable<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>;
+    catDescription$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
     eppoid?: any;
     categoryDescriptionFelid: string = '';
     @Input() ppoId?: string | undefined | null;

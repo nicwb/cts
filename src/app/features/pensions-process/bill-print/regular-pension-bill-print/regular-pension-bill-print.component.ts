@@ -15,10 +15,10 @@ import {
     PensionCategoryMasterService,
     BankResponseDTO,
     BranchResponseDTO,
+    PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { FileGenerationBillPrintService } from 'src/app/core/services/File_Generation_Bill_Print/file-generation-bill-print.service';
 import { firstValueFrom, forkJoin, Observable, tap } from 'rxjs';
-import { BranchDeatilsDTOJsonAPIResponse } from 'src/app/api/model/branch-deatils-dto-json-api-response';
 
 @Component({
     selector: 'app-regular-pension-bill-print',
@@ -32,7 +32,7 @@ export class RegularPensionBillPrintComponent implements OnInit {
     banksBranch?: any;
     banks: any = [];
     categoryCode: any = [];
-    categoryComponent$?: Observable<any>;
+    categoryComponent$?: Observable<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>;
     selectedBranchIds: number[] = [];
 
     constructor(
@@ -100,8 +100,7 @@ export class RegularPensionBillPrintComponent implements OnInit {
             selectedBranches: [[], Validators.required],
         });
 
-        this.categoryComponent$ =
-            this.categoryService.getAllCategories(payload);
+        this.categoryComponent$ = this.categoryService.getCategories();
 
         // Fetch banks
         this.fetchBanks();

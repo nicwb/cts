@@ -25,13 +25,9 @@ import { Observable } from 'rxjs';
 // @ts-ignore
 import { ComponentRateEntryDTO } from '../model/component-rate-entry-dto';
 // @ts-ignore
-import { ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse } from '../model/component-rate-response-dtoi-enumerable-dynamic-list-result-json-api-response';
-// @ts-ignore
 import { ComponentRateResponseDTOJsonAPIResponse } from '../model/component-rate-response-dto-json-api-response';
 // @ts-ignore
 import { ComponentRateResponseDTOTableResponseDTOJsonAPIResponse } from '../model/component-rate-response-dto-table-response-dto-json-api-response';
-// @ts-ignore
-import { DynamicListQueryParameters } from '../model/dynamic-list-query-parameters';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -250,22 +246,19 @@ export class PensionComponentRateService {
     }
 
     /**
-     * @param dynamicListQueryParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
     public getAllComponentRates(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>;
+    ): Observable<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>;
     public getAllComponentRates(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -273,10 +266,9 @@ export class PensionComponentRateService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpResponse<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllComponentRates(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -284,10 +276,9 @@ export class PensionComponentRateService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>
+        HttpEvent<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getAllComponentRates(
-        dynamicListQueryParameters?: DynamicListQueryParameters,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -328,21 +319,6 @@ export class PensionComponentRateService {
             localVarHttpContext = new HttpContext();
         }
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -357,12 +333,11 @@ export class PensionComponentRateService {
         }
 
         let localVarPath = `/api/v1/pension/component-rate`;
-        return this.httpClient.request<ComponentRateResponseDTOIEnumerableDynamicListResultJsonAPIResponse>(
+        return this.httpClient.request<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>(
             'patch',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dynamicListQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

@@ -13,6 +13,7 @@ import {
     PensionPPOStatusService,
     PensionStatusFlag,
     PensionStatusEntryDTO,
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { firstValueFrom, Observable } from 'rxjs';
 import { PensionFactoryService } from 'src/app/api';
@@ -81,24 +82,24 @@ import { PopupTableModule } from 'src/app/core/popup-table/popup-table.module';
     ],
 })
 export class PensionerStatusComponent implements OnInit {
-    Ppoid?: any;
-    PensionerName?: any;
-    PensionerType?: any;
-    allManualPPOReceipt$?: Observable<any>;
-    text?: any;
+    Ppoid?: string | number;
+    PensionerName?: string;
+    PensionerType?: string;
+    allManualPPOReceipt$?: Observable<PensionerListItemDTOTableResponseDTOJsonAPIResponse>;
+    text?: string;
     checked: boolean = false;
     reasondiv: boolean = false;
-    startdate?: any;
-    AccountHolder?: any;
-    statusOption?: any;
+    startdate?: string;
+    AccountHolder?: string;
+    statusOption?: undefined | string | boolean | null;
     reasons?: any;
     StatusDetailsDiv: boolean = false;
-    pastStatusWef?: any;
-    pastReason?: any;
-    pastRemark?: any;
-    SlNo?: any = 0;
-    from_date: any;
-    reason: any;
+    pastStatusWef?: string | number | undefined;
+    pastReason?: string | number | undefined;
+    pastRemark?: string | number | undefined;
+    SlNo?: string | number | undefined = 0;
+    from_date: string | number | undefined;
+    reason: string | number | undefined;
     From_Date = 'From Date';
 
     statusFormDetails: FormGroup = new FormGroup({});
@@ -145,7 +146,7 @@ export class PensionerStatusComponent implements OnInit {
 
         this.PensionerName = event.pensionerName;
         const response = await firstValueFrom(
-            this.ppoListService.getPensionerByPpoId(this.Ppoid)
+            this.ppoListService.getPensionerByPpoId(Number(this.Ppoid))
         );
         this.fill(response);
 
