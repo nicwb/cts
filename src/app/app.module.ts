@@ -36,6 +36,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { PdfViewerComponent } from './core/services/pdf-viewer/pdf-viewer.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 @NgModule({
     declarations: [
@@ -89,6 +90,7 @@ import { DialogService } from 'primeng/dynamicdialog';
             deps: [AuthTokenService, NgxRolesService],
             multi: true,
         },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         MessageService,
         LoadingIndeterminateService,
         DatePipe,
