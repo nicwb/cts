@@ -23,11 +23,20 @@ test('Pagenation should be enabled', async ({ page, pensionPage }) => {
     expect(nextPageRecords).not.toEqual(firstPageRecords);
 });
 test('Pagenation should be disabled', async ({ page, pensionPage }) => {
-    await pensionPage.savePpoDetails();
-    await page.goto('pension-process/approval/ppo-approval', {
+    const ppoId = await pensionPage.savePpoDetailsAndApprove();
+    await page.goto('pension-process/pension-bill/first-pension-bill', {
         waitUntil: 'domcontentloaded',
     });
-    await pensionPage.openPopup();
+    await page
+        .locator('p-button')
+        .getByRole('button', { name: 'Open' })
+        .click();
+    await page.click('app-popup-table');
+
+    const dialog = page.locator('.p-dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('input#float-input')).toBeVisible();
+    await expect(dialog.locator('p-table')).toBeVisible();
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
     console.log('initialRecordsCount', initialRecordsCount);
     const nextButton = page.locator('.p-paginator-next');
@@ -46,4 +55,19 @@ test('Pagenation should be disabled', async ({ page, pensionPage }) => {
     );
     expect(isNextDisabled).toBe(true);
     expect(isPrevDisabled).toBe(true);
+
+    await page.getByLabel('Search data').click();
+    await page.getByLabel('Search data').fill('' + ppoId);
+    await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
+    await page.getByRole('textbox', { name: 'Select a date' }).click();
+    await page.locator('.p-datepicker-today').click();
+    await expect(
+        page.getByRole('textbox', { name: 'Select a date' })
+    ).not.toBeEmpty();
+
+    await page.getByRole('button', { name: 'Generate' }).click();
+    await pensionPage.okSuccess();
+
+    await page.getByRole('button', { name: 'Save' }).click();
+    await pensionPage.okSuccess();
 });

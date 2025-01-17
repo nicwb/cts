@@ -55,8 +55,8 @@ test('Check "no records found" message', async ({ page }) => {
         ).toBeVisible();
     }
     // ACT
-    const secondRow = dialog.locator('tbody tr').nth(1);
-    await secondRow.click();
+    const thirdRow = dialog.locator('tbody tr').nth(2);
+    await thirdRow.click();
 
     const searchButton = page.getByRole('button', { name: 'Search' });
     await searchButton.click();
