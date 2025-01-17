@@ -1,0 +1,180 @@
+<div class="card py-2">
+    <div>
+        <!-- Divider for Pension Status Section -->
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center mb-2">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Arrear Pension Bill Generation</b>
+            </div>
+        </p-divider>
+    </div>
+</div>
+<div class="card py-2">
+    <div >
+        <p-divider align="left" type="solid">
+            <div class="inline-flex align-items-center mb-2">
+                <i class="pi pi-clone mr-2"></i>
+                <b>Select Search Details</b>
+            </div>
+        </p-divider>
+    </div>
+    <div class="grid grid-cols-2 grid-rows-1 gap-4">
+        <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-12">
+                <label
+                    htmlFor="selectPensionProperty"
+
+                    ><b>Pension Category ID & Description</b></label
+                ><br>
+
+                <input
+                    class="pt-2 pb-2 w-2"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="category_id"
+                />
+                <input
+                    class="ml-2 pt-2 pb-2 w-8"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="category_description"
+                />
+
+                <app-popup-table
+                    name=""
+                    [service$]="allPensionCategory2$"
+                    (return)="
+                        handleSelectedRowByPensionCategory2(
+                            $event
+                        )
+                    "
+                ></app-popup-table>
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Current Breakup ID & Description</b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-2"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="component_id"
+                />
+                <input
+                    class="ml-2 pt-2 pb-2 w-8"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="component_description"
+                />
+                <app-popup-table
+                    name=""
+                    [service$]="pensionComponent2$"
+                    (return)="
+                        handleSelectedRowByPensionComponent2(
+                            $event
+                        )
+                    "
+                ></app-popup-table>
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Previous Breakup ID & Description</b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-2"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="previous_breakup_id"
+                />
+                <input
+                class="ml-4 pt-2 pb-2 w-8"
+                pInputText
+                type="text"
+                [(ngModel)]="previous_description"
+            />
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Actual Effective From Date	</b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-5"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="effective_from_date"
+                />
+            </div>
+        </div>
+        <div class="field col-12 md:col-5">
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Difference of Percentage </b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-5"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="percentage"
+                />
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Current Rate Value & Effective From Date </b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-4"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="CRV"
+                />
+                <input
+                    class="ml-3 pt-2 pb-2 w-4"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="EFD"
+                />
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Previous Rate Value & Effective From Date </b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-4"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="PRV"
+                />
+                <input
+                    class="ml-3 pt-2 pb-2 w-4"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="PEFD"
+                />
+            </div>
+            <div class="field col-12 md:col-12">
+                <label class="text-lg"
+                    ><b>Number of Months between
+                        Current Effective From Date
+                        and Actual Effective From Date
+                        Difference of Percentage
+                        </b></label
+                ><br>
+                <input
+                    class="pt-2 pb-2 w-5"
+                    pInputText
+                    type="text"
+                    [(ngModel)]="no_of_months"
+                />
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col mt-1 align-items-center justify-content-center">
+        <p-button
+            label="Get PPO List"
+            icon="pi pi-bookmark"
+            styleClass="p-button-raised"
+            (click)="saveData()"
+            [disabled]="!DaArrearPensionForm.valid"
+        ></p-button>
+    </div>
+</div>
