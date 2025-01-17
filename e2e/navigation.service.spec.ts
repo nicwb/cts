@@ -19,6 +19,7 @@ test('Navigation Service', async ({ pensionPage, page }) => {
     const messageLocator = page.locator(
         'text="No manual ppo receipt found!. Do you want add it?"'
     );
+    await expect(messageLocator).toBeVisible();
     await page.getByRole('button', { name: 'Yes' }).click();
     expect(page.url()).toContain(
         'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
