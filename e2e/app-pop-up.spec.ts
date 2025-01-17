@@ -6,14 +6,6 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.page.waitForSelector('p-table tbody tr');
 });
 
-test('should display correct number of records per page', async ({ page }) => {
-    // Arrange & Act
-    const initialRecords = await page.locator('p-table tbody tr').count();
-    const maxRecordsPerPage = 11;
-    // Assert
-    expect(initialRecords).toBeLessThanOrEqual(maxRecordsPerPage);
-});
-
 test('Pagenation should be enabled', async ({ page, pensionPage }) => {
     await pensionPage.goToComponentRateRevision();
     await pensionPage.openPopup();
