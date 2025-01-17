@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToPrimaryComponent();
 });
 
-test('Create New Entry Using New Button', async ({ page, pensionPage }) => {
+test('Create New Entry Using New Button', async ({ page, }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const element1 = page.locator('app-popup-table');
