@@ -42,8 +42,13 @@
     <div class="sm:w-3">
       <label for="relation1" class="block mb-1 text-color text-lg">Branch Name:</label>
       <p-dropdown [style]="{ width: '100%' }" placeholder="Select" [options]="branchName" [(ngModel)]="selectedBranchId"
-        appendTo="body" [readonly]="!isReadonly" (onChange)="selectedBranchId = $event.value"
-        inputId="icon3"></p-dropdown>
+        appendTo="body" [readonly]="!isReadonly"
+        (onChange)="selectedBranchId = $event.value; onBranchChange($event.value)" inputId="icon3"></p-dropdown>
+    </div>
+    <div class="sm:w-1">
+      <label for="slNo1" class="block mb-1 text-color text-lg">IFSC Code</label>
+      <input pInputText placeholder="IFSC Code" class="p-inputtext p-component p-element w-full" [readonly]="true"
+        [(ngModel)]="ifscCode">
     </div>
 
     <div class="col-12 md:col-2 mt-2">
@@ -65,17 +70,18 @@
   </div>
 
   <div class="flex gap-2 justify-content-center ">
-    <button label="Search" pRipple pButton (click)="getNewPpo()" class="p-element p-ripple p-button p-component" icon="pi pi-search"
-      [disabled]="!selectedBankId || !selectedBranchId || !selectedPpoType || !isSearch">
+    <button label="Search" pRipple pButton (click)="getNewPpo()" class="p-element p-ripple p-button p-component"
+      icon="pi pi-search" [disabled]="!selectedBankId || !selectedBranchId || !selectedPpoType || !isSearch">
     </button>
-    <button label="Reset" pRipple pButton (click)="reset()" class="p-element p-ripple p-button-secondary p-component" icon="pi pi-refresh">
+    <button label="Reset" pRipple pButton (click)="reset()" class="p-element p-ripple p-button-secondary p-component"
+      icon="pi pi-refresh">
     </button>
   </div>
 </div>
 
 <div class="card" *ngIf="!isTable">
   <p-table [value]="filteredPensionerData" [scrollable]="true" [paginator]="true" [rows]="5"
-    [rowsPerPageOptions]="[5, 10, 20, 50]" [responsiveLayout]="'scroll'" >
+    [rowsPerPageOptions]="[5, 10, 20, 50]" [responsiveLayout]="'scroll'">
     <ng-template pTemplate="header">
       <tr>
         <th>Ppo ID</th>
@@ -134,10 +140,10 @@
     </button>
     <button label="save all" pButton pRipple (click)="saveAllRows()" [disabled]="!hasUnsavedChanges" icon="pi pi-check"
       class="p-element p-ripple p-button-success p-component" *ngIf="selectedPpoType !== 'UpdatedPPO'">
-  </button>
-        <button label="Refrish" pButton pRipple (click)="refrish()"
-          class="p-element p-ripple p-component p-button-secondary" icon="pi pi-refresh">
-        </button>
+    </button>
+    <button label="Refrish" pButton pRipple (click)="refrish()"
+      class="p-element p-ripple p-component p-button-secondary" icon="pi pi-refresh">
+    </button>
   </div>
 
   <p-dialog [(visible)]="isDialogVisible" [modal]="true" [header]="'Save Status'" [closable]="true"

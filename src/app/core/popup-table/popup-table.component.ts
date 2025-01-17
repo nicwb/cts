@@ -89,21 +89,24 @@ export class PopupTableComponent {
             this.return.emit(event);
         }
     }
-
     searchRecords(): void {
         const lowerCaseSearchTerm = this.searchTerm
             ? this.searchTerm.toLowerCase()
             : '';
+
         if (this.searchTerm) {
             this.data.data = this.records.filter((record) => {
-                // Get the value of the first column
-                const firstColumnValue = record[this.cols[0].field]; // Ensure cols is populated correctly
-                // Check if the first column matches the search term exactly
-                return (
-                    firstColumnValue &&
-                    firstColumnValue.toString().toLowerCase() ===
-                        lowerCaseSearchTerm
-                );
+                // Check if any column in the record matches the search term
+                return this.cols.some((col) => {
+                    const columnValue = record[col.field];
+                    return (
+                        columnValue &&
+                        columnValue
+                            .toString()
+                            .toLowerCase()
+                            .includes(lowerCaseSearchTerm)
+                    );
+                });
             });
 
             if (this.data.data.length === 0) {
@@ -116,6 +119,7 @@ export class PopupTableComponent {
             this.onresult = '';
         }
     }
+
     loadMore(event: any) {
         this.debug(this.totalRecords);
     }
