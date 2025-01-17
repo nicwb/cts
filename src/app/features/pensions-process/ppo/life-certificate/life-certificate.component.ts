@@ -19,8 +19,9 @@ import { ChangeDetectorRef } from '@angular/core';
 })
 export class LifeCertificateComponent implements OnInit {
     bankName: { label: string; value: number }[] = [];
-    branchName: { label: string; value: number }[] = [];
+    branchName: { label: string; value: number; ifscCode: string }[] = [];
     selectedBranchId: number | null = null;
+    ifscCode: string = '';
     pensionerData: any[] = [];
     selectedPpoType: string = '';
     filteredPensionerData: any[] = [];
@@ -61,7 +62,9 @@ export class LifeCertificateComponent implements OnInit {
                 this.branchName = bankBranchName.map((item) => ({
                     label: item.branchName ?? '',
                     value: item.id ?? 0,
+                    ifscCode: item.ifscCode ?? 'N/A',
                 }));
+                console.log('ghfgh', this.branchName);
             }
         } catch {
             this.ToastService.showError('Something went wrong');
@@ -401,5 +404,15 @@ export class LifeCertificateComponent implements OnInit {
     refrish() {
         this.filteredPensionerData = JSON.parse(JSON.stringify(this._oldData)); // Create a fresh copy to avoid mutation
         this.cdr.detectChanges(); // Ensure UI updates
+    }
+    onBranchChange(branchId: number): void {
+        const selectedBranch = this.branchName.find(
+            (branch) => branch.value === branchId
+        );
+        if (selectedBranch) {
+            this.ifscCode = selectedBranch.ifscCode; // Update IFSC code
+        } else {
+            this.ifscCode = ''; // Reset if no branch is found
+        }
     }
 }
