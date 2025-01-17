@@ -367,8 +367,8 @@ export class PensionModule {
             console.log('No available components to select.');
         }
 
-        // Generate a random index to select a row
-        const randomIndex = Math.floor(Math.random() * rowCount);
+        // Generate a random index to select a row, skipping the first 4 rows
+        const randomIndex = Math.floor(Math.random() * (rowCount - 3)) + 3;
         const randomRow = rows.nth(randomIndex);
 
         // Click on the randomly selected row

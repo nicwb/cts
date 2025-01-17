@@ -1,11 +1,15 @@
+import { PensionManualPPOReceiptService } from 'src/app/api';
 import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
 });
 
-test.skip('Navigation Service', async ({ pensionPage, page }) => {
-    //Issue
+test('Navigation Service', async ({ pensionPage, page }) => {
+    // Delete all unused manual PPO receipts
+    const pensionManualPPOReceiptService = new PensionManualPPOReceiptService();
+    await pensionManualPPOReceiptService.deactivateUnusedPpoReceipts();
+
     await page.goto('pension-process/ppo/entry', {
         waitUntil: 'domcontentloaded',
     });
@@ -15,23 +19,15 @@ test.skip('Navigation Service', async ({ pensionPage, page }) => {
     const messageLocator = page.locator(
         'text="No manual ppo receipt found!. Do you want add it?"'
     );
-    const isMessageVisible = await messageLocator
-        .isVisible()
-        .catch(() => false);
-
-    if (isMessageVisible) {
-        await page.getByRole('button', { name: 'Yes' }).click();
-        expect(page.url()).toContain(
-            'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
-        );
-        await expect(
-            page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
-        await page.getByRole('button', { name: 'Submit' }).click();
-        await expect(page.getByRole('button', { name: 'Yes' })).toBeVisible();
-        await page.getByRole('button', { name: 'Yes' }).click();
-        expect(page.url()).toContain('pension-process/ppo/entry/new');
-    }
+    await page.getByRole('button', { name: 'Yes' }).click();
+    expect(page.url()).toContain(
+        'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
+    );
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await expect(page.getByRole('button', { name: 'Yes' })).toBeVisible();
+    await page.getByRole('button', { name: 'Yes' }).click();
+    expect(page.url()).toContain('pension-process/ppo/entry/new');
     await page.getByRole('button', { name: 'Save' }).click();
     await pensionPage.okSuccess();
 });

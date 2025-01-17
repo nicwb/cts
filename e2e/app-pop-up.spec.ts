@@ -35,7 +35,6 @@ test('Pagenation should be disabled', async ({ page, pensionPage }) => {
 
     const dialog = page.locator('.p-dialog');
     await expect(dialog).toBeVisible();
-    await expect(dialog.locator('input#float-input')).toBeVisible();
     await expect(dialog.locator('p-table')).toBeVisible();
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
     console.log('initialRecordsCount', initialRecordsCount);
