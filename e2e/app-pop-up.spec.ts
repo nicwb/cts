@@ -2,8 +2,6 @@ import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
-    // Add wait for table to be fully loaded
-    await pensionPage.page.waitForSelector('p-table tbody tr');
 });
 
 test('Pagenation should be enabled', async ({ page, pensionPage }) => {

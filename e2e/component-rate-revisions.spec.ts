@@ -82,6 +82,7 @@ test('Check "no records found" message', async ({ page }) => {
     expect(firstRowText).toBeTruthy();
     expect(firstRowText).toContain('No records found');
 });
+
 test('Verify Successful Search Functionality', async ({ page }) => {
     // ARRANGE
     const expectedDialogHeaders = [
@@ -94,7 +95,7 @@ test('Verify Successful Search Functionality', async ({ page }) => {
     await page.click('app-popup-table');
     const dialog = page.locator('div[role="dialog"]');
     await expect(dialog).toBeVisible();
-    const thirdRow = dialog.locator('tbody tr').nth(2);
+    const fourthRow = dialog.locator('tbody tr').nth(3);
 
     for (const header of expectedDialogHeaders) {
         await expect(
@@ -102,7 +103,7 @@ test('Verify Successful Search Functionality', async ({ page }) => {
         ).toBeVisible();
     }
     // ACT
-    await thirdRow.click();
+    await fourthRow.click();
     const searchButton = page.getByRole('button', { name: 'Search' });
     await searchButton.click();
 
