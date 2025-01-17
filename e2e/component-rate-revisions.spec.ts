@@ -37,11 +37,6 @@ test('Verifies form validation, reset, and refresh functionality', async ({
 
 test('Check "no records found" message', async ({ page }) => {
     // ARRANGE
-    const dialog = page.locator('div[role="dialog"]');
-    const table = page.locator('p-table');
-    const secondRow = dialog.locator('tbody tr').nth(1);
-    await secondRow.click();
-    const searchButton = page.getByRole('button', { name: 'Search' });
 
     const expectedDialogHeaders = [
         'Category ID',
@@ -51,6 +46,7 @@ test('Check "no records found" message', async ({ page }) => {
     ];
 
     await page.click('app-popup-table');
+    const dialog = page.locator('div[role="dialog"]');
     await expect(dialog).toBeVisible();
 
     for (const header of expectedDialogHeaders) {
@@ -59,8 +55,10 @@ test('Check "no records found" message', async ({ page }) => {
         ).toBeVisible();
     }
     // ACT
+    const secondRow = dialog.locator('tbody tr').nth(1);
     await secondRow.click();
 
+    const searchButton = page.getByRole('button', { name: 'Search' });
     await searchButton.click();
 
     // ASSERT
@@ -71,6 +69,7 @@ test('Check "no records found" message', async ({ page }) => {
         page.locator('input[formControlName="description"]')
     ).toBeVisible();
 
+    const table = page.locator('p-table');
     await expect(table).toBeVisible();
 
     const rows = table.locator('tbody tr');
@@ -85,12 +84,6 @@ test('Check "no records found" message', async ({ page }) => {
 });
 test('Verify Successful Search Functionality', async ({ page }) => {
     // ARRANGE
-    const dialog = page.locator('div[role="dialog"]');
-    const table = page.locator('p-table');
-    const thirdRow = dialog.locator('tbody tr').nth(2);
-    await thirdRow.click();
-    const searchButton = page.getByRole('button', { name: 'Search' });
-
     const expectedDialogHeaders = [
         'Category ID',
         'Primary Category ID',
@@ -99,7 +92,9 @@ test('Verify Successful Search Functionality', async ({ page }) => {
     ];
 
     await page.click('app-popup-table');
+    const dialog = page.locator('div[role="dialog"]');
     await expect(dialog).toBeVisible();
+    const thirdRow = dialog.locator('tbody tr').nth(2);
 
     for (const header of expectedDialogHeaders) {
         await expect(
@@ -108,7 +103,7 @@ test('Verify Successful Search Functionality', async ({ page }) => {
     }
     // ACT
     await thirdRow.click();
-
+    const searchButton = page.getByRole('button', { name: 'Search' });
     await searchButton.click();
 
     // ASSERT
@@ -119,6 +114,7 @@ test('Verify Successful Search Functionality', async ({ page }) => {
         page.locator('input[formControlName="description"]')
     ).toBeVisible();
 
+    const table = page.locator('p-table');
     await expect(table).toBeVisible();
 
     const rows = table.locator('tbody tr');
