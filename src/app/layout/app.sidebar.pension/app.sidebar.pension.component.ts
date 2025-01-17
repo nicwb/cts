@@ -154,6 +154,12 @@ export class AppSidebarPensionComponent implements OnInit {
                                             'pension-process/pension-bill/life-time-arrear-pension-bill',
                                         ],
                                     },
+                                    {
+                                        label: 'DA Arrear Pension',
+                                        routerLink: [
+                                            'pension-process/pension-bill/da-arrear-pension',
+                                        ],
+                                    },
                                 ],
                             },
                             {

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PensionBillComponent } from './pension-bill.component';
 import { FirstPensionBillModule } from './first-pension-bill/first-pension-bill.module';
-import { first } from 'rxjs';
 import { RouterModule, Routes } from '@angular/router';
 import { OptionCardModule } from 'src/app/shared/modules/option-card/option-card.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +18,7 @@ import { ArrearPensionBillComponent } from './arrear-pension-bill/arrear-pension
 import { ArrearPensionBillModule } from './arrear-pension-bill/arrear-pension-bill.module';
 import { LifeTimeArrearPensionBillComponent } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.component';
 import { LifeTimeArrearPensionBillModule } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.module';
+import { DaArrearPensionComponent } from './da-arrear-pension/da-arrear-pension.component';
 
 type NewType = Routes;
 
@@ -47,6 +47,11 @@ const routes: NewType = [
         path: 'life-time-arrear-pension-bill',
         component: LifeTimeArrearPensionBillComponent,
         data: { breadcrumb: 'LifeTimeArrearPensionBillComponent' },
+    },
+    {
+        path: 'da-arrear-pension',
+        component: DaArrearPensionComponent,
+        data: { breadcrumb: 'DaArrearPensionComponent' },
     },
 ];
 @NgModule({
