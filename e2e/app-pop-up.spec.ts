@@ -23,19 +23,11 @@ test('Pagenation should be enabled', async ({ page, pensionPage }) => {
     expect(nextPageRecords).not.toEqual(firstPageRecords);
 });
 test('Pagenation should be disabled', async ({ page, pensionPage }) => {
-    const ppoId = await pensionPage.savePpoDetailsAndApprove();
-    await page.goto('pension-process/pension-bill/first-pension-bill', {
+    await page.goto('pension-process/approval/ppo-approval', {
         waitUntil: 'domcontentloaded',
     });
-    await page
-        .locator('p-button')
-        .getByRole('button', { name: 'Open' })
-        .click();
-    await page.click('app-popup-table');
+    const dialog = await pensionPage.openPopup();
 
-    const dialog = page.locator('.p-dialog');
-    await expect(dialog).toBeVisible();
-    await expect(dialog.locator('p-table')).toBeVisible();
     const initialRecordsCount = await page.locator('p-table tbody tr').count();
     console.log('initialRecordsCount', initialRecordsCount);
     const nextButton = page.locator('.p-paginator-next');
@@ -52,21 +44,12 @@ test('Pagenation should be disabled', async ({ page, pensionPage }) => {
             el.classList.contains('p-disabled') ||
             el.getAttribute('aria-disabled') === 'true'
     );
+    const firstRow = dialog.locator('tbody tr:first-child');
+    await expect(firstRow).toBeVisible();
+    await firstRow.click();
     expect(isNextDisabled).toBe(true);
     expect(isPrevDisabled).toBe(true);
 
-    await page.getByLabel('Search data').click();
-    await page.getByLabel('Search data').fill('' + ppoId);
-    await page.getByRole('cell', { name: '' + ppoId, exact: true }).click();
-    await page.getByRole('textbox', { name: 'Select a date' }).click();
-    await page.locator('.p-datepicker-today').click();
-    await expect(
-        page.getByRole('textbox', { name: 'Select a date' })
-    ).not.toBeEmpty();
-
-    await page.getByRole('button', { name: 'Generate' }).click();
-    await pensionPage.okSuccess();
-
-    await page.getByRole('button', { name: 'Save' }).click();
-    await pensionPage.okSuccess();
+    await page.getByRole('button', { name: 'Approve' }).click();
+    await page.getByRole('button', { name: 'OK' }).click();
 });

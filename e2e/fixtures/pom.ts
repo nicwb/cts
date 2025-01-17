@@ -233,11 +233,12 @@ export class PensionModule {
         });
     }
 
-    async goToFirstPensionBillPrint(): Promise<void> {
+    async goToFirstPensionBillPrint(): Promise<Locator> {
+        const ppoId =
+            await this.savePpoDetailsApproveGenerateFirstPensionBill();
         await this.page.goto(
             '/pension-process/bill-print/first-pension-bill-print'
         );
-
         await expect(this.page.locator('text=General Bill')).toBeVisible();
         await expect(
             this.page.locator('text=Classification Bill')
@@ -259,6 +260,15 @@ export class PensionModule {
         await expect(
             this.page.locator('button:has-text("Generate Report")')
         ).toBeDisabled();
+
+        await this.page.locator('p-button').click();
+        const dialog = this.page.locator('.p-dialog');
+        await expect(dialog.locator('input#float-input')).toBeVisible();
+        await this.page.locator('input#float-input').fill(ppoId);
+        const firstRow = dialog.locator('tbody tr:first-child');
+        await expect(firstRow).toBeVisible();
+        await firstRow.click();
+        return dialog;
     }
 
     async goToPensionCategory(): Promise<void> {

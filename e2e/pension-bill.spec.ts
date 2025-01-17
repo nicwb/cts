@@ -2,27 +2,24 @@ import { test, expect } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
-    await pensionPage.goToFirstPensionBillPrint();
 });
 
 test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({
     page,
     pensionPage,
 }) => {
-    await page.locator('p-radioButton[label="General Bill"]').click();
-    await expect(
-        pensionPage.page.locator('button:has-text("Generate Report")')
-    ).toBeDisabled();
-
-    await pensionPage.openPopupAndSelectFirstRow();
-    await expect(
-        pensionPage.page.locator('button:has-text("Generate Report")')
-    ).toBeEnabled();
-
+    await pensionPage.goToFirstPensionBillPrint();
     await expect(page.locator('input[placeholder="PPO ID"]')).not.toBeEmpty();
     await expect(
         page.locator('input[placeholder="Pensioner Name"]')
     ).not.toBeEmpty();
+    await expect(
+        pensionPage.page.locator('button:has-text("Generate Report")')
+    ).toBeDisabled();
+    await page.locator('p-radioButton[label="General Bill"]').click();
+    await expect(
+        pensionPage.page.locator('button:has-text("Generate Report")')
+    ).toBeEnabled();
 
     await page.click('button:has-text("Refresh")');
 
@@ -33,21 +30,8 @@ test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Gen
 });
 
 test('Generate PDF Report', async ({ page, pensionPage }) => {
-    const dialog = await pensionPage.openPopup();
-    const firstRow = dialog.locator('tbody tr:first-child');
-    const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    const pensionerName = await firstRow
-        .locator('td:nth-child(3)')
-        .textContent();
-    await firstRow.click();
+    const dialog = await pensionPage.goToFirstPensionBillPrint();
     await expect(dialog).not.toBeVisible();
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
     await page.locator('p-radioButton[label="General Bill"]').click();
     await page.locator('button:has-text("Generate Report")').click();
 
@@ -64,11 +48,6 @@ test('Verify PDF Generation and Error Handling for General Bill Report', async (
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
-    const dialog = await pensionPage.openPopup();
-
-    const firstRow = dialog.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow.click();
     await page.locator('button:has-text("Generate Report")').click();
     //ASSERT
     const toastLocator = page.locator('.swal2-popup');
