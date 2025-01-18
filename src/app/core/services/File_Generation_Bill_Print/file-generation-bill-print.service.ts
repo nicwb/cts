@@ -67,6 +67,8 @@ export class FileGenerationBillPrintService {
         this.dialogService.open(PdfViewerComponent, {
             header: 'Regular Pension Bill',
             width: '70%',
+            height: '90vh',
+            maximizable: true,
             data: {
                 message: `PDF "${title}" has been generated.`,
                 pdfData,
@@ -78,17 +80,25 @@ export class FileGenerationBillPrintService {
     }
 
     private showDialog(message: string, pdfData: string | null): void {
-        this.dialogService.open(PdfViewerComponent, {
-            header: 'PDF Generation',
-            width: '70%',
-            data: {
-                message,
-                pdfData,
-                ppoCount: 0,
-                totalAmount: 0,
-                generatedDate: new Date(),
-            },
-        });
+        if (message === 'No regular bills available for PDF generation.') {
+            Swal.fire({
+                icon: 'info',
+                title: message,
+                confirmButtonText: 'OK',
+            });
+        } else {
+            this.dialogService.open(PdfViewerComponent, {
+                header: 'PDF Generation',
+                width: '70%',
+                data: {
+                    message,
+                    pdfData,
+                    ppoCount: 0,
+                    totalAmount: 0,
+                    generatedDate: new Date(),
+                },
+            });
+        }
     }
 
     private addHeader(
@@ -157,21 +167,11 @@ export class FileGenerationBillPrintService {
             { header: 'By Transfer', dataKey: 'byTransferAmount' },
         ];
 
-        let rows;
+        let rows: (number | string)[][] = [];
 
         if (!Array.isArray(ppoBills) || ppoBills.length === 0) {
-            // Create a single row with the account head wise total
-            rows = [
-                [
-                    {
-                        content: `Account Head Wise Total: ${bill.grossAmount}`,
-                        colSpan: columns.length, // Set colspan to the total number of columns
-                        styles: { halign: 'center' }, // Center align the text
-                    },
-                ],
-            ];
+            rows = [];
         } else {
-            // Proceed with the existing table generation logic if PPO Bills are available
             rows = ppoBills.map((bill, index) => [
                 index + 1,
                 bill.ppoId,
@@ -192,7 +192,7 @@ export class FileGenerationBillPrintService {
             ]);
         }
 
-        // Call autoTable for both cases
+        // Call autoTable for the main table
         (doc as any).autoTable({
             head: [columns.map((col) => col.header)],
             body: rows,
@@ -212,42 +212,62 @@ export class FileGenerationBillPrintService {
             },
         });
 
-        return (doc as any).autoTable.previous.finalY + 10;
+        // Add Account Head Wise Total section immediately after the table
+        const accountHeadWiseTotalRow = [
+            {
+                content: `Account Head Wise Total: ${bill.grossAmount}`,
+                colSpan: columns.length,
+                styles: { halign: 'center', lineWidth: 0 }, // Center align and remove line width
+            },
+        ];
+
+        // Use the finalY of the previous table directly to avoid gaps
+        (doc as any).autoTable({
+            head: [],
+            body: [accountHeadWiseTotalRow],
+            startY: (doc as any).autoTable.previous.finalY, // No gap
+            theme: 'plain',
+            styles: {
+                fontSize: 8,
+                cellPadding: 2,
+                overflow: 'linebreak',
+                lineColor: [0, 0, 0],
+                lineWidth: 0, // Remove the border
+            },
+        });
+
+        // Add footer section immediately after the Account Head Wise Total
+        const footerStartY = (doc as any).autoTable.previous.finalY + 10; // Adjust this if needed
+
+        doc.setFontSize(8);
+        doc.text('Bill Gross Rs. :' + bill.grossAmount, 10, footerStartY);
+        doc.text('Net Amount:' + bill.netAmount, 40, footerStartY);
+        doc.text('Pay Rs. :' + bill.payAmount, 10, footerStartY + 5);
+        doc.text(
+            'Rupees (in words):' +
+                bill.amountInWords +
+                ' as per beneficiary list enclosed through ECS',
+            40,
+            footerStartY + 5
+        );
+        doc.text('----------------------------------', 175, footerStartY + 10);
+        doc.text('T.O. / A.T.O', 185, footerStartY + 15);
+        doc.text('By-Transfer Credit Rs. 0', 10, footerStartY + 20);
+        doc.setFontSize(8);
+        doc.text('INSTRUCTIONS', 60, footerStartY + 20);
+        doc.text('----------------------------------', 175, footerStartY + 20);
+        doc.text('T.O. / A.T.O', 185, footerStartY + 25);
+        const instructions = [
+            "1. The Pensioner's Single / Joint named account with the family pensioner will be operated for drawal of pension only.",
+            '2. In the event of the death of the Pensioner, the Bank will intimate the actual date of death of the pensioner and the Bank will not release the Balance in the',
+            '  account of the Pensioner unless clearance is received from Treasury.',
+            '3. If the pension has remained undrawn for six months the Bank will send an intimation to that effect to the Treasury.',
+        ];
+        doc.text(instructions.join('\n'), 10, footerStartY + 30);
+
+        return footerStartY + 40; // Adjust return value if needed
     }
-
     private addFooter(doc: jsPDF, bill: any, regularBills: any[]): void {
-        const pageHeight = doc.internal.pageSize.height;
-        const finalY = (doc as any).autoTable.previous.finalY + 10;
-
-        if (finalY + 100 > pageHeight) {
-            doc.addPage();
-        }
-
-        const footerStartY = doc.internal.pageSize.height - 100;
-
-        // Only display the footer section when no PPO Bills are available
-        if (!bill.ppoBills || bill.ppoBills.length === 0) {
-            doc.setFontSize(8);
-            doc.text('Bill Gross Rs. :' + bill.grossAmount, 10, footerStartY);
-            doc.text('Net Amount:' + bill.netAmount, 70, footerStartY);
-            doc.text('Pay Rs. :' + bill.payAmount, 10, footerStartY + 5);
-            doc.text(
-                'Rupees (in words):' + bill.amountInWords,
-                70,
-                footerStartY + 5
-            );
-            doc.text('By-Transfer Credit Rs. 0', 10, footerStartY + 10);
-            doc.setFontSize(8);
-            doc.text('INSTRUCTIONS', 60, footerStartY + 20);
-            const instructions = [
-                "1. The Pensioner's Single / Joint named account with the family pensioner will be operated for drawal of pension only.",
-                '2. In the event of the death of the Pensioner, the Bank will intimate the actual date of death of the pensioner and the Bank will not release the Balance in the',
-                '  account of the Pensioner unless clearance is received from Treasury.',
-                '3. If the pension has remained undrawn for six months the Bank will send an intimation to that effect to the Treasury.',
-            ];
-            doc.text(instructions.join('\n'), 10, footerStartY + 30);
-        }
-
         const billIndex = regularBills.indexOf(bill);
         if (billIndex === -1) {
             Swal.fire({

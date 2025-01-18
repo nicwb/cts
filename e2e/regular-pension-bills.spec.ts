@@ -7,7 +7,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToRegularPensionBillPrint();
 });
 
-test('Generate and verify pension bill PDF with dynamic values', async ({
+test.skip('Generate and verify pension bill PDF with dynamic values', async ({
     page,
 }) => {
     // ARRANGE

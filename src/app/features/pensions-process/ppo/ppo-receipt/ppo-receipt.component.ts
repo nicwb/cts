@@ -9,7 +9,6 @@ import {
     ManualPpoReceiptResponseDTO,
     PensionFactoryService,
     APIResponseStatus,
-    ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
 import { SelectItem } from 'primeng/api';
 import { DatePipe, Location } from '@angular/common';
@@ -73,7 +72,7 @@ export class PpoReceiptComponent implements OnDestroy {
         { label: 'PSA Sanction', value: 'P' },
         { label: 'Other', value: 'O' },
     ];
-    ppoRecipt$!: Observable<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>;
+    ppoRecipt$!: Observable<any>;
     suffix = 'ppoRecipt';
 
     constructor(
@@ -448,7 +447,17 @@ export class PpoReceiptComponent implements OnDestroy {
     }
 
     formatDateToString(date: any): string | null {
-        return date ? this.datePipe.transform(date, 'yyyy-MM-dd') : null;
+        if (!date) {
+            return null;
+        }
+        if (typeof date === 'string' && date.includes('-')) {
+            // Handle 'dd-MM-yyyy' formatted strings
+            const [day, month, year] = date.split('-').map(Number);
+            const parsedDate = new Date(year, month - 1, day); // Month is 0-indexed in JavaScript
+            return this.datePipe.transform(parsedDate, 'yyyy-MM-dd'); // Format to 'yyyy-MM-dd'
+        }
+        // If the date is already a valid Date object or ISO string
+        return this.datePipe.transform(date, 'yyyy-MM-dd');
     }
 
     resetAndCloseDialog(): void {

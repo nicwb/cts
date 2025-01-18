@@ -17,7 +17,7 @@ jobs:
         id: selected-branch
         run: |
           if [[ -n $(git ls-remote --heads origin ${{ github.head.ref || github.ref }}) ]]; then
-            echo "branch-name=${{ github.head.ref || github.ref }}" >> $GITHUB_OUTPUT
+            echo "branch-name=${{ github.head.ref_name || github.ref_name }}" >> $GITHUB_OUTPUT
           else
             echo "branch-name=pension-module" >> $GITHUB_OUTPUT
           fi
@@ -54,12 +54,14 @@ jobs:
           cd ~/ifms-cts
           git submodule update --init --recursive
           echo "IFMS-CTS Branch: ${{ needs.database.outputs.branch-name }}"
+          git checkout ${{ needs.database.outputs.branch-name }}
           git pull origin ${{ needs.database.outputs.branch-name }}
           git show --oneline -s
           cp .env.docker .env
           cd dotnet/CTS-BE
           git fetch --all
           git branch
+          git checkout ${{ needs.database.outputs.branch-name }}
           git pull origin ${{ needs.database.outputs.branch-name }}
           echo "dotnet/CTS-BE Branch: ${{ needs.database.outputs.branch-name }}"
           git show --oneline -s
