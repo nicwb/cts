@@ -1,0 +1,38 @@
+<h2 class="bg-color text-xl"><b> Exgratia Bill Approval</b></h2>
+<div class="card py-2">
+  <p-divider align="left" type="solid">
+    <div class="inline-flex align-items-center">
+      <i class="pi pi-clone mr-2"></i>
+      <b>Exgratia Pension Details</b>
+    </div>
+  </p-divider>
+  <form action="">
+    <div class="row">
+      <div class="p-fluid p-formgrid grid mt-2">
+        <div class="field col-12 md:col-3 sm:flex justify-content-center">
+          <div class="formgroup-inline" style="display: flex; align-items: center">
+            <label class="mr-2 " for="months">Month/Year:</label>
+          </div>
+        </div>
+        <div class="field col-12 md:col-8 flex  ">
+          <div class="mr-3">
+            <p-calendar view="month" dateFormat="mm" [style]=" { width: '100%' }"></p-calendar>
+          </div>
+          <div class="mr-3">
+            <p-calendar view="year" dateFormat="yy" [style]=" { width: '91%' }">
+            </p-calendar>
+          </div>
+          <div class="mr-4">
+            <button class="p-2 bg-blue-400 rounded-md  hover:bg-gray-300 flex items-center justify-center">
+              <i class="pi pi-search pRipple pButton" style="font-size: 1rem"></i>
+            </button>
+          </div>
+          <div class="sm:col-span-2 flex justify-center mr-4">
+            <button label="Search" pRipple pButton class="p-element p-ripple p-button p-component"
+              icon="pi pi-search"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
