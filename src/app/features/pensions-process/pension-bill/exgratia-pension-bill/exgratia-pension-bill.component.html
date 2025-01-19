@@ -1,0 +1,132 @@
+<h2 class="bg-color text-xl"><b> Exgratia Bill Generation</b></h2>
+<div class="card py-4">
+  <form *ngIf="ExgratiaBillGenerationtForm" [formGroup]="ExgratiaBillGenerationtForm">
+    <div class="row">
+      <div class="p-fluid p-formgrid grid justify-content-center">
+        <div class="field col-12 md:col-3 flex justify-content-center">
+          <div class="formgroup-inline" style="display: flex; align-items: center">
+            <label class="mr-2 " for="months">Month:</label>
+
+            <p-dropdown placeholder="Select a Month" [style]="{ width: '100%' }" [options]="months"
+              formControlName="months"></p-dropdown>
+          </div>
+        </div>
+        <div class="field col-12 md:col-3 flex justify-content-center">
+          <div class="formgroup-inline" style="display: flex; align-items: center">
+            <label class="mr-2" for="year">Year:</label>
+            <p-calendar view="year" [showIcon]="true" (onSelect)="onYearSelect($event)" formControlName="year"
+              dateFormat="yy" [style]=" { width: '100%' }">
+            </p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-content-center">
+        <!-- Radio Buttons for Bill Generation -->
+        <div class="mr-3">
+          <p-radioButton formControlName="religion" value="hindu" label="Hindu"><b>Hindu</b></p-radioButton>
+        </div>
+        <div class="mr-3">
+          <p-radioButton formControlName="religion" value="muslim" label="Muslim"></p-radioButton>
+        </div>
+        <div class="mr-3">
+          <p-radioButton formControlName="religion" value="others" label="Others"></p-radioButton>
+        </div>
+      </div>
+      <p-divider align="left" type="solid">
+        <div class="inline-flex align-items-center">
+          <i class="pi pi-clone mr-2"></i>
+          <b>Select</b>
+        </div>
+      </p-divider>
+      <div class="formgroup-inline">
+        <div class="field-radiobutton mb-3">
+          <p-radioButton name="choices" value="all" formControlName="choices"
+            label="All Bank/ All Category"></p-radioButton>
+        </div>
+        <div class="field-radiobutton mb-3">
+          <p-radioButton name="choices" value="allBankSpecificCategory" formControlName="choices"
+            label="All Bank/Specific Category"></p-radioButton>
+        </div>
+        <div class="field-radiobutton mb-3">
+          <p-radioButton name="choices" value="specificBackAllCategory" formControlName="choices"
+            label="Specific Bank/All Category"></p-radioButton>
+        </div>
+        <div class="field-radiobutton mb-3">
+          <p-radioButton name="choices" value="specificBankSpecificCategory" formControlName="choices"
+            label="Specific Bank/Specific Category"></p-radioButton>
+        </div>
+        <div class="field-radiobutton mb-3">
+          <p-radioButton name="choices" value="specificBranchOrBranches" formControlName="choices"
+            label="Specific Branch or Branches" (onChange)="onBranchChoiceChange()"></p-radioButton>
+        </div>
+      </div>
+
+      <!-- ! it is occure after radio button click -->
+      <!-- <div *ngIf="shouldShowCategoryInputControl()" class="grid align-items-center mt-2">
+        <label for="category" class="text-lg md:w-auto w-full gap-2 md:col-2 my-2">Select Category:</label>
+        <div class="flex flex-col md:flex-row w-full md:w-auto items-center space-y-2 md:space-y-0 md:space-x-2">
+          <input id="category" class="p-2 border rounded w-full md:w-auto h-10" type="text" pInputText
+            formControlName="category" placeholder="Category" />
+
+          <app-popup-table class="h-10 w-full md:w-auto" [service$]="categoryComponent$"
+         ></app-popup-table>
+        </div>
+      </div> -->
+      <!-- <div *ngIf="shouldShowBankInputControl()" class="grid align-items-center mt-2">
+        <label for="bank" class="text-lg md:w-auto w-full gap-2 md:col-2 my-2">
+          Select Bank:
+        </label>
+        <div class="col-12 md:col-4">
+          <!-- ![options]="banks"
+          <p-dropdown [style]="{ width: '100%' }" optionLabel="label" [filter]="true" filterBy="name" [showClear]="true"
+            (onChange)="onChangeBank($event)" formControlName="bank" placeholder="Bank Name">
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+              <div class="flex align-items-center gap-2">
+                <div>
+                  {{ selectedOption.label }}
+                </div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div> -->
+      <!-- Dropdown for bank selection for branches -->
+      <!-- <div *ngIf="shouldShowBankForBranchesControl()" class="grid align-items-center mt-2">
+        <label for="bank" class="text-lg md:w-auto w-full gap-2 md:col-2 my-2">Select Bank:</label>
+        <div class="col-12 md:col-4">
+
+          <p-dropdown optionLabel="label" formControlName="bank" (onChange)="onChangeBankForBranches($event)"
+            placeholder="Select a Bank"></p-dropdown>
+        </div>
+      </div> -->
+      <!-- MultiSelect for branches -->
+      <!-- <div class="grid align-items-center mt-2">
+        <label class="text-lg md:w-auto w-full gap-2 md:col-2 my-2">Select Branches:</label>
+        <div class="col-12 md:col-4">
+          <!-- ! optionLabel="branchName"
+          <p-multiSelect placeholder="Select Branches" formControlName="selectedBranches"></p-multiSelect>
+          <div *ngIf="
+                            ExgratiaBillGenerationtForm.get('selectedBranches')?.value
+                                .length > 0
+                        " class="mt-2">
+            Selected Branches:
+
+          </div>
+        </div>
+      </div> -->
+
+      <div style="border-bottom: 1px solid rgba(139, 167, 184, 0.514); margin: 20px 0;"></div>
+    </div>
+  </form>
+  <div class="flex flex-col mt-1 align-items-center justify-content-center">
+    <div class="flex flex-wrap gap-2">
+      <button *ngIf="ExgratiaBillGenerationtForm" pButton pRipple type="generateReport"
+        class="p-button-raised p-button-info" [disabled]="!ExgratiaBillGenerationtForm.valid">
+        Generate Report
+      </button>
+      <button pButton pRipple (click)="onRefresh()" type="refresh" class="p-button-raised p-button-info">
+        <i class="pi pi-refresh mr-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+</div>
