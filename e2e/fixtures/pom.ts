@@ -49,14 +49,14 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'OK' }).click();
     }
 
-    async approvePpo(ppoId: string) {
+    async approvePpo(ppoNo: string) {
         await this.page.goto('pension-process/approval/ppo-approval', {
             waitUntil: 'domcontentloaded',
         });
         await this.page.locator('p-button').click();
         const dialog = this.page.locator('.p-dialog');
         await expect(dialog.locator('input#float-input')).toBeVisible();
-        await this.page.locator('input#float-input').fill(ppoId);
+        await this.page.locator('input#float-input').fill(ppoNo);
         const firstRow = dialog.locator('tbody tr:first-child');
         await expect(firstRow).toBeVisible();
         await firstRow.click();
@@ -81,20 +81,20 @@ export class PensionModule {
         }).toPass({ timeout: 20_000 });
         await this.page.getByRole('button', { name: 'Save' }).click();
         await this.okSuccess();
-        const ppoId = await this.page
-            .locator('input[formcontrolname="ppoId"]')
+        const ppoNo = await this.page
+            .locator('input[formcontrolname="ppoNo"]')
             .inputValue();
-        return ppoId;
+        return ppoNo;
     }
 
     async savePpoDetailsAndApprove() {
-        const ppoId = await this.savePpoDetails();
-        await this.approvePpo(ppoId);
-        return ppoId;
+        const ppoNo = await this.savePpoDetails();
+        await this.approvePpo(ppoNo);
+        return ppoNo;
     }
 
     async savePpoDetailsApproveGenerateFirstPensionBill() {
-        const ppoId = await this.savePpoDetailsAndApprove();
+        const ppoNo = await this.savePpoDetailsAndApprove();
         await this.page.goto(
             'pension-process/pension-bill/first-pension-bill',
             { waitUntil: 'domcontentloaded' }
@@ -104,9 +104,9 @@ export class PensionModule {
             .getByRole('button', { name: 'Open' })
             .click();
         await this.page.getByLabel('Search data').click();
-        await this.page.getByLabel('Search data').fill('' + ppoId);
+        await this.page.getByLabel('Search data').fill('' + ppoNo);
         await this.page
-            .getByRole('cell', { name: '' + ppoId, exact: true })
+            .getByRole('cell', { name: '' + ppoNo, exact: true })
             .click();
         await this.page.getByRole('textbox', { name: 'Select a date' }).click();
         await this.page.locator('.p-datepicker-today').click();
@@ -120,10 +120,10 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'Save' }).click();
         await this.okSuccess();
 
-        return ppoId;
+        return ppoNo;
     }
     async savePpoDetailsApproveGenerateFirstPensionBillAndRegularPensionBill() {
-        const ppoId =
+        const ppoNo =
             await this.savePpoDetailsApproveGenerateFirstPensionBill();
         await this.page.goto(
             'pension-process/pension-bill/regular-pension-bill',
@@ -135,11 +135,11 @@ export class PensionModule {
         // Assert
         await this.page.getByRole('button', { name: 'OK' }).waitFor();
         await this.page.getByRole('button', { name: 'OK' }).click();
-        return ppoId;
+        return ppoNo;
     }
 
     async shouldRetrieveFirstPensionBill(): Promise<Locator> {
-        const ppoId =
+        const ppoNo =
             await this.savePpoDetailsApproveGenerateFirstPensionBill();
         await this.goToRevisionOfComponents();
         const dialog = await this.openPopup();
@@ -150,7 +150,7 @@ export class PensionModule {
         await expect(dialog.locator('input#float-input')).toBeVisible();
 
         await expect(dialog.locator('input#float-input')).toBeVisible();
-        await this.page.locator('input#float-input').fill(ppoId);
+        await this.page.locator('input#float-input').fill(ppoNo);
         const firstRow = dialog.locator('tbody tr:first-child');
         await expect(firstRow).toBeVisible();
         await firstRow.click();
@@ -234,7 +234,7 @@ export class PensionModule {
     }
 
     async goToFirstPensionBillPrint(): Promise<Locator> {
-        const ppoId =
+        const ppoNo =
             await this.savePpoDetailsApproveGenerateFirstPensionBill();
         await this.page.goto(
             '/pension-process/bill-print/first-pension-bill-print'
@@ -264,7 +264,7 @@ export class PensionModule {
         await this.page.locator('p-button').click();
         const dialog = this.page.locator('.p-dialog');
         await expect(dialog.locator('input#float-input')).toBeVisible();
-        await this.page.locator('input#float-input').fill(ppoId);
+        await this.page.locator('input#float-input').fill(ppoNo);
         const firstRow = dialog.locator('tbody tr:first-child');
         await expect(firstRow).toBeVisible();
         await firstRow.click();

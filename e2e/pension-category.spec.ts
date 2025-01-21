@@ -10,9 +10,14 @@ test('Prevent Duplicate Pension Category Selection', async ({
     pensionPage,
 }) => {
     await expect(page.getByText('Primary Category Name:')).toBeVisible();
+    const maximizeButton = page.locator(
+        'span.p-dialog-header-maximize-icon.ng-tns-c94-42.pi.pi-window-maximize'
+    );
+    await maximizeButton.click();
 
     await page.locator('#primary').getByLabel('dropdown trigger').click();
-    await page.locator('p-dropdownitem.p-element').first().click();
+    const primaryDropdownOptions = page.locator('p-dropdownitem.p-element');
+    await primaryDropdownOptions.last().click();
 
     await page.locator('#sub').getByLabel('dropdown trigger').click();
     await page.waitForSelector('p-dropdownitem.p-element', {
@@ -24,7 +29,8 @@ test('Prevent Duplicate Pension Category Selection', async ({
             timeout: 500,
         })
         .catch(() => {});
-    await page.locator('p-dropdownitem.p-element').nth(1).click();
+    const secondaryDropdownOptions = page.locator('p-dropdownitem.p-element');
+    await secondaryDropdownOptions.last().click();
     // Submit button interaction
     await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Submit' }).click();
