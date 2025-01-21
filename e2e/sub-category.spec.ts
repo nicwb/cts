@@ -5,7 +5,7 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToSubCategory();
 });
 
-test('Check the input box is visible and working or not and submit it successfully', async ({
+test('Check Input Box Visibility and Submit Successfully', async ({
     page,
     pensionPage,
 }) => {
@@ -19,7 +19,10 @@ test('Check the input box is visible and working or not and submit it successful
     expect(true).toBeTruthy();
 });
 
-test('Duplicate Data Checking ', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Entry Submission In Sub Category ', async ({
+    page,
+    pensionPage,
+}) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New' }).click();
 

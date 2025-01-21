@@ -5,21 +5,23 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.goToComponentRate();
 });
 
-test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
+test('Verify Component Rate Form Functionality', async ({
+    pensionPage,
+    page,
+}) => {
     // Add component and category
     await pensionPage.selectFirstComponent();
+    await expect(page.getByText('Select Component')).toBeVisible();
     await pensionPage.selectFirstPensionCategory();
 
-    // Fill form with test data
+    // Fill form with test data, selecting a random date
     await pensionPage.fillComponentRateForm({
-        useCurrentDate: true,
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
 
     // Verify form fields
     await pensionPage.verifyComponentRateFormFields();
-
     // Test refresh functionality
     await pensionPage.resetForm([
         'categoryName',
@@ -36,39 +38,30 @@ test('Check form validation, reset, and refresh', async ({ pensionPage }) => {
     ]);
 });
 
-test.skip('should add new component, submit form with valid date, and display success message', async ({
-    pensionPage,
-}) => {
+test('Successfully Add New Component Rate', async ({ pensionPage, page }) => {
     // Add component and category
-    await pensionPage.selectFirstComponent();
-    await pensionPage.selectFirstPensionCategory();
+    const categoryId = await pensionPage.selectFirstComponent();
+    await expect(page.getByText('Select Component')).toBeVisible();
+    const billBreakupId = await pensionPage.selectFirstPensionCategory();
 
-    // Fill and submit form
+    // Fill and submit form with a valid random date
     await pensionPage.fillComponentRateForm({
-        day: Math.floor(Math.random() * 31) + 1 + '',
-        rateType: 'A',
-        rateAmount: Math.floor(Math.random() * 100),
-    });
-
-    // Submit form and handle success
-    await pensionPage.submitComponentRateForm();
-    await expect(pensionPage.page.locator('p-table')).toBeVisible();
-});
-
-test.skip('should show correct table', async ({ pensionPage }) => {
-    // Add component and category
-    await pensionPage.selectFirstComponent();
-    await pensionPage.selectFirstPensionCategory();
-
-    // Fill and submit form with random future date
-    const randomDays = Math.floor(Math.random() * 100) + 1;
-    await pensionPage.fillComponentRateForm({
-        daysFromNow: randomDays,
         rateType: 'A',
         rateAmount: Math.floor(Math.random() * 100),
     });
 
     // Submit form and verify table
-    await pensionPage.submitComponentRateForm();
-    await pensionPage.verifyComponentRateTableData();
+    await page.getByRole('button', { name: 'Submit' }).click();
+    await pensionPage.okSuccess();
+    const table = page.locator('p-table');
+    const rows = table.locator('tbody tr');
+    const rowCount = await rows.count();
+    expect(rowCount).toBeGreaterThan(0);
+    const lastRow = rows.nth(rowCount - 1);
+    const lastCategoryId = await lastRow.locator('td:nth-child(2)').innerText();
+    const lastBillBreakupId = await lastRow
+        .locator('td:nth-child(3)')
+        .innerText();
+    expect(lastCategoryId).toBe(categoryId);
+    expect(lastBillBreakupId).toBe(billBreakupId);
 });
