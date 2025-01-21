@@ -41,6 +41,7 @@ test('Generate PDF Report', async ({ page, pensionPage }) => {
 
 test('Verify PDF Generation and Error Handling for General Bill Report', async ({
     page,
+    pensionPage,
     browserName,
 }) => {
     //ARRANGE
