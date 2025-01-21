@@ -23,7 +23,7 @@ test('Prevent Duplicate Pension Category Selection', async ({
             state: 'hidden',
             timeout: 500,
         })
-        .catch(() => { });
+        .catch(() => {});
     await page.locator('p-dropdownitem.p-element').nth(1).click();
     // Submit button interaction
     await page.waitForLoadState('networkidle');
