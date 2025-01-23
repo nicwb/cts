@@ -184,6 +184,12 @@ export class AppSidebarPensionComponent implements OnInit {
                                             'pension-process/approval/family-pension-approval',
                                         ],
                                     },
+                                    {
+                                        label: 'DA Arrear Pension Approval',
+                                        routerLink: [
+                                            'pension-process/approval/da-arrear-pension-approval',
+                                        ],
+                                    },
                                     // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
                                 ],
                             },

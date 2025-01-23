@@ -1,0 +1,41 @@
+<h2 class="bg-color text-xl"><b> Arrear Pension Bill Approval/Deletion </b></h2>
+<div class="card ">
+  <div>
+    <!-- Divider for Select Search Details -->
+    <p-divider align="left" type="solid">
+      <div class="inline-flex align-items-center mb-2">
+        <i class="pi pi-clone mr-2"></i>
+        <b>Select Search Details</b>
+      </div>
+    </p-divider>
+  </div>
+  <!-- for year -->
+  <div class="p-fluid formgrid grid">
+    <div class="field col-12 md:col-4">
+      <label for=""><b> Year:</b></label>
+      <p-dropdown [options]="years" [(ngModel)]="selectedYear" optionLabel="label" [filter]="true" filterBy="name"
+        [showClear]="true" placeholder="Select a Year">
+        <ng-template pTemplate="selectedItem">
+          <div class="year-item country-item-value">
+            <div>{{selectedYear.label}}</div>
+          </div>
+        </ng-template>
+        <ng-template let-year pTemplate="item">
+          <div class="year-item">
+            <div>{{year.label}}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+    <!-- for month -->
+    <div class="field col-12 md:col-2 ">
+      <label for="type"><b>Month :</b></label>
+      <p-dropdown [options]="months" [(ngModel)]="month" placeholder="Select Month" class="w-full p-2"></p-dropdown>
+    </div>
+    <!-- for search button -->
+    <div class="field  col-12 md:col-2">
+      <label>&nbsp;</label>
+      <button pButton type="button" label="Search" class=" w-full" (click)="search()"></button>
+    </div>
+  </div>
+</div>
