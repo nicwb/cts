@@ -33,6 +33,7 @@ import { PpoApprovalModule } from './ppo-approval/ppo-approval.module';
 import { FirstpensionbillapprovalComponent } from './firstpensionbillapproval/firstpensionbillapproval.component';
 import { PpoApprovalComponent } from './ppo-approval/ppo-approval.component';
 import { FamilyPensionApprovalComponent } from './family-pension-approval/family-pension-approval.component';
+import { DaArrearPensionApprovalComponent } from './da-arrear-pension-approval/da-arrear-pension-approval.component';
 
 // Routes for lazy loading the modules
 const routes: Routes = [
@@ -58,6 +59,11 @@ const routes: Routes = [
     {
         path: 'family-pension-approval',
         component: FamilyPensionApprovalComponent,
+    },
+    {
+        path: 'da-arrear-pension-approval',
+        component: DaArrearPensionApprovalComponent,
+        data: { breadcrumb: 'DaArrearPensionApprovalComponent' },
     },
 ];
 
