@@ -20,7 +20,7 @@
     <!-- Form area -->
     <p-dialog [header]="popupHeader" [(visible)]="isInsertModalVisible" [modal]="true"
         [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
-        [baseZIndex]="10000" >
+        [baseZIndex]="10000">
         <form [formGroup]="familyNomineeForm" class="flex flex-column gap-4 mt-3">
             <div class="flex gap-2 xl:flex-row flex-column">
                 <div class="flex-auto">
@@ -40,20 +40,16 @@
                         Birth:</label>
                     <p-calendar class="p-component p-element w-full p-calendar"
                         formControlName="dateOfBirthFamilyDetails" placeholder="dd-mm-yyyy" appendTo="body"
-                        [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy" (onSelect)="calculateAge($event)"></p-calendar>
+                        [showIcon]="true" inputId="icon1" dateFormat="dd-mm-yy"
+                        (onSelect)="calculateAge($event)"></p-calendar>
                 </div>
                 <div class="flex-auto">
                     <label for="Eligibility" class="block mb-1 text-color text-lg">Eligibility:</label>
-                    <p-dropdown
-                        [options]="nomineeAdultMinor"
-                        [style]="{ width: '100%' }"
-                        formControlName="nomineeAdultMinor"
-                        placeholder="Select"
-                        appendTo="body"
-                        inputId="icon3"
+                    <p-dropdown [options]="nomineeAdultMinor" [style]="{ width: '100%' }"
+                        formControlName="nomineeAdultMinor" placeholder="Select" appendTo="body" inputId="icon3"
                         [showClear]="true" (onChange)="checkEligibility()">
                     </p-dropdown>
-                    </div>
+                </div>
                 <div class="flex-auto">
                     <label for="dateOfDeath" class="block mb-1 text-color text-lg">Date of Death:</label>
                     <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfDeath"
@@ -110,7 +106,7 @@
 
     <!-- Form A Table -->
     <div *ngIf="showFamilyNomineeTable">
-        <ng-container *ngIf="familyNomineeService$ | async as familyNominees">
+        <ng-container *ngIf="familyNomineeService$">
             <app-dynamic-table [data]="staticDataA" [suffix]="FAMILY_NOMINEE_SUFFIX"
                 (actionButtonClicked)="handleButtonClick($event)" [editable]="true" (return)="editFamilyDetails($event)"
                 class="flex flex-column gap-4 mt-3">
@@ -138,7 +134,7 @@
     <!-- From area -->
     <p-dialog [header]="NomineePopupHeader" [(visible)]="isInsertNominee" [modal]="true"
         [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw'  }" [maximizable]="true"
-        [baseZIndex]="10000" >
+        [baseZIndex]="10000">
         <div class="w-full">
             <form [formGroup]="nomineeDetailsForm" class="flex flex-column gap-4 mt-3">
                 <div class="flex gap-2 xl:flex-row flex-column">
@@ -155,15 +151,15 @@
 
                     <div class="w-3">
                         <label for="relation1" class="block mb-1 text-color text-lg">Relation:</label>
-                        <p-dropdown [options]="relation" [style]="{ width: '100%' }" formControlName="relation1" placeholder="Select"
-                            appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
+                        <p-dropdown [options]="relation" [style]="{ width: '100%' }" formControlName="relation1"
+                            placeholder="Select" appendTo="body" [showClear]="true" inputId="icon3"></p-dropdown>
                     </div>
                     <div class="flex-auto">
                         <label for="dateOfBirth1" class="block mb-1 text-color text-lg">Date of
                             Birth:</label>
                         <p-calendar class="p-component p-element w-full p-calendar" formControlName="dateOfBirth1"
-                            placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon4" (onSelect)="calculateAge($event)"
-                            dateFormat="dd-mm-yy"></p-calendar>
+                            placeholder="dd-mm-yyyy" appendTo="body" [showIcon]="true" inputId="icon4"
+                            (onSelect)="calculateAge($event)" dateFormat="dd-mm-yy"></p-calendar>
                     </div>
                 </div>
                 <div class="flex gap-2 xl:flex-row flex-column">
@@ -215,13 +211,8 @@
                     </div>
                     <div class="w-2">
                         <label for="Eligibility" class="block mb-1 text-color text-lg">Eligibility:</label>
-                        <p-dropdown
-                            [options]="nomineeAdultMinor"
-                            [style]="{ width: '100%' }"
-                            formControlName="nomineeAdultMinor"
-                            placeholder="Select"
-                            appendTo="body"
-                            inputId="icon3"
+                        <p-dropdown [options]="nomineeAdultMinor" [style]="{ width: '100%' }"
+                            formControlName="nomineeAdultMinor" placeholder="Select" appendTo="body" inputId="icon3"
                             [showClear]="true">
                         </p-dropdown>
                     </div>
@@ -267,7 +258,7 @@
     </p-dialog>
     <!-- Form B Table -->
     <div *ngIf="showNomineeDetailsTable">
-        <ng-container *ngIf="nomineeDetailsService$ | async as nomineeDetails">
+        <ng-container *ngIf="nomineeDetailsService$ ">
             <script>console.log("Nominee Details in Template:", nomineeDetails);</script>
             <app-dynamic-table [data]="staticDataB" [suffix]="NOMINEE_DETAILS_SUFFIX" [editable]="true"
                 (return)="editNomineeDetails($event)" class="flex flex-column gap-4 mt-3">
