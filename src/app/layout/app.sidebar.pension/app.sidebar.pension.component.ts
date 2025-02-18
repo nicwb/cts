@@ -1,19 +1,44 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+} from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar-pension', //app-app.sidebar.pension
     templateUrl: './app.sidebar.pension.component.html',
 })
-export class AppSidebarPensionComponent implements OnInit {
+export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
     readonly clientVersion = import.meta.env.NG_APP_VERSION;
     model: any[] = [];
+    // @ViewChild('elements') elements!: ElementRef;
+    @ViewChildren('elements') elements!: QueryList<ElementRef>;
+    @ViewChild('version') versions!: ElementRef;
+    @ViewChild('display') sidebar!: ElementRef;
+    sidebarHeight!: number;
+    totalElementsHeight: number | undefined;
+    versionHeight: any;
+    showVersion: boolean = true;
+    resIze: any;
 
     constructor(
         public layoutService: LayoutService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private cdRef: ChangeDetectorRef
+    ) {
+        this.resIze = this.debounce(this.checkHeight, 100);
+    }
+    ngAfterViewInit(): void {
+        void this.checkHeight();
+    }
 
     ngOnInit() {
         this.model = [
@@ -457,5 +482,59 @@ export class AppSidebarPensionComponent implements OnInit {
             //   ]
             // }
         ];
+    }
+    debounce<T extends (...args: any[]) => any>(
+        func: T,
+        wait: number
+    ): (...args: Parameters<T>) => void {
+        let timeout: ReturnType<typeof setTimeout>;
+
+        return function (
+            this: ThisParameterType<T>,
+            ...args: Parameters<T>
+        ): void {
+            const context = this;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        // console.log(event);
+        // void this.checkHeight();
+        this.resIze();
+    }
+
+    async checkHeight() {
+        setTimeout(() => {
+            this.totalElementsHeight = this.elements
+                .toArray()
+                .reduce((sum, el) => sum + el.nativeElement.offsetHeight, 0);
+
+            // Get `#version` height
+            this.versionHeight = this.versions.nativeElement.offsetHeight;
+            this.sidebarHeight = this.sidebar.nativeElement.offsetHeight;
+            // console.log(
+            //     `ele${this.totalElementsHeight} \n version ${this.versionHeight} sidebar height ${this.sidebarHeight}`
+            // );
+            this.cdRef.detectChanges();
+            if (this.versionHeight != 0) {
+                if (
+                    this.totalElementsHeight + this.versionHeight + 10 >
+                    this.sidebarHeight
+                ) {
+                    this.showVersion = false;
+                } else {
+                    this.showVersion = true;
+                }
+            } else {
+                if (this.totalElementsHeight + 70 > this.sidebarHeight) {
+                    this.showVersion = false;
+                } else {
+                    this.showVersion = true;
+                }
+            }
+        }, 300);
     }
 }
