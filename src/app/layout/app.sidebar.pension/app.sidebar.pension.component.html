@@ -1,4 +1,4 @@
-<ul class="layout-menu">
+<ul #display class="layout-menu" (click)="checkHeight()">
     <!-- <button
         class="p-link layout-topbar-menu-button layout-topbar-button"
         (click)="layoutService.onMenuToggle()"
@@ -7,12 +7,14 @@
     </button> -->
 
     <ng-container *ngFor="let item of model; let i = index;" style="margin-top: 10px;">
-        <app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></app-menuitem>
-        <li *ngIf="item.separator" class="menu-separator"></li>
+        <div #elements>
+            <app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></app-menuitem>
+            <li *ngIf="item.separator" class="menu-separator"></li>
+        </div>
     </ng-container>
 
-    <li style="position: absolute; bottom: 0px;">
-        <div class="w-full text-white p-4 bold text-lg">
+    <li #version style="position: absolute; bottom: 0px;">
+        <div *ngIf="showVersion" class="w-full text-white p-4 bold text-lg">
             <i class="pi pi-info-circle" style="color: white;"></i>
             <span> Version {{clientVersion}}</span>
         </div>
