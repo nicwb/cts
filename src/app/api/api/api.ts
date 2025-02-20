@@ -4,6 +4,8 @@ export * from './pension.service';
 import { PensionService } from './pension.service';
 export * from './pension-bank-branch.service';
 import { PensionBankBranchService } from './pension-bank-branch.service';
+export * from './pension-by-transfer.service';
+import { PensionByTransferService } from './pension-by-transfer.service';
 export * from './pension-category-master.service';
 import { PensionCategoryMasterService } from './pension-category-master.service';
 export * from './pension-component.service';
@@ -32,6 +34,8 @@ export * from './pension-ppo-details.service';
 import { PensionPPODetailsService } from './pension-ppo-details.service';
 export * from './pension-ppo-status.service';
 import { PensionPPOStatusService } from './pension-ppo-status.service';
+export * from './pension-ppo-by-transfer.service';
+import { PensionPpoByTransferService } from './pension-ppo-by-transfer.service';
 export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
 export * from './pension-sanction-details.service';
@@ -40,6 +44,7 @@ export const APIS = [
     MessageQueueWorkerService,
     PensionService,
     PensionBankBranchService,
+    PensionByTransferService,
     PensionCategoryMasterService,
     PensionComponentService,
     PensionComponentRateService,
@@ -54,6 +59,7 @@ export const APIS = [
     PensionNomineeDetailsService,
     PensionPPODetailsService,
     PensionPPOStatusService,
+    PensionPpoByTransferService,
     PensionRegularBillService,
     PensionSanctionDetailsService,
 ];
