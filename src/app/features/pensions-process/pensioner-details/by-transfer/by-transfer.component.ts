@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { empty, Observable } from 'rxjs';
-import { PensionFirstBillService } from 'src/app/api';
+import { PensionerListItemDTOTableResponseDTOJsonAPIResponse, PensionFirstBillService, PensionPPODetailsService, PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse, PensionComponentRevisionService, ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse, PensionByTransferService, PensionPpoByTransferService, PpoByTransferEntryDTO } from 'src/app/api';
 
 @Component({
     selector: 'app-by-transfer',
@@ -13,10 +13,24 @@ export class ByTransferComponent implements OnInit {
 
     isInsertModalVisible: boolean = false;
     dialogHeader: string = 'Details';
+
+    ppoList$: Observable<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>;
+
+    BTnoList$: Observable<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>;
+
     constructor(
         private fb: FormBuilder,
-        private service: PensionFirstBillService
-    ) {}
+        private service: PensionFirstBillService,
+
+        private PensionByTransferService: PensionByTransferService,
+
+        private revisionOfComponentsService: PensionComponentRevisionService,
+
+        private PensionPpoByTransferService: PensionPpoByTransferService
+    ) {
+        this.ppoList$ = this.revisionOfComponentsService.getAllPposForComponentRevisions();
+        this.BTnoList$ = this.PensionByTransferService.getAllByTransferHeads();
+    }
 
     ngOnInit(): void {
         this.byTransferForm = this.fb.group({
@@ -75,4 +89,26 @@ export class ByTransferComponent implements OnInit {
             this.byTransferForm.reset();
         }
     }
+
+    SaveAllBytransfer(){
+        if (this.emptyPpoData){
+            let PpoBytransfer: PpoByTransferEntryDTO = {};
+            // PpoBytransfer.ppoId = this.emptyPpoData[0].ppoId;
+
+        }
+
+
+    }
+
+    handleSelectedRow(event: any) {
+
+        this.byTransferForm.patchValue({
+            ppoId: event.ppoId,
+            });
+            console.log(event.ppoId);
+    }
+
+    BTnoListSelectedRow(event: any) {
+        console.log(event);
+    };
 }

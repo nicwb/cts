@@ -8,7 +8,7 @@
       <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">PPO ID</label>
         <input type="text" pInputText placeholder="" formControlName="ppoId" class="w-full p-2">
-
+        <app-popup-table name="" [service$]="ppoList$" (return)="handleSelectedRow($event)"></app-popup-table>
       </div>
 
       <div class="flex-auto">
@@ -28,6 +28,7 @@
       <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T No</label>
         <input type="text" pInputText placeholder="" formControlName="btNo" class="w-full p-2">
+        <app-popup-table name="" [service$]="BTnoList$" (return)="BTnoListSelectedRow($event)"></app-popup-table>
       </div>
 
       <div class="flex-auto">
@@ -124,7 +125,8 @@
     <p-button label="Add" icon="pi pi-plus" styleClass="p-button-success" (click)="openpopup()"><i
         class="pi pi-success mr-2"></i>
     </p-button>
-    <p-button label="Save All" icon="pi pi-save" styleClass="w-fit"><i class="pi pi-success mr-2"></i>
+    <p-button label="Save All" icon="pi pi-save" styleClass="w-fit" (click)="SaveAllBytransfer()"><i
+        class="pi pi-success mr-2"></i>
     </p-button>
   </div>
 
