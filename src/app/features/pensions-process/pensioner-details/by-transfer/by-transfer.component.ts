@@ -1,7 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { empty, firstValueFrom, Observable } from 'rxjs';
-import { PensionerListItemDTOTableResponseDTOJsonAPIResponse, PensionFirstBillService, PensionPPODetailsService, PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse, PensionComponentRevisionService, ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse, PensionByTransferService, PensionPpoByTransferService, PpoByTransferEntryDTO, PpoByTransferHeadResponseDTOJsonAPIResponse, APIResponseStatus } from 'src/app/api';
+import {
+    PensionerListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionFirstBillService,
+    PensionPPODetailsService,
+    PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse,
+    PensionComponentRevisionService,
+    ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse,
+    PensionByTransferService,
+    PensionPpoByTransferService,
+    PpoByTransferEntryDTO,
+    PpoByTransferHeadResponseDTOJsonAPIResponse,
+    APIResponseStatus,
+} from 'src/app/api';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
@@ -32,7 +44,8 @@ export class ByTransferComponent implements OnInit {
 
         private PensionPpoByTransferService: PensionPpoByTransferService
     ) {
-        this.ppoList$ = this.revisionOfComponentsService.getAllPposForComponentRevisions();
+        this.ppoList$ =
+            this.revisionOfComponentsService.getAllPposForComponentRevisions();
 
         this.BTnoList$ = this.PensionByTransferService.getAllByTransferHeads();
     }
@@ -44,7 +57,7 @@ export class ByTransferComponent implements OnInit {
             toDate: ['', Validators.required],
             btHead: ['', Validators.required],
             btHeadId: [''], // by transfer head id
-            btNo:  ['', Validators.required],
+            btNo: ['', Validators.required],
             amount: ['', Validators.required],
             remarks: [''],
         });
@@ -79,8 +92,8 @@ export class ByTransferComponent implements OnInit {
     // method for insert data
     insertData() {
         if (this.byTransferForm.invalid) {
-          this.byTransferForm.markAllAsTouched(); // Mark all fields as touched to trigger validation messages
-          return; // Stop execution if form is invalid
+            this.byTransferForm.markAllAsTouched(); // Mark all fields as touched to trigger validation messages
+            return; // Stop execution if form is invalid
         }
 
         if (this.byTransferForm.valid) {
@@ -98,7 +111,6 @@ export class ByTransferComponent implements OnInit {
             };
 
             // Push the formatted data into the array
-            console.log(formattedData);
             this.emptyPpoData.push(formattedData);
             this.byTransferForm.reset();
         }
@@ -124,7 +136,6 @@ export class ByTransferComponent implements OnInit {
     //         console.log(PpoBytransfer);
     //     }
 
-
     // }
 
     async SaveAllBytransfer() {
@@ -138,19 +149,28 @@ export class ByTransferComponent implements OnInit {
                 const item = this.emptyPpoData[i];
 
                 let PpoBytransfer: PpoByTransferEntryDTO = {};
-                    PpoBytransfer.pensionerId = item.ppoId,
-                    PpoBytransfer.ppoId = item.ppoId,
-                    PpoBytransfer.fromDate = item.fromDate ? new Date(item.fromDate).toISOString().split('T')[0] : undefined,
-                    PpoBytransfer.toDate = item.toDate ? new Date(item.toDate).toISOString().split('T')[0] : undefined,
-                    PpoBytransfer.bytransferHeadId = item.btHeadId,
-                    PpoBytransfer.bytransferAmount = item.amount,
-                    PpoBytransfer.remarks = item.remarks
+                (PpoBytransfer.pensionerId = item.ppoId),
+                    (PpoBytransfer.ppoId = item.ppoId),
+                    (PpoBytransfer.fromDate = item.fromDate
+                        ? new Date(item.fromDate).toISOString().split('T')[0]
+                        : undefined),
+                    (PpoBytransfer.toDate = item.toDate
+                        ? new Date(item.toDate).toISOString().split('T')[0]
+                        : undefined),
+                    (PpoBytransfer.bytransferHeadId = item.btHeadId),
+                    (PpoBytransfer.bytransferAmount = item.amount),
+                    (PpoBytransfer.remarks = item.remarks);
                 try {
-                    const result: PpoByTransferHeadResponseDTOJsonAPIResponse = await firstValueFrom(
-                        this.PensionPpoByTransferService.createPPoByTransferHeadMap(PpoBytransfer)
-                    );
+                    const result: PpoByTransferHeadResponseDTOJsonAPIResponse =
+                        await firstValueFrom(
+                            this.PensionPpoByTransferService.createPPoByTransferHeadMap(
+                                PpoBytransfer
+                            )
+                        );
 
-                    if (result.apiResponseStatus === APIResponseStatus.Success) {
+                    if (
+                        result.apiResponseStatus === APIResponseStatus.Success
+                    ) {
                         completed++;
                         this.emptyPpoData.splice(i, 1); // Remove item on success
                         i--; // Adjust index after deletion to avoid skipping the next item
@@ -169,26 +189,24 @@ export class ByTransferComponent implements OnInit {
             if (completed === totalRequests) {
                 this.ToastService.showSuccess('All records saved successfully');
             } else {
-                this.ToastService.showError(`Completed: ${completed}, Failed: ${failed}`);
+                this.ToastService.showError(
+                    `Completed: ${completed}, Failed: ${failed}`
+                );
             }
         }
     }
 
-
     handleSelectedRow(event: any) {
-
         this.byTransferForm.patchValue({
             ppoId: event.ppoId,
-            });
-            console.log(event.ppoId);
+        });
     }
 
     BTnoListSelectedRow(event: any) {
         this.byTransferForm.patchValue({
             btNo: event.accountHeadId,
             btHeadId: event.id,
-            btHead: event.byTransferDescription
+            btHead: event.byTransferDescription,
         });
-        console.log(event);
-    };
+    }
 }

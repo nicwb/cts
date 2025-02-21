@@ -32,7 +32,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
         DialogModule,
         CalendarModule,
         InputTextModule,
-        ProgressBarModule
+        ProgressBarModule,
     ],
     exports: [],
 })
