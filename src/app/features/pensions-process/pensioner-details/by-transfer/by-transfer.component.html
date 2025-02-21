@@ -1,46 +1,92 @@
 <h2 class="bg-color text-xl"><b> Pension By Transfer</b></h2>
-
-
 <p-dialog [header]="dialogHeader" [(visible)]="isInsertModalVisible" [style]="{'width': '700px'}"
   [breakpoints]="{ '1199px': '75vw', '991px': '90vw', '575px': '100vw'}" [maximizable]="true">
   <form [formGroup]="byTransferForm" class="flex flex-column gap-4">
     <div class="flex gap-2 xl:flex-row flex-column">
-      <div class="flex-auto">
+      <!-- <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">PPO ID</label>
         <input type="text" pInputText placeholder="" formControlName="ppoId" class="w-full p-2">
         <app-popup-table name="" [service$]="ppoList$" (return)="handleSelectedRow($event)"></app-popup-table>
+      </div> -->
+
+      <div class="flex items-center space-x-2">
+        <div class="flex-auto">
+          <label for="dateOfCommencement" class="block mb-1 text-color text-lg">PPO ID</label>
+          <input type="text" pInputText placeholder="" [readonly]="true" formControlName="ppoId"
+            class="w-full p-2 bg-cyan-100"
+            [ngClass]="{'border-red-500': byTransferForm.get('ppoId')?.invalid && byTransferForm.get('ppoId')?.touched}">
+          <div *ngIf="byTransferForm.get('ppoId')?.invalid && byTransferForm.get('ppoId')?.touched"
+            class="text-red-500 text-sm mt-1">
+            PPO ID is required.
+          </div>
+        </div>
+        <app-popup-table name="" [service$]="ppoList$" (return)="handleSelectedRow($event)"
+          class="mt-4"></app-popup-table>
       </div>
+
 
       <div class="flex-auto">
         <label for="pensionerName" class="block mb-1 text-color text-lg">Form Date:</label>
         <p-calendar formControlName="fromDate" placeholder="dd-MM-yyyy" [dateFormat]="'dd-mm-yy'" appendTo="body"
-          [showIcon]="true"></p-calendar>
+          [showIcon]="true" [minDate]="today"
+          [ngClass]="{'border-red-500': byTransferForm.get('fromDate')?.invalid && byTransferForm.get('fromDate')?.touched}"></p-calendar>
+        <div *ngIf="byTransferForm.get('fromDate')?.invalid && byTransferForm.get('fromDate')?.touched"
+          class="text-red-500 text-sm mt-1">
+          From Date is required.
+        </div>
       </div>
 
       <div class="flex-auto">
         <label for="pensionerName" class="block mb-1 text-color text-lg">To Date:</label>
         <p-calendar formControlName="toDate" placeholder="dd-MM-yyyy" [dateFormat]="'dd-mm-yy'" appendTo="body"
-          [showIcon]="true"></p-calendar>
+          [showIcon]="true" [minDate]="today"></p-calendar>
+        <div *ngIf="byTransferForm.get('toDate')?.invalid && byTransferForm.get('toDate')?.touched"
+          class="text-red-500 text-sm mt-1">
+          To Date is required.
+        </div>
       </div>
     </div>
 
     <div class="flex gap-2 xl:flex-row flex-column">
-      <div class="flex-auto">
+      <!-- <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T No</label>
         <input type="text" pInputText placeholder="" formControlName="btNo" class="w-full p-2">
-        <app-popup-table name="" [service$]="BTnoList$" (return)="BTnoListSelectedRow($event)"></app-popup-table>
+      </div>
+      <app-popup-table name="" [service$]="BTnoList$" (return)="BTnoListSelectedRow($event)"
+        class="mt-4"></app-popup-table> -->
+
+      <div class="flex items-center space-x-2">
+        <div class="flex-auto">
+          <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T No</label>
+          <input type="text" pInputText placeholder="" [readonly]="true" formControlName="btNo"
+            class="w-full p-2 bg-cyan-100"
+            [ngClass]="{'border-red-500': byTransferForm.get('btNo')?.invalid && byTransferForm.get('btNo')?.touched}">
+          <div *ngIf="byTransferForm.get('btNo')?.invalid && byTransferForm.get('btNo')?.touched"
+            class="text-red-500 text-sm mt-1">
+            B.T no is required.
+          </div>
+        </div>
+        <app-popup-table name="" [service$]="BTnoList$" (return)="BTnoListSelectedRow($event)"
+          class="mt-4"></app-popup-table>
       </div>
 
       <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">B.T Head</label>
-        <input type="text" pInputText placeholder="" formControlName="btHead" class="w-full p-2">
+        <input type="text" pInputText placeholder="" formControlName="btHead" [readonly]="true"
+          class="w-full p-2 bg-cyan-100">
       </div>
     </div>
 
     <div class="flex gap-2 xl:flex-row flex-column">
       <div class="flex-auto">
         <label for="dateOfCommencement" class="block mb-1 text-color text-lg">Amount</label>
-        <input type="text" pInputText placeholder="" formControlName="amount" class="w-full p-2">
+        <input type="text" pInputText placeholder="" formControlName="amount" class="w-full p-2"
+          [ngClass]="{'border-red-500': byTransferForm.get('amount')?.invalid && byTransferForm.get('amount')?.touched}">
+
+        <div *ngIf=" byTransferForm.get('amount')?.invalid && byTransferForm.get('amount')?.touched"
+          class="text-red-500 text-sm mt-1">
+          Amount is required.
+        </div>
       </div>
 
       <div class="flex-auto">
@@ -53,6 +99,12 @@
     <button pButton label="Insert" class="p-button-rounded" [disabled]="" (click)="insertData()"></button>
     <button pButton label="Cancel" class="p-button-rounded" (click)="cancle()"></button>
   </div>
+</p-dialog>
+
+
+<p-dialog [(visible)]="isProgressVisible" [modal]="true" [header]="'Save Status'" [closable]="true"
+  [breakpoints]="{ '3000px': '45vw', '1199px': '70vw', '991px': '60vw', '575px': '90vw' }">
+  <p-progressBar [value]="saveProgress" [showValue]="true" [style]="{ 'margin-top': '20px' }"></p-progressBar>
 </p-dialog>
 
 <div class="card py-2">
@@ -104,7 +156,7 @@
         <td>{{ rowData.fromDate | date:'yyyy-MM-dd' }}</td>
         <td>{{ rowData.toDate | date:'yyyy-MM-dd' }}</td>
         <td>{{ rowData.btNo }}</td>
-        <td>{{ rowData.btHead }}</td>
+        <td>{{ rowData.btHead}}</td>
         <td>{{ rowData.amount }}</td>
         <td>{{ rowData.remarks }}</td>
         <td class="fixed-width">

@@ -14,7 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ByTransferComponent } from './by-transfer.component';
-
+import { ProgressBarModule } from 'primeng/progressbar';
 @NgModule({
     declarations: [ByTransferComponent],
     imports: [
@@ -32,6 +32,7 @@ import { ByTransferComponent } from './by-transfer.component';
         DialogModule,
         CalendarModule,
         InputTextModule,
+        ProgressBarModule
     ],
     exports: [],
 })
