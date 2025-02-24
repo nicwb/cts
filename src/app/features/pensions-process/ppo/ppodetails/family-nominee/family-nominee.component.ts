@@ -29,6 +29,9 @@ import { SessionStorageService } from 'src/app/core/services/session-storage.ser
 import { DatePipe } from '@angular/common';
 import { PassThrough } from 'stream';
 import Swal from 'sweetalert2';
+import { get } from 'http';
+import { waitForAsync } from '@angular/core/testing';
+import { promises } from 'dns';
 
 function convertDate(date: string): string {
     const parsedDate = new Date(date);
@@ -216,6 +219,10 @@ export class FamilyNomineeComponent implements OnInit {
                     label: 'Death Gratuity',
                     value: { id: '2', name: 'Death Gratuity', code: '6' },
                 },
+                {
+                    label: 'Family',
+                    value: { id: '3', name: 'Family', code: '0' },
+                },
             ]),
             (this.priorityLevel = [
                 { label: '1', value: { id: '1', name: '1', code: 1 } },
@@ -234,8 +241,16 @@ export class FamilyNomineeComponent implements OnInit {
                     value: { id: '2', name: 'Minor', code: 'M' },
                 },
             ]);
-        this.getData('A');
-        this.getData('B');
+        // this.getData('A');
+        // this.getData('B');
+        Promise.all([this.getData('A'), this.getData('B')])
+            .then(() => {
+                this.showFamilyNomineeTable = true;
+                this.showNomineeDetailsTable = true;
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
     }
 
     getPpoId() {
@@ -250,24 +265,25 @@ export class FamilyNomineeComponent implements OnInit {
             }
         });
     }
-    familyDetails(): void {
+    async familyDetails(): Promise<void> {
         this.isInsertModalVisible = true;
         this.popupHeader = 'New Family Details';
         this.familyNomineeForm.reset();
         if (!environment.production) {
-            this.fillFactoryDataFirstForm();
+            await this.fillFactoryDataFirstForm();
         }
     }
-    nomineeDetails(): void {
-        this.isInsertNominee = true;
+    async nomineeDetails(): Promise<void> {
+        // console.log('Nominee Details');
         this.bankName = [];
         this.branchName = [];
         this.NomineePopupHeader = 'New Nominee Details';
         this.nomineeDetailsForm.reset();
         this.ifscCode = '';
         if (!environment.production) {
-            this.fillFactoryDataSecondForm();
+            await this.fillFactoryDataSecondForm();
         }
+        this.isInsertNominee = true;
     }
 
     async fetchBankName() {
@@ -494,22 +510,30 @@ export class FamilyNomineeComponent implements OnInit {
     }
 
     async fillFactoryDataSecondForm(): Promise<void> {
+        // console.log('Fil');
         try {
             const response = await firstValueFrom(
                 this.pensionFactoryService.createFake('NomineeEntryDTO')
             );
+            // console.log(response);
             if (response.result) {
                 const nominee = response.result;
-                this.showNomineeDetailsForm = true;
+                // this.showNomineeDetailsForm = true;
 
                 // Ensure nominee data is valid
                 const dateOfBirth = new Date(nominee.dateOfBirth);
                 const relationshipValue = this.relation.find(
                     (item) => item.value.code === nominee.relation
                 );
+                // console.log('relationshipValue', relationshipValue);
                 const nomineeTypeValue = this.nomineeType.find(
                     (item) => item.value.code === nominee.nomineeType
                 );
+                // console.log(
+                //     'nomineeTypeValue',
+                //     nominee.nomineeType,
+                //     nomineeTypeValue
+                // );
                 const priorityLevelValue = this.priorityLevel.find(
                     (item) => item.value.code === nominee.nomineePriority
                 );
@@ -522,9 +546,6 @@ export class FamilyNomineeComponent implements OnInit {
                         this.pensionBankBranchService.getBranchesByBankId(
                             nominee.bankId
                         )
-                    );
-                    const branch = response_branch.result?.branches?.find(
-                        (branch) => branch.id === nominee.branchId
                     );
                     const bank = response_branch.result?.bank;
                     await this.fetchBankName();
@@ -778,8 +799,6 @@ export class FamilyNomineeComponent implements OnInit {
         this.showNomineeDetailsTable = !this.showNomineeDetailsTable;
         if (this.showNomineeDetailsTable) {
             this.getData('B'); // Load data for Nominee Details
-        } else {
-            this.showNomineeDetailsTable = false; // Hide table
         }
     }
 
