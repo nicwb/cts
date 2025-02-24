@@ -8,11 +8,17 @@
  * Do not edit the class manually.
  */
 
-export type APIResponseStatus = 'Success' | 'Warning' | 'Error' | 'Info';
+export type APIResponseStatus =
+    | 'Success'
+    | 'Warning'
+    | 'Error'
+    | 'Info'
+    | 'Failure';
 
 export const APIResponseStatus = {
     Success: 'Success' as APIResponseStatus,
     Warning: 'Warning' as APIResponseStatus,
     Error: 'Error' as APIResponseStatus,
     Info: 'Info' as APIResponseStatus,
+    Failure: 'Failure' as APIResponseStatus,
 };

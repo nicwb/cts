@@ -8,12 +8,14 @@
  * Do not edit the class manually.
  */
 
-export interface PpoByTransferEntryDTO {
+export interface PpoByTransferHeadResponseList {
     dataSource?: { [key: string]: any } | null;
-    ppoId: number;
-    fromDate: string;
-    toDate: string;
-    bytransferHeadId: number;
-    bytransferAmount: number;
+    id?: number;
+    ppoNo?: string | null;
+    pensionerName?: string | null;
+    fromDate?: string;
+    toDate?: string;
+    bytransferHeadId?: number;
+    bytransferAmount?: number;
     remarks?: string | null;
 }

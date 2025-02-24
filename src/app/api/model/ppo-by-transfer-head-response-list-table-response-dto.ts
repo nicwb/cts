@@ -8,16 +8,11 @@
  * Do not edit the class manually.
  */
 import { PpoByTransferHeadResponseList } from './ppo-by-transfer-head-response-list';
+import { TableHeader } from './table-header';
 
-export interface PpoByTransferHeadResponseDTO {
+export interface PpoByTransferHeadResponseListTableResponseDTO {
     dataSource?: { [key: string]: any } | null;
-    ppoId: number;
-    fromDate: string;
-    toDate: string;
-    bytransferHeadId: number;
-    bytransferAmount: number;
-    remarks?: string | null;
-    result?: Array<PpoByTransferHeadResponseList> | null;
-    apiResponseStatus?: string | null;
-    id?: number;
+    headers?: Array<TableHeader> | null;
+    data?: Array<PpoByTransferHeadResponseList> | null;
+    readonly dataCount?: number;
 }

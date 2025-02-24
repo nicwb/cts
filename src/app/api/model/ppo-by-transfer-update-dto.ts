@@ -8,12 +8,9 @@
  * Do not edit the class manually.
  */
 
-export interface PpoByTransferEntryDTO {
+export interface PpoByTransferUpdateDTO {
     dataSource?: { [key: string]: any } | null;
-    ppoId: number;
-    fromDate: string;
-    toDate: string;
-    bytransferHeadId: number;
+    id: number;
     bytransferAmount: number;
     remarks?: string | null;
 }

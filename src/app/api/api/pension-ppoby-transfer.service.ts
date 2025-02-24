@@ -23,13 +23,13 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { ByTransferHeadEntryDTO } from '../model/by-transfer-head-entry-dto';
+import { PpoByTransferEntryDTO } from '../model/ppo-by-transfer-entry-dto';
 // @ts-ignore
-import { ByTransferHeadResponseDTOJsonAPIResponse } from '../model/by-transfer-head-response-dto-json-api-response';
+import { PpoByTransferHeadResponseDTOJsonAPIResponse } from '../model/ppo-by-transfer-head-response-dto-json-api-response';
 // @ts-ignore
-import { ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse } from '../model/by-transfer-head-response-dto-table-response-dto-json-api-response';
+import { PpoByTransferHeadResponseListTableResponseDTOJsonAPIResponse } from '../model/ppo-by-transfer-head-response-list-table-response-dto-json-api-response';
 // @ts-ignore
-import { ByTransferHeadUpdateDTO } from '../model/by-transfer-head-update-dto';
+import { PpoByTransferUpdateDTO } from '../model/ppo-by-transfer-update-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -38,7 +38,7 @@ import { Configuration } from '../configuration';
 @Injectable({
     providedIn: 'root',
 })
-export class PensionByTransferService {
+export class PensionPPOByTransferService {
     protected basePath = 'http://api.docker.test';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
@@ -130,39 +130,39 @@ export class PensionByTransferService {
     }
 
     /**
-     * @param byTransferHeadEntryDTO
+     * @param ppoByTransferEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createByTransferHeadMap(
-        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
+    public createPPoByTransferHeadMap(
+        ppoByTransferEntryDTO?: PpoByTransferEntryDTO,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
-    public createByTransferHeadMap(
-        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
+    ): Observable<PpoByTransferHeadResponseDTOJsonAPIResponse>;
+    public createPPoByTransferHeadMap(
+        ppoByTransferEntryDTO?: PpoByTransferEntryDTO,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public createByTransferHeadMap(
-        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
+    ): Observable<HttpResponse<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public createPPoByTransferHeadMap(
+        ppoByTransferEntryDTO?: PpoByTransferEntryDTO,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public createByTransferHeadMap(
-        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
+    ): Observable<HttpEvent<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public createPPoByTransferHeadMap(
+        ppoByTransferEntryDTO?: PpoByTransferEntryDTO,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -231,13 +231,13 @@ export class PensionByTransferService {
             }
         }
 
-        let localVarPath = `/api/v1/by-transfer-headmap`;
-        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
+        let localVarPath = `/api/v1/save-ppo-by-transfer-headmap`;
+        return this.httpClient.request<PpoByTransferHeadResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: byTransferHeadEntryDTO,
+                body: ppoByTransferEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -248,39 +248,39 @@ export class PensionByTransferService {
     }
 
     /**
-     * @param byTransferHeadId
+     * @param ppobytransferid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteByTransferHead(
-        byTransferHeadId: number,
+    public deletePPOByTransfer(
+        ppobytransferid: number,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
-    public deleteByTransferHead(
-        byTransferHeadId: number,
+    ): Observable<PpoByTransferHeadResponseDTOJsonAPIResponse>;
+    public deletePPOByTransfer(
+        ppobytransferid: number,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public deleteByTransferHead(
-        byTransferHeadId: number,
+    ): Observable<HttpResponse<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public deletePPOByTransfer(
+        ppobytransferid: number,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public deleteByTransferHead(
-        byTransferHeadId: number,
+    ): Observable<HttpEvent<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public deletePPOByTransfer(
+        ppobytransferid: number,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -288,9 +288,9 @@ export class PensionByTransferService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (byTransferHeadId === null || byTransferHeadId === undefined) {
+        if (ppobytransferid === null || ppobytransferid === undefined) {
             throw new Error(
-                'Required parameter byTransferHeadId was null or undefined when calling deleteByTransferHead.'
+                'Required parameter ppobytransferid was null or undefined when calling deletePPOByTransfer.'
             );
         }
 
@@ -340,8 +340,8 @@ export class PensionByTransferService {
             }
         }
 
-        let localVarPath = `/api/v1/delete-by-transfer-headmap/${this.configuration.encodeParam({ name: 'byTransferHeadId', value: byTransferHeadId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
-        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
+        let localVarPath = `/api/v1/delete-ppo-by-transfer/${this.configuration.encodeParam({ name: 'ppobytransferid', value: ppobytransferid, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        return this.httpClient.request<PpoByTransferHeadResponseDTOJsonAPIResponse>(
             'delete',
             `${this.configuration.basePath}${localVarPath}`,
             {
@@ -356,18 +356,21 @@ export class PensionByTransferService {
     }
 
     /**
+     * @param ppoid
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllByTransferHeads(
+    public getPpoByTransferByPpoId(
+        ppoid: number,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>;
-    public getAllByTransferHeads(
+    ): Observable<PpoByTransferHeadResponseListTableResponseDTOJsonAPIResponse>;
+    public getPpoByTransferByPpoId(
+        ppoid: number,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -375,9 +378,10 @@ export class PensionByTransferService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>
+        HttpResponse<PpoByTransferHeadResponseListTableResponseDTOJsonAPIResponse>
     >;
-    public getAllByTransferHeads(
+    public getPpoByTransferByPpoId(
+        ppoid: number,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -385,9 +389,10 @@ export class PensionByTransferService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>
+        HttpEvent<PpoByTransferHeadResponseListTableResponseDTOJsonAPIResponse>
     >;
-    public getAllByTransferHeads(
+    public getPpoByTransferByPpoId(
+        ppoid: number,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -395,6 +400,12 @@ export class PensionByTransferService {
             context?: HttpContext;
         }
     ): Observable<any> {
+        if (ppoid === null || ppoid === undefined) {
+            throw new Error(
+                'Required parameter ppoid was null or undefined when calling getPpoByTransferByPpoId.'
+            );
+        }
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
@@ -441,8 +452,8 @@ export class PensionByTransferService {
             }
         }
 
-        let localVarPath = `/api/v1/by-transfer-headmaps`;
-        return this.httpClient.request<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>(
+        let localVarPath = `/api/v1/${this.configuration.encodeParam({ name: 'ppoid', value: ppoid, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/by-transfer`;
+        return this.httpClient.request<PpoByTransferHeadResponseListTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
             {
@@ -457,39 +468,39 @@ export class PensionByTransferService {
     }
 
     /**
-     * @param byTransferHeadUpdateDTO
+     * @param ppoByTransferUpdateDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateByTransferHeadMap(
-        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+    public updatePPOByTransferHeadMap(
+        ppoByTransferUpdateDTO?: PpoByTransferUpdateDTO,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
-    public updateByTransferHeadMap(
-        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+    ): Observable<PpoByTransferHeadResponseDTOJsonAPIResponse>;
+    public updatePPOByTransferHeadMap(
+        ppoByTransferUpdateDTO?: PpoByTransferUpdateDTO,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public updateByTransferHeadMap(
-        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+    ): Observable<HttpResponse<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public updatePPOByTransferHeadMap(
+        ppoByTransferUpdateDTO?: PpoByTransferUpdateDTO,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
-    public updateByTransferHeadMap(
-        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+    ): Observable<HttpEvent<PpoByTransferHeadResponseDTOJsonAPIResponse>>;
+    public updatePPOByTransferHeadMap(
+        ppoByTransferUpdateDTO?: PpoByTransferUpdateDTO,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -558,13 +569,13 @@ export class PensionByTransferService {
             }
         }
 
-        let localVarPath = `/api/v1/update-by-transfer-headmap`;
-        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
+        let localVarPath = `/api/v1/update-ppo-by-transfer-headmap`;
+        return this.httpClient.request<PpoByTransferHeadResponseDTOJsonAPIResponse>(
             'put',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: byTransferHeadUpdateDTO,
+                body: ppoByTransferUpdateDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

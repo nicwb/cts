@@ -30,12 +30,12 @@ export * from './pension-manual-ppo-receipt.service';
 import { PensionManualPPOReceiptService } from './pension-manual-ppo-receipt.service';
 export * from './pension-nominee-details.service';
 import { PensionNomineeDetailsService } from './pension-nominee-details.service';
+export * from './pension-ppoby-transfer.service';
+import { PensionPPOByTransferService } from './pension-ppoby-transfer.service';
 export * from './pension-ppo-details.service';
 import { PensionPPODetailsService } from './pension-ppo-details.service';
 export * from './pension-ppo-status.service';
 import { PensionPPOStatusService } from './pension-ppo-status.service';
-export * from './pension-ppo-by-transfer.service';
-import { PensionPpoByTransferService } from './pension-ppo-by-transfer.service';
 export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
 export * from './pension-sanction-details.service';
@@ -57,9 +57,9 @@ export const APIS = [
     PensionLifeCertificateService,
     PensionManualPPOReceiptService,
     PensionNomineeDetailsService,
+    PensionPPOByTransferService,
     PensionPPODetailsService,
     PensionPPOStatusService,
-    PensionPpoByTransferService,
     PensionRegularBillService,
     PensionSanctionDetailsService,
 ];
