@@ -99,181 +99,125 @@ export class PensionCategoryComponent implements OnInit {
         if (primary && sub) {
             this.primary_from_url = primary;
             this.sub_from_url = sub;
-            // const dataP = {
-            //     pageSize: 1,
-            //     pageIndex: 0,
-            //     filterParameters: [
-            //         {
-            //             field: 'PrimaryCategoryName',
-            //             value: primary,
-            //             operator: 'contains',
-            //         },
-            //     ],
-            // };
-            const response = await firstValueFrom(
+
+            let responseP = await firstValueFrom(
                 this.service.getPrimaryCategories()
             );
-            this.PensionForm.patchValue({
-                PrimaryCategoryId: response.result?.data?.[0]?.id,
-            });
-            if (response.result && response.result.data) {
-                const value = response.result.data;
-                if (value.length != 0) {
-                    const len_val = value.length;
-                    this.primary_id_select = [];
-                    for (let i = 0; i < len_val; i++) {
-                        this.primary_id_select.push({
-                            label: `${value[i].id}-${value[i].primaryCategoryName}`,
-                            value: value[i].id,
+            if (responseP.result && responseP.result.data) {
+                for (let i = 0; i < responseP.result.data.length; i++) {
+                    if (
+                        responseP.result.data[i].primaryCategoryName == primary
+                    ) {
+                        this.PensionForm.patchValue({
+                            PrimaryCategoryId: responseP.result.data[i].id,
                         });
+                        this.primary_id_select = [];
+                        this.primary_id_select.push({
+                            label: `${responseP.result.data[i].id}-${responseP.result.data[i].primaryCategoryName}`,
+                            value: responseP.result.data[i].id,
+                        });
+                        this.primary_id = this.primary_id_select.find(
+                            (val) =>
+                                val.label ==
+                                `${responseP?.result?.data?.[i].id}-${responseP?.result?.data?.[i].primaryCategoryName}`
+                        );
+                        break;
                     }
-                } else {
-                    this.toastService.showError('Could Not Found');
                 }
             }
-            this.primary_id = this.primary_id_select.find(
-                (val) =>
-                    val.label ==
-                    `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`
-            );
 
-            this.displayInsertModal = true;
-
-            // let dataS = {
-            //     pageSize: 1,
-            //     pageIndex: 0,
-            //     filterParameters: [
-            //         {
-            //             field: 'SubCategoryName',
-            //             value: sub,
-            //             operator: 'contains',
-            //         },
-            //     ],
-            // };
-
-            const responseS = await firstValueFrom(
+            let responseS = await firstValueFrom(
                 this.service.getSubCategories()
             );
-            this.PensionForm.patchValue({
-                PrimaryCategoryId: responseS.result?.data?.[0]?.id,
-            });
             if (responseS.result && responseS.result.data) {
-                const value = responseS.result.data;
-                if (value.length != 0) {
-                    const len_val = value.length;
-                    this.sub_id_select = [];
-                    for (let i = 0; i < len_val; i++) {
-                        this.sub_id_select.push({
-                            label: `${value[i].id}-${value[i].subCategoryName}`,
-                            value: value[i].id,
+                for (let i = 0; i < responseS.result.data.length; i++) {
+                    if (responseS.result.data[i].subCategoryName == sub) {
+                        this.PensionForm.patchValue({
+                            SubCategoryId: responseS.result.data[i].id,
                         });
+                        this.sub_id_select = [];
+                        this.sub_id_select.push({
+                            label: `${responseS.result.data[i].id}-${responseS.result.data[i].subCategoryName}`,
+                            value: responseS.result.data[i].id,
+                        });
+                        this.sub_id = this.sub_id_select.find(
+                            (val) =>
+                                val.label ==
+                                `${responseS?.result?.data?.[i].id}-${responseS?.result?.data?.[i].subCategoryName}`
+                        );
+                        break;
                     }
-                } else {
-                    this.toastService.showError('Could Not Found');
                 }
             }
-            this.sub_id = this.sub_id_select.find(
-                (val) =>
-                    val.label ==
-                    `${responseS.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
-            );
 
             this.displayInsertModal = true;
-            const value_for_patch = {
+            let value_for_patch = {
                 PrimaryCategoryId: this.primary_id.value,
-                SubCategoryId: this.sub_id.value, // Fixed the error here
+                SubCategoryId: this.sub_id.value,
             };
             this.PensionForm.patchValue(value_for_patch);
         } else if (primary) {
             this.primary_from_url = primary;
-            // const dataP = {
-            //     pageSize: 1,
-            //     pageIndex: 0,
-            //     filterParameters: [
-            //         {
-            //             field: 'PrimaryCategoryName',
-            //             value: primary,
-            //             operator: 'contains',
-            //         },
-            //     ],
-            // };
-            const response = await firstValueFrom(
+            let response = await firstValueFrom(
                 this.service.getPrimaryCategories()
             );
-            this.PensionForm.patchValue({
-                PrimaryCategoryId: response.result?.data?.[0]?.id,
-            });
             if (response.result && response.result.data) {
-                const value = response.result.data;
-                if (value.length != 0) {
-                    const len_val = value.length;
-                    this.primary_id_select = [];
-                    for (let i = 0; i < len_val; i++) {
-                        this.primary_id_select.push({
-                            label: `${value[i].id}-${value[i].primaryCategoryName}`,
-                            value: value[i].id,
+                for (let i = 0; i < response.result.data.length; i++) {
+                    if (
+                        response.result.data[i].primaryCategoryName == primary
+                    ) {
+                        this.PensionForm.patchValue({
+                            PrimaryCategoryId: response.result.data[i].id,
                         });
+                        this.primary_id_select = [];
+                        this.primary_id_select.push({
+                            label: `${response.result.data[i].id}-${response.result.data[i].primaryCategoryName}`,
+                            value: response.result.data[i].id,
+                        });
+                        this.primary_id = this.primary_id_select.find(
+                            (val) =>
+                                val.label ==
+                                `${response?.result?.data?.[i]?.id}-${response?.result?.data?.[i].primaryCategoryName}`
+                        );
+                        this.displayInsertModal = true;
+                        let value_for_patch = {
+                            PrimaryCategoryId: this.primary_id.value,
+                        };
+                        this.PensionForm.patchValue(value_for_patch);
+                        break;
                     }
-                } else {
-                    this.toastService.showError('Could Not Found');
                 }
             }
-            this.primary_id = this.primary_id_select.find(
-                (val) =>
-                    val.label ==
-                    `${response.result?.data?.[0]?.id}-${response.result?.data?.[0]?.primaryCategoryName}`
-            );
-            this.displayInsertModal = true;
-            const value_for_patch = {
-                PrimaryCategoryId: this.primary_id.value,
-            };
-            this.PensionForm.patchValue(value_for_patch);
         } else if (sub) {
             this.sub_from_url = sub;
-            // const dataS = {
-            //     pageSize: 1,
-            //     pageIndex: 0,
-            //     filterParameters: [
-            //         {
-            //             field: 'SubCategoryName',
-            //             value: sub,
-            //             operator: 'contains',
-            //         },
-            //     ],
-            // };
-
-            const responseS = await firstValueFrom(
+            let response = await firstValueFrom(
                 this.service.getSubCategories()
             );
-            this.PensionForm.patchValue({
-                PrimaryCategoryId: responseS.result?.data?.[0]?.id,
-            });
-            if (responseS.result && responseS.result.data) {
-                const value = responseS.result.data;
-                if (value.length != 0) {
-                    const len_val = value.length;
-                    this.sub_id_select = [];
-                    for (let i = 0; i < len_val; i++) {
-                        this.sub_id_select.push({
-                            label: `${value[i].id}-${value[i].subCategoryName}`,
-                            value: value[i].id,
+            if (response.result && response.result.data) {
+                for (let i = 0; i < response.result.data.length; i++) {
+                    if (response.result.data[i].subCategoryName == sub) {
+                        this.PensionForm.patchValue({
+                            SubCategoryId: response.result.data[i].id,
                         });
+                        this.sub_id_select = [];
+                        this.sub_id_select.push({
+                            label: `${response.result.data[i].id}-${response.result.data[i].subCategoryName}`,
+                            value: response.result.data[i].id,
+                        });
+                        this.sub_id = this.sub_id_select.find(
+                            (val) =>
+                                val.label ==
+                                `${response?.result?.data?.[i].id}-${response?.result?.data?.[i].subCategoryName}`
+                        );
+                        this.displayInsertModal = true;
+                        let value_for_patch = {
+                            SubCategoryId: this.sub_id.value,
+                        };
+                        this.PensionForm.patchValue(value_for_patch);
+                        break;
                     }
-                } else {
-                    this.toastService.showError('Could Not Found');
                 }
             }
-            this.sub_id = this.sub_id_select.find(
-                (val) =>
-                    val.label ==
-                    `${responseS?.result?.data?.[0]?.id}-${responseS.result?.data?.[0]?.subCategoryName}`
-            );
-
-            this.displayInsertModal = true;
-            const value_for_patch = {
-                SubCategoryId: this.sub_id.value, // Fixed the error here
-            };
-            this.PensionForm.patchValue(value_for_patch);
         }
         //
     }
