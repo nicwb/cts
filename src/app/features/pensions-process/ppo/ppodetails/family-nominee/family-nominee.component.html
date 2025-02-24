@@ -10,11 +10,11 @@
         <button pButton pRipple (click)="familyDetails()" type="button" icon="pi pi-plus" [label]="'Add New'"
             class="p-button-rounded p-button-raised"></button>
 
-        <button label="Show Table" (click)="toggleFamilyNomineeTable()"
+        <!-- <button label="Show Table" (click)="toggleFamilyNomineeTable()"
             class="p-element p-ripple p-button-rounded p-button p-component">
             <span class="p-button-label">{{ showFamilyNomineeTable ? 'Hide Table' : 'Show Table' }}</span><span
                 class="p-ink"></span>
-        </button>
+        </button> -->
     </div>
 
     <!-- Form area -->
@@ -125,11 +125,11 @@
         <button pButton pRipple (click)="nomineeDetails()" type="button" icon="pi pi-plus" [label]="'Add New'"
             class="p-button-rounded p-button-raised"></button>
 
-        <button label="Show Table" (click)="toggleNomineeDetailsTable()"
+        <!-- <button label="Show Table" (click)="toggleNomineeDetailsTable()"
             class="p-element p-ripple p-button-rounded p-button p-component">
             <span class="p-button-label">{{ showNomineeDetailsTable ? 'Hide Table' : 'Show Table' }}</span><span
                 class="p-ink"></span>
-        </button>
+        </button> -->
     </div>
     <!-- From area -->
     <p-dialog [header]="NomineePopupHeader" [(visible)]="isInsertNominee" [modal]="true"
