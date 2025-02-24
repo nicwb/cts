@@ -208,6 +208,8 @@ export class ConvartToFamilyPensionComponent implements OnInit {
                             res.result.data.length > 0
                         ) {
                             this.familyDetails = res.result.data;
+                            // ? validate
+                            this.validateMinorPension();
                         } else {
                             void Swal.fire({
                                 icon: 'info',
@@ -337,6 +339,46 @@ export class ConvartToFamilyPensionComponent implements OnInit {
                 'pension-process/ppo/convart-to-family-pension/' +
                     $event['ppoId'],
             ]);
+        }
+    }
+
+    findObjectsWithOldestDOBAndMarkForEligible(data:any) {
+        let minDob: Date | null = null;
+        let result:any[] = [];
+
+        data.forEach((obj: any) => {
+          const dob = obj.dateOfBirth;
+          if (dob) {
+            const dobDate = new Date(dob);
+
+            // Compare DOB with current minDob (looking for the oldest date)
+            if (!minDob || dobDate < minDob) {
+              minDob = dobDate;
+              result = [obj]; // Reset result list with the current object (oldest date)
+            } else if (dobDate.getTime() === minDob.getTime()) {
+              result.push(obj); // If same dateOfBirth, add it to result
+            }
+          }
+        });
+
+        return result;
+    }
+
+    validateMinorPension(){
+        console.log("checking validate Minor pension")
+        const EligibleData = this.findObjectsWithOldestDOBAndMarkForEligible(this.familyDetails)
+        for (let index = 0; index < this.familyDetails.length; index++) {
+            const element = this.familyDetails[index];
+            for (let index2 = 0; index2 < EligibleData.length; index2++) {
+                const element2 = EligibleData[index2];
+                if (element.id == element2.id) {
+                    this.familyDetails[index].nomineeActive=true;
+                    break;
+                }else{
+                    this.familyDetails[index].nomineeActive=false;
+                }
+
+            }
         }
     }
 }
