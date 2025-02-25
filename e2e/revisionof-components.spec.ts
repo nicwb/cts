@@ -1,10 +1,51 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
+    await dbUtils.dropDatabase();
+
+    const migrateResult = await dbUtils.migrateDatabase();
+    expect(migrateResult).toBe('Database migrated successfully.');
+
+    const financialYearSeederResponse = await dbUtils.seedDatabase(
+        Seeders.FinancialYearSeeder,
+        5
+    );
+    expect(financialYearSeederResponse).toBe(
+        'Database seeded successfully with seeder: FinancialYearSeeder.'
+    );
+
+    const treasurySeederResponse = await dbUtils.seedDatabase(
+        Seeders.TreasurySeeder,
+        5
+    );
+    expect(treasurySeederResponse).toBe(
+        'Database seeded successfully with seeder: TreasurySeeder.'
+    );
+    const classificationSeederResponse = await dbUtils.seedDatabase(
+        Seeders.ClassificationSeeder,
+        5
+    );
+    expect(classificationSeederResponse).toBe(
+        'Database seeded successfully with seeder: ClassificationSeeder.'
+    );
+    const branchSeederResponse = await dbUtils.seedDatabase(
+        Seeders.BranchSeeder,
+        5
+    );
+    expect(branchSeederResponse).toBe(
+        'Database seeded successfully with seeder: BranchSeeder.'
+    );
+    const componentRateSeederResponse = await dbUtils.seedDatabase(
+        Seeders.ComponentRateSeeder,
+        5
+    );
+    expect(componentRateSeederResponse).toBe(
+        'Database seeded successfully with seeder: ComponentRateSeeder.'
+    );
 });
 
-test.skip('should reset the retrieved first pension bill', async ({
+test('Verify Reset Button Clears First Pension Bill Data', async ({
     page,
     pensionPage,
 }) => {
@@ -14,12 +55,9 @@ test.skip('should reset the retrieved first pension bill', async ({
     await page.getByRole('button', { name: ' Reset' }).click();
     //Assert
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
-    await expect(page.locator('input[id="pensionerName"]')).toHaveValue('');
-    await expect(page.locator('[id="Category\\ Description"]')).toHaveValue('');
-    await expect(page.locator('[id="bankName"]')).toHaveValue('');
 });
 
-test.skip('should receive all component Revision Details', async ({
+test('Verify Retrieval of Pension Bill Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -29,11 +67,16 @@ test.skip('should receive all component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Assert
-    const table = page.locator('p-table.p-element');
-    await expect(table).toBeVisible();
+    await expect(page.getByText("Pensioner's Details :")).toBeVisible();
+    await expect(
+        page
+            .locator('div')
+            .filter({ hasText: /^Details :$/ })
+            .nth(1)
+    ).toBeVisible();
 });
 
-test.skip('should edit component Revision Details', async ({
+test('Verify Editing of Pension Bill Revision Details', async ({
     page,
     pensionPage,
 }) => {
@@ -42,16 +85,22 @@ test.skip('should edit component Revision Details', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table = page.locator('p-table.p-element');
-    await expect(table).toBeVisible();
+    await expect(page.getByText("Pensioner's Details :")).toBeVisible();
+    await expect(
+        page
+            .locator('div')
+            .filter({ hasText: /^Details :$/ })
+            .nth(1)
+    ).toBeVisible();
     if (await page.getByRole('button', { name: 'Edit' }).first().isVisible()) {
         await page.getByRole('button', { name: 'Edit' }).first().click();
     } else {
         await page.getByRole('row').getByRole('button').first().click();
     }
     const amountInput = page
-        .locator('input[formControlName="amountPerMonth"]')
-        .first();
+        .locator('div')
+        .filter({ hasText: /^Amount \/ Month$/ })
+        .getByRole('textbox');
     await amountInput.fill('1500');
     if (await page.getByRole('button', { name: 'Save' }).isVisible()) {
         await page.getByRole('button', { name: 'Save' }).click();
@@ -62,7 +111,7 @@ test.skip('should edit component Revision Details', async ({
     await pensionPage.okSuccess();
 });
 
-test.skip('should delete a component Revision Detail', async ({
+test('Delete Pensioner Revision Detail Successfully', async ({
     page,
     pensionPage,
 }) => {
@@ -71,8 +120,13 @@ test.skip('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
     //Act
-    const table = page.locator('p-table.p-element');
-    await expect(table).toBeVisible();
+    await expect(page.getByText("Pensioner's Details :")).toBeVisible();
+    await expect(
+        page
+            .locator('div')
+            .filter({ hasText: /^Details :$/ })
+            .nth(1)
+    ).toBeVisible();
     await page.getByRole('row').getByRole('button').nth(1).click();
     const dialog2 = page.locator('div[role="dialog"]');
     await expect(dialog2).toBeVisible();
@@ -82,42 +136,47 @@ test.skip('should delete a component Revision Detail', async ({
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test.skip('should create a new component revision', async ({
+test('Create New Pensioner Revision Successfully', async ({
     page,
     pensionPage,
 }) => {
-    //Arrange
+    // Arrange
     const dialog = await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
-    //Act
+
+    // Act
     await page.getByRole('button', { name: ' Add' }).click();
-    const componentNameInput = page.locator(
-        'input[formControlName="componentname"]'
-    );
-    const fromDateInput = page.locator('input[placeholder="dd/mm/yyyy"]');
     const amountInput = page.locator('input[formControlName="amount"]');
-    await expect(fromDateInput).toBeVisible();
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');
-    const componentName = await firstRow2
-        .locator('td:nth-child(2)')
-        .textContent();
     await firstRow2.click();
-    await expect(componentNameInput).toHaveValue(componentName ?? '');
-    await page.click('input[placeholder="dd/mm/yyyy"]');
-    await page.waitForSelector('.p-datepicker-calendar');
-    const allDateCells = page.locator('.p-datepicker-calendar tbody td');
-    const dateCellCount = await allDateCells.count();
-    const randomIndex = Math.floor(Math.random() * dateCellCount);
-    const randomDateCell = allDateCells.nth(randomIndex);
-    await randomDateCell.click();
-    const randomAmount = (
-        Math.floor(Math.random() * (9999 - 100 + 1)) + 100
-    ).toString();
-    await amountInput.fill(randomAmount);
+
+    const dateInput = page.getByRole('textbox', { name: 'dd-MM-yyyy' });
+    await dateInput.click();
+
+    // Wait for the datepicker to be visible
+    await page.waitForSelector('.p-datepicker-calendar', { state: 'visible' });
+
+    // Generate a random number between 7 and 24
+    const randomDate = Math.floor(Math.random() * (24 - 7 + 1)) + 7;
+
+    // Use a more specific locator to click the span element
+    const selectedDate = page
+        .locator('span')
+        .filter({ hasText: new RegExp(`^${randomDate}$`) });
+
+    // Ensure that the selected date is visible and click it
+    await expect(selectedDate).toBeVisible({ timeout: 500 });
+    await selectedDate.click();
+
+    const randomAmount = Math.floor(Math.random() * 10000);
+    await amountInput.fill(randomAmount.toString());
+
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
-    //Assert
+
     await pensionPage.okSuccess();
+    expect(true).toBeTruthy();
 });

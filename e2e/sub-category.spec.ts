@@ -1,11 +1,39 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToSubCategory();
+    await dbUtils.dropDatabase();
+
+    const migrateResult = await dbUtils.migrateDatabase();
+    expect(migrateResult).toBe('Database migrated successfully.');
+
+    const financialYearSeederResponse = await dbUtils.seedDatabase(
+        Seeders.FinancialYearSeeder,
+        5
+    );
+    expect(financialYearSeederResponse).toBe(
+        'Database seeded successfully with seeder: FinancialYearSeeder.'
+    );
+
+    const treasurySeederResponse = await dbUtils.seedDatabase(
+        Seeders.TreasurySeeder,
+        5
+    );
+    expect(treasurySeederResponse).toBe(
+        'Database seeded successfully with seeder: TreasurySeeder.'
+    );
+
+    const subCategorySeederResponse = await dbUtils.seedDatabase(
+        Seeders.SubCategorySeeder,
+        5
+    );
+    expect(subCategorySeederResponse).toBe(
+        'Database seeded successfully with seeder: SubCategorySeeder.'
+    );
 });
 
-test('Check the input box is visible and working or not and submit it successfully', async ({
+test('Check Input Box Visibility and Submit Successfully', async ({
     page,
     pensionPage,
 }) => {
@@ -19,7 +47,10 @@ test('Check the input box is visible and working or not and submit it successful
     expect(true).toBeTruthy();
 });
 
-test('Duplicate Data Checking ', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Entry Submission In Sub Category ', async ({
+    page,
+    pensionPage,
+}) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New' }).click();
 

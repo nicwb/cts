@@ -1,18 +1,53 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToPrimaryComponent();
+    await dbUtils.dropDatabase();
+
+    const migrateResult = await dbUtils.migrateDatabase();
+    expect(migrateResult).toBe('Database migrated successfully.');
+
+    const financialYearSeederResponse = await dbUtils.seedDatabase(
+        Seeders.FinancialYearSeeder,
+        5
+    );
+    expect(financialYearSeederResponse).toBe(
+        'Database seeded successfully with seeder: FinancialYearSeeder.'
+    );
+
+    const treasurySeederResponse = await dbUtils.seedDatabase(
+        Seeders.TreasurySeeder,
+        5
+    );
+    expect(treasurySeederResponse).toBe(
+        'Database seeded successfully with seeder: TreasurySeeder.'
+    );
+
+    const primaryCategorySeederResponse = await dbUtils.seedDatabase(
+        Seeders.PrimaryCategorySeeder,
+        5
+    );
+    expect(primaryCategorySeederResponse).toBe(
+        'Database seeded successfully with seeder: PrimaryCategorySeeder.'
+    );
+    const accountHeadSeederResponse = await dbUtils.seedDatabase(
+        Seeders.AccountHeadSeeder,
+        5
+    );
+    expect(accountHeadSeederResponse).toBe(
+        'Database seeded successfully with seeder: AccountHeadSeeder.'
+    );
 });
 
-test('new button', async ({ page }) => {
+test('Create New Entry Using New Button', async ({ page }) => {
     await page.getByRole('button', { name: 'New' }).click();
+
     const element1 = page.locator('app-popup-table');
     await expect(element1).toBeVisible();
     await element1.click();
     const dialog = page.getByLabel('Search', { exact: true });
     await expect(dialog).toBeVisible();
-
     const firstRow = dialog.locator('tbody tr:first-child');
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
     await firstRow.click();
@@ -21,14 +56,17 @@ test('new button', async ({ page }) => {
     await expect(page.getByText('Description:')).toBeVisible();
 });
 
-test('testing the form and submit button', async ({ page, pensionPage }) => {
+test('Submit Primary Component Form Successfully Using New Button', async ({
+    page,
+    pensionPage,
+}) => {
     await page.getByRole('button', { name: 'New' }).click();
+
     const element1 = page.locator('app-popup-table');
     await expect(element1).toBeVisible();
     await element1.click();
     const dialog = page.getByLabel('Search', { exact: true });
     await expect(dialog).toBeVisible();
-
     const firstRow = dialog.locator('tbody tr:first-child');
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
     await firstRow.click();
@@ -40,31 +78,24 @@ test('testing the form and submit button', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test.skip('duplicate primary category entry ', async ({
-    page,
-    pensionPage,
-}) => {
+test('Prevent Duplicate Entry Submission ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement = page.locator('input[formControlName=accountHead]');
     await inputElement.waitFor({ state: 'visible' });
+
     const element1 = page.locator('app-popup-table');
     await expect(element1).toBeVisible();
     await element1.click();
     const dialog = page.getByLabel('Search', { exact: true });
     await expect(dialog).toBeVisible();
-
     const firstRow = dialog.locator('tbody tr:first-child');
     await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
     await firstRow.click();
-    await expect(inputElement).not.toBeEmpty();
-    const data1 = await inputElement.inputValue();
 
-    const inputElement1 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    await expect(inputElement).not.toBeEmpty();
+
+    const inputElement1 = page.getByPlaceholder('Description');
     await inputElement1.waitFor({ state: 'visible' });
     await expect(inputElement1).not.toBeEmpty();
     const data2 = await inputElement1.inputValue();
@@ -82,23 +113,24 @@ test.skip('duplicate primary category entry ', async ({
     ).toBeHidden();
     await page.getByRole('button', { name: 'New' }).click();
 
-    const inputElement2 = page.locator(
-        'input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]'
-    );
+    const inputElement2 = page.locator('input[formControlName=accountHead]');
+
+    const element2 = page.locator('app-popup-table');
+    await expect(element2).toBeVisible();
+    await element2.click();
+    const dialog2 = page.getByLabel('Search', { exact: true });
+    await expect(dialog2).toBeVisible();
+    const firstRow2 = dialog2.locator('tbody tr:first-child');
+    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
+    await firstRow2.click();
+
     await inputElement2.waitFor({ state: 'visible' });
     await expect(inputElement2).not.toBeEmpty();
-    await page
-        .locator('input[getByPlaceholder("-00-000-00-000-V-00-00" as string)]')
-        .fill(data1);
 
-    const inputElement3 = page.locator(
-        'input[formControlName=PrimaryCategoryName]'
-    );
+    const inputElement3 = page.getByPlaceholder('Description');
     await inputElement3.waitFor({ state: 'visible' });
     await expect(inputElement3).not.toBeEmpty();
-    await page
-        .locator('input[formControlName=PrimaryCategoryName]')
-        .fill(data2);
+    await page.getByPlaceholder('Description').fill(data2);
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();

@@ -1,8 +1,30 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, page, dbUtils }) => {
     await pensionPage.staticLogin();
-    await pensionPage.goToComponent();
+    await page.goto('/master/component', {
+        waitUntil: 'domcontentloaded',
+    });
+    await dbUtils.dropDatabase();
+
+    const migrateResult = await dbUtils.migrateDatabase();
+    expect(migrateResult).toBe('Database migrated successfully.');
+
+    const financialYearSeederResponse = await dbUtils.seedDatabase(
+        Seeders.FinancialYearSeeder,
+        5
+    );
+    expect(financialYearSeederResponse).toBe(
+        'Database seeded successfully with seeder: FinancialYearSeeder.'
+    );
+
+    const treasurySeederResponse = await dbUtils.seedDatabase(
+        Seeders.TreasurySeeder,
+        5
+    );
+    expect(treasurySeederResponse).toBe(
+        'Database seeded successfully with seeder: TreasurySeeder.'
+    );
 });
 
 test('Pension component can be saved', async ({ page, pensionPage }) => {
@@ -15,7 +37,7 @@ test('Pension component can be saved', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test('Duplicate data Checking', async ({ page, pensionPage }) => {
+test('Verify Duplicate Data Checking', async ({ page, pensionPage }) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New Entry' }).click();
 

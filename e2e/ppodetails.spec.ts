@@ -1,10 +1,19 @@
-import { test } from './fixtures';
+import { Seeders, test } from './fixtures';
 
 test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
 });
 
-test.skip('Save PPO details', async ({ pensionPage }) => {
+test('Save PPO details', async ({ pensionPage, dbUtils }) => {
     // Arrange
+    await dbUtils.dropDatabase();
+
+    await dbUtils.migrateDatabase();
+
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder, 5);
+
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder, 5);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder, 5);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder, 5);
     await pensionPage.savePpoDetails();
 });

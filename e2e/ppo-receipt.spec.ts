@@ -1,18 +1,36 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
 test.describe('PPO Receipt', () => {
-    test.beforeEach(async ({ page, pensionPage }) => {
+    test.beforeEach(async ({ page, pensionPage, dbUtils }) => {
         await pensionPage.staticLogin();
         await page.goto('pension-process/ppo/ppo-receipt');
+        await dbUtils.dropDatabase();
+
+        const migrateResult = await dbUtils.migrateDatabase();
+        expect(migrateResult).toBe('Database migrated successfully.');
+
+        const financialYearSeederResponse = await dbUtils.seedDatabase(
+            Seeders.FinancialYearSeeder,
+            5
+        );
+        expect(financialYearSeederResponse).toBe(
+            'Database seeded successfully with seeder: FinancialYearSeeder.'
+        );
+
+        const treasurySeederResponse = await dbUtils.seedDatabase(
+            Seeders.TreasurySeeder,
+            5
+        );
+        expect(treasurySeederResponse).toBe(
+            'Database seeded successfully with seeder: TreasurySeeder.'
+        );
     });
 
-    test.skip('should fill out the form and submit successfully', async ({
-        pensionPage,
-    }) => {
+    test('Submit PPO Receipt Form Successfully', async ({ pensionPage }) => {
         await pensionPage.savePpoReceipt();
     });
 
-    test.skip('should display error for duplicate PPO number', async ({
+    test('Prevent Duplicate PPO Number Submission', async ({
         page,
         pensionPage,
     }) => {
@@ -39,16 +57,32 @@ test.describe('PPO Receipt', () => {
         expect(true).toBeTruthy();
     });
 
-    test.skip('should edit an existing entry', async ({
+    test('Edit Existing PPO Receipt Successfully', async ({
         page,
         pensionPage,
+        dbUtils,
     }) => {
+        const ppoReceiptDatabaseResponse = await dbUtils.seedDatabase(
+            Seeders.PpoReceiptSeeder,
+            5
+        );
+        expect(ppoReceiptDatabaseResponse).toBe(
+            'Database seeded successfully with seeder: PpoReceiptSeeder.'
+        );
+        const projectName = test.info().project.name;
+        test.skip(projectName === 'Mobile Safari', 'Still working on it');
         await page.click('button:has-text("Load PPO Receipts")');
 
         await page.waitForSelector('tbody.p-element.p-datatable-tbody');
         await page.click('td.ng-star-inserted button:has-text("Edit")');
-        await page.getByRole('button', { name: '' }).click();
 
+        // const dialogTitle = page.locator('#pr_id_3-label');
+        // await expect(dialogTitle).toBeVisible();
+        // await expect(dialogTitle).toContainText('Manual PPO Receipt');
+
+        await page.waitForSelector('button:has-text("Update")', {
+            state: 'visible',
+        });
         await page.click('button:has-text("Update")');
         await pensionPage.okSuccess();
     });

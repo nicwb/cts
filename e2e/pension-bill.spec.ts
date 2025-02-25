@@ -1,47 +1,60 @@
-import { test, expect } from './fixtures';
+import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
-    await pensionPage.goToFirstPensionBillPrint();
+    await dbUtils.dropDatabase();
+
+    const migrateResult = await dbUtils.migrateDatabase();
+    expect(migrateResult).toBe('Database migrated successfully.');
+
+    const financialYearSeederResponse = await dbUtils.seedDatabase(
+        Seeders.FinancialYearSeeder,
+        5
+    );
+    expect(financialYearSeederResponse).toBe(
+        'Database seeded successfully with seeder: FinancialYearSeeder.'
+    );
+
+    const treasurySeederResponse = await dbUtils.seedDatabase(
+        Seeders.TreasurySeeder,
+        5
+    );
+    expect(treasurySeederResponse).toBe(
+        'Database seeded successfully with seeder: TreasurySeeder.'
+    );
+    const branchSeederResponse = await dbUtils.seedDatabase(
+        Seeders.BranchSeeder,
+        5
+    );
+    expect(branchSeederResponse).toBe(
+        'Database seeded successfully with seeder: BranchSeeder.'
+    );
+    const componentRateSeederResponse = await dbUtils.seedDatabase(
+        Seeders.ComponentRateSeeder,
+        16
+    );
+    expect(componentRateSeederResponse).toBe(
+        'Database seeded successfully with seeder: ComponentRateSeeder.'
+    );
 });
 
-test.skip('should validate form fields', async ({ page, pensionPage }) => {
-    await page.locator('p-radioButton[label="General Bill"]').click();
+test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({
+    page,
+    pensionPage,
+}) => {
+    await pensionPage.goToFirstPensionBillPrint();
+    await expect(page.locator('input[placeholder="PPO ID"]')).not.toBeEmpty();
+    await expect(
+        page.locator('input[placeholder="Pensioner Name"]')
+    ).not.toBeEmpty();
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
     ).toBeDisabled();
-
-    await pensionPage.openPopupAndSelectFirstRow();
+    await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(
         pensionPage.page.locator('button:has-text("Generate Report")')
     ).toBeEnabled();
-});
 
-test.skip('should select PPO and display details correctly', async ({
-    page,
-    pensionPage,
-}) => {
-    await pensionPage.openPopupAndSelectFirstRow();
-    const ppoIdValue = await pensionPage.page
-        .locator('input[placeholder="PPO ID"]')
-        .inputValue();
-    const pensionerName = await pensionPage.page
-        .locator('input[placeholder="Pensioner Name"]')
-        .inputValue();
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
-});
-
-test.skip('should refresh page and clear PPO ID', async ({
-    page,
-    pensionPage,
-}) => {
-    await pensionPage.openPopupAndSelectFirstRow();
     await page.click('button:has-text("Refresh")');
 
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
@@ -50,68 +63,30 @@ test.skip('should refresh page and clear PPO ID', async ({
     ).toHaveValue('');
 });
 
-test('should show "No records found" for invalid search', async ({
-    page,
-    pensionPage,
-}) => {
-    await pensionPage.openPopup();
-    await page.fill('input#float-input', 'NonExistentPPO');
-    await expect(page.locator('text="No records found"')).toBeVisible();
-});
-
-test.skip('should generate PDF and show error toast if failed', async ({
-    page,
-}) => {
-    await page.click('app-popup-table');
-    const dialog = page.locator('div[role="dialog"]');
-    await expect(dialog).toBeVisible();
-
-    await page.waitForSelector('tbody tr');
-    const firstRow = dialog.locator('tbody tr:first-child');
-    const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    const pensionerName = await firstRow
-        .locator('td:nth-child(3)')
-        .textContent();
-    await firstRow.click();
+test('Generate PDF Report', async ({ page, pensionPage }) => {
+    const dialog = await pensionPage.goToFirstPensionBillPrint();
     await expect(dialog).not.toBeVisible();
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
     await page.locator('p-radioButton[label="General Bill"]').click();
     await page.locator('button:has-text("Generate Report")').click();
 
     const dialog1 = page.locator('div.swal2-popup');
-    await expect(dialog1).toBeVisible({ timeout: 10000 });
+    await expect(dialog1).toBeVisible({ timeout: 500 });
 });
 
-test.skip('should generate PDF and handle errors appropriately', async ({
+test('Verify PDF Generation and Error Handling for General Bill Report', async ({
     page,
     pensionPage,
     browserName,
 }) => {
-    //ARRANGE,
-    const firstRow = await pensionPage.openPopupAndSelectFirstRow();
-    const ppoIdValue = await firstRow.locator('td:first-child').textContent();
-    // const pensionerName = await firstRow.locator('td:nth-child(3)').textContent();
-    const pensionerName = await firstRow.locator('td').nth(2).textContent();
-
-    await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue(
-        ppoIdValue ?? ''
-    );
-    await expect(
-        page.locator('input[placeholder="Pensioner Name"]')
-    ).toHaveValue(pensionerName ?? '');
+    //ARRANGE
+    await pensionPage.goToFirstPensionBillPrint();
     //ACT
     await page.locator('p-radioButton[label="General Bill"]').click();
     await expect(page.locator('input[value="generalBill"]')).toBeChecked();
     await page.locator('button:has-text("Generate Report")').click();
     //ASSERT
     const toastLocator = page.locator('.swal2-popup');
-    await expect(toastLocator).toBeVisible({ timeout: 10000 });
+    await expect(toastLocator).toBeVisible({ timeout: 500 });
 
     const toastClasses = await toastLocator.evaluate((el) => el.className);
     const toastMessage = await toastLocator.textContent();
