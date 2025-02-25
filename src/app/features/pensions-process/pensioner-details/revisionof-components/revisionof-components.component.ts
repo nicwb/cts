@@ -1,4 +1,10 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    HostListener,
+    importProvidersFrom,
+    Input,
+    OnInit,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -13,8 +19,9 @@ import {
     PpoComponentRevisionEntryDTO,
     PensionBankBranchService,
     PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse,
-    PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse,
+    ComponentRateResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
+import { PensionComponentRateService } from 'src/app/api/api/pension-component-rate.service';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -30,7 +37,7 @@ export class RevisionofComponentsComponent implements OnInit {
     tableForm: FormGroup = new FormGroup({}); // Declare pensionForm
     componentForm: FormGroup = new FormGroup({}); // Declare pensionForm
     ppoList$: Observable<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>;
-    pensionComponent$: Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
+    pensionComponent$!: Observable<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>;
     showTable: boolean = false;
     getpensionbill!: PpoBillResponseDTOJsonAPIResponse;
     ppoId?: number;
@@ -62,12 +69,11 @@ export class RevisionofComponentsComponent implements OnInit {
         private pensionComponentService: PensionComponentService,
         private datePipe: DatePipe,
         private toastService: ToastService,
-        private bank: PensionBankBranchService
+        private bank: PensionBankBranchService,
+        private pensionComponentRateService: PensionComponentRateService
     ) {
         this.ppoList$ =
             this.revisionOfComponentsService.getAllPposForComponentRevisions();
-
-        this.pensionComponent$ = this.pensionComponentService.getComponents();
     }
 
     ngOnInit(): void {
@@ -131,6 +137,16 @@ export class RevisionofComponentsComponent implements OnInit {
                 this.isPopupTableDisabled = !this.pensionForm.valid;
                 this.patchFormValues(this.responce);
                 this.hidePpoId = true;
+                if (
+                    responce.result &&
+                    responce.result.length > 0 &&
+                    responce.result[0].rate?.categoryId
+                ) {
+                    this.pensionComponent$ =
+                        this.pensionComponentRateService.getComponentRatesByCategoryId(
+                            responce.result[0].rate.categoryId
+                        );
+                }
             }
         }
     }
@@ -143,8 +159,8 @@ export class RevisionofComponentsComponent implements OnInit {
             this.revisions.push(
                 this.fb.group({
                     id: [revision.id],
-                    breakupId: [revision.rate.breakupId],
-                    componentName: [revision.rate.breakup.componentName],
+                    rateId: [revision.rate.id],
+                    componentName: [revision.rate.componentName],
                     fromDate: [
                         this.datePipe.transform(parsedDate, 'dd-MM-yyyy'),
                     ], // Use 'yyyy-MM-dd'
@@ -337,7 +353,7 @@ export class RevisionofComponentsComponent implements OnInit {
 
             return `${day}-${month}-${year}`;
         } else {
-            return 'N/A'; // If it's the last row
+            return 'Till Now'; // If it's the last row
         }
     }
 
