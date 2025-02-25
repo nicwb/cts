@@ -868,7 +868,7 @@
         }
       }
     },
-    "/api/v1/ppo/component-revision/ppos": {
+    "/api/v1/ppo-component-revision/ppos": {
       "get": {
         "tags": [
           "Pension: Component Revision"
@@ -936,7 +936,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/ppo/{ppoId}/component-revisions": {
       "get": {
         "tags": [
           "Pension: Component Revision"
@@ -959,7 +961,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse"
+                  "$ref": "#/components/schemas/PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse"
                 }
               }
             }
@@ -967,67 +969,7 @@
         }
       }
     },
-    "/api/v1/ppo/{ppoId}/component-revisions": {
-      "post": {
-        "tags": [
-          "Pension: Component Revision"
-        ],
-        "operationId": "CreatePpoComponentRevisions",
-        "parameters": [
-          {
-            "name": "ppoId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PpoComponentRevisionEntryDTO"
-                }
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PpoComponentRevisionEntryDTO"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PpoComponentRevisionEntryDTO"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PpoComponentRevisionResponseDTOListJsonAPIResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/v1/ppo/{revisionId}/component-revision": {
+    "/api/v1/ppo-component-revision/{revisionId}": {
       "put": {
         "tags": [
           "Pension: Component Revision"
@@ -6908,26 +6850,6 @@
         },
         "additionalProperties": false
       },
-      "PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PpoComponentRevisionResponseDTO"
-            },
-            "nullable": true
-          },
-          "apiResponseStatus": {
-            "$ref": "#/components/schemas/APIResponseStatus"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "PpoComponentRevisionResponseDTOJsonAPIResponse": {
         "type": "object",
         "properties": {
@@ -6944,15 +6866,41 @@
         },
         "additionalProperties": false
       },
-      "PpoComponentRevisionResponseDTOListJsonAPIResponse": {
+      "PpoComponentRevisionResponseDTOTableResponseDTO": {
         "type": "object",
         "properties": {
-          "result": {
+          "dataSource": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableHeader"
+            },
+            "nullable": true
+          },
+          "data": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PpoComponentRevisionResponseDTO"
             },
             "nullable": true
+          },
+          "dataCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/PpoComponentRevisionResponseDTOTableResponseDTO"
           },
           "apiResponseStatus": {
             "$ref": "#/components/schemas/APIResponseStatus"

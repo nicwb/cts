@@ -1,4 +1,12 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { TableHeader } from './../../../../api/model/table-header';
+import { FormData } from './../../../../core/models/indentFormData';
+import {
+    Component,
+    HostListener,
+    importProvidersFrom,
+    Input,
+    OnInit,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -13,8 +21,10 @@ import {
     PpoComponentRevisionEntryDTO,
     PensionBankBranchService,
     PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse,
-    PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse,
+    ComponentRateResponseDTOTableResponseDTOJsonAPIResponse,
+    PpoComponentRevisionResponseDTO,
 } from 'src/app/api';
+import { PensionComponentRateService } from 'src/app/api/api/pension-component-rate.service';
 import { DatePipe } from '@angular/common';
 import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -30,11 +40,11 @@ export class RevisionofComponentsComponent implements OnInit {
     tableForm: FormGroup = new FormGroup({}); // Declare pensionForm
     componentForm: FormGroup = new FormGroup({}); // Declare pensionForm
     ppoList$: Observable<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>;
-    pensionComponent$: Observable<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>;
+    pensionComponent$!: Observable<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>;
     showTable: boolean = false;
     getpensionbill!: PpoBillResponseDTOJsonAPIResponse;
     ppoId?: number;
-    responce: any;
+    response: any;
     isSearch: boolean = false;
     editRowId: number | null = null;
     isInsertModalVisible: boolean = false;
@@ -48,6 +58,10 @@ export class RevisionofComponentsComponent implements OnInit {
     isPopupTableDisabled = true;
     pensionData: any[] = [];
     dialogHeader = 'Component Rate';
+    disableAmount = false;
+    componentName!: string;
+    TableHeaders!: any;
+    TableData!: [] | any;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any) {
@@ -62,12 +76,11 @@ export class RevisionofComponentsComponent implements OnInit {
         private pensionComponentService: PensionComponentService,
         private datePipe: DatePipe,
         private toastService: ToastService,
-        private bank: PensionBankBranchService
+        private bank: PensionBankBranchService,
+        private pensionComponentRateService: PensionComponentRateService
     ) {
         this.ppoList$ =
             this.revisionOfComponentsService.getAllPposForComponentRevisions();
-
-        this.pensionComponent$ = this.pensionComponentService.getComponents();
     }
 
     ngOnInit(): void {
@@ -75,13 +88,16 @@ export class RevisionofComponentsComponent implements OnInit {
             ppoId: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // PPO ID must be a number
         });
         this.componentForm = this.fb.group({
-            componentname: ['', Validators.required],
+            componentname: [
+                { value: '', disabled: false },
+                Validators.required,
+            ],
             fromDate: ['', Validators.required],
-            amount: ['', Validators.required],
+            amount: [{ value: '', disabled: false }, Validators.required],
         });
-        this.tableForm = this.fb.group({
-            revisions: this.fb.array([]), // Create an empty FormArray for table rows
-        });
+        // this.tableForm = this.fb.group({
+        //     revisions: this.fb.array([]), // Create an empty FormArray for table rows
+        // });
         this.pensionForm.get('ppoId')?.valueChanges.subscribe((value) => {
             this.ppoId = value;
         });
@@ -107,105 +123,157 @@ export class RevisionofComponentsComponent implements OnInit {
             this.isSearch = true;
         }
     }
-    get revisions() {
-        return this.tableForm.get('revisions') as FormArray;
-    }
+    // get revisions() {
+    //     return this.tableForm.get('revisions') as FormArray;
+    // }
 
     async SearchComponent() {
         if (this.ppoId) {
-            const responce = await firstValueFrom(
+            const response = await firstValueFrom(
                 this.revisionOfComponentsService.getPpoComponentRevisionsByPpoId(
                     this.ppoId
                 )
             );
-            if (responce.apiResponseStatus === APIResponseStatus.Success) {
-                this.toastService.showSuccess('' + responce.message);
-                if (Array.isArray(responce.result)) {
-                    this.responce = responce.result.sort(
-                        (a: any, b: any) =>
-                            new Date(a.fromDate).getTime() -
-                            new Date(b.fromDate).getTime()
-                    );
-                }
-                this.showTable = true;
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
+                this.toastService.showSuccess('' + response.message);
+                this.response = response.result?.data;
+                this.TableHeaders = response.result?.headers ?? [];
+
+                await this.newresponse(response.result);
                 this.isPopupTableDisabled = !this.pensionForm.valid;
-                this.patchFormValues(this.responce);
+
+                await this.settingToDate();
                 this.hidePpoId = true;
+                this.showTable = true;
+
+                if (
+                    response?.result &&
+                    Array.isArray(response.result.data) &&
+                    response.result.data.length > 0 &&
+                    response.result.data[0].rate?.categoryId
+                ) {
+                    this.pensionComponent$ =
+                        this.pensionComponentRateService.getComponentRatesByCategoryId(
+                            response.result.data[0].rate.categoryId
+                        );
+                }
             }
         }
     }
+    async newresponse(response: any) {
+        this.TableData = [];
 
-    // Method to patch form values with revisions array
-    patchFormValues(revisions: any[]) {
-        this.revisions.clear();
-        revisions.forEach((revision, index) => {
-            const parsedDate = new Date(revision.fromDate);
-            this.revisions.push(
-                this.fb.group({
-                    id: [revision.id],
-                    breakupId: [revision.rate.breakupId],
-                    componentName: [revision.rate.breakup.componentName],
-                    fromDate: [
-                        this.datePipe.transform(parsedDate, 'dd-MM-yyyy'),
-                    ], // Use 'yyyy-MM-dd'
-                    toDate: [this.getToDate(index)],
-                    amountPerMonth: [revision.amountPerMonth],
-                })
-            );
-        });
+        const dataCount = response.dataCount;
+        for (let i = 0; i < dataCount; i++) {
+            const data = response.data[i];
+            let a: { [key: string]: any } = {};
+            for (let j = 0; j < this.TableHeaders.length; j++) {
+                a[this.TableHeaders[j].fieldName] = this.getValueByKey(
+                    data,
+                    this.TableHeaders[j].fieldName
+                );
+            }
+            this.TableData.push(a);
+        }
+        console.log(this.TableData);
+    }
+    getValueByKey(obj: any, key: string): any {
+        if (!obj || typeof obj !== 'object') return 'Key Not Found';
+
+        // If key exists at the current level, return its value
+        if (key in obj) return obj[key];
+
+        // Recursively search in nested objects
+        for (const k in obj) {
+            if (typeof obj[k] === 'object') {
+                const result = this.getValueByKey(obj[k], key);
+                if (result !== 'Key Not Found') return result;
+            }
+        }
+
+        return 'Key Not Found';
+    }
+
+    parseDate(dateStr: string): Date {
+        if (!dateStr) {
+            throw new Error('Invalid date input');
+        }
+
+        // Check if it's already a valid Date object in string format
+        const parsedDate = new Date(dateStr);
+        if (!isNaN(parsedDate.getTime())) {
+            return parsedDate;
+        }
+
+        // Convert "dd-mm-yyyy" to "yyyy-mm-dd" before parsing
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+            const [day, month, year] = dateStr.split('-');
+            const formattedDate = new Date(`${year}-${month}-${day}`);
+            if (!isNaN(formattedDate.getTime())) {
+                return formattedDate;
+            }
+        }
+
+        throw new Error(`Invalid date format: ${dateStr}`);
     }
 
     // Enable edit for specific row by id
-    enableEdit(rowId: number) {
-        this.editRowId = rowId;
+    enableEdit(rowId: any) {
+        this.editRowId = rowId.id;
         this.isEditMode = true;
         this.dialogHeader = 'Update Component';
         this.isInsertModalVisible = true;
-        const revisionForm = this.revisions.controls.find(
-            (control) => control.get('id')?.value === this.editRowId
-        );
+
+        console.log(rowId);
+
         this.componentForm.patchValue({
-            fromDate: revisionForm?.value.fromDate,
-            amount: revisionForm?.value.amountPerMonth,
+            fromDate: rowId?.fromDate,
+            amount: rowId?.amountPerMonth,
         });
     }
 
     // Save changes and disable edit mode
     async saveRow() {
         if (this.editRowId) {
-            const revisionForm = this.revisions.controls.find(
-                (control) => control.get('id')?.value === this.editRowId
+            const value = this.convertToDateFormat(
+                this.componentForm.get('fromDate')?.value
             );
-            if (revisionForm) {
-                const value = this.convertToDateFormat(
-                    this.componentForm.get('fromDate')?.value
+            const payload = {
+                fromDate: value,
+                amountPerMonth: this.componentForm.get('amount')?.value,
+            };
+            try {
+                const response = await firstValueFrom(
+                    this.revisionOfComponentsService.updatePpoComponentRevisionById(
+                        this.editRowId,
+                        payload
+                    )
                 );
-                const payload = {
-                    fromDate: value,
-                    amountPerMonth: this.componentForm.get('amount')?.value,
-                };
-                try {
-                    const response = await firstValueFrom(
-                        this.revisionOfComponentsService.updatePpoComponentRevisionById(
-                            this.editRowId,
-                            payload
-                        )
+                if (response.apiResponseStatus === APIResponseStatus.Success) {
+                    this.toastService.showSuccess('' + response.message);
+
+                    // Update the specific item in this.response
+                    const index = this.TableData.findIndex(
+                        (item: any) => item.id === this.editRowId
                     );
-                    if (
-                        response.apiResponseStatus === APIResponseStatus.Success
-                    ) {
-                        this.toastService.showSuccess('' + response.message);
-                        this.loadComponentRevisions();
+                    if (index !== -1) {
+                        this.TableData[index].fromDate = payload.fromDate;
+                        this.TableData[index].amountPerMonth =
+                            payload.amountPerMonth;
                     }
-                } catch (error) {
-                    this.toastService.showError('' + APIResponseStatus.Error);
+
+                    await this.settingToDate();
                 }
+            } catch (error) {
+                this.toastService.showError('' + APIResponseStatus.Error);
+            } finally {
+                this.isInsertModalVisible = false;
             }
         }
     }
     // Delete Component
-    async delete(rowId: number) {
-        Swal.fire({
+    async delete(rowId: any) {
+        await Swal.fire({
             title: 'Are you sure?',
             text: 'Delete this component!',
             icon: 'warning',
@@ -217,18 +285,21 @@ export class RevisionofComponentsComponent implements OnInit {
             if (result.isConfirmed) {
                 const response = await firstValueFrom(
                     this.revisionOfComponentsService.deletePpoComponentRevisionById(
-                        rowId
+                        rowId.id
                     )
                 );
                 if (response.apiResponseStatus === APIResponseStatus.Success) {
                     this.toastService.showSuccess('' + response.message);
-                    this.loadComponentRevisions();
+                    this.TableData = this.TableData.filter(
+                        (data: any) => data.id !== rowId.id
+                    );
+                    await this.settingToDate();
                 } else if (
                     response.apiResponseStatus === APIResponseStatus.Error
                 ) {
                     this.toastService.showSuccess('' + response.message);
                 }
-                Swal.fire({
+                await Swal.fire({
                     title: 'Deleted!',
                     text: 'Your file has been deleted.',
                     icon: 'success',
@@ -236,40 +307,147 @@ export class RevisionofComponentsComponent implements OnInit {
             }
         });
     }
+    yyyymmddToddmmyyyy(dateStr: string): string {
+        if (!dateStr) {
+            console.error('Invalid date input');
+            return '';
+        }
+
+        if (/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+            return dateStr;
+        }
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+            const [year, month, day] = dateStr.split('-');
+            return `${day}-${month}-${year}`;
+        }
+
+        console.error('Invalid date format:', dateStr);
+        return '';
+    }
     // save Component
     async saveComponent() {
+        if (this.componentForm.invalid) {
+            this.componentForm.markAllAsTouched();
+            return;
+        }
+        const data = this.componentForm.value;
+        const fromDateValue = this.convertToDateFormat(
+            this.componentForm.get('fromDate')?.value
+        );
+
         const payload: PpoComponentRevisionEntryDTO = {
             rateId: this.rateid,
-            fromDate:
-                this.datePipe.transform(
-                    this.componentForm.get('fromDate')?.value,
-                    'yyyy-MM-dd'
-                ) || '',
+            fromDate: fromDateValue,
             amountPerMonth: this.componentForm.get('amount')?.value,
         };
+
         if (this.ppoId && this.componentForm.valid) {
-            try {
-                const response = await firstValueFrom(
-                    this.revisionOfComponentsService.createSinglePpoComponentRevision(
-                        this.ppoId,
-                        payload
-                    )
-                );
-                if (response.apiResponseStatus === APIResponseStatus.Success) {
-                    this.toastService.showSuccess('' + response.message);
-                    this.componentForm.reset();
-                    this.loadComponentRevisions();
-                } else if (
-                    response.apiResponseStatus === APIResponseStatus.Error
-                ) {
-                    this.toastService.showSuccess('' + response.message);
-                }
-            } catch (error) {
-                this.toastService.showError('' + APIResponseStatus.Error);
+            const response = await firstValueFrom(
+                this.revisionOfComponentsService.createSinglePpoComponentRevision(
+                    this.ppoId,
+                    payload
+                )
+            );
+
+            if (response.apiResponseStatus === APIResponseStatus.Success) {
+                this.toastService.showSuccess('' + response.message);
+                this.resetAndCloseDialog();
+                await this.addToCurrentData(response.result);
+                this.isInsertModalVisible = false;
+                this.componentForm.reset();
+                this.rateid = null;
+            } else if (response.apiResponseStatus === APIResponseStatus.Error) {
+                this.toastService.showWarning('' + response.message);
+                return;
             }
         }
     }
-    // refresh
+
+    async addToCurrentData(data: any) {
+        if (data) {
+            // console.log(data);
+            const a: { [key: string]: any } = {};
+            for (let j = 0; j < this.TableHeaders.length; j++) {
+                a[this.TableHeaders[j].fieldName] = this.getValueByKey(
+                    data,
+                    this.TableHeaders[j].fieldName
+                );
+            }
+            this.TableData.push(a);
+            await this.settingToDate();
+        }
+    }
+    async settingToDate(): Promise<void> {
+        const newData = this.TableData;
+        this.TableData = [];
+        if (newData) {
+            this.TableData = newData.sort((a: any, b: any) => {
+                const dateA = this.parseDate(a.fromDate);
+                const dateB = this.parseDate(b.fromDate);
+                return dateA.getTime() - dateB.getTime();
+            });
+        }
+
+        let component;
+        if (this.TableData != null) {
+            for (let i = 0; i < this.TableData.length; i++) {
+                this.TableData[i].toDate = 'Till Date';
+                this.TableData[i].fromDate = this.yyyymmddToddmmyyyy(
+                    this.TableData[i].fromDate
+                );
+            }
+            for (let i = 1; i < this.TableData.length; i++) {
+                component = this.TableData[i].componentDescription;
+                for (let j = i - 1; j >= 0; j--) {
+                    if (this.TableData[j].componentDescription == component) {
+                        this.TableData[j].toDate = this.getPreviousDate(
+                            this.TableData[i].fromDate
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    getPreviousDate(dateStr: string): string {
+        if (!dateStr) {
+            console.error('Invalid date input');
+            return '';
+        }
+
+        let day: number, month: number, year: number;
+
+        // Check if the format is YYYY-MM-DD or DD-MM-YYYY
+        const parts = dateStr.split('-').map(Number);
+
+        if (parts.length !== 3 || parts.some(isNaN)) {
+            console.error('Invalid date format:', dateStr);
+            return '';
+        }
+
+        if (parts[0] > 31) {
+            // Format: YYYY-MM-DD (first part is year)
+            [year, month, day] = parts;
+        } else {
+            // Format: DD-MM-YYYY (first part is day)
+            [day, month, year] = parts;
+        }
+
+        const date = new Date(year, month - 1, day); // Months are 0-based
+
+        if (isNaN(date.getTime())) {
+            console.error('Invalid date after parsing:', dateStr);
+            return '';
+        }
+        date.setDate(date.getDate() - 1);
+        const prevDay = String(date.getDate()).padStart(2, '0');
+        const prevMonth = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const prevYear = date.getFullYear();
+
+        return `${prevDay}-${prevMonth}-${prevYear}`;
+    }
+
     refresh() {
         this.pensionForm.reset();
         this.showTable = false;
@@ -281,9 +459,47 @@ export class RevisionofComponentsComponent implements OnInit {
     }
     handleSelectedRowByPensionComponent(event: any) {
         this.rateid = event.id;
-        this.componentForm.patchValue({
-            componentname: event.componentName,
-        });
+        this.componentName = event.componentName;
+        const type = event.rateType;
+        const rateAmount = event.rateAmount;
+        this.componentForm.controls['componentname'].disable();
+
+        if (type == 'A') {
+            if (rateAmount == 0) {
+                this.componentForm.patchValue({
+                    componentname: event.componentName,
+                    amount: '',
+                });
+                this.componentForm.controls['amount'].enable();
+            } else {
+                this.componentForm.patchValue({
+                    componentname: event.componentName,
+                    amount: rateAmount,
+                });
+                this.componentForm.controls['amount'].disable();
+            }
+        } else {
+            let flag = true;
+            for (let i = 0; i < this.TableData.length; i++) {
+                if (
+                    this.TableData[i].componentDescription.split('-')[1] ==
+                    'BASIC PENSION'
+                ) {
+                    this.componentForm.patchValue({
+                        componentname: event.componentName,
+                        amount:
+                            (this.TableData[i].amountPerMonth * rateAmount) /
+                            100,
+                    });
+                    this.componentForm.controls['amount'].disable();
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                this.toastService.showError('Basic Pension Not Found');
+            }
+        }
     }
 
     addcomponent() {
@@ -292,54 +508,12 @@ export class RevisionofComponentsComponent implements OnInit {
         this.dialogHeader = 'Component Rate';
     }
 
-    // Load component revision when table in modify
-    loadComponentRevisions() {
-        if (this.ppoId) {
-            this.revisionOfComponentsService
-                .getPpoComponentRevisionsByPpoId(this.ppoId)
-                .subscribe(
-                    (response) => {
-                        if (
-                            response.apiResponseStatus ===
-                            APIResponseStatus.Success
-                        ) {
-                            this.responce = response?.result?.sort(
-                                (a: any, b: any) =>
-                                    new Date(a.fromDate).getTime() -
-                                    new Date(b.fromDate).getTime()
-                            );
-                            this.patchFormValues(this.responce);
-                        }
-                    },
-                    (error) => {
-                        this.toastService.showError(
-                            '' + APIResponseStatus.Error
-                        );
-                    }
-                );
-        }
-    }
     cancelEdit(rowId: number) {
         if (this.editRowId === rowId) {
             this.editRowId = null;
         }
     }
     // Custom method to subtract one day from the next row's fromDate
-    getToDate(index: number): string {
-        if (this.responce[index + 1]) {
-            const nextFromDate = new Date(this.responce[index + 1].fromDate);
-            nextFromDate.setDate(nextFromDate.getDate() - 1);
-
-            // Format the date as dd-mm-yyyy
-            const day = String(nextFromDate.getDate()).padStart(2, '0');
-            const month = String(nextFromDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-            const year = nextFromDate.getFullYear();
-
-            return `${day}-${month}-${year}`;
-        } else {
-            return 'N/A'; // If it's the last row
-        }
-    }
 
     resetAndCloseDialog(): void {
         this.componentForm.reset();
