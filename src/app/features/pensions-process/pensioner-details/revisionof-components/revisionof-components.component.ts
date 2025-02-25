@@ -175,7 +175,6 @@ export class RevisionofComponentsComponent implements OnInit {
             }
             this.TableData.push(a);
         }
-        console.log(this.TableData);
     }
     getValueByKey(obj: any, key: string): any {
         if (!obj || typeof obj !== 'object') return 'Key Not Found';
@@ -392,19 +391,25 @@ export class RevisionofComponentsComponent implements OnInit {
         let component;
         if (this.TableData != null) {
             for (let i = 0; i < this.TableData.length; i++) {
-                this.TableData[i].toDate = 'Till Date';
+                if (this.TableData[i].toDate == null) {
+                    this.TableData[i].toDate = 'Till Date';
+                }
                 this.TableData[i].fromDate = this.yyyymmddToddmmyyyy(
                     this.TableData[i].fromDate
                 );
             }
             for (let i = 1; i < this.TableData.length; i++) {
                 component = this.TableData[i].componentDescription;
-                for (let j = i - 1; j >= 0; j--) {
-                    if (this.TableData[j].componentDescription == component) {
-                        this.TableData[j].toDate = this.getPreviousDate(
-                            this.TableData[i].fromDate
-                        );
-                        break;
+                if (this.TableData[i].toDate == 'Till Date') {
+                    for (let j = i - 1; j >= 0; j--) {
+                        if (
+                            this.TableData[j].componentDescription == component
+                        ) {
+                            this.TableData[j].toDate = this.getPreviousDate(
+                                this.TableData[i].fromDate
+                            );
+                            break;
+                        }
                     }
                 }
             }
