@@ -84,11 +84,13 @@ export class PensionModule {
         const ppoNo = await this.page
             .locator('input[formcontrolname="ppoNo"]')
             .inputValue();
-        return ppoNo;
+        const a = await this.page.locator('p-dropdown').nth(3).textContent();
+        const b = await this.page.locator('p-dropdown').nth(4).textContent();
+        return { ppoId: ppoNo, bank: a, branch: b };
     }
 
     async savePpoDetailsAndApprove() {
-        const ppoNo = await this.savePpoDetails();
+        const { ppoNo } = await this.savePpoDetails();
         await this.approvePpo(ppoNo);
         return ppoNo;
     }
@@ -203,8 +205,65 @@ export class PensionModule {
         ).toBeVisible();
         await expect(this.page.getByPlaceholder('Description')).toBeVisible();
         await expect(
-            this.page.getByRole('button', { name: 'Refresh' })
-        ).toBeVisible();
+            this.page.getByRole('button', { name: 'Search' })
+        ).toBeDisabled();
+    }
+
+    async goToComponent(): Promise<void> {
+        await this.page.goto('/master/component', {
+            waitUntil: 'domcontentloaded',
+        });
+    }
+    async lifeCertificate(): Promise<void> {
+        await this.page.goto('/pension-process/ppo/life-certificate');
+    }
+
+    async saveData_lifecertificate(
+        NewData: { bank: string; branch: string },
+        option: string
+    ) {
+        await this.page.getByText('Select').first().click();
+        // await this.page.locator('p-dropdownitem').click();
+        await this.page.getByText(`${NewData.bank}`).click();
+        await this.page
+            .locator('p-dropdown')
+            .filter({ hasText: 'Select' })
+            .getByLabel('dropdown trigger')
+            .click();
+        await this.page.getByText(`${NewData.branch}`).click();
+
+        if (option == 'submitted') {
+            await this.page.locator('.p-radiobutton').last().click();
+            await this.page.getByRole('button', { name: 'Search' }).click();
+        } else {
+            await this.page.locator('.p-radiobutton').first().click();
+            await this.page.getByRole('button', { name: 'Search' }).click();
+            await this.page
+                .locator(
+                    'td:nth-child(7) > .p-element > .p-radiobutton > .p-radiobutton-box'
+                )
+                .first()
+                .click();
+            if (option == 'save') {
+                await this.page
+                    .locator('button[icon="pi pi-save"]')
+                    .first()
+                    .click();
+                await this.page.getByRole('button', { name: 'OK' }).click();
+                await expect(
+                    this.page.locator('button[label="Refrish"]')
+                ).toBeVisible();
+            } else {
+                await this.page
+                    .getByRole('button', { name: 'save all' })
+                    .click();
+                await this.page.getByRole('button', { name: 'OK' }).click();
+                await this.page.getByRole('button', { name: 'Close' }).click();
+                await expect(
+                    this.page.locator('button[label="Refrish"]')
+                ).toBeVisible();
+            }
+        }
     }
 
     async goToRevisionOfComponents(): Promise<void> {
