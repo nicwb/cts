@@ -27,11 +27,9 @@ import { PpoComponentRevisionEntryDTO } from '../model/ppo-component-revision-en
 // @ts-ignore
 import { PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-ppo-list-item-dto-table-response-dto-json-api-response';
 // @ts-ignore
-import { PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse } from '../model/ppo-component-revision-response-dtoi-enumerable-json-api-response';
-// @ts-ignore
 import { PpoComponentRevisionResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-response-dto-json-api-response';
 // @ts-ignore
-import { PpoComponentRevisionResponseDTOListJsonAPIResponse } from '../model/ppo-component-revision-response-dto-list-json-api-response';
+import { PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse } from '../model/ppo-component-revision-response-dto-table-response-dto-json-api-response';
 // @ts-ignore
 import { PpoComponentRevisionUpdateDTO } from '../model/ppo-component-revision-update-dto';
 
@@ -131,140 +129,6 @@ export class PensionComponentRevisionService {
             throw Error('key may not be null if value is not object or array');
         }
         return httpParams;
-    }
-
-    /**
-     * @param ppoId
-     * @param ppoComponentRevisionEntryDTO
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public createPpoComponentRevisions(
-        ppoId: number,
-        ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>,
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<PpoComponentRevisionResponseDTOListJsonAPIResponse>;
-    public createPpoComponentRevisions(
-        ppoId: number,
-        ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>,
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpResponse<PpoComponentRevisionResponseDTOListJsonAPIResponse>
-    >;
-    public createPpoComponentRevisions(
-        ppoId: number,
-        ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>,
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpEvent<PpoComponentRevisionResponseDTOListJsonAPIResponse>
-    >;
-    public createPpoComponentRevisions(
-        ppoId: number,
-        ppoComponentRevisionEntryDTO?: Array<PpoComponentRevisionEntryDTO>,
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        if (ppoId === null || ppoId === undefined) {
-            throw new Error(
-                'Required parameter ppoId was null or undefined when calling createPpoComponentRevisions.'
-            );
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set(
-                'Authorization',
-                localVarCredential
-            );
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined =
-            options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = ['application/json'];
-            localVarHttpHeaderAcceptSelected =
-                this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        let localVarHttpContext: HttpContext | undefined =
-            options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/component-revisions`;
-        return this.httpClient.request<PpoComponentRevisionResponseDTOListJsonAPIResponse>(
-            'post',
-            `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: ppoComponentRevisionEntryDTO,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
     }
 
     /**
@@ -489,7 +353,7 @@ export class PensionComponentRevisionService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'revisionId', value: revisionId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}/component-revision`;
+        let localVarPath = `/api/v1/ppo-component-revision/${this.configuration.encodeParam({ name: 'revisionId', value: revisionId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
         return this.httpClient.request<PpoComponentRevisionResponseDTOJsonAPIResponse>(
             'delete',
             `${this.configuration.basePath}${localVarPath}`,
@@ -590,7 +454,7 @@ export class PensionComponentRevisionService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/component-revision/ppos`;
+        let localVarPath = `/api/v1/ppo-component-revision/ppos`;
         return this.httpClient.request<PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -618,7 +482,7 @@ export class PensionComponentRevisionService {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse>;
+    ): Observable<PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse>;
     public getPpoComponentRevisionsByPpoId(
         ppoId: number,
         observe?: 'response',
@@ -628,7 +492,7 @@ export class PensionComponentRevisionService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpResponse<PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse>
+        HttpResponse<PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getPpoComponentRevisionsByPpoId(
         ppoId: number,
@@ -639,7 +503,7 @@ export class PensionComponentRevisionService {
             context?: HttpContext;
         }
     ): Observable<
-        HttpEvent<PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse>
+        HttpEvent<PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse>
     >;
     public getPpoComponentRevisionsByPpoId(
         ppoId: number,
@@ -702,8 +566,8 @@ export class PensionComponentRevisionService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/component-revision`;
-        return this.httpClient.request<PpoComponentRevisionResponseDTOIEnumerableJsonAPIResponse>(
+        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/component-revisions`;
+        return this.httpClient.request<PpoComponentRevisionResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
             {
@@ -830,7 +694,7 @@ export class PensionComponentRevisionService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'revisionId', value: revisionId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}/component-revision`;
+        let localVarPath = `/api/v1/ppo-component-revision/${this.configuration.encodeParam({ name: 'revisionId', value: revisionId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
         return this.httpClient.request<PpoComponentRevisionResponseDTOJsonAPIResponse>(
             'put',
             `${this.configuration.basePath}${localVarPath}`,

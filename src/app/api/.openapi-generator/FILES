@@ -147,9 +147,9 @@ model/ppo-component-revision-ppo-list-item-dto-table-response-dto-json-api-respo
 model/ppo-component-revision-ppo-list-item-dto-table-response-dto.ts
 model/ppo-component-revision-ppo-list-item-dto.ts
 model/ppo-component-revision-response-dto-json-api-response.ts
-model/ppo-component-revision-response-dto-list-json-api-response.ts
+model/ppo-component-revision-response-dto-table-response-dto-json-api-response.ts
+model/ppo-component-revision-response-dto-table-response-dto.ts
 model/ppo-component-revision-response-dto.ts
-model/ppo-component-revision-response-dtoi-enumerable-json-api-response.ts
 model/ppo-component-revision-update-dto.ts
 model/ppo-list-response-dto-json-api-response.ts
 model/ppo-list-response-dto.ts
