@@ -252,18 +252,23 @@ export class FirstPensionBillPrintComponent implements OnInit {
             keywords: 'Pension, Bill, PDF',
             creator: 'IFMS PENSION Report',
         });
-        doc.setFontSize(14);
-        doc.text('Government Of West Bengal - Treasury ', 60, 10);
-        doc.text(result?.treasuryName, 90, 15);
-        doc.setFontSize(12);
-        doc.text('First Pension Bill', 90, 20);
-        doc.setFontSize(13);
-        doc.text(
-            `For the Period of ${result.fromDate} To ${result.billDate}`,
-            60,
-            25
-        );
-        doc.line(10, 27, 200, 27);
+        const addHeader = () => {
+            doc.setFontSize(14);
+            doc.text('Government Of West Bengal - Treasury ', 60, 10);
+            doc.text(result?.treasuryName, 90, 15);
+            doc.setFontSize(12);
+            doc.text('First Pension Bill', 90, 20);
+            doc.setFontSize(13);
+            doc.text(
+                `For the Period of ${result.fromDate} To ${result.billDate}`,
+                60,
+                25
+            );
+            doc.line(10, 27, 200, 27);
+        };
+
+        addHeader();
+
         doc.setFontSize(8);
         doc.text(`BILL ID: ${result?.billNo}`, 20, 30);
         doc.text(`BILL DATE: ${result?.billDate}`, 20, 35);
@@ -306,7 +311,7 @@ export class FirstPensionBillPrintComponent implements OnInit {
 
         (doc as any).autoTable({
             startY: 75,
-            margin: { top: 20, left: 15, right: 15 },
+            margin: { top: 30, left: 15, right: 15 },
             headStyles: { fillColor: [100, 100, 100] },
             bodyStyles: { fillColor: [255, 255, 255] },
 
@@ -354,6 +359,22 @@ export class FirstPensionBillPrintComponent implements OnInit {
             styles: {
                 fontSize: 7,
             },
+            didDrawPage: (data: any) => {
+                addHeader();
+
+                if (data.pageNumber > 1) {
+                    doc.setFontSize(8);
+                    doc.text(`BILL NUMBER: ${result?.billNo}`, 20, 30);
+                    doc.text(`BILL DATE: ${result?.billDate}`, 60, 30);
+                    doc.text(`PPO ID: ${result?.pensioner?.ppoId}`, 120, 30);
+                    doc.text(
+                        `PPO NUMBER: ${result?.pensioner?.ppoNo}`,
+                        180,
+                        30,
+                        { align: 'right' }
+                    );
+                }
+            },
         });
 
         const tableHeight = (doc as any).autoTable.previous.finalY || 0;
@@ -365,6 +386,16 @@ export class FirstPensionBillPrintComponent implements OnInit {
         );
         if (tableHeight > 160) {
             doc.addPage();
+
+            addHeader();
+
+            doc.setFontSize(8);
+            doc.text(`BILL NUMBER: ${result?.billNo}`, 20, 30);
+            doc.text(`BILL DATE: ${result?.billDate}`, 60, 30);
+            doc.text(`PPO ID: ${result?.pensioner?.ppoId}`, 120, 30);
+            doc.text(`PPO NUMBER: ${result?.pensioner?.ppoNo}`, 180, 30, {
+                align: 'right',
+            });
 
             doc.setLineWidth(0.001);
             doc.line(150, 150, 200, 150);
@@ -382,7 +413,7 @@ export class FirstPensionBillPrintComponent implements OnInit {
             doc.text(
                 `Pay Rs. ***${result?.netAmount}(${result?.amountInWords})as per beneficiary list enclosed through ECS  `,
                 10,
-                20
+                50
             );
         } else {
             doc.setLineWidth(0.001);
@@ -420,8 +451,18 @@ export class FirstPensionBillPrintComponent implements OnInit {
         const totalPages = doc.getNumberOfPages();
         for (let page = 1; page <= totalPages; page++) {
             doc.setPage(page); // Switch to the page
+
+            doc.setFontSize(10);
             doc.text(
-                `Prepared By :    ${result?.preparedBy} `,
+                `Page ${page} of ${totalPages}`,
+                doc.internal.pageSize.getWidth() / 2,
+                doc.internal.pageSize.getHeight() - 10,
+                { align: 'center' }
+            );
+
+            doc.setFontSize(8);
+            doc.text(
+                `Prepared By : ${result?.preparedBy} `,
                 10,
                 doc.internal.pageSize.getHeight() - 10
             ); // Add footer
@@ -431,19 +472,6 @@ export class FirstPensionBillPrintComponent implements OnInit {
                 doc.internal.pageSize.getHeight() - 10,
                 { align: 'right' }
             );
-            if (page > 1) {
-                doc.text(
-                    `BILL NUMBER: ${result?.billNo}\nBILL DATE: ${result?.billDate}\nPPO ID: ${result?.pensioner?.ppoId}`,
-                    10,
-                    5
-                );
-                doc.text(
-                    `PPO NUMBER:${result?.pensioner?.ppoNo}`,
-                    doc.internal.pageSize.getWidth() - 10,
-                    5,
-                    { align: 'right' }
-                );
-            }
         }
 
         const pdfData = doc.output('datauristring');
