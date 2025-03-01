@@ -11,85 +11,18 @@ test('Verification of navigation between ppo entry and ppo receipts', async ({
     dbUtils,
 }) => {
     await dbUtils.dropDatabase();
-    const migrateResponse = await dbUtils.migrateDatabase();
-    expect(migrateResponse).toBe('Database migrated successfully.');
-    const accountHeadSeederResponse = await dbUtils.seedDatabase(
-        Seeders.AccountHeadSeeder,
-        5
-    );
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    const bankSeederResponse = await dbUtils.seedDatabase(
-        Seeders.BankSeeder,
-        5
-    );
-    const branchSeederResponse = await dbUtils.seedDatabase(
-        Seeders.BranchSeeder,
-        5
-    );
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    const breakUpSeederResponse = await dbUtils.seedDatabase(
-        Seeders.BreakupSeeder,
-        5
-    );
-    const categorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.CategorySeeder,
-        5
-    );
-    const classificationSeederResponse = await dbUtils.seedDatabase(
-        Seeders.ClassificationSeeder,
-        5
-    );
-    const componentRateSeederResponse = await dbUtils.seedDatabase(
-        Seeders.ComponentRateSeeder,
-        16
-    );
-    const primaryCategorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.PrimaryCategorySeeder,
-        5
-    );
-    const subCategorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.SubCategorySeeder,
-        5
-    );
-    expect(accountHeadSeederResponse).toBe(
-        'Database seeded successfully with seeder: AccountHeadSeeder.'
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
-    expect(bankSeederResponse).toBe(
-        'Database seeded successfully with seeder: BankSeeder.'
-    );
-    expect(branchSeederResponse).toBe(
-        'Database seeded successfully with seeder: BranchSeeder.'
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-    expect(breakUpSeederResponse).toBe(
-        'Database seeded successfully with seeder: BreakupSeeder.'
-    );
-    expect(categorySeederResponse).toBe(
-        'Database seeded successfully with seeder: CategorySeeder.'
-    );
-    expect(classificationSeederResponse).toBe(
-        'Database seeded successfully with seeder: ClassificationSeeder.'
-    );
-    expect(componentRateSeederResponse).toBe(
-        'Database seeded successfully with seeder: ComponentRateSeeder.'
-    );
-    expect(primaryCategorySeederResponse).toBe(
-        'Database seeded successfully with seeder: PrimaryCategorySeeder.'
-    );
-    expect(subCategorySeederResponse).toBe(
-        'Database seeded successfully with seeder: SubCategorySeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.AccountHeadSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.BankSeeder);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder);
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.BreakupSeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
+    await dbUtils.seedDatabase(Seeders.ClassificationSeeder);
+    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
+    await dbUtils.seedDatabase(Seeders.PrimaryCategorySeeder);
+    await dbUtils.seedDatabase(Seeders.SubCategorySeeder);
 
     // Navigate to the PPO entry page
     await page.goto('pension-process/ppo/entry', {

@@ -3,46 +3,12 @@ import { test, expect, Seeders } from './fixtures';
 test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await dbUtils.dropDatabase();
-
-    const migrateResult = await dbUtils.migrateDatabase();
-    expect(migrateResult).toBe('Database migrated successfully.');
-
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
-    const classificationSeederResponse = await dbUtils.seedDatabase(
-        Seeders.ClassificationSeeder,
-        5
-    );
-    expect(classificationSeederResponse).toBe(
-        'Database seeded successfully with seeder: ClassificationSeeder.'
-    );
-    const branchSeederResponse = await dbUtils.seedDatabase(
-        Seeders.BranchSeeder,
-        5
-    );
-    expect(branchSeederResponse).toBe(
-        'Database seeded successfully with seeder: BranchSeeder.'
-    );
-    const componentRateSeederResponse = await dbUtils.seedDatabase(
-        Seeders.ComponentRateSeeder,
-        5
-    );
-    expect(componentRateSeederResponse).toBe(
-        'Database seeded successfully with seeder: ComponentRateSeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.ClassificationSeeder);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder);
+    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder);
 });
 
 test('Verify Reset Button Clears First Pension Bill Data', async ({

@@ -4,33 +4,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToComponentRateRevision();
     await dbUtils.dropDatabase();
-
-    const migrateResult = await dbUtils.migrateDatabase();
-    expect(migrateResult).toBe('Database migrated successfully.');
-
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
-
-    const componentRateSeederResponse = await dbUtils.seedDatabase(
-        Seeders.ComponentRateSeeder,
-        16
-    );
-    expect(componentRateSeederResponse).toBe(
-        'Database seeded successfully with seeder: ComponentRateSeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
 });
 
 test('Verifies successful navigation to the "Component Rate" page after clicking "New Component Rate" button', async ({

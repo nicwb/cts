@@ -7,13 +7,10 @@ test.beforeEach(async ({ pensionPage }) => {
 test('Save PPO details', async ({ pensionPage, dbUtils }) => {
     // Arrange
     await dbUtils.dropDatabase();
-
     await dbUtils.migrateDatabase();
-
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder, 5);
-
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder, 5);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder, 5);
-    await dbUtils.seedDatabase(Seeders.CategorySeeder, 5);
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
     await pensionPage.savePpoDetails();
 });

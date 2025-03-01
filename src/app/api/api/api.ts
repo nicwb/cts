@@ -1,7 +1,7 @@
 export * from './database-management.service';
 import { DatabaseManagementService } from './database-management.service';
-export * from './message-queue-worker.service';
-import { MessageQueueWorkerService } from './message-queue-worker.service';
+export * from './message-queue.service';
+import { MessageQueueService } from './message-queue.service';
 export * from './pension.service';
 import { PensionService } from './pension.service';
 export * from './pension-bank-branch.service';
@@ -44,7 +44,7 @@ export * from './pension-sanction-details.service';
 import { PensionSanctionDetailsService } from './pension-sanction-details.service';
 export const APIS = [
     DatabaseManagementService,
-    MessageQueueWorkerService,
+    MessageQueueService,
     PensionService,
     PensionBankBranchService,
     PensionByTransferService,

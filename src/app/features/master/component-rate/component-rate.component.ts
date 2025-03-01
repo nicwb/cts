@@ -164,16 +164,16 @@ export class ComponentRateComponent implements OnInit {
             },
         };
 
-        await firstValueFrom(
-            this.PensionComponentRateService.getAllComponentRates().pipe(
-                tap((response) => {
-                    if (response && response.result) {
-                        console.log(response.result);
-                        this.convertResponseToTable(response.result);
-                    }
-                })
-            )
-        );
+        // await firstValueFrom(
+        //     this.PensionComponentRateService.getAllComponentRates().pipe(
+        //         tap((response) => {
+        //             if (response && response.result) {
+        //                 console.log(response.result);
+        //                 this.convertResponseToTable(response.result);
+        //             }
+        //         })
+        //     )
+        // );
     }
 
     async onSubmit(event: Event) {

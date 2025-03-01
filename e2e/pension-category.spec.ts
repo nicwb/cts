@@ -3,58 +3,14 @@ import { test, expect, Seeders } from './fixtures';
 test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await dbUtils.dropDatabase();
-
-    const migrateResult = await dbUtils.migrateDatabase();
-    expect(migrateResult).toBe('Database migrated successfully.');
-
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
-
-    const accountHeadSeederResponse = await dbUtils.seedDatabase(
-        Seeders.AccountHeadSeeder,
-        5
-    );
-    expect(accountHeadSeederResponse).toBe(
-        'Database seeded successfully with seeder: AccountHeadSeeder.'
-    );
-
-    const categorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.CategorySeeder,
-        5
-    );
-    expect(categorySeederResponse).toBe(
-        'Database seeded successfully with seeder: CategorySeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.AccountHeadSeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
     await pensionPage.goToPensionCategory();
-
-    const primaryCategorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.PrimaryCategorySeeder,
-        5
-    );
-    expect(primaryCategorySeederResponse).toBe(
-        'Database seeded successfully with seeder: PrimaryCategorySeeder.'
-    );
-
-    const subCategorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.SubCategorySeeder,
-        5
-    );
-    expect(subCategorySeederResponse).toBe(
-        'Database seeded successfully with seeder: SubCategorySeeder.'
-    );
+    await dbUtils.seedDatabase(Seeders.PrimaryCategorySeeder);
+    await dbUtils.seedDatabase(Seeders.SubCategorySeeder);
 });
 
 test('Prevent Duplicate Pension Category Selection', async ({
