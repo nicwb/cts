@@ -23,9 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { ProblemDetails } from '../model/problem-details';
-// @ts-ignore
-import { SeederEnums } from '../model/seeder-enums';
+import { StringJsonAPIResponse } from '../model/string-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -34,7 +32,7 @@ import { Configuration } from '../configuration';
 @Injectable({
     providedIn: 'root',
 })
-export class DatabaseManagementService {
+export class MessageQueueService {
     protected basePath = 'http://api.docker.test';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
@@ -126,34 +124,39 @@ export class DatabaseManagementService {
     }
 
     /**
+     * @param queueName
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dropDatabase(
+    public receiveSingleMessage(
+        queueName: string,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<any>;
-    public dropDatabase(
+    ): Observable<string>;
+    public receiveSingleMessage(
+        queueName: string,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<any>>;
-    public dropDatabase(
+    ): Observable<HttpResponse<string>>;
+    public receiveSingleMessage(
+        queueName: string,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<any>>;
-    public dropDatabase(
+    ): Observable<HttpEvent<string>>;
+    public receiveSingleMessage(
+        queueName: string,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -161,6 +164,12 @@ export class DatabaseManagementService {
             context?: HttpContext;
         }
     ): Observable<any> {
+        if (queueName === null || queueName === undefined) {
+            throw new Error(
+                'Required parameter queueName was null or undefined when calling receiveSingleMessage.'
+            );
+        }
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
@@ -207,9 +216,9 @@ export class DatabaseManagementService {
             }
         }
 
-        let localVarPath = `/api/v1/db/drop`;
-        return this.httpClient.request<any>(
-            'delete',
+        let localVarPath = `/api/v1/mq/message/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        return this.httpClient.request<string>(
+            'get',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
@@ -223,34 +232,44 @@ export class DatabaseManagementService {
     }
 
     /**
+     * @param queueName
+     * @param contents
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public migrateDatabase(
+    public sendMessage(
+        queueName: string,
+        contents?: string,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<any>;
-    public migrateDatabase(
+    ): Observable<string>;
+    public sendMessage(
+        queueName: string,
+        contents?: string,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<any>>;
-    public migrateDatabase(
+    ): Observable<HttpResponse<string>>;
+    public sendMessage(
+        queueName: string,
+        contents?: string,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<any>>;
-    public migrateDatabase(
+    ): Observable<HttpEvent<string>>;
+    public sendMessage(
+        queueName: string,
+        contents?: string,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -258,6 +277,21 @@ export class DatabaseManagementService {
             context?: HttpContext;
         }
     ): Observable<any> {
+        if (queueName === null || queueName === undefined) {
+            throw new Error(
+                'Required parameter queueName was null or undefined when calling sendMessage.'
+            );
+        }
+
+        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
+        if (contents !== undefined && contents !== null) {
+            localVarQueryParameters = this.addToHttpParams(
+                localVarQueryParameters,
+                <any>contents,
+                'contents'
+            );
+        }
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
@@ -304,12 +338,13 @@ export class DatabaseManagementService {
             }
         }
 
-        let localVarPath = `/api/v1/db/migrate`;
-        return this.httpClient.request<any>(
+        let localVarPath = `/api/v1/mq/message/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        return this.httpClient.request<string>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -320,44 +355,39 @@ export class DatabaseManagementService {
     }
 
     /**
-     * @param seeder
-     * @param count
+     * @param queueName
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public seedDatabase(
-        seeder: SeederEnums,
-        count: number,
+    public startMqComsumer(
+        queueName: string,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<any>;
-    public seedDatabase(
-        seeder: SeederEnums,
-        count: number,
+    ): Observable<StringJsonAPIResponse>;
+    public startMqComsumer(
+        queueName: string,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<any>>;
-    public seedDatabase(
-        seeder: SeederEnums,
-        count: number,
+    ): Observable<HttpResponse<StringJsonAPIResponse>>;
+    public startMqComsumer(
+        queueName: string,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<any>>;
-    public seedDatabase(
-        seeder: SeederEnums,
-        count: number,
+    ): Observable<HttpEvent<StringJsonAPIResponse>>;
+    public startMqComsumer(
+        queueName: string,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -365,14 +395,9 @@ export class DatabaseManagementService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (seeder === null || seeder === undefined) {
+        if (queueName === null || queueName === undefined) {
             throw new Error(
-                'Required parameter seeder was null or undefined when calling seedDatabase.'
-            );
-        }
-        if (count === null || count === undefined) {
-            throw new Error(
-                'Required parameter count was null or undefined when calling seedDatabase.'
+                'Required parameter queueName was null or undefined when calling startMqComsumer.'
             );
         }
 
@@ -422,9 +447,117 @@ export class DatabaseManagementService {
             }
         }
 
-        let localVarPath = `/api/v1/db/seed/${this.configuration.encodeParam({ name: 'seeder', value: seeder, in: 'path', style: 'simple', explode: false, dataType: 'SeederEnums', dataFormat: undefined })}/${this.configuration.encodeParam({ name: 'count', value: count, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
-        return this.httpClient.request<any>(
-            'put',
+        let localVarPath = `/api/v1/mq/start-worker/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        return this.httpClient.request<StringJsonAPIResponse>(
+            'get',
+            `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress,
+            }
+        );
+    }
+
+    /**
+     * @param consumerTag
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public stopMqComsumer(
+        consumerTag: string,
+        observe?: 'body',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<string>;
+    public stopMqComsumer(
+        consumerTag: string,
+        observe?: 'response',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpResponse<string>>;
+    public stopMqComsumer(
+        consumerTag: string,
+        observe?: 'events',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpEvent<string>>;
+    public stopMqComsumer(
+        consumerTag: string,
+        observe: any = 'body',
+        reportProgress: boolean = false,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<any> {
+        if (consumerTag === null || consumerTag === undefined) {
+            throw new Error(
+                'Required parameter consumerTag was null or undefined when calling stopMqComsumer.'
+            );
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (Bearer) required
+        localVarCredential = this.configuration.lookupCredential('Bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set(
+                'Authorization',
+                localVarCredential
+            );
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined =
+            options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = ['application/json'];
+            localVarHttpHeaderAcceptSelected =
+                this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set(
+                'Accept',
+                localVarHttpHeaderAcceptSelected
+            );
+        }
+
+        let localVarHttpContext: HttpContext | undefined =
+            options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (
+                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+            ) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/mq/stop-worker/${this.configuration.encodeParam({ name: 'consumerTag', value: consumerTag, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        return this.httpClient.request<string>(
+            'get',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

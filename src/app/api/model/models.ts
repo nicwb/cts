@@ -132,6 +132,6 @@ export * from './problem-details';
 export * from './regular-bill-list-response-dto';
 export * from './regular-bill-list-response-dto-json-api-response';
 export * from './regular-bill-response-dto';
-export * from './seeders';
+export * from './seeder-enums';
 export * from './string-json-api-response';
 export * from './table-header';

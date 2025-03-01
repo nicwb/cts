@@ -6,25 +6,9 @@ test.beforeEach(async ({ pensionPage, page, dbUtils }) => {
         waitUntil: 'domcontentloaded',
     });
     await dbUtils.dropDatabase();
-
-    const migrateResult = await dbUtils.migrateDatabase();
-    expect(migrateResult).toBe('Database migrated successfully.');
-
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
 });
 
 test('Pension component can be saved', async ({ page, pensionPage }) => {

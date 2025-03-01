@@ -229,115 +229,13 @@ export class PensionComponentRateService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/component-rate`;
+        let localVarPath = `/api/v1/pension-component/rate`;
         return this.httpClient.request<ComponentRateResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: componentRateEntryDTO,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getAllComponentRates(
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>;
-    public getAllComponentRates(
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpResponse<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>
-    >;
-    public getAllComponentRates(
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpEvent<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>
-    >;
-    public getAllComponentRates(
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (Bearer) required
-        localVarCredential = this.configuration.lookupCredential('Bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set(
-                'Authorization',
-                localVarCredential
-            );
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined =
-            options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = ['application/json'];
-            localVarHttpHeaderAcceptSelected =
-                this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        let localVarHttpContext: HttpContext | undefined =
-            options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/pension/component-rate`;
-        return this.httpClient.request<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>(
-            'patch',
-            `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -444,7 +342,7 @@ export class PensionComponentRateService {
             }
         }
 
-        let localVarPath = `/api/v1/pension/${this.configuration.encodeParam({ name: 'categoryId', value: categoryId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}/component-rate`;
+        let localVarPath = `/api/v1/pension-component/${this.configuration.encodeParam({ name: 'categoryId', value: categoryId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}/rates`;
         return this.httpClient.request<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,

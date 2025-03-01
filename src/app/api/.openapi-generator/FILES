@@ -3,7 +3,7 @@ README.md
 api.module.ts
 api/api.ts
 api/database-management.service.ts
-api/message-queue-worker.service.ts
+api/message-queue.service.ts
 api/pension-bank-branch.service.ts
 api/pension-by-transfer.service.ts
 api/pension-category-master.service.ts
@@ -162,7 +162,7 @@ model/problem-details.ts
 model/regular-bill-list-response-dto-json-api-response.ts
 model/regular-bill-list-response-dto.ts
 model/regular-bill-response-dto.ts
-model/seeders.ts
+model/seeder-enums.ts
 model/string-json-api-response.ts
 model/table-header.ts
 param.ts

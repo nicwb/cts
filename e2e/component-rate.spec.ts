@@ -4,41 +4,11 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await pensionPage.goToComponentRate();
     await dbUtils.dropDatabase();
-
-    const migrateResult = await dbUtils.migrateDatabase();
-    expect(migrateResult).toBe('Database migrated successfully.');
-
-    const financialYearSeederResponse = await dbUtils.seedDatabase(
-        Seeders.FinancialYearSeeder,
-        5
-    );
-    expect(financialYearSeederResponse).toBe(
-        'Database seeded successfully with seeder: FinancialYearSeeder.'
-    );
-
-    const treasurySeederResponse = await dbUtils.seedDatabase(
-        Seeders.TreasurySeeder,
-        5
-    );
-    expect(treasurySeederResponse).toBe(
-        'Database seeded successfully with seeder: TreasurySeeder.'
-    );
-
-    const categorySeederResponse = await dbUtils.seedDatabase(
-        Seeders.CategorySeeder,
-        5
-    );
-    expect(categorySeederResponse).toBe(
-        'Database seeded successfully with seeder: CategorySeeder.'
-    );
-
-    const breakUpSeederResponseSeederResponse = await dbUtils.seedDatabase(
-        Seeders.BreakupSeeder,
-        5
-    );
-    expect(breakUpSeederResponseSeederResponse).toBe(
-        'Database seeded successfully with seeder: BreakupSeeder.'
-    );
+    await dbUtils.migrateDatabase();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
+    await dbUtils.seedDatabase(Seeders.BreakupSeeder);
 });
 
 test('Verify Component Rate Form Functionality', async ({

@@ -9,7 +9,6 @@
  */
 
 export interface TableHeader {
-    dataSource?: { [key: string]: any } | null;
     name?: string | null;
     fieldName?: string | null;
 }
