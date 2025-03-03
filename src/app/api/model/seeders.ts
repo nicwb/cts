@@ -29,6 +29,7 @@ export type Seeders =
     | 'PpoBillSeeder'
     | 'PpoReceiptSeeder'
     | 'PpoSanctionDetailsSeeder'
+    | 'PpoStatusFlagSeeder'
     | 'PrimaryCategorySeeder'
     | 'SubCategorySeeder'
     | 'TreasurySeeder';
@@ -54,6 +55,7 @@ export const Seeders = {
     PpoBillSeeder: 'PpoBillSeeder' as Seeders,
     PpoReceiptSeeder: 'PpoReceiptSeeder' as Seeders,
     PpoSanctionDetailsSeeder: 'PpoSanctionDetailsSeeder' as Seeders,
+    PpoStatusFlagSeeder: 'PpoStatusFlagSeeder' as Seeders,
     PrimaryCategorySeeder: 'PrimaryCategorySeeder' as Seeders,
     SubCategorySeeder: 'SubCategorySeeder' as Seeders,
     TreasurySeeder: 'TreasurySeeder' as Seeders,

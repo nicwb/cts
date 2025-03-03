@@ -12,5 +12,6 @@ test('Save PPO details', async ({ pensionPage, dbUtils }) => {
     await dbUtils.seedDatabase(Seeders.TreasurySeeder);
     await dbUtils.seedDatabase(Seeders.BranchSeeder);
     await dbUtils.seedDatabase(Seeders.CategorySeeder);
+    await dbUtils.seedDatabase(Seeders.PpoReceiptSeeder, 1);
     await pensionPage.savePpoDetails();
 });

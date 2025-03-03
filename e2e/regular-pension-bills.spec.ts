@@ -4,17 +4,12 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder);
-    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
     await pensionPage.savePpoDetailsApproveGenerateFirstPensionBillAndRegularPensionBill();
     await pensionPage.goToRegularPensionBillPrint();
 });
 
-test('Generate and verify pension bill PDF with dynamic values', async ({
-    page,
-}) => {
+test('Generate Regular Pension Bill PDF Report', async ({ page }) => {
     // ARRANGE
     const monthDropdown = page.locator(
         'p-dropdown[formControlName="months"] .p-dropdown-label'

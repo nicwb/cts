@@ -29,6 +29,7 @@ export type SeederEnums =
     | 'PpoBillSeeder'
     | 'PpoReceiptSeeder'
     | 'PpoSanctionDetailsSeeder'
+    | 'PpoStatusFlagSeeder'
     | 'PrimaryCategorySeeder'
     | 'SubCategorySeeder'
     | 'TreasurySeeder';
@@ -54,6 +55,7 @@ export const SeederEnums = {
     PpoBillSeeder: 'PpoBillSeeder' as SeederEnums,
     PpoReceiptSeeder: 'PpoReceiptSeeder' as SeederEnums,
     PpoSanctionDetailsSeeder: 'PpoSanctionDetailsSeeder' as SeederEnums,
+    PpoStatusFlagSeeder: 'PpoStatusFlagSeeder' as SeederEnums,
     PrimaryCategorySeeder: 'PrimaryCategorySeeder' as SeederEnums,
     SubCategorySeeder: 'SubCategorySeeder' as SeederEnums,
     TreasurySeeder: 'TreasurySeeder' as SeederEnums,

@@ -1,17 +1,14 @@
 import { test, expect, Seeders } from './fixtures';
 
-test.beforeEach(async ({ pensionPage, page, dbUtils }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
-    await page.goto('/master/component', {
-        waitUntil: 'domcontentloaded',
-    });
+    await pensionPage.goToComponent();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Pension component can be saved', async ({ page, pensionPage }) => {
+test('Add Component', async ({ page, pensionPage }) => {
     //ARRANGE
     //ACT
     await page.getByRole('button', { name: 'New Entry' }).click();
@@ -21,7 +18,7 @@ test('Pension component can be saved', async ({ page, pensionPage }) => {
     expect(true).toBeTruthy();
 });
 
-test('Verify Duplicate Data Checking', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Component', async ({ page, pensionPage }) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New Entry' }).click();
 

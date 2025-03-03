@@ -117,6 +117,9 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
         this.key = this.parentKey
             ? this.parentKey + '-' + this.index
             : String(this.index);
+        this.menuService.resetSource$.subscribe(() => {
+            this.active = false;
+        });
 
         if (this.item.routerLink) {
             this.updateActiveStateFromRoute();
@@ -170,6 +173,10 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
 
     get submenuAnimation() {
         return this.root ? 'expanded' : this.active ? 'expanded' : 'collapsed';
+    }
+
+    get arrowDirection() {
+        return this.active ? 'pi pi-fw pi-angle-up' : 'pi pi-fw pi-angle-down';
     }
 
     @HostBinding('class.active-menuitem')

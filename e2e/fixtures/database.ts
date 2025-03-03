@@ -21,6 +21,7 @@ export enum Seeders {
     PpoBillSeeder,
     PpoReceiptSeeder,
     PpoSanctionDetailsSeeder,
+    PpoStatusFlagSeeder,
     PrimaryCategorySeeder,
     SubCategorySeeder,
     TreasurySeeder,

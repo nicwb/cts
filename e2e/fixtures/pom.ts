@@ -22,10 +22,46 @@ export class PensionModule {
         await expect(dashboard).toBeVisible();
     }
 
+    async navigateToPath(path: string[]): Promise<void> {
+        // Open the menu
+        await this.page.locator('#menubutton').click();
+        await this.page.waitForTimeout(100);
+
+        for (const item of path) {
+            try {
+                // Wait for the menu item to be visible and click it
+                const menuItemSelector = `.layout-menu a:has-text("${item}")`;
+                await this.page
+                    .locator(menuItemSelector)
+                    .first()
+                    .waitFor({ state: 'visible' });
+                await this.page
+                    .locator(menuItemSelector)
+                    .first()
+                    .click({ force: true });
+                await this.page.waitForTimeout(300);
+            } catch (error) {
+                console.error(`Failed to navigate to: ${item}`);
+                throw error; // Rethrow the error to fail the test
+            }
+        }
+
+        // Close the menu if not on mobile
+        if (!this.isMobile) {
+            await this.page.waitForTimeout(100);
+            await this.page.locator('#menubutton').click();
+        }
+    }
+    async goToPPOReceipt() {
+        await this.navigateToPath(['Pension Process', 'PPO', 'PPO Receipt']);
+        await expect(
+            this.page
+                .locator('app-common-header')
+                .getByText('PPO Receipt', { exact: true })
+        ).toBeVisible();
+    }
+
     async savePpoReceipt() {
-        await this.page.goto('pension-process/ppo/ppo-receipt', {
-            waitUntil: 'domcontentloaded',
-        });
         await this.page
             .getByRole('button', { name: 'PPO Receipt Entry' })
             .click();
@@ -42,6 +78,22 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'OK' }).click();
     }
 
+    async goToPPOEntry() {
+        await this.navigateToPath(['Pension Process', 'PPO', 'Entry']);
+        await expect(this.page.getByText('All PPO')).toBeVisible();
+    }
+
+    async goToPPOApproval() {
+        await this.navigateToPath([
+            'Pension Process',
+            'Approval',
+            'PPO Approval',
+        ]);
+        await expect(
+            this.page.getByRole('heading', { name: 'PPO Approval' })
+        ).toBeVisible();
+    }
+
     async okError() {
         await expect(
             this.page.getByRole('heading', { name: 'Aww! Snap...' })
@@ -50,9 +102,7 @@ export class PensionModule {
     }
 
     async approvePpo(ppoNo: string) {
-        await this.page.goto('pension-process/approval/ppo-approval', {
-            waitUntil: 'domcontentloaded',
-        });
+        await this.goToPPOApproval();
         await this.page.locator('p-button').click();
         const dialog = this.page.locator('.p-dialog');
         await expect(dialog.locator('input#float-input')).toBeVisible();
@@ -64,12 +114,39 @@ export class PensionModule {
         await this.page.getByRole('button', { name: 'OK' }).click();
     }
 
+    async approveFirstPpo() {
+        await this.goToPPOApproval();
+        await this.page.locator('p-button').click();
+        const dialog = this.page.locator('.p-dialog');
+        await expect(dialog.locator('input#float-input')).toBeVisible();
+        const firstRow = dialog.locator('tbody tr:first-child');
+        await expect(firstRow).toBeVisible();
+        await firstRow.click();
+        await this.page.getByRole('button', { name: 'Approve' }).click();
+        await this.page.getByRole('button', { name: 'OK' }).click();
+    }
+
     async savePpoDetails() {
         test.slow(this.isMobile, 'PPO Entry Form takes too long to complete');
-        await this.savePpoReceipt();
-        await this.page.goto('pension-process/ppo/entry', {
-            waitUntil: 'domcontentloaded',
+        await this.goToPPOEntry();
+        const addNewButton = this.page.getByRole('button', {
+            name: 'Add New PPO',
         });
+        await addNewButton.click();
+        await expect(async () => {
+            await expect(
+                this.page.locator('input[formcontrolname="pensionerAddress"]')
+            ).not.toBeEmpty();
+        }).toPass({ timeout: 20_000 });
+        await this.page.getByRole('button', { name: 'Save' }).click();
+        await this.okSuccess();
+    }
+
+    async savePpoReceiptThenPpoEntry() {
+        test.slow(this.isMobile, 'PPO Entry Form takes too long to complete');
+        await this.goToPPOReceipt();
+        await this.savePpoReceipt();
+        await this.goToPPOEntry();
         const addNewButton = this.page.getByRole('button', {
             name: 'Add New PPO',
         });
@@ -88,17 +165,23 @@ export class PensionModule {
     }
 
     async savePpoDetailsAndApprove() {
-        const ppoNo = await this.savePpoDetails();
+        const ppoNo = await this.savePpoReceiptThenPpoEntry();
         await this.approvePpo(ppoNo);
         return ppoNo;
     }
 
     async savePpoDetailsApproveGenerateFirstPensionBill() {
         const ppoNo = await this.savePpoDetailsAndApprove();
-        await this.page.goto(
-            'pension-process/pension-bill/first-pension-bill',
-            { waitUntil: 'domcontentloaded' }
-        );
+        await this.navigateToPath([
+            'Pension Process',
+            'Pension Bill',
+            'First Pension Bill',
+        ]);
+        await expect(
+            this.page.getByRole('heading', {
+                name: 'First Pension Bill Generation',
+            })
+        ).toBeVisible();
         await this.page
             .locator('p-button')
             .getByRole('button', { name: 'Open' })
@@ -122,45 +205,102 @@ export class PensionModule {
 
         return ppoNo;
     }
+
+    async generateFirstPensionBill() {
+        await this.navigateToPath([
+            'Pension Process',
+            'Pension Bill',
+            'First Pension Bill',
+        ]);
+        await expect(
+            this.page.getByRole('heading', {
+                name: 'First Pension Bill Generation',
+            })
+        ).toBeVisible();
+        await this.page
+            .locator('p-button')
+            .getByRole('button', { name: 'Open' })
+            .click();
+        const dialog = this.page.locator('.p-dialog');
+        const firstRow = dialog.locator('tbody tr:first-child');
+        await expect(firstRow).toBeVisible();
+        await firstRow.click();
+        await this.page.getByRole('textbox', { name: 'Select a date' }).click();
+        await this.page.locator('.p-datepicker-today').click();
+        await expect(
+            this.page.getByRole('textbox', { name: 'Select a date' })
+        ).not.toBeEmpty();
+
+        await this.page.getByRole('button', { name: 'Generate' }).click();
+        await this.okSuccess();
+
+        await this.page.getByRole('button', { name: 'Save' }).click();
+        await this.okSuccess();
+    }
     async savePpoDetailsApproveGenerateFirstPensionBillAndRegularPensionBill() {
-        const ppoNo =
-            await this.savePpoDetailsApproveGenerateFirstPensionBill();
-        await this.page.goto(
-            'pension-process/pension-bill/regular-pension-bill',
-            { waitUntil: 'domcontentloaded' }
-        );
+        await this.navigateToPath([
+            'Pension Process',
+            'Pension Bill',
+            'Regular Pension Bill',
+        ]);
         await this.page.locator('button:has-text("Fetch Bills")').click();
         await this.okSuccess();
         await this.page.locator('#generateButton').click();
         // Assert
         await this.page.getByRole('button', { name: 'OK' }).waitFor();
         await this.page.getByRole('button', { name: 'OK' }).click();
-        return ppoNo;
     }
 
     async shouldRetrieveFirstPensionBill(): Promise<Locator> {
-        const ppoNo =
-            await this.savePpoDetailsApproveGenerateFirstPensionBill();
         await this.goToRevisionOfComponents();
         const dialog = await this.openPopup();
 
         await expect(dialog.locator('label[for="float-input"]')).toHaveText(
             'Search data'
         );
-        await expect(dialog.locator('input#float-input')).toBeVisible();
-
-        await expect(dialog.locator('input#float-input')).toBeVisible();
-        await this.page.locator('input#float-input').fill(ppoNo);
         const firstRow = dialog.locator('tbody tr:first-child');
         await expect(firstRow).toBeVisible();
         await firstRow.click();
         return dialog;
     }
 
-    async goToComponentRate(): Promise<void> {
-        await this.page.goto('/master/component-rate', {
-            waitUntil: 'domcontentloaded',
+    async navigateFromEntryToReceipt() {
+        await this.goToPPOEntry();
+        const addNewButton = this.page.getByRole('button', {
+            name: 'Add New PPO',
         });
+        await addNewButton.click();
+
+        const messageLocator = this.page.locator(
+            'text="No manual ppo receipt found!. Do you want add it?"'
+        );
+        await expect(messageLocator).toBeVisible();
+        await this.page.getByRole('button', { name: 'Yes' }).click();
+        expect(this.page.url()).toContain(
+            'pension-process/ppo/ppo-receipt/new?returnUri=pension-process%2Fppo%2Fentry%2Fnew'
+        );
+        await expect(
+            this.page.getByRole('button', { name: 'Submit' })
+        ).toBeVisible();
+        await this.page.getByRole('button', { name: 'Submit' }).click();
+        await expect(
+            this.page.getByRole('button', { name: 'Yes' })
+        ).toBeVisible();
+        await this.page.getByRole('button', { name: 'Yes' }).click();
+        expect(this.page.url()).toContain('pension-process/ppo/entry/new');
+        await this.page.getByRole('button', { name: 'Save' }).click();
+        await this.okSuccess();
+    }
+
+    async goToComponent() {
+        await this.navigateToPath(['Master', 'Component']);
+        await expect(
+            this.page.getByText('Pension Component Details')
+        ).toBeVisible();
+    }
+
+    async goToComponentRate(): Promise<void> {
+        await this.navigateToPath(['Master', 'Component Rate']);
         const elements = [
             {
                 locator: 'h2.bg-color.text-xl >> b:has-text("Component Rate")',
@@ -189,9 +329,10 @@ export class PensionModule {
     }
 
     async goToComponentRateRevision(): Promise<void> {
-        await this.page.goto('/master/component-rate-revision', {
-            waitUntil: 'domcontentloaded',
-        });
+        await this.navigateToPath(['Master', 'Component Rate Revision']);
+        await expect(
+            this.page.getByText('Pension Component Rate Details')
+        ).toBeVisible();
         const searchButton = this.page.getByRole('button', { name: 'Search' });
         await expect(searchButton).toBeVisible();
         await expect(searchButton).toBeDisabled();
@@ -208,9 +349,11 @@ export class PensionModule {
     }
 
     async goToRevisionOfComponents(): Promise<void> {
-        await this.page.goto('pension-process/pension-details/revision', {
-            waitUntil: 'domcontentloaded',
-        });
+        await this.navigateToPath([
+            'Pension Process',
+            'Pension Details',
+            'Revision of Components',
+        ]);
         const elements = [
             {
                 locator:
@@ -228,17 +371,21 @@ export class PensionModule {
         }
     }
     async goToSubCategory(): Promise<void> {
-        await this.page.goto('/master/sub-category', {
-            waitUntil: 'domcontentloaded',
-        });
+        await this.navigateToPath(['Master', 'Sub Category']);
+        await expect(this.page.getByText('Sub-Category Details')).toBeVisible();
     }
 
     async goToFirstPensionBillPrint(): Promise<Locator> {
-        const ppoNo =
-            await this.savePpoDetailsApproveGenerateFirstPensionBill();
-        await this.page.goto(
-            '/pension-process/bill-print/first-pension-bill-print'
-        );
+        await this.navigateToPath([
+            'Pension Process',
+            'Bill Print',
+            'First Pension Bill Print',
+        ]);
+        await expect(
+            this.page
+                .getByRole('heading', { name: 'First Pension Bill' })
+                .locator('b')
+        ).toBeVisible();
         await expect(this.page.locator('text=General Bill')).toBeVisible();
         await expect(
             this.page.locator('text=Classification Bill')
@@ -264,7 +411,6 @@ export class PensionModule {
         await this.page.locator('p-button').click();
         const dialog = this.page.locator('.p-dialog');
         await expect(dialog.locator('input#float-input')).toBeVisible();
-        await this.page.locator('input#float-input').fill(ppoNo);
         const firstRow = dialog.locator('tbody tr:first-child');
         await expect(firstRow).toBeVisible();
         await firstRow.click();
@@ -272,57 +418,22 @@ export class PensionModule {
     }
 
     async goToPensionCategory(): Promise<void> {
-        await this.page.goto('/master/pension-category');
+        await this.navigateToPath(['Master', 'Pension Category']);
+        await expect(
+            this.page.getByText('Pension Category Details')
+        ).toBeVisible();
         await this.page.getByRole('button', { name: 'New' }).click();
-        await expect(
-            this.page
-                .locator('div')
-                .filter({ hasText: /^Pension Category Details$/ })
-        ).toBeVisible();
-        await expect(
-            this.page.getByRole('button', { name: 'New Primary' })
-        ).toBeVisible();
-        await this.page.getByRole('button', { name: 'New Primary' }).click();
-
-        const element1 = this.page.locator('app-popup-table');
-        await expect(element1).toBeVisible();
-        await element1.click();
-        const dialog = this.page.getByLabel('Search', { exact: true });
-        await expect(dialog).toBeVisible();
-        const firstRow = dialog.locator('tbody tr:first-child');
-        await this.page.waitForSelector('tbody tr:first-child', {
-            timeout: 500,
-        });
-        await firstRow.click();
-
-        await expect(
-            this.page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
-        await this.page.getByRole('button', { name: 'Submit' }).click();
-        await this.okSuccess();
-
-        await expect(
-            this.page.getByRole('button', { name: 'New Sub' })
-        ).toBeVisible();
-        await this.page.getByRole('button', { name: 'New Sub' }).click();
-
-        await expect(
-            this.page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
-        await this.page.getByRole('button', { name: 'Submit' }).click();
-        await this.okSuccess();
-
-        await expect(
-            this.page.getByRole('button', { name: 'Submit' })
-        ).toBeVisible();
-        await this.page.getByRole('button', { name: 'Submit' }).click();
-        await this.okSuccess();
     }
 
     async goToRegularPensionBillPrint(): Promise<void> {
-        await this.page.goto(
-            '/pension-process/bill-print/regular-pension-bill-print'
-        );
+        await this.navigateToPath([
+            'Pension Process',
+            'Bill Print',
+            'Regular Pension Bill Print',
+        ]);
+        await expect(
+            this.page.getByRole('heading', { name: 'Monthly Bill Generation' })
+        ).toBeVisible();
         await expect(
             this.page.getByText('Month', { exact: false }).nth(1)
         ).toBeVisible();
@@ -330,7 +441,10 @@ export class PensionModule {
     }
 
     async goToPrimaryComponent(): Promise<void> {
-        await this.page.goto('/master/primary');
+        await this.navigateToPath(['Master', 'Primary']);
+        await expect(
+            this.page.getByText('Pension Primary Category')
+        ).toBeVisible();
         await expect(
             this.page.getByRole('button', { name: 'New' })
         ).toBeVisible();
@@ -413,13 +527,15 @@ export class PensionModule {
 
         // Ensure the selected row is stable
         await randomRow.waitFor({ state: 'visible' });
-        const firstColumn = randomRow.locator('td:first-child');
+        const firstColumn = randomRow.locator('td:nth-child(1)');
+        const secondColumn = randomRow.locator('td:nth-child(2)');
         const firstColumnText = await firstColumn.textContent();
+        const secondColumnText = await secondColumn.textContent();
         await randomRow.click();
-        if (firstColumnText === null) {
+        if (firstColumnText === null || secondColumnText === null) {
             throw new Error('Failed to retrieve text content');
         }
-        return firstColumnText;
+        return `${firstColumnText}-${secondColumnText}`;
     }
 
     async fillComponentRateForm({
@@ -440,13 +556,13 @@ export class PensionModule {
             state: 'visible',
         });
 
-        // Generate a random date between 7 and 24
-        const randomDate = Math.floor(Math.random() * (24 - 7 + 1)) + 7;
+        // Generate a random date between 7 and 22
+        const randomDate = Math.floor(Math.random() * (22 - 7 + 1)) + 7;
 
         // Use getByText to select the date
-        const selectedDate = this.page.getByText(randomDate.toString(), {
-            exact: true,
-        });
+        const selectedDate = this.page
+            .getByText(randomDate.toString(), { exact: true })
+            .filter({ hasNot: this.page.locator('.p-disabled') });
 
         // Ensure that the selected date is visible and click it
         await expect(selectedDate).toBeVisible();

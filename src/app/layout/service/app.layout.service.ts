@@ -101,6 +101,7 @@
 
 import { Injectable, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
+import { MenuService } from '../app.menu.service';
 
 export interface AppConfig {
     inputStyle: string;
@@ -147,9 +148,15 @@ export class LayoutService {
 
     configUpdate$ = this.configUpdate.asObservable();
     overlayOpen$ = this.overlayOpen.asObservable();
+    private menuService: MenuService;
+
+    constructor(menuService: MenuService) {
+        this.menuService = menuService;
+    }
 
     // Toggling menu on mobile view
     onMenuToggle() {
+        this.resetMenuState();
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
             if (this.state.overlayMenuActive) {
@@ -171,6 +178,10 @@ export class LayoutService {
                 this.unbindClickOutsideListener(); // Stop listening for outside clicks
             }
         }
+    }
+
+    resetMenuState() {
+        this.menuService.reset(); // Call the reset method from MenuService
     }
 
     // Shows profile sidebar

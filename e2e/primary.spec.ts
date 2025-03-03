@@ -5,32 +5,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.goToPrimaryComponent();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.PrimaryCategorySeeder);
-    await dbUtils.seedDatabase(Seeders.AccountHeadSeeder);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Create New Entry Using New Button', async ({ page }) => {
-    await page.getByRole('button', { name: 'New' }).click();
-
-    const element1 = page.locator('app-popup-table');
-    await expect(element1).toBeVisible();
-    await element1.click();
-    const dialog = page.getByLabel('Search', { exact: true });
-    await expect(dialog).toBeVisible();
-    const firstRow = dialog.locator('tbody tr:first-child');
-    await page.waitForSelector('tbody tr:first-child', { timeout: 500 });
-    await firstRow.click();
-
-    await expect(page.getByText('Head Of Account:')).toBeVisible();
-    await expect(page.getByText('Description:')).toBeVisible();
-});
-
-test('Submit Primary Component Form Successfully Using New Button', async ({
-    page,
-    pensionPage,
-}) => {
+test('Add New Pension Category', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const element1 = page.locator('app-popup-table');
@@ -49,7 +27,7 @@ test('Submit Primary Component Form Successfully Using New Button', async ({
     expect(true).toBeTruthy();
 });
 
-test('Prevent Duplicate Entry Submission ', async ({ page, pensionPage }) => {
+test('Prevent Duplicate Primary Category ', async ({ page, pensionPage }) => {
     await page.getByRole('button', { name: 'New' }).click();
 
     const inputElement = page.locator('input[formControlName=accountHead]');
