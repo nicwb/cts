@@ -162,7 +162,7 @@ export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
                                         ],
                                     },
                                     {
-                                        label: 'Regular Pension',
+                                        label: 'Regular Pension Bill',
                                         routerLink: [
                                             'pension-process/pension-bill/regular-pension-bill',
                                         ],
@@ -192,13 +192,13 @@ export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
                                 icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
                                     {
-                                        label: 'PPO',
+                                        label: 'PPO Approval',
                                         routerLink: [
                                             '/pension-process/approval/ppo-approval',
                                         ],
                                     },
                                     {
-                                        label: 'First pension Bill',
+                                        label: 'First pension Bill Approval',
                                         routerLink: [
                                             'pension-process/approval/firstpensionbill-approval',
                                         ],
@@ -223,13 +223,13 @@ export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
                                 icon: 'assets/layout/images/icons/work-in-progress.png',
                                 items: [
                                     {
-                                        label: 'First Pension',
+                                        label: 'First Pension Bill Print',
                                         routerLink: [
                                             'pension-process/bill-print/first-pension-bill-print',
                                         ],
                                     },
                                     {
-                                        label: 'Regular Pension',
+                                        label: 'Regular Pension Bill Print',
                                         routerLink: [
                                             'pension-process/bill-print/regular-pension-bill-print',
                                         ],

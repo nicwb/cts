@@ -7649,6 +7649,7 @@
           "PpoBillSeeder",
           "PpoReceiptSeeder",
           "PpoSanctionDetailsSeeder",
+          "PpoStatusFlagSeeder",
           "PrimaryCategorySeeder",
           "SubCategorySeeder",
           "TreasurySeeder"

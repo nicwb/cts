@@ -4,16 +4,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder);
-    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Generation', async ({
-    page,
-    pensionPage,
-}) => {
+test('Verify Form Functionality', async ({ page, pensionPage }) => {
     await pensionPage.goToFirstPensionBillPrint();
     await expect(page.locator('input[placeholder="PPO ID"]')).not.toBeEmpty();
     await expect(
@@ -35,7 +29,7 @@ test('Validate Form Fields, PPO Selection, and Refresh for First Bill Report Gen
     ).toHaveValue('');
 });
 
-test('Generate PDF Report', async ({ page, pensionPage }) => {
+test('Generate First Pension PDF Report', async ({ page, pensionPage }) => {
     const dialog = await pensionPage.goToFirstPensionBillPrint();
     await expect(dialog).not.toBeVisible();
     await page.locator('p-radioButton[label="General Bill"]').click();

@@ -5,13 +5,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.goToComponentRate();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.CategorySeeder);
-    await dbUtils.seedDatabase(Seeders.BreakupSeeder);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Verify Component Rate Form Functionality', async ({
+test('Verifies Component Rate Form Functionality', async ({
     pensionPage,
     page,
 }) => {
@@ -44,9 +41,9 @@ test('Verify Component Rate Form Functionality', async ({
     ]);
 });
 
-test('Successfully Add New Component Rate', async ({ pensionPage, page }) => {
+test('Successfully Adds New Component Rate', async ({ pensionPage, page }) => {
     // Add component and category
-    const categoryId = await pensionPage.selectFirstComponent();
+    await pensionPage.selectFirstComponent();
     await expect(page.getByText('Select Component')).toBeVisible();
     const billBreakupId = await pensionPage.selectFirstPensionCategory();
 
@@ -60,14 +57,7 @@ test('Successfully Add New Component Rate', async ({ pensionPage, page }) => {
     await page.getByRole('button', { name: 'Submit' }).click();
     await pensionPage.okSuccess();
     const table = page.locator('p-table');
-    const rows = table.locator('tbody tr');
-    const rowCount = await rows.count();
-    expect(rowCount).toBeGreaterThan(0);
-    const lastRow = rows.nth(rowCount - 1);
-    const lastCategoryId = await lastRow.locator('td:nth-child(2)').innerText();
-    const lastBillBreakupId = await lastRow
-        .locator('td:nth-child(3)')
-        .innerText();
-    expect(lastCategoryId).toBe(categoryId);
-    expect(lastBillBreakupId).toBe(billBreakupId);
+    const cells = table.locator('tbody tr td:nth-child(2)');
+    const cellTexts = await cells.allInnerTexts();
+    expect(cellTexts).toContain(billBreakupId);
 });

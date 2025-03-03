@@ -5,14 +5,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.goToComponentRateRevision();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Verifies successful navigation to the "Component Rate" page after clicking "New Component Rate" button', async ({
-    page,
-}) => {
+test('Navigation to Component Rate Page', async ({ page }) => {
     // Arrange
     // Act
     await page.getByRole('button', { name: 'New Component Rate' }).click();
@@ -23,7 +19,7 @@ test('Verifies successful navigation to the "Component Rate" page after clicking
     ).toBeVisible();
 });
 
-test('Verifies form validation, reset, and refresh functionality', async ({
+test('Checks Form Validation and Reset Behavior', async ({
     page,
     pensionPage,
 }) => {
@@ -40,7 +36,7 @@ test('Verifies form validation, reset, and refresh functionality', async ({
     ).toBeDisabled();
 });
 
-test('Check "no records found" message', async ({ page }) => {
+test('Checks no records found visibility', async ({ page }) => {
     // ARRANGE
 
     const expectedDialogHeaders = [
@@ -88,7 +84,7 @@ test('Check "no records found" message', async ({ page }) => {
     expect(firstRowText).toContain('No records found.');
 });
 
-test('Verify Successful Search Functionality', async ({ page }) => {
+test('Verifies Successful Search Results', async ({ page }) => {
     // ARRANGE
     const expectedDialogHeaders = [
         'Category ID',

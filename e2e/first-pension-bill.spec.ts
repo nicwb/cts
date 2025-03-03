@@ -1,22 +1,16 @@
 import { Seeders, test } from './fixtures';
 
-test.beforeEach(async ({ pensionPage }) => {
+test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
+    await dbUtils.dropDatabase();
+    await dbUtils.migrateDatabase();
 });
 
-test('can generate first pension bill and save', async ({
-    pensionPage,
-    dbUtils,
-}) => {
-    await dbUtils.dropDatabase();
-
-    await dbUtils.migrateDatabase();
-
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder, 5);
-
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder, 5);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder, 5);
-    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder, 16);
-
-    await pensionPage.savePpoDetailsApproveGenerateFirstPensionBill();
+test('Generate first pension bill', async ({ pensionPage, dbUtils }) => {
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
+    await dbUtils.seedDatabase(Seeders.PpoStatusFlagSeeder, 1);
+    await pensionPage.generateFirstPensionBill();
 });

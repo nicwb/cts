@@ -396,6 +396,7 @@ export class PpoReceiptComponent implements OnDestroy {
                         response.message ?? 'Operation completed successfully';
                     this.toastService.showSuccess(successMessage);
                     this.manualPpoForm.reset();
+                    this.isInsertModalVisible = false;
                     const returnUri = this.returnUriService.getReturnUri();
                     const returCheck =
                         this.route.snapshot.queryParamMap.get('returnUri');
@@ -416,6 +417,9 @@ export class PpoReceiptComponent implements OnDestroy {
                                 ]);
                             }
                         });
+                    } else {
+                        // If no return URI, refresh the current page
+                        this.loadInitialTableData(); // Refresh the table data
                     }
                     this.SessionStorageService.remove('', '', `${this.suffix}`);
                 } else {

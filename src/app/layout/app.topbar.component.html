@@ -1,37 +1,33 @@
 <p-confirmDialog></p-confirmDialog>
 <div style="position: fixed; height: 5rem; width: 100%; z-index: 997">
     <div class="layout-topbar">
-        <button #menubutton class="p-link layout-menu-button layout-topbar-button" (click)="layoutService.onMenuToggle()">
-        <i class="pi pi-bars"></i>
+        <button id="menubutton" class="p-link layout-menu-button layout-topbar-button"
+            (click)="layoutService.onMenuToggle()">
+            <i class="pi pi-bars"></i>
         </button>
         <a class="layout-topbar-logo" routerLink="">
-            <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo_mini' : 'logo_dark_mini'}}.png" alt="logo">
+            <img src="assets/layout/images/{{layoutService.config.colorScheme === 'light' ? 'logo_mini' : 'logo_dark_mini'}}.png"
+                alt="logo">
             <!-- <img src="assets/layout/images/logo.png" alt="logo" /> -->
             <span> | CTS</span>
         </a>
 
-        <button
-            #topbarmenubutton
-            class="p-link layout-topbar-menu-button layout-topbar-button"
-            (click)="layoutService.showProfileSidebar()"
-        >
+        <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
+            (click)="layoutService.showProfileSidebar()">
             <i class="pi pi-ellipsis-v"></i>
         </button>
-        <div
-            #topbarmenu
-            class="layout-topbar-menu"
-            [ngClass]="{
+        <div #topbarmenu class="layout-topbar-menu" [ngClass]="{
                 'layout-topbar-menu-mobile-active':
                     layoutService.state.profileSidebarVisible
-            }"
-        >
-        <div class="layout-topbar-user-details" >
-            <p-avatar label="{{userDetais?.Name | firstLetter}}" styleClass="mr-2" size="large" [style]="{ 'background-color': '#2196F3', color: '#ffffff' }" shape="circle"></p-avatar>
-            <div class="flex flex-column flex-grow-1">
-                <div class="flex font-semibold">{{userDetais?.Name}}</div>
-                <div class="flex text-cyan-500 font-medium text-sm">{{userDetais?.Role|uppercase }}</div>
+            }">
+            <div class="layout-topbar-user-details">
+                <p-avatar label="{{userDetais?.Name | firstLetter}}" styleClass="mr-2" size="large"
+                    [style]="{ 'background-color': '#2196F3', color: '#ffffff' }" shape="circle"></p-avatar>
+                <div class="flex flex-column flex-grow-1">
+                    <div class="flex font-semibold">{{userDetais?.Name}}</div>
+                    <div class="flex text-cyan-500 font-medium text-sm">{{userDetais?.Role|uppercase }}</div>
+                </div>
             </div>
-        </div>
             <a class="p-link layout-topbar-button" routerLink="/static-login">
                 <i class="pi pi-sign-in"></i>
                 <span>Sign</span>

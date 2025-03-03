@@ -4,16 +4,14 @@ test.beforeEach(async ({ pensionPage }) => {
     await pensionPage.staticLogin();
 });
 
-test('should approve PPO successfully', async ({ pensionPage, dbUtils }) => {
+test('Approve PPO', async ({ pensionPage, dbUtils }) => {
     // Arrange
     await dbUtils.dropDatabase();
-
     await dbUtils.migrateDatabase();
-
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder, 5);
-
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder, 5);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder, 5);
-    await dbUtils.seedDatabase(Seeders.CategorySeeder, 5);
-    await pensionPage.savePpoDetailsAndApprove();
+    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
+    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
+    await dbUtils.seedDatabase(Seeders.BranchSeeder);
+    await dbUtils.seedDatabase(Seeders.CategorySeeder);
+    await dbUtils.seedDatabase(Seeders.PensionerSeeder, 1);
+    await pensionPage.approveFirstPpo();
 });

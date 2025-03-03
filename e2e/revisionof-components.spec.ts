@@ -4,17 +4,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.staticLogin();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.ClassificationSeeder);
-    await dbUtils.seedDatabase(Seeders.BranchSeeder);
-    await dbUtils.seedDatabase(Seeders.ComponentRateSeeder);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Verify Reset Button Clears First Pension Bill Data', async ({
-    page,
-    pensionPage,
-}) => {
+test('Verify Reset Button', async ({ page, pensionPage }) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     //Act
@@ -23,10 +16,7 @@ test('Verify Reset Button Clears First Pension Bill Data', async ({
     await expect(page.locator('input[placeholder="PPO ID"]')).toHaveValue('');
 });
 
-test('Verify Retrieval of Pension Bill Revision Details', async ({
-    page,
-    pensionPage,
-}) => {
+test('Verify Retrieval', async ({ page, pensionPage }) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     //Act
@@ -42,10 +32,7 @@ test('Verify Retrieval of Pension Bill Revision Details', async ({
     ).toBeVisible();
 });
 
-test('Verify Editing of Pension Bill Revision Details', async ({
-    page,
-    pensionPage,
-}) => {
+test('Verify Editing', async ({ page, pensionPage }) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
@@ -77,10 +64,7 @@ test('Verify Editing of Pension Bill Revision Details', async ({
     await pensionPage.okSuccess();
 });
 
-test('Delete Pensioner Revision Detail Successfully', async ({
-    page,
-    pensionPage,
-}) => {
+test('Delete Revision of Components', async ({ page, pensionPage }) => {
     //Arrange
     await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
@@ -102,10 +86,7 @@ test('Delete Pensioner Revision Detail Successfully', async ({
     await page.getByRole('button', { name: 'OK' }).click();
 });
 
-test('Create New Pensioner Revision Successfully', async ({
-    page,
-    pensionPage,
-}) => {
+test('Create New Revision of Components', async ({ page, pensionPage }) => {
     // Arrange
     const dialog = await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
@@ -125,17 +106,34 @@ test('Create New Pensioner Revision Successfully', async ({
     // Wait for the datepicker to be visible
     await page.waitForSelector('.p-datepicker-calendar', { state: 'visible' });
 
-    // Generate a random number between 7 and 24
-    const randomDate = Math.floor(Math.random() * (24 - 7 + 1)) + 7;
+    // Generate a random number between 7 and 22
+    const randomDate = Math.floor(Math.random() * (22 - 7 + 1)) + 7;
 
-    // Use a more specific locator to click the span element
-    const selectedDate = page
-        .locator('span')
-        .filter({ hasText: new RegExp(`^${randomDate}$`) });
+    // Use a more specific locator targeting current month's active dates
+    const dateCell = page
+        .locator(
+            `.p-datepicker-calendar td:not(.p-datepicker-other-month) span:text-is("${randomDate}")`
+        )
+        .first();
 
-    // Ensure that the selected date is visible and click it
-    await expect(selectedDate).toBeVisible({ timeout: 500 });
-    await selectedDate.click();
+    // Wait for the date cell to be ready with increased timeout
+    await expect(dateCell).toBeVisible({ timeout: 2000 });
+
+    // Check if this date is disabled before clicking
+    const isDisabled = await dateCell.evaluate((el) =>
+        el.classList.contains('p-disabled')
+    );
+
+    if (isDisabled) {
+        // If the first date is disabled, try to find another valid date
+        const validDateCell = page.locator(
+            `.p-datepicker-calendar td:not(.p-datepicker-other-month) span:not(.p-disabled):text-is("${randomDate + 1}")`
+        );
+        await expect(validDateCell).toBeVisible({ timeout: 2000 });
+        await validDateCell.click();
+    } else {
+        await dateCell.click();
+    }
 
     const randomAmount = Math.floor(Math.random() * 10000);
     await amountInput.fill(randomAmount.toString());

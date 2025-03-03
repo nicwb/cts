@@ -5,15 +5,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.goToSubCategory();
     await dbUtils.dropDatabase();
     await dbUtils.migrateDatabase();
-    await dbUtils.seedDatabase(Seeders.FinancialYearSeeder);
-    await dbUtils.seedDatabase(Seeders.TreasurySeeder);
-    await dbUtils.seedDatabase(Seeders.SubCategorySeeder);
+    await dbUtils.seedDatabase(Seeders.DatabaseSeeder);
 });
 
-test('Check Input Box Visibility and Submit Successfully', async ({
-    page,
-    pensionPage,
-}) => {
+test('Add New Sub Category', async ({ page, pensionPage }) => {
     //ARRANGE
     //ACT
     await page.getByRole('button', { name: 'New' }).click();
@@ -24,10 +19,7 @@ test('Check Input Box Visibility and Submit Successfully', async ({
     expect(true).toBeTruthy();
 });
 
-test('Prevent Duplicate Entry Submission In Sub Category ', async ({
-    page,
-    pensionPage,
-}) => {
+test('Prevent Duplicate Sub Category ', async ({ page, pensionPage }) => {
     //ARRANGE
     await page.getByRole('button', { name: 'New' }).click();
 
