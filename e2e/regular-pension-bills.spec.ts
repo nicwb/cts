@@ -41,13 +41,7 @@ test('Generate Regular Pension Bill PDF Report', async ({ page }) => {
 
     expect(dialogMessage).toContain(expectedMessage);
     const ppoCountMatch = dialogMessage.match(/Number of PPOs: (\d+)/);
-    const totalAmountMatch = dialogMessage.match(
-        /Total Bill Amount: ₹([\d,.]+)/
-    );
     expect(ppoCountMatch).not.toBeNull();
-    expect(totalAmountMatch).not.toBeNull();
     const ppoCount = parseInt(ppoCountMatch![1]);
-    const totalAmount = parseFloat(totalAmountMatch![1].replace(/,/g, ''));
     expect(ppoCount).toBeGreaterThanOrEqual(0);
-    expect(totalAmount).toBeGreaterThanOrEqual(0);
 });

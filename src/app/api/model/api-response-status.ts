@@ -12,7 +12,10 @@ export type APIResponseStatus = 'Success' | 'Warning' | 'Error' | 'Info';
 
 export const APIResponseStatus = {
     Success: 'Success' as APIResponseStatus,
+
     Warning: 'Warning' as APIResponseStatus,
+
     Error: 'Error' as APIResponseStatus,
+
     Info: 'Info' as APIResponseStatus,
 };

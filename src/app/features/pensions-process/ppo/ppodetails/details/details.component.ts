@@ -32,6 +32,7 @@ import {
     PensionStatusFlag,
     ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse,
     PensionCategoryListDTOTableResponseDTOJsonAPIResponse,
+    PensionComponentRateService,
 } from 'src/app/api';
 import { async, firstValueFrom, Observable, Subscription, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -102,7 +103,8 @@ export class DetailsComponent implements OnInit, OnChanges {
 
         private cdr: ChangeDetectorRef,
         private route: ActivatedRoute,
-        private statusService: PensionPPOStatusService
+        private statusService: PensionPPOStatusService,
+        private pensionComponentRateService: PensionComponentRateService
     ) {
         this.ininalizer();
         this.religionOptions = [
@@ -676,7 +678,8 @@ export class DetailsComponent implements OnInit, OnChanges {
 
     // fetch CatDescription
     async fetchCatDescription(): Promise<void> {
-        this.catDescription$ = this.ppoCategoryService.getCategories();
+        this.catDescription$ =
+            this.pensionComponentRateService.getCategoriesWithRates();
     }
 
     // handelCategoryDescription

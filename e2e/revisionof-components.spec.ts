@@ -91,10 +91,18 @@ test('Create New Revision of Components', async ({ page, pensionPage }) => {
     const dialog = await pensionPage.shouldRetrieveFirstPensionBill();
     await page.getByRole('button', { name: ' Search' }).click();
     await pensionPage.okSuccess();
+    await expect(
+        pensionPage.page.getByRole('cell', { name: '1-BASIC PENSION' })
+    ).toBeVisible();
 
     // Act
     await page.getByRole('button', { name: ' Add' }).click();
-    const amountInput = page.locator('input[formControlName="amount"]');
+    const amountInput = page
+        .locator('div')
+        .filter({ hasText: /^Amount \/ Month$/ })
+        .getByRole('textbox');
+    await expect(amountInput).toBeVisible({ timeout: 200 });
+
     await page.click('app-popup-table');
     await page.waitForSelector('tbody tr');
     const firstRow2 = dialog.locator('tbody tr:first-child');
@@ -134,9 +142,6 @@ test('Create New Revision of Components', async ({ page, pensionPage }) => {
     } else {
         await dateCell.click();
     }
-
-    const randomAmount = Math.floor(Math.random() * 10000);
-    await amountInput.fill(randomAmount.toString());
 
     await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();

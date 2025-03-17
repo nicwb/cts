@@ -39,7 +39,7 @@ test('Generate First Pension PDF Report', async ({ page, pensionPage }) => {
     await expect(dialog1).toBeVisible({ timeout: 500 });
 });
 
-test('Verify PDF Generation and Error Handling for General Bill Report', async ({
+test('Verify PDF Generation for First Pension Bill', async ({
     page,
     pensionPage,
     browserName,

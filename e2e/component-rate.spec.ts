@@ -54,6 +54,7 @@ test('Successfully Adds New Component Rate', async ({ pensionPage, page }) => {
     });
 
     // Submit form and verify table
+    await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
     await page.getByRole('button', { name: 'Submit' }).click();
     await pensionPage.okSuccess();
     const table = page.locator('p-table');

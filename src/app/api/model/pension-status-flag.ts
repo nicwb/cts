@@ -17,8 +17,12 @@ export type PensionStatusFlag =
 
 export const PensionStatusFlag = {
     PpoApproved: 'PpoApproved' as PensionStatusFlag,
+
     FirstPensionBillApproved: 'FirstPensionBillApproved' as PensionStatusFlag,
+
     PpoRunning: 'PpoRunning' as PensionStatusFlag,
+
     PpoSuspended: 'PpoSuspended' as PensionStatusFlag,
+
     PpoClosed: 'PpoClosed' as PensionStatusFlag,
 };

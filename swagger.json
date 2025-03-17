@@ -868,6 +868,26 @@
         }
       }
     },
+    "/api/v1/pension-component/categories": {
+      "get": {
+        "tags": [
+          "Pension: Component Rate"
+        ],
+        "operationId": "GetCategoriesWithRates",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PensionCategoryListDTOTableResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ppo-component-revision/ppos": {
       "get": {
         "tags": [
@@ -6843,6 +6863,11 @@
             "type": "string",
             "format": "date",
             "nullable": true
+          },
+          "componentDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           },
           "rate": {
             "$ref": "#/components/schemas/ComponentRateResponseDTO"

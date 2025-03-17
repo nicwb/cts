@@ -45,7 +45,6 @@ export class PensionModule {
                 throw error; // Rethrow the error to fail the test
             }
         }
-
         // Close the menu if not on mobile
         if (!this.isMobile) {
             await this.page.waitForTimeout(100);
@@ -265,7 +264,6 @@ export class PensionModule {
     }
 
     async navigateFromEntryToReceipt() {
-        await this.goToPPOEntry();
         const addNewButton = this.page.getByRole('button', {
             name: 'Add New PPO',
         });

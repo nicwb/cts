@@ -16,9 +16,12 @@ export type PensionStatusReassonFlag =
 
 export const PensionStatusReassonFlag = {
     Others: 'Others' as PensionStatusReassonFlag,
+
     LifeCertificateSubmitted:
         'LifeCertificateSubmitted' as PensionStatusReassonFlag,
+
     LifeCertificateNotSubmitted:
         'LifeCertificateNotSubmitted' as PensionStatusReassonFlag,
+
     Death: 'Death' as PensionStatusReassonFlag,
 };

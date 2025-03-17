@@ -16,5 +16,6 @@ export interface PpoComponentRevisionResponseDTO {
     amountPerMonth: number;
     id?: number;
     toDate?: string | null;
+    readonly componentDescription?: string | null;
     rate?: ComponentRateResponseDTO;
 }

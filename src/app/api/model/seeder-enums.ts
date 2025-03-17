@@ -29,32 +29,57 @@ export type SeederEnums =
     | 'PpoBillSeeder'
     | 'PpoReceiptSeeder'
     | 'PpoSanctionDetailsSeeder'
+    | 'PpoStatusFlagSeeder'
     | 'PrimaryCategorySeeder'
     | 'SubCategorySeeder'
     | 'TreasurySeeder';
 
 export const SeederEnums = {
     DatabaseSeeder: 'DatabaseSeeder' as SeederEnums,
+
     AccountHeadSeeder: 'AccountHeadSeeder' as SeederEnums,
+
     BankSeeder: 'BankSeeder' as SeederEnums,
+
     BillSeeder: 'BillSeeder' as SeederEnums,
+
     BranchSeeder: 'BranchSeeder' as SeederEnums,
+
     BreakupSeeder: 'BreakupSeeder' as SeederEnums,
+
     CategorySeeder: 'CategorySeeder' as SeederEnums,
+
     ClassificationSeeder: 'ClassificationSeeder' as SeederEnums,
+
     ComponentRateSeeder: 'ComponentRateSeeder' as SeederEnums,
+
     EppoAmountSeeder: 'EppoAmountSeeder' as SeederEnums,
+
     EppoNomineeSeeder: 'EppoNomineeSeeder' as SeederEnums,
+
     EppoReceiptSeeder: 'EppoReceiptSeeder' as SeederEnums,
+
     EppoRevisionSeeder: 'EppoRevisionSeeder' as SeederEnums,
+
     FinancialYearSeeder: 'FinancialYearSeeder' as SeederEnums,
+
     LifeCertificateSeeder: 'LifeCertificateSeeder' as SeederEnums,
+
     NomineeSeeder: 'NomineeSeeder' as SeederEnums,
+
     PensionerSeeder: 'PensionerSeeder' as SeederEnums,
+
     PpoBillSeeder: 'PpoBillSeeder' as SeederEnums,
+
     PpoReceiptSeeder: 'PpoReceiptSeeder' as SeederEnums,
+
     PpoSanctionDetailsSeeder: 'PpoSanctionDetailsSeeder' as SeederEnums,
+
+    PpoStatusFlagSeeder: 'PpoStatusFlagSeeder' as SeederEnums,
+
     PrimaryCategorySeeder: 'PrimaryCategorySeeder' as SeederEnums,
+
     SubCategorySeeder: 'SubCategorySeeder' as SeederEnums,
+
     TreasurySeeder: 'TreasurySeeder' as SeederEnums,
 };

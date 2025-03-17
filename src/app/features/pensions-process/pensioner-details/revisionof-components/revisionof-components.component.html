@@ -33,6 +33,7 @@
             <div class="flex-auto">
                 <label class="block mb-1 text-color text-lg">Amount / Month</label>
                 <input type="text" pInputText placeholder="" formControlName="amount" class="w-full p-2"
+                    (input)="onAmountInput($event)"
                     [ngClass]="{'error-border': componentForm.get('amount')?.invalid && componentForm.get('amount')?.touched}" />
                 <small class="error-text"
                     *ngIf="componentForm.get('amount')?.invalid && componentForm.get('amount')?.touched">

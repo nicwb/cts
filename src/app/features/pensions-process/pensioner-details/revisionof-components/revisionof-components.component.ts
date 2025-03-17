@@ -479,7 +479,7 @@ export class RevisionofComponentsComponent implements OnInit {
             } else {
                 this.componentForm.patchValue({
                     componentname: event.componentName,
-                    amount: rateAmount,
+                    amount: Math.round(rateAmount),
                 });
                 this.componentForm.controls['amount'].disable();
             }
@@ -490,11 +490,12 @@ export class RevisionofComponentsComponent implements OnInit {
                     this.TableData[i].componentDescription.split('-')[1] ==
                     'BASIC PENSION'
                 ) {
+                    const calculatedAmount = Math.round(
+                        (this.TableData[i].amountPerMonth * rateAmount) / 100
+                    );
                     this.componentForm.patchValue({
                         componentname: event.componentName,
-                        amount:
-                            (this.TableData[i].amountPerMonth * rateAmount) /
-                            100,
+                        amount: calculatedAmount,
                     });
                     this.componentForm.controls['amount'].disable();
                     flag = false;
@@ -547,5 +548,11 @@ export class RevisionofComponentsComponent implements OnInit {
                 return `${year}-${month}-${day}`; // Return the formatted date string
             }
         }
+    }
+
+    onAmountInput(event: any) {
+        let value = event.target.value;
+        value = value.replace(/[^0-9]/g, '');
+        this.componentForm.get('amount')?.setValue(value, { emitEvent: false });
     }
 }
