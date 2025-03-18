@@ -115,18 +115,30 @@
             </div>
         </div>
 
-        <div class="flex gap-2 xl:flex-row flex-column">
-            <div class="flex-auto">
-                <label for="psaCode" class="block mb-1 text-color text-lg">PPO Issued By:</label>
-                <p-dropdown [options]="ppoIssuedBy" formControlName="psaCode" placeholder="Select a PPO Issued By"
-                    [showClear]="true"></p-dropdown>
+        <div class="flex flex-col xl:flex-row gap-4">
+            <div class="flex-1">
+              <label for="psaCode" class="block mb-1 text-color text-lg">PPO Issued By:</label>
+              <p-dropdown
+                [options]="ppoIssuedBy"
+                formControlName="psaCode"
+                placeholder="Select a PPO Issued By"
+                [showClear]="true"
+                appendTo="body">
+              </p-dropdown>
             </div>
-            <div class="flex-auto">
-                <label for="ppoType" class="block mb-1 text-color text-lg">Type:</label>
-                <p-dropdown [options]="type" formControlName="ppoType" placeholder="Select a Type"
-                    [showClear]="true"></p-dropdown>
+          
+            <div class="flex-1">
+              <label for="ppoType" class="block mb-1 text-color text-lg">Type:</label>
+              <p-dropdown
+                [options]="type"
+                formControlName="ppoType"
+                placeholder="Select a Type"
+                [showClear]="true"
+                appendTo="body">
+              </p-dropdown>
             </div>
-        </div>
+          </div>
+          
     </form>
     <div class="flex gap-2 justify-content-end pt-3">
         <button *ngIf="!selectedRow" pButton label="Submit" (click)="submitPpoReceipt()" class="p-button-rounded"

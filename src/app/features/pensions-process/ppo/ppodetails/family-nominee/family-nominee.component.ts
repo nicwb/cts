@@ -701,6 +701,9 @@ export class FamilyNomineeComponent implements OnInit {
                     this.toastService.showSuccess(
                         response.message ?? 'Nominee registered successfully'
                     );
+                    this.isInsertNominee = false;
+                    this.isInsertModalVisible = false;
+                    this.loading = false;
                     this.resetForm(nameForm);
                     this.getPpoId();
                     await this.getData(nameForm); // Pass form type to load specific data
@@ -877,6 +880,8 @@ export class FamilyNomineeComponent implements OnInit {
                         familyNominee.apiResponseStatus ===
                         APIResponseStatus.Success
                     ) {
+                        this.isInsertModalVisible = false;
+                        this.loading = false;
                         this.toastService.showSuccess(
                             '' + familyNominee.message
                         );
@@ -939,6 +944,7 @@ export class FamilyNomineeComponent implements OnInit {
         }
         this.ifscCode = bankBranch?.ifscCode ?? null;
     }
+
     async updateNomineeDetails() {
         if (this.nomineeId !== 0) {
             if (this.nomineeDetailsForm.valid) {
@@ -993,6 +999,8 @@ export class FamilyNomineeComponent implements OnInit {
                         this.toastService.showSuccess(
                             '' + familyNominee.message
                         );
+                        this.isInsertNominee = false;
+                        this.loading = false;
                         this.getData('B');
                     } else {
                         this.toastService.showError('' + familyNominee.message);

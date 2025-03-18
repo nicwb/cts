@@ -307,7 +307,7 @@ export class PensionModule {
         await addNewButton.click();
 
         const messageLocator = this.page.locator(
-            'text="No manual ppo receipt found!. Do you want add it?"'
+            'text="No manual ppo receipt found. Do you want to add it?"'
         );
         await expect(messageLocator).toBeVisible();
         await this.page.getByRole('button', { name: 'Yes' }).click();
@@ -407,7 +407,9 @@ export class PensionModule {
     }
     async goToSubCategory(): Promise<void> {
         await this.navigateToPath(['Master', 'Sub Category']);
-        await expect(this.page.getByText('Sub-Category Details')).toBeVisible();
+        await expect(
+            this.page.getByText('Sub-Category Details').first()
+        ).toBeVisible();
     }
 
     async goToFirstPensionBillPrint(): Promise<Locator> {

@@ -138,10 +138,10 @@
     <button label="save all" (click)="updateAllRows()" pRipple pButton [disabled]="!hasChanges" icon="pi pi-check"
       class="p-element p-ripple p-button-success p-component" *ngIf="selectedPpoType === 'UpdatedPPO'">
     </button>
-    <button label="save all" pButton pRipple (click)="saveAllRows()" [disabled]="!hasUnsavedChanges" icon="pi pi-check"
+    <button label="Save all" pButton pRipple (click)="saveAllRows()" [disabled]="!hasUnsavedChanges" icon="pi pi-check"
       class="p-element p-ripple p-button-success p-component" *ngIf="selectedPpoType !== 'UpdatedPPO'">
     </button>
-    <button label="Refrish" pButton pRipple (click)="refrish()"
+    <button label="Refresh" pButton pRipple (click)="refrish()"
       class="p-element p-ripple p-component p-button-secondary" icon="pi pi-refresh">
     </button>
   </div>

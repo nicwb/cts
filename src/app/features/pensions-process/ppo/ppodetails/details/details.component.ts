@@ -186,7 +186,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                         if (res.result?.dataCount == 0) {
                             void Swal.fire({
                                 icon: 'info',
-                                title: 'No manual ppo receipt found!. Do you want add it?',
+                                title: 'No manual ppo receipt found. Do you want to add it?',
                                 showDenyButton: true,
                                 confirmButtonText: 'Yes',
                                 denyButtonText: 'No',
@@ -223,7 +223,7 @@ export class DetailsComponent implements OnInit, OnChanges {
                     if (res.result?.dataCount == 0) {
                         void Swal.fire({
                             icon: 'info',
-                            title: 'No manual ppo receipt found!. Do you want add it?',
+                            title: 'No manual ppo receipt found. Do you want add it?',
                             showDenyButton: true,
                             confirmButtonText: 'Yes',
                             denyButtonText: 'No',
