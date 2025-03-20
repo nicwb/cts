@@ -9,7 +9,6 @@
  */
 
 export interface EPpoNomineeEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     nomineeType: string;
     serialNo: number;
     nomineeName: string;

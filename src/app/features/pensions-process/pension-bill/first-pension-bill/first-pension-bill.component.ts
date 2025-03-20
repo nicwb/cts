@@ -4,7 +4,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import {
     PensionFirstBillService,
-    InitiateFirstPensionBillDTO,
+    InitiateFirstPensionBillEntryDTO,
     PpoBillEntryDTO,
     PensionPPODetailsService,
     PensionComponentRevisionService,
@@ -140,7 +140,7 @@ export class FirstPensionBillComponent implements OnInit {
 
     // all get value
     public async getvalue() {
-        const payload2: InitiateFirstPensionBillDTO = {
+        const payload2: InitiateFirstPensionBillEntryDTO = {
             ppoId: this.ppoId as number,
             toDate: this.period,
         };

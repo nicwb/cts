@@ -9,7 +9,6 @@
  */
 
 export interface ByTransferHeadEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     byTransferType: string;
     accountHeadId: number;
     byTransferDescription: string;

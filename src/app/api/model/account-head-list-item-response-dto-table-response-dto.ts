@@ -11,7 +11,7 @@ import { AccountHeadListItemResponseDTO } from './account-head-list-item-respons
 import { TableHeader } from './table-header';
 
 export interface AccountHeadListItemResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<AccountHeadListItemResponseDTO> | null;
     readonly dataCount?: number;

@@ -11,7 +11,7 @@ import { EPpoReceiptDetailDTO } from './e-ppo-receipt-detail-dto';
 import { TableHeader } from './table-header';
 
 export interface EPpoReceiptDetailDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<EPpoReceiptDetailDTO> | null;
     readonly dataCount?: number;

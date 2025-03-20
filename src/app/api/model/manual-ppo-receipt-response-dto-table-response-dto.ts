@@ -11,7 +11,7 @@ import { ManualPpoReceiptResponseDTO } from './manual-ppo-receipt-response-dto';
 import { TableHeader } from './table-header';
 
 export interface ManualPpoReceiptResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<ManualPpoReceiptResponseDTO> | null;
     readonly dataCount?: number;

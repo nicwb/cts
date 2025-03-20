@@ -8,8 +8,7 @@
  * Do not edit the class manually.
  */
 
-export interface InitiateFirstPensionBillDTO {
-    dataSource?: { [key: string]: any } | null;
+export interface InitiateFirstPensionBillEntryDTO {
     ppoId: number;
     toDate: string;
 }

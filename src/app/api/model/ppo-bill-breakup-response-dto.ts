@@ -10,7 +10,7 @@
 import { PpoComponentRevisionResponseDTO } from './ppo-component-revision-response-dto';
 
 export interface PpoBillBreakupResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoId: number;
     fromDate: string;
     toDate: string;

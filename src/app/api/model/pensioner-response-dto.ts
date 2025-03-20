@@ -13,7 +13,7 @@ import { PpoSanctionDetailsResponseDTO } from './ppo-sanction-details-response-d
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 export interface PensionerResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoNo: string;
     ppoType: string;
     ppoSubType: string;

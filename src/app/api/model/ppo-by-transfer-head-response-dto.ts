@@ -9,7 +9,7 @@
  */
 
 export interface PpoByTransferHeadResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     pensionerId?: number;
     ppoId?: number;
     fromDate?: string;

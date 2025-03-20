@@ -12,7 +12,7 @@ import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 import { PpoPaymentListItemDTO } from './ppo-payment-list-item-dto';
 
 export interface InitiateFirstPensionBillResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoId: number;
     id?: number;
     fromDate?: string;

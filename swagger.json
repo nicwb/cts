@@ -1386,7 +1386,7 @@
         }
       }
     },
-    "/api/v1/ppo/first-bill/ppos": {
+    "/api/v1/first-bill/ppos": {
       "get": {
         "tags": [
           "Pension: First Bill"
@@ -1406,7 +1406,7 @@
         }
       }
     },
-    "/api/v1/ppo/first-bill-print/ppos": {
+    "/api/v1/first-bill-print/ppos": {
       "get": {
         "tags": [
           "Pension: First Bill"
@@ -1426,7 +1426,7 @@
         }
       }
     },
-    "/api/v1/ppo/first-bill-generate": {
+    "/api/v1/first-bill-generate": {
       "post": {
         "tags": [
           "Pension: First Bill"
@@ -1436,17 +1436,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             }
           }
@@ -1465,7 +1465,7 @@
         }
       }
     },
-    "/api/v1/ppo/first-bill": {
+    "/api/v1/first-bill": {
       "post": {
         "tags": [
           "Pension: First Bill"
@@ -1475,17 +1475,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/InitiateFirstPensionBillDTO"
+                "$ref": "#/components/schemas/InitiateFirstPensionBillEntryDTO"
               }
             }
           }
@@ -1504,7 +1504,7 @@
         }
       }
     },
-    "/api/v1/ppo/first-bill/{ppoId}": {
+    "/api/v1/first-bill/{ppoId}": {
       "get": {
         "tags": [
           "Pension: First Bill"
@@ -1528,35 +1528,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PpoBillResponseDTOJsonAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/ppo/send-bill": {
-      "post": {
-        "tags": [
-          "Pension: First Bill"
-        ],
-        "operationId": "SendFirstPensionBill",
-        "parameters": [
-          {
-            "name": "message",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -1713,7 +1684,7 @@
         }
       }
     },
-    "/api/v1/manual-ppo/receipts": {
+    "/api/v1/manual-ppo-receipt": {
       "post": {
         "tags": [
           "Pension: Manual PPO Receipt"
@@ -1750,46 +1721,9 @@
             }
           }
         }
-      },
-      "patch": {
-        "tags": [
-          "Pension: Manual PPO Receipt"
-        ],
-        "operationId": "GetAllPpoReceipts",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      },
-      "get": {
-        "tags": [
-          "Pension: Manual PPO Receipt"
-        ],
-        "operationId": "GetPpoReceipts",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse"
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/v1/manual-ppo/receipts/{treasuryReceiptNo}": {
+    "/api/v1/manual-ppo-receipt/trid/{treasuryReceiptNo}": {
       "get": {
         "tags": [
           "Pension: Manual PPO Receipt"
@@ -1866,7 +1800,7 @@
         }
       }
     },
-    "/api/v1/manual-ppo/receipt/{receiptId}": {
+    "/api/v1/manual-ppo-receipt/{receiptId}": {
       "get": {
         "tags": [
           "Pension: Manual PPO Receipt"
@@ -1945,7 +1879,27 @@
         }
       }
     },
-    "/api/v1/manual-ppo/receipts/unused": {
+    "/api/v1/manual-ppo-receipts": {
+      "get": {
+        "tags": [
+          "Pension: Manual PPO Receipt"
+        ],
+        "operationId": "GetPpoReceipts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/manual-ppo-receipts/unused": {
       "get": {
         "tags": [
           "Pension: Manual PPO Receipt"
@@ -2414,7 +2368,7 @@
         }
       }
     },
-    "/api/v1/ppo/pension-bill/{year}/{month}/ppos": {
+    "/api/v1/regular-bill/{year}/{month}/ppos": {
       "get": {
         "tags": [
           "Pension: Regular Bill"
@@ -2454,7 +2408,7 @@
         }
       }
     },
-    "/api/v1/ppo/pension-bill": {
+    "/api/v1/regular-bill": {
       "post": {
         "tags": [
           "Pension: Regular Bill"
@@ -2493,7 +2447,7 @@
         }
       }
     },
-    "/api/v1/ppo/pension-bill/{year}/{month}/regular-bills": {
+    "/api/v1/regular-bill/{year}/{month}/bills": {
       "get": {
         "tags": [
           "Pension: Regular Bill"
@@ -2734,7 +2688,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -2757,7 +2710,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -2803,7 +2755,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -2850,7 +2801,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "bankCount": {
@@ -2889,7 +2839,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -2908,7 +2857,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -2931,7 +2879,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "branchCount": {
@@ -2973,7 +2920,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -3026,11 +2972,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "byTransferType": {
             "pattern": "[PR]",
             "type": "string"
@@ -3055,7 +2996,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -3100,7 +3040,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -3151,11 +3090,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "categoryId": {
             "type": "integer",
             "format": "int64"
@@ -3191,7 +3125,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "categoryId": {
@@ -3265,7 +3198,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -3355,11 +3287,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "amountType": {
             "maxLength": 3,
             "minLength": 0,
@@ -3407,11 +3334,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "nomineeType": {
             "pattern": "^[PFD]$",
             "type": "string"
@@ -3472,7 +3394,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoNo": {
@@ -3632,7 +3553,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -3694,11 +3614,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoNo": {
             "minLength": 1,
             "type": "string"
@@ -3836,7 +3751,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -3891,7 +3805,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -3934,11 +3847,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoNo": {
             "minLength": 1,
             "type": "string"
@@ -4008,7 +3916,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -4046,11 +3953,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "pensionApplnNo": {
             "minLength": 1,
             "type": "string"
@@ -4070,7 +3972,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -4132,11 +4033,6 @@
       "FileEntryDTO": {
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "fileName": {
             "type": "string",
             "nullable": true
@@ -4154,7 +4050,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "fileName": {
@@ -4202,7 +4097,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "currentYear": {
@@ -4228,18 +4122,13 @@
         },
         "additionalProperties": false
       },
-      "InitiateFirstPensionBillDTO": {
+      "InitiateFirstPensionBillEntryDTO": {
         "required": [
           "ppoId",
           "toDate"
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoId": {
             "type": "integer",
             "format": "int32"
@@ -4259,7 +4148,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -4373,7 +4261,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -4417,11 +4304,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "financialYear": {
             "type": "integer",
             "format": "int32"
@@ -4441,7 +4323,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "lifeCertificateCount": {
@@ -4485,7 +4366,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "financialYear": {
@@ -4569,7 +4449,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -4621,11 +4500,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoNo": {
             "maxLength": 100,
             "minLength": 0,
@@ -4675,7 +4549,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoNo": {
@@ -4745,7 +4618,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -4798,11 +4670,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoId": {
             "type": "integer",
             "format": "int32"
@@ -4896,7 +4763,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -5007,7 +4873,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -5072,11 +4937,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "componentName": {
             "maxLength": 100,
             "minLength": 0,
@@ -5102,7 +4962,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "componentName": {
@@ -5145,7 +5004,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -5193,11 +5051,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "primaryCategoryId": {
             "type": "integer",
             "format": "int64"
@@ -5214,7 +5067,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -5241,7 +5093,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -5291,7 +5142,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "primaryCategoryId": {
@@ -5349,11 +5199,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "accountHeadId": {
             "type": "integer",
             "format": "int64"
@@ -5375,7 +5220,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "accountHeadId": {
@@ -5423,7 +5267,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -5473,7 +5316,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "statusFlag": {
@@ -5522,11 +5364,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "statusFlag": {
             "$ref": "#/components/schemas/PensionStatusFlag"
           },
@@ -5594,11 +5431,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "subCategoryName": {
             "maxLength": 100,
             "minLength": 0,
@@ -5615,7 +5447,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "subCategoryName": {
@@ -5651,7 +5482,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -5714,11 +5544,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoNo": {
             "maxLength": 100,
             "minLength": 0,
@@ -5933,7 +5758,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -5983,7 +5807,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -6048,7 +5871,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoNo": {
@@ -6318,11 +6140,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoId": {
             "type": "integer",
             "format": "int32"
@@ -6366,7 +6183,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -6437,11 +6253,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoId": {
             "type": "integer",
             "format": "int32"
@@ -6468,7 +6279,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {
@@ -6584,12 +6394,7 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
-          },
-          "id": {
-            "type": "integer",
-            "format": "int64"
           },
           "ppoId": {
             "type": "integer",
@@ -6624,11 +6429,6 @@
       "PpoByTransferEntryDTO": {
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "pensionerId": {
             "type": "integer",
             "format": "int64"
@@ -6665,7 +6465,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "pensionerId": {
@@ -6727,11 +6526,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "rateId": {
             "type": "integer",
             "format": "int64"
@@ -6752,7 +6546,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -6789,7 +6582,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -6840,7 +6632,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "rateId": {
@@ -6896,7 +6687,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "headers": {
@@ -6946,7 +6736,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "fromDate": {
@@ -6965,7 +6754,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoList": {
@@ -7004,7 +6792,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "fromDate": {
@@ -7077,7 +6864,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -7165,11 +6951,6 @@
         ],
         "type": "object",
         "properties": {
-          "dataSource": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
           "ppoId": {
             "type": "integer",
             "format": "int32"
@@ -7289,7 +7070,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "ppoId": {
@@ -7450,7 +7230,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "regularBillCount": {
@@ -7489,7 +7268,6 @@
         "properties": {
           "dataSource": {
             "type": "object",
-            "additionalProperties": { },
             "nullable": true
           },
           "id": {

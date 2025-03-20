@@ -9,7 +9,7 @@
  */
 
 export interface PensionerListItemDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     ppoId?: number;
     pensionerName?: string | null;

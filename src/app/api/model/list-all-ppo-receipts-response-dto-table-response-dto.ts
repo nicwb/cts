@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { ListAllPpoReceiptsResponseDTO } from './list-all-ppo-receipts-response-dto';
 
 export interface ListAllPpoReceiptsResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<ListAllPpoReceiptsResponseDTO> | null;
     readonly dataCount?: number;

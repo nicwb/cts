@@ -9,7 +9,7 @@
  */
 
 export interface FileResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     fileName?: string | null;
     contents?: string | null;
     id?: number;

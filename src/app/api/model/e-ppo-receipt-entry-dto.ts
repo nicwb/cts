@@ -12,7 +12,6 @@ import { EPpoNomineeEntryDTO } from './e-ppo-nominee-entry-dto';
 import { EPpoAmountEntryDTO } from './e-ppo-amount-entry-dto';
 
 export interface EPpoReceiptEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoNo: string;
     pensionApplnNo: string;
     treasuryCode: string;

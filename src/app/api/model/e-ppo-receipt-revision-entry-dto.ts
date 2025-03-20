@@ -10,7 +10,6 @@
 import { FileEntryDTO } from './file-entry-dto';
 
 export interface EPpoReceiptRevisionEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoNo: string;
     pensionApplnNo: string;
     treasuryCode: string;

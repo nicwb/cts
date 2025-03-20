@@ -9,7 +9,6 @@
  */
 
 export interface PpoSanctionDetailsEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoId: number;
     pensionerId: number;
     employeeName: string;

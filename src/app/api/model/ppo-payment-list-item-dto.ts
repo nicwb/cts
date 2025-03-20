@@ -9,7 +9,7 @@
  */
 
 export interface PpoPaymentListItemDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     fromDate?: string;
     toDate?: string;
     basicPensionAmount?: number;

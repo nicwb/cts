@@ -9,7 +9,6 @@
  */
 
 export interface ComponentRateEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     categoryId: number;
     breakupId: number;
     effectiveFromDate: string;

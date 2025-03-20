@@ -12,7 +12,7 @@ import { PpoBillBreakupEntryDTO } from './ppo-bill-breakup-entry-dto';
 import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 
 export interface PpoBillResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     pensionerId?: number;
     bankBranchName?: string | null;

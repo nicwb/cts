@@ -10,7 +10,7 @@
 import { BankResponseDTO } from './bank-response-dto';
 
 export interface BankListResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     readonly bankCount?: number;
     banks?: Array<BankResponseDTO> | null;
 }

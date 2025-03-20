@@ -10,7 +10,7 @@
 import { PensionBreakupResponseDTO } from './pension-breakup-response-dto';
 
 export interface ComponentRateResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     categoryId: number;
     breakupId: number;
     effectiveFromDate: string;

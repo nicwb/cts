@@ -9,7 +9,7 @@
  */
 
 export interface PpoComponentRevisionUpdateDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     fromDate: string;
     amountPerMonth: number;
 }

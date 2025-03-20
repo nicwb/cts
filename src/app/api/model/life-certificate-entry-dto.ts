@@ -9,7 +9,6 @@
  */
 
 export interface LifeCertificateEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     financialYear: number;
     ppoId: number;
     certificateSubmitted: boolean;

@@ -9,7 +9,6 @@
  */
 
 export interface PensionPrimaryCategoryEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     accountHeadId: number;
     primaryCategoryName: string;
 }

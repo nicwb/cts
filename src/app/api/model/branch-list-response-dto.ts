@@ -11,7 +11,7 @@ import { BankResponseDTO } from './bank-response-dto';
 import { BranchListItemResponseDTO } from './branch-list-item-response-dto';
 
 export interface BranchListResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     readonly branchCount?: number;
     bank?: BankResponseDTO;
     branches?: Array<BranchListItemResponseDTO> | null;

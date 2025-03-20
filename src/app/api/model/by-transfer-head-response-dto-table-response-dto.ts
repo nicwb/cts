@@ -11,7 +11,7 @@ import { ByTransferHeadResponseDTO } from './by-transfer-head-response-dto';
 import { TableHeader } from './table-header';
 
 export interface ByTransferHeadResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<ByTransferHeadResponseDTO> | null;
     readonly dataCount?: number;

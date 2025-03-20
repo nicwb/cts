@@ -10,7 +10,7 @@
 import { BranchResponseDTO } from './branch-response-dto';
 
 export interface NomineeResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoId: number;
     serialNo: number;
     nomineeName: string;

@@ -9,7 +9,7 @@
  */
 
 export interface PensionCategoryListDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     primaryCategoryId?: number;
     subCategoryId?: number;

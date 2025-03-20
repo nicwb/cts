@@ -12,7 +12,7 @@ import { PensionSubCategoryResponseDTO } from './pension-sub-category-response-d
 import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 export interface PensionCategoryResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     primaryCategoryId: number;
     subCategoryId: number;
     id?: number;

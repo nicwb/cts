@@ -9,7 +9,7 @@
  */
 
 export interface EPpoReceiptPpoIdResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     pensionApplnNo?: string | null;
     ppoNo?: string | null;

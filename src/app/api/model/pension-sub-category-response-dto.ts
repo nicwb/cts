@@ -9,7 +9,7 @@
  */
 
 export interface PensionSubCategoryResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     subCategoryName: string;
     id?: number;
 }

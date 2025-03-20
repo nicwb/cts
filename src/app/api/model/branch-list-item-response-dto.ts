@@ -9,7 +9,7 @@
  */
 
 export interface BranchListItemResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     branchName?: string | null;
     ifscCode?: string | null;

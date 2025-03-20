@@ -9,7 +9,6 @@
  */
 
 export interface PpoBillBreakupEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoId: number;
     fromDate: string;
     toDate: string;

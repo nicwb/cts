@@ -9,6 +9,5 @@
  */
 
 export interface PensionSubCategoryEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     subCategoryName: string;
 }

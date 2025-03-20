@@ -140,7 +140,7 @@ export class PensionRegularBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/pension-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/ppos`;
+        let localVarPath = `/api/v1/regular-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/ppos`;
         return this.httpClient.request<PpoListResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -283,7 +283,7 @@ export class PensionRegularBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/pension-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/regular-bills`;
+        let localVarPath = `/api/v1/regular-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/bills`;
         return this.httpClient.request<RegularBillListResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -390,7 +390,7 @@ export class PensionRegularBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/pension-bill`;
+        let localVarPath = `/api/v1/regular-bill`;
         return this.httpClient.request<PpoBillSaveResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,

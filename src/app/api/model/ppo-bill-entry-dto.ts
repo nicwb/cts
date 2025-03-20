@@ -9,7 +9,6 @@
  */
 
 export interface PpoBillEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoId: number;
     month: number;
     year: number;

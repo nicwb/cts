@@ -11,7 +11,7 @@ import { BranchResponseDTO } from './branch-response-dto';
 import { PensionCategoryResponseDTO } from './pension-category-response-dto';
 
 export interface PpoComponentRevisionPpoListItemDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoId?: number;
     ppoNo?: string | null;
     pensionerName?: string | null;

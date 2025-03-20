@@ -139,104 +139,13 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipts`;
+        let localVarPath = `/api/v1/manual-ppo-receipt`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: manualPpoReceiptEntryDTO,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getAllPpoReceipts(
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>;
-    public getAllPpoReceipts(
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpResponse<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>
-    >;
-    public getAllPpoReceipts(
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<
-        HttpEvent<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>
-    >;
-    public getAllPpoReceipts(
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (Bearer) required
-        localVarHeaders = this.configuration.addCredentialToHeaders(
-            'Bearer',
-            'Authorization',
-            localVarHeaders
-        );
-
-        const localVarHttpHeaderAcceptSelected: string | undefined =
-            options?.httpHeaderAccept ??
-            this.configuration.selectHeaderAccept(['application/json']);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        const localVarHttpContext: HttpContext =
-            options?.context ?? new HttpContext();
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/manual-ppo/receipts`;
-        return this.httpClient.request<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>(
-            'patch',
-            `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -321,7 +230,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipts/unused`;
+        let localVarPath = `/api/v1/manual-ppo-receipts/unused`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -418,7 +327,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        let localVarPath = `/api/v1/manual-ppo-receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -515,7 +424,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipts/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        let localVarPath = `/api/v1/manual-ppo-receipt/trid/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -605,7 +514,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipts`;
+        let localVarPath = `/api/v1/manual-ppo-receipts`;
         return this.httpClient.request<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -722,7 +631,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        let localVarPath = `/api/v1/manual-ppo-receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'put',
             `${this.configuration.basePath}${localVarPath}`,
@@ -840,7 +749,7 @@ export class PensionManualPPOReceiptService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/manual-ppo/receipts/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        let localVarPath = `/api/v1/manual-ppo-receipt/trid/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'put',
             `${this.configuration.basePath}${localVarPath}`,

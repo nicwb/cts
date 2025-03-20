@@ -9,7 +9,6 @@
  */
 
 export interface PensionerEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoNo: string;
     ppoType: string;
     ppoSubType: string;

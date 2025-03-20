@@ -76,7 +76,7 @@ model/file-response-dto-json-api-response.ts
 model/file-response-dto.ts
 model/financial-year-response-dto-json-api-response.ts
 model/financial-year-response-dto.ts
-model/initiate-first-pension-bill-dto.ts
+model/initiate-first-pension-bill-entry-dto.ts
 model/initiate-first-pension-bill-response-dto-json-api-response.ts
 model/initiate-first-pension-bill-response-dto.ts
 model/life-certificate-details-response-dto.ts

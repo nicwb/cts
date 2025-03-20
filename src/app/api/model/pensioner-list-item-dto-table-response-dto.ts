@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { PensionerListItemDTO } from './pensioner-list-item-dto';
 
 export interface PensionerListItemDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<PensionerListItemDTO> | null;
     readonly dataCount?: number;

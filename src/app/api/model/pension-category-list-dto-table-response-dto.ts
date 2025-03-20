@@ -11,7 +11,7 @@ import { PensionCategoryListDTO } from './pension-category-list-dto';
 import { TableHeader } from './table-header';
 
 export interface PensionCategoryListDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<PensionCategoryListDTO> | null;
     readonly dataCount?: number;

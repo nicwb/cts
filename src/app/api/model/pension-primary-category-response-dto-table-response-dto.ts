@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { PensionPrimaryCategoryResponseDTO } from './pension-primary-category-response-dto';
 
 export interface PensionPrimaryCategoryResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<PensionPrimaryCategoryResponseDTO> | null;
     readonly dataCount?: number;

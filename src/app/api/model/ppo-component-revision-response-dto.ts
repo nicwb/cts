@@ -10,7 +10,7 @@
 import { ComponentRateResponseDTO } from './component-rate-response-dto';
 
 export interface PpoComponentRevisionResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     rateId: number;
     fromDate: string;
     amountPerMonth: number;

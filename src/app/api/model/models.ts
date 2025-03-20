@@ -46,7 +46,7 @@ export * from './file-response-dto';
 export * from './file-response-dto-json-api-response';
 export * from './financial-year-response-dto';
 export * from './financial-year-response-dto-json-api-response';
-export * from './initiate-first-pension-bill-dto';
+export * from './initiate-first-pension-bill-entry-dto';
 export * from './initiate-first-pension-bill-response-dto';
 export * from './initiate-first-pension-bill-response-dto-json-api-response';
 export * from './life-certificate-details-response-dto';

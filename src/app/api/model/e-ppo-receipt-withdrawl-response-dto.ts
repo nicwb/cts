@@ -9,7 +9,7 @@
  */
 
 export interface EPpoReceiptWithdrawlResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     pensionApplnNo?: string | null;
     pensionerName?: string | null;

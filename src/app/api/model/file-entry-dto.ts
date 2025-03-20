@@ -9,7 +9,6 @@
  */
 
 export interface FileEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     fileName?: string | null;
     contents?: string | null;
 }

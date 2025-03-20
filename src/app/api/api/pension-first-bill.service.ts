@@ -23,7 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { InitiateFirstPensionBillDTO } from '../model/initiate-first-pension-bill-dto';
+import { InitiateFirstPensionBillEntryDTO } from '../model/initiate-first-pension-bill-entry-dto';
 // @ts-ignore
 import { InitiateFirstPensionBillResponseDTOJsonAPIResponse } from '../model/initiate-first-pension-bill-response-dto-json-api-response';
 // @ts-ignore
@@ -51,12 +51,12 @@ export class PensionFirstBillService extends BaseService {
     }
 
     /**
-     * @param initiateFirstPensionBillDTO
+     * @param initiateFirstPensionBillEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
     public generateFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
@@ -65,7 +65,7 @@ export class PensionFirstBillService extends BaseService {
         }
     ): Observable<InitiateFirstPensionBillResponseDTOJsonAPIResponse>;
     public generateFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -76,7 +76,7 @@ export class PensionFirstBillService extends BaseService {
         HttpResponse<InitiateFirstPensionBillResponseDTOJsonAPIResponse>
     >;
     public generateFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -87,7 +87,7 @@ export class PensionFirstBillService extends BaseService {
         HttpEvent<InitiateFirstPensionBillResponseDTOJsonAPIResponse>
     >;
     public generateFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -145,13 +145,13 @@ export class PensionFirstBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/first-bill-generate`;
+        let localVarPath = `/api/v1/first-bill-generate`;
         return this.httpClient.request<InitiateFirstPensionBillResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: initiateFirstPensionBillDTO,
+                body: initiateFirstPensionBillEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -236,7 +236,7 @@ export class PensionFirstBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/first-bill/ppos`;
+        let localVarPath = `/api/v1/first-bill/ppos`;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -333,7 +333,7 @@ export class PensionFirstBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/first-bill/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        let localVarPath = `/api/v1/first-bill/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
         return this.httpClient.request<PpoBillResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -423,7 +423,7 @@ export class PensionFirstBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/first-bill-print/ppos`;
+        let localVarPath = `/api/v1/first-bill-print/ppos`;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${this.configuration.basePath}${localVarPath}`,
@@ -439,12 +439,12 @@ export class PensionFirstBillService extends BaseService {
     }
 
     /**
-     * @param initiateFirstPensionBillDTO
+     * @param initiateFirstPensionBillEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
     public saveFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
@@ -453,7 +453,7 @@ export class PensionFirstBillService extends BaseService {
         }
     ): Observable<PpoBillSaveResponseDTOJsonAPIResponse>;
     public saveFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
@@ -462,7 +462,7 @@ export class PensionFirstBillService extends BaseService {
         }
     ): Observable<HttpResponse<PpoBillSaveResponseDTOJsonAPIResponse>>;
     public saveFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
@@ -471,7 +471,7 @@ export class PensionFirstBillService extends BaseService {
         }
     ): Observable<HttpEvent<PpoBillSaveResponseDTOJsonAPIResponse>>;
     public saveFirstPensionBill(
-        initiateFirstPensionBillDTO?: InitiateFirstPensionBillDTO,
+        initiateFirstPensionBillEntryDTO?: InitiateFirstPensionBillEntryDTO,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -529,112 +529,13 @@ export class PensionFirstBillService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/ppo/first-bill`;
+        let localVarPath = `/api/v1/first-bill`;
         return this.httpClient.request<PpoBillSaveResponseDTOJsonAPIResponse>(
             'post',
             `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: initiateFirstPensionBillDTO,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
-    }
-
-    /**
-     * @param message
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public sendFirstPensionBill(
-        message?: string,
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<string>;
-    public sendFirstPensionBill(
-        message?: string,
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpResponse<string>>;
-    public sendFirstPensionBill(
-        message?: string,
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpEvent<string>>;
-    public sendFirstPensionBill(
-        message?: string,
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        let localVarQueryParameters = new HttpParams({ encoder: this.encoder });
-        localVarQueryParameters = this.addToHttpParams(
-            localVarQueryParameters,
-            <any>message,
-            'message'
-        );
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (Bearer) required
-        localVarHeaders = this.configuration.addCredentialToHeaders(
-            'Bearer',
-            'Authorization',
-            localVarHeaders
-        );
-
-        const localVarHttpHeaderAcceptSelected: string | undefined =
-            options?.httpHeaderAccept ??
-            this.configuration.selectHeaderAccept(['application/json']);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        const localVarHttpContext: HttpContext =
-            options?.context ?? new HttpContext();
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/ppo/send-bill`;
-        return this.httpClient.request<string>(
-            'post',
-            `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                params: localVarQueryParameters,
+                body: initiateFirstPensionBillEntryDTO,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

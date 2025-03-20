@@ -10,7 +10,7 @@
 import { RegularBillResponseDTO } from './regular-bill-response-dto';
 
 export interface RegularBillListResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     readonly regularBillCount?: number;
     regularBills?: Array<RegularBillResponseDTO> | null;
 }

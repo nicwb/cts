@@ -9,6 +9,6 @@
  */
 
 export interface FinancialYearResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     currentYear?: number;
 }

@@ -11,7 +11,7 @@ import { PensionStatusFlag } from './pension-status-flag';
 import { PensionStatusReassonFlag } from './pension-status-reasson-flag';
 
 export interface PensionStatusDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     statusFlag: PensionStatusFlag;
     reasonFlag?: PensionStatusReassonFlag;
     statusWef: string;

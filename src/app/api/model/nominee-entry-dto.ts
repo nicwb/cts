@@ -9,7 +9,6 @@
  */
 
 export interface NomineeEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     ppoId: number;
     serialNo: number;
     nomineeName: string;

@@ -11,7 +11,7 @@ import { BranchResponseDTO } from './branch-response-dto';
 import { PpoRegularBillDetailsDTO } from './ppo-regular-bill-details-dto';
 
 export interface RegularBillResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     treasuryName?: string | null;
     month?: string | null;

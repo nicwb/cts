@@ -9,7 +9,6 @@
  */
 
 export interface EPpoAmountEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     amountType: string;
     classificationId?: number | null;
     fromDate?: string | null;

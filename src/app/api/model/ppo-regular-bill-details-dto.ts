@@ -11,7 +11,7 @@ import { PensionerResponseDTO } from './pensioner-response-dto';
 import { PpoBillBreakupResponseDTO } from './ppo-bill-breakup-response-dto';
 
 export interface PpoRegularBillDetailsDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoId?: number;
     ppoNo?: string | null;
     pensionerName?: string | null;

@@ -10,7 +10,7 @@
 import { AccountHeadResponseDTO } from './account-head-response-dto';
 
 export interface PensionPrimaryCategoryResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     accountHeadId: number;
     primaryCategoryName: string;
     id?: number;

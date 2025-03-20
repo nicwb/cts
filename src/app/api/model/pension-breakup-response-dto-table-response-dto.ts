@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { PensionBreakupResponseDTO } from './pension-breakup-response-dto';
 
 export interface PensionBreakupResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<PensionBreakupResponseDTO> | null;
     readonly dataCount?: number;

@@ -9,7 +9,7 @@
  */
 
 export interface AccountHeadListItemResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     headDetails?: string | null;
     headDescription?: string | null;

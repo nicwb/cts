@@ -9,8 +9,7 @@
  */
 
 export interface PpoBillSaveResponseDTO {
-    dataSource?: { [key: string]: any } | null;
-    id?: number;
+    dataSource?: object | null;
     ppoId?: number;
     billDate?: string;
     billType?: string;

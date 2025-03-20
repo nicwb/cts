@@ -10,7 +10,7 @@
 import { LifeCertificateDetailsResponseDTO } from './life-certificate-details-response-dto';
 
 export interface LifeCertificateListResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     readonly lifeCertificateCount?: number;
     lifeCertificates?: Array<LifeCertificateDetailsResponseDTO> | null;
 }

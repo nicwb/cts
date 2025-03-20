@@ -10,7 +10,7 @@
 import { BankResponseDTO } from './bank-response-dto';
 
 export interface BranchResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     bankId?: number;
     bank?: BankResponseDTO;

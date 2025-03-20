@@ -9,7 +9,6 @@
  */
 
 export interface PpoByTransferEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     pensionerId?: number;
     ppoId?: number;
     fromDate?: string;

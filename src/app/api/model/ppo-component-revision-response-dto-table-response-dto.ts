@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { PpoComponentRevisionResponseDTO } from './ppo-component-revision-response-dto';
 
 export interface PpoComponentRevisionResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<PpoComponentRevisionResponseDTO> | null;
     readonly dataCount?: number;

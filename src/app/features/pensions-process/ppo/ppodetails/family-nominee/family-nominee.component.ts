@@ -619,7 +619,6 @@ export class FamilyNomineeComponent implements OnInit {
                         this.loading = false;
                         return;
                     }
-                    nomineeDTO.dataSource = null;
                     nomineeDTO.ppoId = Data.ppoId;
                     nomineeDTO.serialNo = parseInt(Data.slNo);
                     nomineeDTO.nomineeName = Data.dependentName;
@@ -657,7 +656,6 @@ export class FamilyNomineeComponent implements OnInit {
                         this.loading = false;
                         return;
                     }
-                    nomineeDTO.dataSource = null;
                     nomineeDTO.ppoId = this.ppoId;
                     nomineeDTO.serialNo = parseInt(form.value.slNo1);
                     nomineeDTO.nomineeName = formData.nomineeName1;

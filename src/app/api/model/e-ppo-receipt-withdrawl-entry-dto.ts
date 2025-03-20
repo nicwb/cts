@@ -9,7 +9,6 @@
  */
 
 export interface EPpoReceiptWithdrawlEntryDTO {
-    dataSource?: { [key: string]: any } | null;
     pensionApplnNo: string;
     freshRevisionFlag: string;
     withdrawReason: string;

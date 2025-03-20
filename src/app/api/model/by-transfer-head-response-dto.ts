@@ -9,7 +9,7 @@
  */
 
 export interface ByTransferHeadResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     byTransferType?: string;
     accountHeadId?: number;

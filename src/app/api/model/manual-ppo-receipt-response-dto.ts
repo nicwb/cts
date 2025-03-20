@@ -9,7 +9,7 @@
  */
 
 export interface ManualPpoReceiptResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     ppoNo: string;
     pensionerName: string;
     dateOfCommencement: string;

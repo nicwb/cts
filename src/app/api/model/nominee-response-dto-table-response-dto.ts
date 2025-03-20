@@ -11,7 +11,7 @@ import { TableHeader } from './table-header';
 import { NomineeResponseDTO } from './nominee-response-dto';
 
 export interface NomineeResponseDTOTableResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     headers?: Array<TableHeader> | null;
     data?: Array<NomineeResponseDTO> | null;
     readonly dataCount?: number;

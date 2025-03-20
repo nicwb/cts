@@ -9,7 +9,7 @@
  */
 
 export interface BankResponseDTO {
-    dataSource?: { [key: string]: any } | null;
+    dataSource?: object | null;
     id?: number;
     bankName?: string | null;
 }
