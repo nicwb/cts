@@ -242,6 +242,43 @@ export class PensionModule {
             'Pension Bill',
             'Regular Pension Bill',
         ]);
+
+        const monthDropdown = this.page.locator('.p-dropdown-trigger');
+        await monthDropdown.click();
+
+        const selectedMonth = await this.page
+            .locator('.p-dropdown-label')
+            .innerText();
+
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ];
+
+        const currentIndex = months.indexOf(selectedMonth);
+        let nextMonth = '';
+
+        if (currentIndex === 11) {
+            nextMonth = 'January';
+            await this.page
+                .locator('p-calendar[formcontrolname="year"]')
+                .click();
+            await this.page.keyboard.press('ArrowUp');
+        } else {
+            nextMonth = months[currentIndex + 1];
+        }
+
+        await this.page.getByRole('option', { name: nextMonth }).click();
         await this.page.locator('button:has-text("Fetch Bills")').click();
         await this.okSuccess();
         await this.page.locator('#generateButton').click();

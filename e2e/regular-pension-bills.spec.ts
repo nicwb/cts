@@ -9,7 +9,10 @@ test.beforeEach(async ({ pensionPage, dbUtils }) => {
     await pensionPage.goToRegularPensionBillPrint();
 });
 
-test('Generate Regular Pension Bill PDF Report', async ({ page }) => {
+test('Generate Regular Pension Bill PDF Report', async ({
+    page,
+    pensionPage,
+}) => {
     // ARRANGE
     const monthDropdown = page.locator(
         'p-dropdown[formControlName="months"] .p-dropdown-label'
@@ -21,6 +24,37 @@ test('Generate Regular Pension Bill PDF Report', async ({ page }) => {
     await expect(yearCalendar).toBeVisible();
     const selectedMonth = await monthDropdown.innerText();
     const selectedYear = await yearCalendar.inputValue();
+    await monthDropdown.click();
+
+    const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+
+    const currentIndex = months.indexOf(selectedMonth);
+    let nextMonth = '';
+
+    if (currentIndex === 11) {
+        nextMonth = 'January';
+        await pensionPage.page
+            .locator('p-calendar[formcontrolname="year"]')
+            .click();
+        await pensionPage.page.keyboard.press('ArrowUp');
+    } else {
+        nextMonth = months[currentIndex + 1];
+    }
+
+    await pensionPage.page.getByRole('option', { name: nextMonth }).click();
 
     // ACT
     const allBankRadioButton = page
@@ -37,7 +71,7 @@ test('Generate Regular Pension Bill PDF Report', async ({ page }) => {
 
     // ASSERT
     const dialogMessage = await dialog.innerText();
-    const expectedMessage = `Status: PDF "Regular Pension Bill for ${selectedMonth} ${selectedYear}" has been generated.`;
+    const expectedMessage = `Status: PDF "Regular Pension Bill for ${nextMonth} ${selectedYear}" has been generated.`;
 
     expect(dialogMessage).toContain(expectedMessage);
     const ppoCountMatch = dialogMessage.match(/Number of PPOs: (\d+)/);
