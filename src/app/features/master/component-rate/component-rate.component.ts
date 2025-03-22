@@ -112,6 +112,13 @@ export class ComponentRateComponent implements OnInit {
     removeUnwantedAttributes(): void {
         this.ComponentRateForm.removeControl('categoryName');
         this.ComponentRateForm.removeControl('componentName');
+        this.ComponentRateForm.removeControl('rateType');
+        this.ComponentRateForm.removeControl('rateAmount');
+
+        this.ComponentRateForm.addControl('categoryName', new FormControl(''));
+        this.ComponentRateForm.addControl('componentName', new FormControl(''));
+        this.ComponentRateForm.addControl('rateType', new FormControl(''));
+        this.ComponentRateForm.addControl('rateAmount', new FormControl(''));
     }
 
     // Method to update label and placeholder based on rateType
@@ -182,7 +189,6 @@ export class ComponentRateComponent implements OnInit {
     async onSubmit(event: Event) {
         event.preventDefault(); // Prevent default form submission
         this.formatDate();
-        this.removeUnwantedAttributes();
 
         if (this.ComponentRateForm.valid) {
             // Convert the form values to the expected DTO format
@@ -221,6 +227,7 @@ export class ComponentRateComponent implements OnInit {
                 )
             );
         }
+        this.removeUnwantedAttributes();
     }
 
     // Method to reset the form and re-add removed controls
