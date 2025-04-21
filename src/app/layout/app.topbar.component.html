@@ -10,6 +10,7 @@
                 alt="logo">
             <!-- <img src="assets/layout/images/logo.png" alt="logo" /> -->
             <span> | CTS</span>
+            <app-timer [defaultMinutes]="1" (timeExpired)="onTimeExpired()"></app-timer>
         </a>
 
         <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
@@ -40,4 +41,20 @@
     </div>
     <app-loading-indeterminate></app-loading-indeterminate>
     <app-breadcrumb></app-breadcrumb>
+</div>
+
+<!-- display message and redirect to login page when time expires -->
+<div *ngIf="timeExpired">
+    <p-toast [baseZIndex]="1000" position="top-center">
+        <ng-template pTemplate="message">
+            <div class="p-toast-message">
+                <span class="p-toast-summary">Access token expired!</span>
+                <span class="p-toast-detail">Please sign in again</span>
+            </div>
+        </ng-template>
+    </p-toast>
+    <a class="p-link layout-topbar-button" routerLink="/static-login">
+        <i class="pi pi-sign-in"></i>
+        <span>Sign in</span>
+    </a>
 </div>

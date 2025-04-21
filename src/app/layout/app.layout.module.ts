@@ -31,6 +31,7 @@ import { CommonModule } from '@angular/common';
 // import { OpctionComponent } from './opction/opction.component';
 import { PensionReportsModule } from '../features/pension-reports/pension-reports.module';
 import { ToastModule } from 'primeng/toast';
+import { TimerComponent } from './timer/timer.component';
 // const routes: Routes = [
 // { path: '', component: AppLayoutComponent,
 //     // children: [
@@ -53,6 +54,7 @@ import { ToastModule } from 'primeng/toast';
         BreadcrumbComponent,
         LoadingIndeterminateComponent,
         AppSidebarPensionComponent,
+        TimerComponent,
         // OpctionComponent,
     ],
     imports: [

@@ -1,0 +1,73 @@
+.timer-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 15px;
+  height: 60px;
+  perspective: 800px;
+}
+
+.timer-circle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  animation: pulse 2s infinite alternate;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    circle {
+      transition: stroke-dashoffset 1s linear;
+    }
+  }
+}
+
+.timer-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.timer-display {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: rgba(255,255,255,0.85);
+  color: #003e70;
+  padding: 2px 8px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.98) rotate3d(0, 1, 0, 0deg);
+  }
+  100% {
+    transform: scale(1.02) rotate3d(0, 1, 0, 5deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .timer-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .timer-display {
+    font-size: 14px;
+    padding: 1px 6px;
+  }
+}

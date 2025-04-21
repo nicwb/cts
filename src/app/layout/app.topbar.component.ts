@@ -4,6 +4,7 @@ import { LayoutService } from './service/app.layout.service';
 import { AuthService } from '../core/services/auth/auth.service';
 import { IUserDetails } from '../core/models/jwt-token';
 import { Router } from '@angular/router';
+import { ToastService } from '../core/services/toast.service';
 
 @Component({
     selector: 'app-topbar',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
     providers: [ConfirmationService],
 })
 export class AppTopBarComponent implements OnInit {
+    timeExpired = false;
     userDetais: IUserDetails | undefined;
     items!: MenuItem[];
 
@@ -24,7 +26,8 @@ export class AppTopBarComponent implements OnInit {
         public layoutService: LayoutService,
         private authService: AuthService,
         private confirmationService: ConfirmationService,
-        private router: Router
+        private router: Router,
+        private toastService: ToastService
     ) {
         this.userDetais = authService.getUserDetails();
     }
@@ -51,5 +54,11 @@ export class AppTopBarComponent implements OnInit {
             },
             reject: () => {},
         });
+    }
+
+    async onTimeExpired(): Promise<void> {
+        this.timeExpired = true;
+        this.toastService.showError('Access token expired!');
+        await this.router.navigate(['/static-login']);
     }
 }
