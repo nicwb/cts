@@ -10,8 +10,15 @@
                 alt="logo">
             <!-- <img src="assets/layout/images/logo.png" alt="logo" /> -->
             <span> | CTS</span>
-            <app-timer [defaultMinutes]="1" (timeExpired)="onTimeExpired()"></app-timer>
+            <div class="mobile-timer-container">
+                <!-- Timer will appear here in mobile view -->
+                <app-timer [defaultMinutes]="1" (timeExpired)="onTimeExpired()"></app-timer>
+            </div>
         </a>
+        <!-- Timer will appear here in desktop view -->
+        ` <div class="desktop-timer-container">
+            <app-timer [defaultMinutes]="1" (timeExpired)="onTimeExpired()"></app-timer>
+        </div>
 
         <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
             (click)="layoutService.showProfileSidebar()">

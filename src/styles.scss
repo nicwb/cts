@@ -129,3 +129,43 @@ $gutter: 1rem; //for primeflex grid system
 .p-divider.p-divider-horizontal .p-divider-content {
 	padding: 0.2rem 0.5rem !important;
 }
+
+//Timer Component Styles
+.layout-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 100%;
+
+    .layout-topbar-logo {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .mobile-timer-container {
+        display: none; /* Hide on desktop */
+        margin-left: 15px;
+      }
+    }
+
+    .desktop-timer-container {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .layout-topbar {
+      .layout-topbar-logo {
+        .mobile-timer-container {
+          display: flex; // Show on mobile
+        }
+      }
+
+      .desktop-timer-container {
+        display: none; // Hide on mobile
+      }
+    }
+  }

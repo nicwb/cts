@@ -1,67 +1,35 @@
 import { Injectable } from '@angular/core';
 import {
-    HttpRequest,
-    HttpHandler,
-    HttpEvent,
-    HttpInterceptor,
-    HttpResponse,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
 } from '@angular/common/http';
-import { Observable, finalize, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { SpinnerService } from './spinner.service'; // Adjust the import path as necessary
+import { Observable, tap } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-    constructor(
-        private router: Router,
-        private spinner: NgxSpinnerService,
-        private spinnerService: SpinnerService
-    ) {}
+  private jwtHelper = new JwtHelperService();
 
-    intercept(
-        request: HttpRequest<any>,
-        next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-        const token = localStorage.getItem('jwtToken');
-        const shouldShowSpinner = this.spinnerService.isSpinnerVisible();
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('Interceptor called');
+    const token = localStorage.getItem('jwtToken');
+    console.log('Token from local storage:', token);
 
-        if (shouldShowSpinner) {
-            this.spinner.show();
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      console.log('Decoded token:', decodedToken);
+
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
         }
-
-        let baseURL = environment.BaseURL;
-        if (request.url.startsWith('http')) {
-            baseURL = '';
-        }
-
-        request = request.clone({
-            url: `${baseURL}${request.url}`,
-            setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-
-        return next.handle(request).pipe(
-            tap(
-                (event) => {
-                    if (event instanceof HttpResponse) {
-                        // Handle successful response
-                    }
-                },
-                (error) => {
-                    if (error.status === 401) {
-                        this.router.navigate(['/login']);
-                    }
-                    if (error.status === 0) {
-                        // this.router.navigate(['/server-down']);
-                    }
-                }
-            ),
-            finalize(() => {
-                if (shouldShowSpinner) {
-                    this.spinner.hide();
-                }
-            })
-        );
+      });
     }
+
+    return next.handle(request).pipe(
+      tap(() => console.log('Request handled'))
+    );
+  }
 }

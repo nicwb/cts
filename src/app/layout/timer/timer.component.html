@@ -1,12 +1,33 @@
-<div class="timer-wrapper">
-  <div class="timer-circle">
-    <svg width="60" height="60" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8" />
-      <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(33,150,243,0.8)" stroke-width="8" stroke-linecap="round"
-        [attr.stroke-dasharray]="dashArray" [attr.stroke-dashoffset]="dashOffset" transform="rotate(-90 50 50)" />
-    </svg>
-    <div class="timer-text">
-      <div class="timer-display">{{minutes}}:{{seconds}}</div>
+<div class="timer-container">
+  <div class="timer-outer-ring">
+    <div class="timer-inner-ring">
+      <svg class="timer-progress-svg" viewBox="0 0 200 200">
+        <circle class="timer-bg-circle" cx="100" cy="100" r="90" />
+        <circle class="timer-progress-circle timer-progress-outer" cx="100" cy="100" r="90"
+          [attr.stroke-dasharray]="outerDashArray" [attr.stroke-dashoffset]="outerDashOffset" />
+
+        <circle class="timer-bg-circle timer-bg-circle-inner" cx="100" cy="100" r="70" />
+        <circle class="timer-progress-circle timer-progress-inner" cx="100" cy="100" r="70"
+          [attr.stroke-dasharray]="innerDashArray" [attr.stroke-dashoffset]="innerDashOffset" />
+
+        <g class="timer-ticks">
+          <line *ngFor="let tick of majorTicks" [attr.x1]="100 + 80 * Math.cos(tick * Math.PI / 180)"
+            [attr.y1]="100 + 80 * Math.sin(tick * Math.PI / 180)" [attr.x2]="100 + 90 * Math.cos(tick * Math.PI / 180)"
+            [attr.y2]="100 + 90 * Math.sin(tick * Math.PI / 180)" class="timer-tick-major" />
+
+          <line *ngFor="let tick of minorTicks" [attr.x1]="100 + 85 * Math.cos(tick * Math.PI / 180)"
+            [attr.y1]="100 + 85 * Math.sin(tick * Math.PI / 180)" [attr.x2]="100 + 90 * Math.cos(tick * Math.PI / 180)"
+            [attr.y2]="100 + 90 * Math.sin(tick * Math.PI / 180)" class="timer-tick-minor" />
+        </g>
+      </svg>
+
+      <div class="timer-display">
+        <span class="timer-minutes">{{minutes}}</span>
+        <span class="timer-separator">:</span>
+        <span class="timer-seconds">{{seconds}}</span>
+      </div>
+
+      <div class="timer-glow"></div>
     </div>
   </div>
 </div>

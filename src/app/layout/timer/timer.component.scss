@@ -1,73 +1,155 @@
-.timer-wrapper {
+:host {
+  --timer-gradient-outer: linear-gradient(135deg, #b8e6c1 0%, #e6f5e9 100%);
+  --timer-accent: #00796b;
+  --timer-accent-light: #4db6ac;
+  --timer-text: #004d40;
+}
+
+//Container for the timer component
+.timer-container {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  margin-left: 15px;
-  height: 60px;
-  perspective: 800px;
-}
-
-.timer-circle {
-  position: relative;
+  justify-content: center;
   width: 60px;
   height: 60px;
-  animation: pulse 2s infinite alternate;
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    circle {
-      transition: stroke-dashoffset 1s linear;
-    }
-  }
+  margin: 10px;
+  filter: drop-shadow(0 3px 8px rgba(0, 100, 80, 0.3));
 }
 
-.timer-text {
+//Outer ring of the timer
+.timer-outer-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--timer-gradient-outer);
+  padding: 3px;
+  box-shadow:
+    0 0 15px rgba(0, 120, 100, 0.25),
+    inset 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+//Inner ring of the timer
+.timer-inner-ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(230, 245, 233, 0.9), rgba(240, 250, 245, 0.95));
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+//SVG for the timer
+.timer-progress-svg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transform: rotate(-90deg);
 }
 
+.timer-bg-circle {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.03);
+  stroke-width: 2;
+}
+
+.timer-bg-circle-inner {
+  stroke: rgba(0, 0, 0, 0.02);
+}
+
+.timer-progress-circle {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-progress-outer {
+  stroke: var(--timer-accent);
+  filter: drop-shadow(0 0 3px var(--timer-accent));
+}
+
+.timer-progress-inner {
+  stroke: var(--timer-accent-light);
+  filter: drop-shadow(0 0 2px var(--timer-accent-light));
+}
+
+//Ticks for the timer
+.timer-tick-major {
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 1;
+}
+
+.timer-tick-minor {
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 0.5;
+}
+
+//Ticks for the timer
 .timer-display {
-  font-family: 'Roboto Mono', monospace;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
   font-size: 16px;
-  font-weight: 600;
   letter-spacing: 0.5px;
-  background: rgba(255,255,255,0.85);
-  color: #003e70;
-  padding: 2px 8px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  color: var(--timer-text);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  box-shadow:
+    0 0 5px rgba(0, 0, 0, 0.1),
+    inset 0 0 1px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+.timer-minutes, .timer-seconds {
+  min-width: 20px;
+  text-align: center;
+}
+
+.timer-separator {
+  margin: 0 2px;
+  animation: pulse 1s infinite;
+}
+
+//Glow effect for the timer
+.timer-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(77, 182, 172, 0.15), transparent 70%);
+  pointer-events: none;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(0.98) rotate3d(0, 1, 0, 0deg);
-  }
-  100% {
-    transform: scale(1.02) rotate3d(0, 1, 0, 5deg);
-  }
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
 }
 
-@media (max-width: 768px) {
-  .timer-circle {
-    width: 50px;
-    height: 50px;
-  }
+//Responsive design for the timer
+@media (max-width: 480px) {
+  .timer-container { width: 70px; height: 70px; }
+  .timer-display   { font-size: 14px; }
+}
 
-  .timer-display {
-    font-size: 14px;
-    padding: 1px 6px;
-  }
+@media (max-width: 320px) {
+  .timer-container { width: 60px; height: 60px; }
+  .timer-display   { font-size: 12px; }
 }
