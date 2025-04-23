@@ -707,41 +707,47 @@ export class DetailsComponent implements OnInit, OnChanges {
                 }
             }
         );
+    
+        // Patch effective and upto dates first
+        this.ppoFormDetails.get('effectiveDate')?.setValue(data.efpWefDate);
+        this.ppoFormDetails.get('uptoDate')?.setValue(data.efpUptoDate);
 
+    
+        // Patch all other form values
         this.ppoFormDetails.patchValue(data);
-        this.ppoFormDetails.controls['dateOfDeath'].setValue(
+    
+        // Set 'dateOfDeath' to 'dateOfBirth' value
+        this.ppoFormDetails.get('dateOfDeath')?.setValue(
             this.ppoFormDetails.get('dateOfBirth')?.value
         );
-
-        // Fetch banks and select the correct one
+    
+        // Fetch banks and handle bank/branch data
         await this.fetchBanks();
+    
         if (data.bankId) {
             this.ppoFormDetails.patchValue({ bank: data.bankId });
             await this.onChangeBank({ value: data.bankId });
-            if (data.bankId) {
+    
+            // Only assign branchId if not already present
+            if (!data.branchId && this.banksBranch.length > 0) {
                 data.branchId = this.banksBranch[0].id;
             }
-
-            // Find the branch with the ID that matches the bankBranch field
-            const branch = this.banksBranch.find(
-                (b: any) => b.id === data.branchId
-            );
+    
+            const branch = this.banksBranch.find((b: any) => b.id === data.branchId);
+    
             if (branch) {
                 this.ppoFormDetails.patchValue({
-                    bankBranch: branch.id, // Update the correct form control
+                    bankBranch: branch.id,
                     ifscCode: branch.ifscCode,
-                    branchName: branch.label, // Set the branch name
+                    branchName: branch.label,
                 });
             } else {
-                console.error(
-                    'No valid branch found for branchId:',
-                    data.branchId
-                );
+                console.error('No valid branch found for branchId:', data.branchId);
                 this.tostService.showError('Bank branch details not found');
             }
         }
     }
-
+    
     async onChangeBank(event: any): Promise<void> {
         const selectedBank = event.value;
         if (selectedBank) {
