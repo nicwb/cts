@@ -35,11 +35,11 @@ export class AuthService {
             userDetails = {
                 Id: decodedToken.Id,
                 Name: decodedToken.Name,
-                Role: decodedToken.Roles[0].Name,
+                Role: decodedToken.Roles,
                 Level: {
-                    Id: 8,
-                    Name: decodedToken.Levels[0].Name,
-                    Scope: decodedToken.Levels[0].Scope,
+                    Id: decodedToken.LevelId,
+                    Name: decodedToken.Name,
+                    Scope: decodedToken.Scope,
                 },
             };
         }

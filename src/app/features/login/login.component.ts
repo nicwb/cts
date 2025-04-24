@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
         if (token != null) {
             this.authTokenService.saveToken(token);
             const roles = this.authTokenService.getRolesWithPermissions();
-            roles.forEach((role) => {
+            roles?.forEach((role) => {
                 this.ngxRolesService.addRoleWithPermissions(
                     role.Name,
                     role.Permissions

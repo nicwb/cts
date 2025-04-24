@@ -33,7 +33,7 @@ export class AuthTokenService {
         this.jwtToken = this.jwtHelper.decodeToken(this.getToken());
         // console.log('->jwt',this.jwtToken);
         if (this.jwtToken != null) {
-            this.decodedToken = JSON.parse(this.jwtToken.application);
+            this.decodedToken = this.jwtToken;
             return this.decodedToken;
         }
     }
