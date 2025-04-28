@@ -186,9 +186,9 @@ export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
                                         ],
                                     },
                                     {
-                                        label: 'DA Arrear Pension',
+                                        label: 'Exgratia Pension Bill',
                                         routerLink: [
-                                            'pension-process/pension-bill/da-arrear-pension',
+                                            'pension-process/pension-bill/exgratia-pension-bill',
                                         ],
                                     },
                                 ],

@@ -18,7 +18,8 @@ import { ArrearPensionBillComponent } from './arrear-pension-bill/arrear-pension
 import { ArrearPensionBillModule } from './arrear-pension-bill/arrear-pension-bill.module';
 import { LifeTimeArrearPensionBillComponent } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.component';
 import { LifeTimeArrearPensionBillModule } from './life-time-arrear-pension-bill/life-time-arrear-pension-bill.module';
-import { DaArrearPensionComponent } from './da-arrear-pension/da-arrear-pension.component';
+import { ExgratiaPensionBillComponent } from './exgratia-pension-bill/exgratia-pension-bill.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 type NewType = Routes;
 
@@ -49,9 +50,9 @@ const routes: NewType = [
         data: { breadcrumb: 'LifeTimeArrearPensionBillComponent' },
     },
     {
-        path: 'da-arrear-pension',
-        component: DaArrearPensionComponent,
-        data: { breadcrumb: 'DaArrearPensionComponent' },
+        path: 'exgratia-pension-bill',
+        component: ExgratiaPensionBillComponent,
+        data: { breadcrumb: 'ExgratiaPensionBillComponent' },
     },
 ];
 @NgModule({
@@ -64,6 +65,7 @@ const routes: NewType = [
         ButtonModule,
         CalendarModule,
         DialogModule,
+        RadioButtonModule,
         DropdownModule,
         CommonHeaderModule,
         TreasuryDropdownModule,
