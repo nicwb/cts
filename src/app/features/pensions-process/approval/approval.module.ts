@@ -33,7 +33,7 @@ import { PpoApprovalModule } from './ppo-approval/ppo-approval.module';
 import { FirstpensionbillapprovalComponent } from './firstpensionbillapproval/firstpensionbillapproval.component';
 import { PpoApprovalComponent } from './ppo-approval/ppo-approval.component';
 import { FamilyPensionApprovalComponent } from './family-pension-approval/family-pension-approval.component';
-import { DaArrearPensionApprovalComponent } from './da-arrear-pension-approval/da-arrear-pension-approval.component';
+import { ExgratiaBillApprovalComponent } from './exgratia-bill-approval/exgratia-bill-approval.component';
 
 // Routes for lazy loading the modules
 const routes: Routes = [
@@ -61,14 +61,18 @@ const routes: Routes = [
         component: FamilyPensionApprovalComponent,
     },
     {
-        path: 'da-arrear-pension-approval',
-        component: DaArrearPensionApprovalComponent,
-        data: { breadcrumb: 'DaArrearPensionApprovalComponent' },
+        path: 'exgratia-bill-approval',
+        component: ExgratiaBillApprovalComponent,
+        data: { breadcrumb: 'ExgratiaBillApprovalComponent' },
     },
 ];
 
 @NgModule({
-    declarations: [ApprovalComponent, FamilyPensionApprovalComponent],
+    declarations: [
+        ApprovalComponent,
+        FamilyPensionApprovalComponent,
+        ExgratiaBillApprovalComponent,
+    ],
     imports: [
         CommonModule,
         FormsModule,

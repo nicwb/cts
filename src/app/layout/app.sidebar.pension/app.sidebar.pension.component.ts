@@ -216,9 +216,9 @@ export class AppSidebarPensionComponent implements OnInit, AfterViewInit {
                                         ],
                                     },
                                     {
-                                        label: 'DA Arrear Pension Approval',
+                                        label: 'Exgratia Bill Approval',
                                         routerLink: [
-                                            'pension-process/approval/da-arrear-pension-approval',
+                                            'pension-process/approval/exgratia-bill-approval',
                                         ],
                                     },
                                     // { label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark' },
