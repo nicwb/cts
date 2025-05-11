@@ -39,7 +39,6 @@ import { environment } from 'src/environments/environment';
 import { PensionFactoryService } from 'src/app/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ppid } from 'process';
 @Component({
     selector: 'app-details',
     templateUrl: './details.component.html',

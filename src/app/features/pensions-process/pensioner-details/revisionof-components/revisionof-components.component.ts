@@ -1,16 +1,6 @@
-import { TableHeader } from './../../../../api/model/table-header';
-import { FormData } from './../../../../core/models/indentFormData';
-import {
-    Component,
-    HostListener,
-    importProvidersFrom,
-    Input,
-    OnInit,
-} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ppid } from 'process';
 import { firstValueFrom, Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators'; // Import debounceTime and distinctUntilChanged
 import {
     APIResponseStatus,
     PensionComponentRevisionService,
@@ -22,11 +12,9 @@ import {
     PensionBankBranchService,
     PpoComponentRevisionPpoListItemDTOTableResponseDTOJsonAPIResponse,
     ComponentRateResponseDTOTableResponseDTOJsonAPIResponse,
-    PpoComponentRevisionResponseDTO,
 } from 'src/app/api';
 import { PensionComponentRateService } from 'src/app/api/api/pension-component-rate.service';
 import { DatePipe } from '@angular/common';
-import { flush } from '@angular/core/testing';
 import { ToastService } from 'src/app/core/services/toast.service';
 import Swal from 'sweetalert2';
 @Component({
