@@ -9,29 +9,15 @@ import {
     PensionFactoryService,
     PensionBankBranchService,
     APIResponseStatus,
-    BankResponseDTO,
     BranchListResponseDTOJsonAPIResponse,
-    BranchResponseDTO,
     NomineeResponseDTOTableResponseDTOJsonAPIResponse,
 } from 'src/app/api';
-import {
-    catchError,
-    finalize,
-    firstValueFrom,
-    map,
-    Observable,
-    of,
-    tap,
-} from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 import { DatePipe } from '@angular/common';
-import { PassThrough } from 'stream';
 import Swal from 'sweetalert2';
-import { get } from 'http';
-import { waitForAsync } from '@angular/core/testing';
-import { promises } from 'dns';
 
 function convertDate(date: string): string {
     const parsedDate = new Date(date);
@@ -1024,7 +1010,7 @@ export class FamilyNomineeComponent implements OnInit {
             }
         }
     }
-    async calculateAge(dob: string): Promise<number> {
+    async calculateAge(dob: Date): Promise<number> {
         const dobDate = new Date(dob);
         const today = new Date();
         this.age = today.getFullYear() - dobDate.getFullYear();

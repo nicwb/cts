@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { filter, Observable, Subscription, take, timeout } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
@@ -13,15 +13,9 @@ import {
 import { SelectItem } from 'primeng/api';
 import { DatePipe, Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
-import {
-    ActivatedRoute,
-    NavigationEnd,
-    Router,
-    UrlSegment,
-} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
-import { url } from 'inspector';
 import { ReturnUriService } from 'src/app/core/services/return-uri-service';
 import { PdfService } from 'src/app/core/services/pdf.service';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';

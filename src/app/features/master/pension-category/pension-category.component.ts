@@ -15,10 +15,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ToastService } from 'src/app/core/services/toast.service';
 import { SelectItem } from 'primeng/api';
-import { PensionCategoryDetails } from 'src/app/core/models/pension-category-details';
-import { Observable, filter, firstValueFrom } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { pathToFileURL } from 'url';
 import { Location } from '@angular/common';
 import { SessionStorageService } from 'src/app/core/services/session-storage.service';
 interface expandedRows {
