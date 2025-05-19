@@ -127,13 +127,14 @@ export class PensionFileStorageService extends BaseService {
         }
 
         let localVarPath = `/api/v1/storage/file/${this.configuration.encodeParam({ name: 'fileId', value: fileId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<FileResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -233,14 +234,15 @@ export class PensionFileStorageService extends BaseService {
         }
 
         let localVarPath = `/api/v1/storage/file`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<FileResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: fileEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

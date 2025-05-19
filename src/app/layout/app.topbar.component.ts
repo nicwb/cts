@@ -1,4 +1,11 @@
-import { Component, ElementRef, computed, isDevMode, ViewChild, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    computed,
+    isDevMode,
+    ViewChild,
+    OnInit,
+} from '@angular/core';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { AuthService } from '../core/services/auth/auth.service';
@@ -35,7 +42,6 @@ export class AppTopBarComponent implements OnInit {
         return `${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
     }
 
-
     constructor(
         public layoutService: LayoutService,
         private authService: AuthService,
@@ -69,12 +75,11 @@ export class AppTopBarComponent implements OnInit {
             accept: () => {
                 this.logOut();
             },
-            reject: () => { },
+            reject: () => {},
         });
     }
 
     onTimeExpired(): void {
         this.authService.logout();
     }
-
 }

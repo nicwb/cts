@@ -23,11 +23,9 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { LifeCertificateEntryDTO } from '../model/life-certificate-entry-dto';
+import { PermissionDTOJsonAPIResponse } from '../model/permission-dto-json-api-response';
 // @ts-ignore
-import { LifeCertificateListResponseDTOJsonAPIResponse } from '../model/life-certificate-list-response-dto-json-api-response';
-// @ts-ignore
-import { LifeCertificateResponseDTOJsonAPIResponse } from '../model/life-certificate-response-dto-json-api-response';
+import { RoleDTOJsonAPIResponse } from '../model/role-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -37,7 +35,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
     providedIn: 'root',
 })
-export class PensionLifeCertificateService extends BaseService {
+export class PensionAuthService extends BaseService {
     constructor(
         protected httpClient: HttpClient,
         @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -47,39 +45,34 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param ppoId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    public getPermissions(
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    ): Observable<PermissionDTOJsonAPIResponse>;
+    public getPermissions(
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    ): Observable<HttpResponse<PermissionDTOJsonAPIResponse>>;
+    public getPermissions(
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    ): Observable<HttpEvent<PermissionDTOJsonAPIResponse>>;
+    public getPermissions(
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -87,12 +80,6 @@ export class PensionLifeCertificateService extends BaseService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (ppoId === null || ppoId === undefined) {
-            throw new Error(
-                'Required parameter ppoId was null or undefined when calling getLifeCertificateByPpoId.'
-            );
-        }
-
         let localVarHeaders = this.defaultHeaders;
 
         // authentication (Bearer) required
@@ -128,9 +115,9 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        let localVarPath = `/api/v1/auth/permissions`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
+        return this.httpClient.request<PermissionDTOJsonAPIResponse>(
             'get',
             `${basePath}${localVarPath}`,
             {
@@ -145,39 +132,34 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param branchId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLifeCertificatesByBranchId(
-        branchId: number,
+    public getRoles(
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateListResponseDTOJsonAPIResponse>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
+    ): Observable<RoleDTOJsonAPIResponse>;
+    public getRoles(
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateListResponseDTOJsonAPIResponse>>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
+    ): Observable<HttpResponse<RoleDTOJsonAPIResponse>>;
+    public getRoles(
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateListResponseDTOJsonAPIResponse>>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
+    ): Observable<HttpEvent<RoleDTOJsonAPIResponse>>;
+    public getRoles(
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -185,12 +167,6 @@ export class PensionLifeCertificateService extends BaseService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (branchId === null || branchId === undefined) {
-            throw new Error(
-                'Required parameter branchId was null or undefined when calling getLifeCertificatesByBranchId.'
-            );
-        }
-
         let localVarHeaders = this.defaultHeaders;
 
         // authentication (Bearer) required
@@ -226,9 +202,9 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate/branch/${this.configuration.encodeParam({ name: 'branchId', value: branchId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        let localVarPath = `/api/v1/auth/roles`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateListResponseDTOJsonAPIResponse>(
+        return this.httpClient.request<RoleDTOJsonAPIResponse>(
             'get',
             `${basePath}${localVarPath}`,
             {
@@ -243,39 +219,34 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param lifeCertificateEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    public login(
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<any>;
+    public login(
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpResponse<any>>;
+    public login(
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpEvent<any>>;
+    public login(
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -305,21 +276,6 @@ export class PensionLifeCertificateService extends BaseService {
         const localVarHttpContext: HttpContext =
             options?.context ?? new HttpContext();
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -333,14 +289,13 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate`;
+        let localVarPath = `/api/v1/auth/login`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
-            'post',
+        return this.httpClient.request<any>(
+            'get',
             `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: lifeCertificateEntryDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -351,44 +306,34 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param ppoId
-     * @param lifeCertificateEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    public logout(
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<any>;
+    public logout(
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpResponse<any>>;
+    public logout(
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpEvent<any>>;
+    public logout(
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -396,12 +341,6 @@ export class PensionLifeCertificateService extends BaseService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (ppoId === null || ppoId === undefined) {
-            throw new Error(
-                'Required parameter ppoId was null or undefined when calling updateLifeCertificateByPpoId.'
-            );
-        }
-
         let localVarHeaders = this.defaultHeaders;
 
         // authentication (Bearer) required
@@ -424,21 +363,6 @@ export class PensionLifeCertificateService extends BaseService {
         const localVarHttpContext: HttpContext =
             options?.context ?? new HttpContext();
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json',
-        ];
-        const httpContentTypeSelected: string | undefined =
-            this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Content-Type',
-                httpContentTypeSelected
-            );
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -452,14 +376,13 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        let localVarPath = `/api/v1/auth/logout`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
-            'put',
+        return this.httpClient.request<any>(
+            'get',
             `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: lifeCertificateEntryDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

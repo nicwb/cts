@@ -125,13 +125,14 @@ export class MessageQueueService extends BaseService {
         }
 
         let localVarPath = `/api/v1/mq/message/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<string>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -234,14 +235,15 @@ export class MessageQueueService extends BaseService {
         }
 
         let localVarPath = `/api/v1/mq/message/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<string>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -332,13 +334,14 @@ export class MessageQueueService extends BaseService {
         }
 
         let localVarPath = `/api/v1/mq/start-worker/${this.configuration.encodeParam({ name: 'queueName', value: queueName, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<StringJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -429,13 +432,14 @@ export class MessageQueueService extends BaseService {
         }
 
         let localVarPath = `/api/v1/mq/stop-worker/${this.configuration.encodeParam({ name: 'consumerTag', value: consumerTag, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<string>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

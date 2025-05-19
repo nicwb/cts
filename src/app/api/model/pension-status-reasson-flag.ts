@@ -8,20 +8,11 @@
  * Do not edit the class manually.
  */
 
-export type PensionStatusReassonFlag =
-    | 'Others'
-    | 'LifeCertificateSubmitted'
-    | 'LifeCertificateNotSubmitted'
-    | 'Death';
-
 export const PensionStatusReassonFlag = {
-    Others: 'Others' as PensionStatusReassonFlag,
-
-    LifeCertificateSubmitted:
-        'LifeCertificateSubmitted' as PensionStatusReassonFlag,
-
-    LifeCertificateNotSubmitted:
-        'LifeCertificateNotSubmitted' as PensionStatusReassonFlag,
-
-    Death: 'Death' as PensionStatusReassonFlag,
-};
+    Others: 'Others',
+    LifeCertificateSubmitted: 'LifeCertificateSubmitted',
+    LifeCertificateNotSubmitted: 'LifeCertificateNotSubmitted',
+    Death: 'Death',
+} as const;
+export type PensionStatusReassonFlag =
+    (typeof PensionStatusReassonFlag)[keyof typeof PensionStatusReassonFlag];

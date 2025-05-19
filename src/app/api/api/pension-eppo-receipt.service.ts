@@ -150,14 +150,15 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/receipt`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ePpoReceiptEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -257,14 +258,15 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/revision`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptRevisionResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ePpoReceiptRevisionEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -355,13 +357,14 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptDetailDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -452,13 +455,14 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/${this.configuration.encodeParam({ name: 'applicationNo', value: applicationNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptPpoIdResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -542,13 +546,14 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/receipt/unused`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptDetailDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -648,14 +653,15 @@ export class PensionEPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/e-ppo/withdraw`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<EPpoReceiptWithdrawlResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ePpoReceiptWithdrawlEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

@@ -8,10 +8,12 @@
  * Do not edit the class manually.
  */
 
-export interface ByTransferHeadResponseDTO {
+export interface PpoByTransferAmountResponseDTO {
     dataSource?: object | null;
-    byTransferType: string;
-    accountHeadId: number;
-    byTransferDescription: string;
+    fromDate: string;
+    toDate: string;
+    bytransferHeadId: number;
+    bytransferAmount: number;
+    remarks?: string | null;
     id?: number;
 }

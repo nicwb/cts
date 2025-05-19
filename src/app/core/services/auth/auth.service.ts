@@ -10,7 +10,16 @@ import {
 } from '../../models/jwt-token';
 import { NgxPermissionsService } from 'ngx-permissions';
 import { localStorageService } from '../Token/localStorage.service';
-import { catchError, EMPTY, firstValueFrom, Observable, of, Subscription, tap, timer } from 'rxjs';
+import {
+    catchError,
+    EMPTY,
+    firstValueFrom,
+    Observable,
+    of,
+    Subscription,
+    tap,
+    timer,
+} from 'rxjs';
 import { NotificationService } from '../notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -28,7 +37,6 @@ interface AuthObject {
     exp: number;
 }
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -43,9 +51,12 @@ export class AuthService {
     private refreshTokenValidityInMinutes = 5;
     private apiVersion = signal('');
 
-    startTokenTimer(forSeconds: number, onTokenExpiry: Function = () => {
-        this.remainingTime.set(100);
-    }) {
+    startTokenTimer(
+        forSeconds: number,
+        onTokenExpiry: Function = () => {
+            this.remainingTime.set(100);
+        }
+    ) {
         if (this.tokenTimer && !this.tokenTimer.closed) {
             this.tokenTimer.unsubscribe();
             // console.log('resetTokenTimer');
@@ -92,13 +103,14 @@ export class AuthService {
     }
 
     setApiVersion(version: string) {
-        var style: string = "margin: 0.5em; padding: 0.5em; font-size: 2em;color: white; border: 4px solid gold; border-radius: 10px; background-color: indigo;";
+        var style: string =
+            'margin: 0.5em; padding: 0.5em; font-size: 2em;color: white; border: 4px solid gold; border-radius: 10px; background-color: indigo;';
         if (isDevMode()) {
             this.apiVersion.set(version.substring(0, 14));
         } else {
             this.apiVersion.set(version.substring(0, 27));
         }
-        console.log("%cAPI: v" + this.apiVersion(), style);
+        console.log('%cAPI: v' + this.apiVersion(), style);
     }
 
     getApiVersion(): string {
@@ -118,14 +130,16 @@ export class AuthService {
         this.refreshTokenValidityInMinutes = minutes;
     }
 
-
     isRefreshTokenExpired(): boolean {
         return this.refreshTokenExpired();
     }
 
     getAccessToken(): string {
         if (this.accessToken() == '') {
-            this.accessToken.set(localStorage.getItem('accessToken') ?? localStorageService.get('auth_token'));
+            this.accessToken.set(
+                localStorage.getItem('accessToken') ??
+                    localStorageService.get('auth_token')
+            );
         }
         return this.accessToken();
     }
@@ -156,7 +170,7 @@ export class AuthService {
         private http: HttpClient,
         private authTokenService: AuthTokenService,
         private ngxPermissionsService: NgxPermissionsService
-    ) { }
+    ) {}
     jwtHelper = new JwtHelperService();
     jwtToken!: IJwtToken | null;
     getExpiration = (authObj: AuthObject): number => {
@@ -188,11 +202,13 @@ export class AuthService {
     }
 
     getRolesWithPermissions(token: string): Role {
-        let decodedToken: any = this.parseJwt(token)
+        let decodedToken: any = this.parseJwt(token);
         const currentTime = Math.floor(Date.now() / 1000);
         // this line is required for testing as the token validation time is not valid time.
         // so we aer adding 60 seconds to the token expiration time to bypass this validation
-        isDevMode() && decodedToken && (decodedToken.exp = Math.floor(Date.now() / 1000) + 60000);
+        isDevMode() &&
+            decodedToken &&
+            (decodedToken.exp = Math.floor(Date.now() / 1000) + 60000);
         // console.log(decodedToken?.exp, currentTime);
         // console.log(decodedToken);
         // console.log(typeof(decodedToken?.permissions));
@@ -206,8 +222,8 @@ export class AuthService {
             role = {
                 Id: decodedToken.id,
                 Name: decodedToken.role,
-                Permissions: JSON.parse(decodedToken.permissions)
-            }
+                Permissions: JSON.parse(decodedToken.permissions),
+            };
             return role;
         }
         //console.log('no token');
@@ -228,7 +244,6 @@ export class AuthService {
         return obj;
     }
 
-
     loadRolesAndPermissions(): Observable<Role> {
         const token = localStorageService.get('auth_token');
         return of(this.getRolesWithPermissions(token));
@@ -241,8 +256,6 @@ export class AuthService {
     //     }
     //     return true;
     // }
-
-
 
     userLogout() {
         this.clearAll();
@@ -274,10 +287,18 @@ export class AuthService {
         return userDetails;
     }
     get isLoggedin(): boolean {
-        if (!(JSON.parse(localStorageService.get('iL') || 'false') && localStorageService.get('auth_token') !== null && localStorageService.get('decoded_jwt_payload') !== null)) {
+        if (
+            !(
+                JSON.parse(localStorageService.get('iL') || 'false') &&
+                localStorageService.get('auth_token') !== null &&
+                localStorageService.get('decoded_jwt_payload') !== null
+            )
+        ) {
             return false;
         }
-        const authObj = JSON.parse(localStorageService.get('decoded_jwt_payload'));
+        const authObj = JSON.parse(
+            localStorageService.get('decoded_jwt_payload')
+        );
         const currentTime = Math.floor(Date.now() / 1000);
         // return this.getExpiration(authObj) < currentTime; // testing
         return this.getExpiration(authObj) > currentTime; // original
@@ -291,7 +312,10 @@ export class AuthService {
         const parsedToken = this.parseJwt(token);
         if (parsedToken) {
             localStorageService.set('auth_token', token);
-            localStorageService.set('decoded_jwt_payload', JSON.stringify(parsedToken));
+            localStorageService.set(
+                'decoded_jwt_payload',
+                JSON.stringify(parsedToken)
+            );
             this.isLoggedin = true;
             return true;
         } else {
@@ -301,24 +325,28 @@ export class AuthService {
 
     logout() {
         firstValueFrom(
-            this.http.get(
-                environment.BaseURL + 'api/' + '/Auth/Logout',
-                { headers: new HttpHeaders().set('Authorization', this.accessToken()) }
-            ).pipe(
-                tap(() => {
-                    this.notify.confirmLogout()
-                        .then(() => {
-                            this.invalidateSession();
-                        });
-                }),
-                catchError((error) => {
-                    this.notify.confirmLogout('Logout', 'Unable to logout!')
-                        .then(() => {
-                            this.invalidateSession();
-                        });
-                    return EMPTY;
+            this.http
+                .get(environment.BaseURL + 'api/' + '/Auth/Logout', {
+                    headers: new HttpHeaders().set(
+                        'Authorization',
+                        this.accessToken()
+                    ),
                 })
-            )
+                .pipe(
+                    tap(() => {
+                        this.notify.confirmLogout().then(() => {
+                            this.invalidateSession();
+                        });
+                    }),
+                    catchError((error) => {
+                        this.notify
+                            .confirmLogout('Logout', 'Unable to logout!')
+                            .then(() => {
+                                this.invalidateSession();
+                            });
+                        return EMPTY;
+                    })
+                )
         );
         // alert(environment.authUrl);
     }
@@ -332,5 +360,4 @@ export class AuthService {
         localStorageService.del('sidebar_drawer');
         window.open(environment.BaseURL, '_self');
     }
-
 }

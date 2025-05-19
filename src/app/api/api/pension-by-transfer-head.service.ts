@@ -23,11 +23,15 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { LifeCertificateEntryDTO } from '../model/life-certificate-entry-dto';
+import { BaseDTOJsonAPIResponse } from '../model/base-dto-json-api-response';
 // @ts-ignore
-import { LifeCertificateListResponseDTOJsonAPIResponse } from '../model/life-certificate-list-response-dto-json-api-response';
+import { ByTransferHeadEntryDTO } from '../model/by-transfer-head-entry-dto';
 // @ts-ignore
-import { LifeCertificateResponseDTOJsonAPIResponse } from '../model/life-certificate-response-dto-json-api-response';
+import { ByTransferHeadResponseDTOJsonAPIResponse } from '../model/by-transfer-head-response-dto-json-api-response';
+// @ts-ignore
+import { ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse } from '../model/by-transfer-head-response-dto-table-response-dto-json-api-response';
+// @ts-ignore
+import { ByTransferHeadUpdateDTO } from '../model/by-transfer-head-update-dto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -37,7 +41,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
     providedIn: 'root',
 })
-export class PensionLifeCertificateService extends BaseService {
+export class PensionByTransferHeadService extends BaseService {
     constructor(
         protected httpClient: HttpClient,
         @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -47,235 +51,39 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param ppoId
+     * @param byTransferHeadEntryDTO
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    public createByTransferHeadMap(
+        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
+    public createByTransferHeadMap(
+        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
+    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public createByTransferHeadMap(
+        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public getLifeCertificateByPpoId(
-        ppoId: number,
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        if (ppoId === null || ppoId === undefined) {
-            throw new Error(
-                'Required parameter ppoId was null or undefined when calling getLifeCertificateByPpoId.'
-            );
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (Bearer) required
-        localVarHeaders = this.configuration.addCredentialToHeaders(
-            'Bearer',
-            'Authorization',
-            localVarHeaders
-        );
-
-        const localVarHttpHeaderAcceptSelected: string | undefined =
-            options?.httpHeaderAccept ??
-            this.configuration.selectHeaderAccept(['application/json']);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        const localVarHttpContext: HttpContext =
-            options?.context ?? new HttpContext();
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/lifecertificate/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
-            'get',
-            `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
-    }
-
-    /**
-     * @param branchId
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getLifeCertificatesByBranchId(
-        branchId: number,
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<LifeCertificateListResponseDTOJsonAPIResponse>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpResponse<LifeCertificateListResponseDTOJsonAPIResponse>>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpEvent<LifeCertificateListResponseDTOJsonAPIResponse>>;
-    public getLifeCertificatesByBranchId(
-        branchId: number,
-        observe: any = 'body',
-        reportProgress: boolean = false,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<any> {
-        if (branchId === null || branchId === undefined) {
-            throw new Error(
-                'Required parameter branchId was null or undefined when calling getLifeCertificatesByBranchId.'
-            );
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (Bearer) required
-        localVarHeaders = this.configuration.addCredentialToHeaders(
-            'Bearer',
-            'Authorization',
-            localVarHeaders
-        );
-
-        const localVarHttpHeaderAcceptSelected: string | undefined =
-            options?.httpHeaderAccept ??
-            this.configuration.selectHeaderAccept(['application/json']);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set(
-                'Accept',
-                localVarHttpHeaderAcceptSelected
-            );
-        }
-
-        const localVarHttpContext: HttpContext =
-            options?.context ?? new HttpContext();
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (
-                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
-            ) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/v1/lifecertificate/branch/${this.configuration.encodeParam({ name: 'branchId', value: branchId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateListResponseDTOJsonAPIResponse>(
-            'get',
-            `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress,
-            }
-        );
-    }
-
-    /**
-     * @param lifeCertificateEntryDTO
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
-        observe?: 'body',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
-        observe?: 'response',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
-        observe?: 'events',
-        reportProgress?: boolean,
-        options?: {
-            httpHeaderAccept?: 'application/json';
-            context?: HttpContext;
-        }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public submitLifeCertificate(
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public createByTransferHeadMap(
+        byTransferHeadEntryDTO?: ByTransferHeadEntryDTO,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -333,14 +141,14 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate`;
+        let localVarPath = `/api/v1/by-transfer-headmap`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
+        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
             'post',
             `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: lifeCertificateEntryDTO,
+                body: byTransferHeadEntryDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -351,44 +159,39 @@ export class PensionLifeCertificateService extends BaseService {
     }
 
     /**
-     * @param ppoId
-     * @param lifeCertificateEntryDTO
+     * @param byTransferHeadId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    public deleteByTransferHeadMapById(
+        byTransferHeadId: number,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<LifeCertificateResponseDTOJsonAPIResponse>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<BaseDTOJsonAPIResponse>;
+    public deleteByTransferHeadMapById(
+        byTransferHeadId: number,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpResponse<BaseDTOJsonAPIResponse>>;
+    public deleteByTransferHeadMapById(
+        byTransferHeadId: number,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<LifeCertificateResponseDTOJsonAPIResponse>>;
-    public updateLifeCertificateByPpoId(
-        ppoId: number,
-        lifeCertificateEntryDTO?: LifeCertificateEntryDTO,
+    ): Observable<HttpEvent<BaseDTOJsonAPIResponse>>;
+    public deleteByTransferHeadMapById(
+        byTransferHeadId: number,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -396,9 +199,301 @@ export class PensionLifeCertificateService extends BaseService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (ppoId === null || ppoId === undefined) {
+        if (byTransferHeadId === null || byTransferHeadId === undefined) {
             throw new Error(
-                'Required parameter ppoId was null or undefined when calling updateLifeCertificateByPpoId.'
+                'Required parameter byTransferHeadId was null or undefined when calling deleteByTransferHeadMapById.'
+            );
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders(
+            'Bearer',
+            'Authorization',
+            localVarHeaders
+        );
+
+        const localVarHttpHeaderAcceptSelected: string | undefined =
+            options?.httpHeaderAccept ??
+            this.configuration.selectHeaderAccept(['application/json']);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set(
+                'Accept',
+                localVarHttpHeaderAcceptSelected
+            );
+        }
+
+        const localVarHttpContext: HttpContext =
+            options?.context ?? new HttpContext();
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (
+                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+            ) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/by-transfer-headmap/${this.configuration.encodeParam({ name: 'byTransferHeadId', value: byTransferHeadId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<BaseDTOJsonAPIResponse>(
+            'delete',
+            `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress,
+            }
+        );
+    }
+
+    /**
+     * @param byTransferHeadId
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getByTransferHeadMapById(
+        byTransferHeadId: number,
+        observe?: 'body',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
+    public getByTransferHeadMapById(
+        byTransferHeadId: number,
+        observe?: 'response',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public getByTransferHeadMapById(
+        byTransferHeadId: number,
+        observe?: 'events',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public getByTransferHeadMapById(
+        byTransferHeadId: number,
+        observe: any = 'body',
+        reportProgress: boolean = false,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<any> {
+        if (byTransferHeadId === null || byTransferHeadId === undefined) {
+            throw new Error(
+                'Required parameter byTransferHeadId was null or undefined when calling getByTransferHeadMapById.'
+            );
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders(
+            'Bearer',
+            'Authorization',
+            localVarHeaders
+        );
+
+        const localVarHttpHeaderAcceptSelected: string | undefined =
+            options?.httpHeaderAccept ??
+            this.configuration.selectHeaderAccept(['application/json']);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set(
+                'Accept',
+                localVarHttpHeaderAcceptSelected
+            );
+        }
+
+        const localVarHttpContext: HttpContext =
+            options?.context ?? new HttpContext();
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (
+                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+            ) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/by-transfer-headmap/${this.configuration.encodeParam({ name: 'byTransferHeadId', value: byTransferHeadId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
+            'get',
+            `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress,
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getByTransferHeadMaps(
+        observe?: 'body',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>;
+    public getByTransferHeadMaps(
+        observe?: 'response',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<
+        HttpResponse<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>
+    >;
+    public getByTransferHeadMaps(
+        observe?: 'events',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<
+        HttpEvent<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>
+    >;
+    public getByTransferHeadMaps(
+        observe: any = 'body',
+        reportProgress: boolean = false,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<any> {
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (Bearer) required
+        localVarHeaders = this.configuration.addCredentialToHeaders(
+            'Bearer',
+            'Authorization',
+            localVarHeaders
+        );
+
+        const localVarHttpHeaderAcceptSelected: string | undefined =
+            options?.httpHeaderAccept ??
+            this.configuration.selectHeaderAccept(['application/json']);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set(
+                'Accept',
+                localVarHttpHeaderAcceptSelected
+            );
+        }
+
+        const localVarHttpContext: HttpContext =
+            options?.context ?? new HttpContext();
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (
+                this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)
+            ) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/v1/by-transfer-headmaps`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ByTransferHeadResponseDTOTableResponseDTOJsonAPIResponse>(
+            'get',
+            `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress,
+            }
+        );
+    }
+
+    /**
+     * @param byTransferHeadId
+     * @param byTransferHeadUpdateDTO
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateByTransferHeadMap(
+        byTransferHeadId: number,
+        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+        observe?: 'body',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<ByTransferHeadResponseDTOJsonAPIResponse>;
+    public updateByTransferHeadMap(
+        byTransferHeadId: number,
+        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+        observe?: 'response',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpResponse<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public updateByTransferHeadMap(
+        byTransferHeadId: number,
+        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+        observe?: 'events',
+        reportProgress?: boolean,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<HttpEvent<ByTransferHeadResponseDTOJsonAPIResponse>>;
+    public updateByTransferHeadMap(
+        byTransferHeadId: number,
+        byTransferHeadUpdateDTO?: ByTransferHeadUpdateDTO,
+        observe: any = 'body',
+        reportProgress: boolean = false,
+        options?: {
+            httpHeaderAccept?: 'application/json';
+            context?: HttpContext;
+        }
+    ): Observable<any> {
+        if (byTransferHeadId === null || byTransferHeadId === undefined) {
+            throw new Error(
+                'Required parameter byTransferHeadId was null or undefined when calling updateByTransferHeadMap.'
             );
         }
 
@@ -452,14 +547,14 @@ export class PensionLifeCertificateService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/lifecertificate/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        let localVarPath = `/api/v1/by-transfer-headmap/${this.configuration.encodeParam({ name: 'byTransferHeadId', value: byTransferHeadId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<LifeCertificateResponseDTOJsonAPIResponse>(
+        return this.httpClient.request<ByTransferHeadResponseDTOJsonAPIResponse>(
             'put',
             `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: lifeCertificateEntryDTO,
+                body: byTransferHeadUpdateDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

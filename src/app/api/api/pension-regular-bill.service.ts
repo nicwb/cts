@@ -141,13 +141,14 @@ export class PensionRegularBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/regular-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/ppos`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoListResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -284,14 +285,15 @@ export class PensionRegularBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/regular-bill/${this.configuration.encodeParam({ name: 'year', value: year, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/${this.configuration.encodeParam({ name: 'month', value: month, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/bills`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<RegularBillListResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -391,14 +393,15 @@ export class PensionRegularBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/regular-bill`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoBillSaveResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ppoBillEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

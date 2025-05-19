@@ -138,14 +138,15 @@ export class PensionPPODetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/details`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionerEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -229,13 +230,14 @@ export class PensionPPODetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/details/not-approved`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -326,13 +328,14 @@ export class PensionPPODetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/details`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -416,13 +419,14 @@ export class PensionPPODetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/details`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -533,14 +537,15 @@ export class PensionPPODetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/details`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionerEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

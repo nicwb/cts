@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
         private authService: AuthService,
         private authTokenService: AuthTokenService,
         private ngxRolesService: NgxRolesService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.authService.clearAll();

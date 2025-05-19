@@ -136,14 +136,15 @@ export class PensionSanctionDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/sanction`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoSanctionDetailsResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ppoSanctionDetailsEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -234,13 +235,14 @@ export class PensionSanctionDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/sanction/${this.configuration.encodeParam({ name: 'sanctionDetailsId', value: sanctionDetailsId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoSanctionDetailsResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -351,14 +353,15 @@ export class PensionSanctionDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/sanction/${this.configuration.encodeParam({ name: 'sanctionDetailsId', value: sanctionDetailsId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoSanctionDetailsResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: ppoSanctionDetailsEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

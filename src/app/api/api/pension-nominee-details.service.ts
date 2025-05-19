@@ -129,13 +129,14 @@ export class PensionNomineeDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/nominee/${this.configuration.encodeParam({ name: 'nomineeId', value: nomineeId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<NomineeResponseDTOJsonAPIResponse>(
             'delete',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -226,13 +227,14 @@ export class PensionNomineeDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/nominee/${this.configuration.encodeParam({ name: 'nomineeId', value: nomineeId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<NomineeResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -325,13 +327,14 @@ export class PensionNomineeDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/nominees`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<NomineeResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -431,14 +434,15 @@ export class PensionNomineeDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/nominee`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<NomineeResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: nomineeEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -549,14 +553,15 @@ export class PensionNomineeDetailsService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/nominee/${this.configuration.encodeParam({ name: 'nomineeId', value: nomineeId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<NomineeResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: nomineeEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

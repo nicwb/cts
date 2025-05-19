@@ -146,14 +146,15 @@ export class PensionFirstBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/first-bill-generate`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<InitiateFirstPensionBillResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: initiateFirstPensionBillEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -237,13 +238,14 @@ export class PensionFirstBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/first-bill/ppos`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -334,13 +336,14 @@ export class PensionFirstBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/first-bill/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoBillResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -424,13 +427,14 @@ export class PensionFirstBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/first-bill-print/ppos`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -530,14 +534,15 @@ export class PensionFirstBillService extends BaseService {
         }
 
         let localVarPath = `/api/v1/first-bill`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PpoBillSaveResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: initiateFirstPensionBillEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

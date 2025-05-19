@@ -116,13 +116,14 @@ export class DatabaseManagementService extends BaseService {
         }
 
         let localVarPath = `/api/v1/db/drop`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>(
             'delete',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -202,13 +203,14 @@ export class DatabaseManagementService extends BaseService {
         }
 
         let localVarPath = `/api/v1/db/migrate`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -309,13 +311,14 @@ export class DatabaseManagementService extends BaseService {
         }
 
         let localVarPath = `/api/v1/db/seed/${this.configuration.encodeParam({ name: 'seeder', value: seeder, in: 'path', style: 'simple', explode: false, dataType: 'SeederEnums', dataFormat: undefined })}/${this.configuration.encodeParam({ name: 'count', value: count, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

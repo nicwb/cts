@@ -140,14 +140,15 @@ export class PensionComponentRateService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension-component/rate`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ComponentRateResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: componentRateEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -231,13 +232,14 @@ export class PensionComponentRateService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension-component/categories`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -332,13 +334,14 @@ export class PensionComponentRateService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension-component/${this.configuration.encodeParam({ name: 'categoryId', value: categoryId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}/rates`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ComponentRateResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

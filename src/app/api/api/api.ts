@@ -4,10 +4,12 @@ export * from './message-queue.service';
 import { MessageQueueService } from './message-queue.service';
 export * from './pension.service';
 import { PensionService } from './pension.service';
+export * from './pension-auth.service';
+import { PensionAuthService } from './pension-auth.service';
 export * from './pension-bank-branch.service';
 import { PensionBankBranchService } from './pension-bank-branch.service';
-export * from './pension-by-transfer.service';
-import { PensionByTransferService } from './pension-by-transfer.service';
+export * from './pension-by-transfer-head.service';
+import { PensionByTransferHeadService } from './pension-by-transfer-head.service';
 export * from './pension-category-master.service';
 import { PensionCategoryMasterService } from './pension-category-master.service';
 export * from './pension-component.service';
@@ -32,12 +34,14 @@ export * from './pension-manual-ppo-receipt.service';
 import { PensionManualPPOReceiptService } from './pension-manual-ppo-receipt.service';
 export * from './pension-nominee-details.service';
 import { PensionNomineeDetailsService } from './pension-nominee-details.service';
+export * from './pension-ppoby-transfer.service';
+import { PensionPPOByTransferService } from './pension-ppoby-transfer.service';
 export * from './pension-ppo-details.service';
 import { PensionPPODetailsService } from './pension-ppo-details.service';
 export * from './pension-ppo-status.service';
 import { PensionPPOStatusService } from './pension-ppo-status.service';
-export * from './pension-ppo-by-transfer.service';
-import { PensionPpoByTransferService } from './pension-ppo-by-transfer.service';
+export * from './pension-payment-history.service';
+import { PensionPaymentHistoryService } from './pension-payment-history.service';
 export * from './pension-regular-bill.service';
 import { PensionRegularBillService } from './pension-regular-bill.service';
 export * from './pension-sanction-details.service';
@@ -46,8 +50,9 @@ export const APIS = [
     DatabaseManagementService,
     MessageQueueService,
     PensionService,
+    PensionAuthService,
     PensionBankBranchService,
-    PensionByTransferService,
+    PensionByTransferHeadService,
     PensionCategoryMasterService,
     PensionComponentService,
     PensionComponentRateService,
@@ -60,9 +65,10 @@ export const APIS = [
     PensionLifeCertificateService,
     PensionManualPPOReceiptService,
     PensionNomineeDetailsService,
+    PensionPPOByTransferService,
     PensionPPODetailsService,
     PensionPPOStatusService,
-    PensionPpoByTransferService,
+    PensionPaymentHistoryService,
     PensionRegularBillService,
     PensionSanctionDetailsService,
 ];

@@ -8,8 +8,7 @@
  * Do not edit the class manually.
  */
 
-export interface ByTransferHeadEntryDTO {
-    byTransferType: string;
-    accountHeadId: number;
-    byTransferDescription: string;
+export interface PermissionDTO {
+    dataSource?: object | null;
+    permissionNames?: Array<string> | null;
 }

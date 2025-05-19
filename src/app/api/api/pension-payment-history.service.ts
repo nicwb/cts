@@ -23,9 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { FactoryEntityEnum } from '../model/factory-entity-enum';
-// @ts-ignore
-import { ObjectJsonAPIResponse } from '../model/object-json-api-response';
+import { PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse } from '../model/ppo-payment-history-response-dto-table-response-dto-json-api-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -35,7 +33,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
     providedIn: 'root',
 })
-export class PensionFactoryService extends BaseService {
+export class PensionPaymentHistoryService extends BaseService {
     constructor(
         protected httpClient: HttpClient,
         @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -45,39 +43,43 @@ export class PensionFactoryService extends BaseService {
     }
 
     /**
-     * @param dtoName
+     * @param ppoId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createFake(
-        dtoName: FactoryEntityEnum,
+    public getPensionerPaymentHistoryByPpoId(
+        ppoId: number,
         observe?: 'body',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<ObjectJsonAPIResponse>;
-    public createFake(
-        dtoName: FactoryEntityEnum,
+    ): Observable<PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse>;
+    public getPensionerPaymentHistoryByPpoId(
+        ppoId: number,
         observe?: 'response',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpResponse<ObjectJsonAPIResponse>>;
-    public createFake(
-        dtoName: FactoryEntityEnum,
+    ): Observable<
+        HttpResponse<PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse>
+    >;
+    public getPensionerPaymentHistoryByPpoId(
+        ppoId: number,
         observe?: 'events',
         reportProgress?: boolean,
         options?: {
             httpHeaderAccept?: 'application/json';
             context?: HttpContext;
         }
-    ): Observable<HttpEvent<ObjectJsonAPIResponse>>;
-    public createFake(
-        dtoName: FactoryEntityEnum,
+    ): Observable<
+        HttpEvent<PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse>
+    >;
+    public getPensionerPaymentHistoryByPpoId(
+        ppoId: number,
         observe: any = 'body',
         reportProgress: boolean = false,
         options?: {
@@ -85,9 +87,9 @@ export class PensionFactoryService extends BaseService {
             context?: HttpContext;
         }
     ): Observable<any> {
-        if (dtoName === null || dtoName === undefined) {
+        if (ppoId === null || ppoId === undefined) {
             throw new Error(
-                'Required parameter dtoName was null or undefined when calling createFake.'
+                'Required parameter ppoId was null or undefined when calling getPensionerPaymentHistoryByPpoId.'
             );
         }
 
@@ -126,9 +128,9 @@ export class PensionFactoryService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/v1/factory/${this.configuration.encodeParam({ name: 'dtoName', value: dtoName, in: 'path', style: 'simple', explode: false, dataType: 'FactoryEntityEnum', dataFormat: undefined })}`;
+        let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/payment-history`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ObjectJsonAPIResponse>(
+        return this.httpClient.request<PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
             `${basePath}${localVarPath}`,
             {

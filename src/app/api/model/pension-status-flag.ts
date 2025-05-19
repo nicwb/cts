@@ -8,21 +8,12 @@
  * Do not edit the class manually.
  */
 
-export type PensionStatusFlag =
-    | 'PpoApproved'
-    | 'FirstPensionBillApproved'
-    | 'PpoRunning'
-    | 'PpoSuspended'
-    | 'PpoClosed';
-
 export const PensionStatusFlag = {
-    PpoApproved: 'PpoApproved' as PensionStatusFlag,
-
-    FirstPensionBillApproved: 'FirstPensionBillApproved' as PensionStatusFlag,
-
-    PpoRunning: 'PpoRunning' as PensionStatusFlag,
-
-    PpoSuspended: 'PpoSuspended' as PensionStatusFlag,
-
-    PpoClosed: 'PpoClosed' as PensionStatusFlag,
-};
+    PpoApproved: 'PpoApproved',
+    FirstPensionBillApproved: 'FirstPensionBillApproved',
+    PpoRunning: 'PpoRunning',
+    PpoSuspended: 'PpoSuspended',
+    PpoClosed: 'PpoClosed',
+} as const;
+export type PensionStatusFlag =
+    (typeof PensionStatusFlag)[keyof typeof PensionStatusFlag];

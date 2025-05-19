@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root',
 })
 export class NotificationService {
-    constructor() { }
+    constructor() {}
 
     toast = swal.mixin({
         toast: false,
@@ -152,7 +152,10 @@ export class NotificationService {
     }
 
     // *******************************************************************************************************
-    confirmLogout(title = 'Logout', msg = 'You have been logged out!'): Promise<any> {
+    confirmLogout(
+        title = 'Logout',
+        msg = 'You have been logged out!'
+    ): Promise<any> {
         return swal
             .fire({
                 title: title,

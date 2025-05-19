@@ -140,14 +140,15 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipt`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: manualPpoReceiptEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -231,13 +232,14 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipts/unused`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -328,13 +330,14 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -425,13 +428,14 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipt/trid/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -515,13 +519,14 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipts`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ListAllPpoReceiptsResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -632,14 +637,15 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipt/${this.configuration.encodeParam({ name: 'receiptId', value: receiptId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: manualPpoReceiptEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -750,14 +756,15 @@ export class PensionManualPPOReceiptService extends BaseService {
         }
 
         let localVarPath = `/api/v1/manual-ppo-receipt/trid/${this.configuration.encodeParam({ name: 'treasuryReceiptNo', value: treasuryReceiptNo, in: 'path', style: 'simple', explode: false, dataType: 'string', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ManualPpoReceiptResponseDTOJsonAPIResponse>(
             'put',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: manualPpoReceiptEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

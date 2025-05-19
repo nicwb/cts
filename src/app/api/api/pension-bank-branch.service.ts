@@ -116,13 +116,14 @@ export class PensionBankBranchService extends BaseService {
         }
 
         let localVarPath = `/api/v1/banks`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<BankListResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -213,13 +214,14 @@ export class PensionBankBranchService extends BaseService {
         }
 
         let localVarPath = `/api/v1/branches/${this.configuration.encodeParam({ name: 'bankId', value: bankId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<BranchListResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

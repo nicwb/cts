@@ -8,14 +8,11 @@
  * Do not edit the class manually.
  */
 
-export type APIResponseStatus = 'Success' | 'Warning' | 'Error' | 'Info';
-
 export const APIResponseStatus = {
-    Success: 'Success' as APIResponseStatus,
-
-    Warning: 'Warning' as APIResponseStatus,
-
-    Error: 'Error' as APIResponseStatus,
-
-    Info: 'Info' as APIResponseStatus,
-};
+    Success: 'Success',
+    Warning: 'Warning',
+    Error: 'Error',
+    Info: 'Info',
+} as const;
+export type APIResponseStatus =
+    (typeof APIResponseStatus)[keyof typeof APIResponseStatus];

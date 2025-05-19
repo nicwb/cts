@@ -152,14 +152,15 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/category`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionCategoryResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionCategoryEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -261,14 +262,15 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/primary-category`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionPrimaryCategoryResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionPrimaryCategoryEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -368,14 +370,15 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/sub-category`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionSubCategoryResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionSubCategoryEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -459,13 +462,14 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/account-heads`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<AccountHeadListItemResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -549,13 +553,14 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/categories`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionCategoryListDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -646,13 +651,14 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/category/${this.configuration.encodeParam({ name: 'categoryId', value: categoryId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int64' })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionCategoryResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -736,13 +742,14 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/primary-categories`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionPrimaryCategoryResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -826,13 +833,14 @@ export class PensionCategoryMasterService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension/sub-categories`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionSubCategoryResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

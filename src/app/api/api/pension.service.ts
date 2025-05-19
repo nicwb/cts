@@ -142,14 +142,15 @@ export class PensionService extends BaseService {
         }
 
         let localVarPath = `/api/v1/echo`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<ObjectJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: body,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -229,13 +230,14 @@ export class PensionService extends BaseService {
         }
 
         let localVarPath = `/api/v1/current-financial-year`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<FinancialYearResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -315,13 +317,14 @@ export class PensionService extends BaseService {
         }
 
         let localVarPath = `/api/v1/date-only`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<DateOnlyJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -421,14 +424,15 @@ export class PensionService extends BaseService {
         }
 
         let localVarPath = `/api/v1/date-only`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<DateOnlyDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: dateOnlyDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

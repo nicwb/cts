@@ -141,13 +141,14 @@ export class PensionPPOStatusService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/status/${this.configuration.encodeParam({ name: 'statusFlag', value: statusFlag, in: 'path', style: 'simple', explode: false, dataType: 'PensionStatusFlag', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionStatusDTOJsonAPIResponse>(
             'delete',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -248,13 +249,14 @@ export class PensionPPOStatusService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/${this.configuration.encodeParam({ name: 'ppoId', value: ppoId, in: 'path', style: 'simple', explode: false, dataType: 'number', dataFormat: 'int32' })}/status/${this.configuration.encodeParam({ name: 'statusFlag', value: statusFlag, in: 'path', style: 'simple', explode: false, dataType: 'PensionStatusFlag', dataFormat: undefined })}`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionStatusDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -354,14 +356,15 @@ export class PensionPPOStatusService extends BaseService {
         }
 
         let localVarPath = `/api/v1/ppo/status`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionStatusEntryDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionStatusEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

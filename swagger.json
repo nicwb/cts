@@ -370,6 +370,98 @@
         }
       }
     },
+    "/api/v1/auth/login": {
+      "get": {
+        "tags": [
+          "Pension: Auth"
+        ],
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "get": {
+        "tags": [
+          "Pension: Auth"
+        ],
+        "operationId": "Logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/roles": {
+      "get": {
+        "tags": [
+          "Pension: Auth"
+        ],
+        "operationId": "GetRoles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/permissions": {
+      "get": {
+        "tags": [
+          "Pension: Auth"
+        ],
+        "operationId": "GetPermissions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PermissionDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/banks": {
       "get": {
         "tags": [
@@ -424,7 +516,7 @@
     "/api/v1/by-transfer-headmap": {
       "post": {
         "tags": [
-          "Pension: By Transfer"
+          "Pension: By-Transfer Head"
         ],
         "operationId": "CreateByTransferHeadMap",
         "requestBody": {
@@ -461,11 +553,88 @@
       }
     },
     "/api/v1/by-transfer-headmap/{byTransferHeadId}": {
+      "put": {
+        "tags": [
+          "Pension: By-Transfer Head"
+        ],
+        "operationId": "UpdateByTransferHeadMap",
+        "parameters": [
+          {
+            "name": "byTransferHeadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ByTransferHeadUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ByTransferHeadUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ByTransferHeadUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ByTransferHeadResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pension: By-Transfer Head"
+        ],
+        "operationId": "DeleteByTransferHeadMapById",
+        "parameters": [
+          {
+            "name": "byTransferHeadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
-          "Pension: By Transfer"
+          "Pension: By-Transfer Head"
         ],
-        "operationId": "GetByTransferHeadById",
+        "operationId": "GetByTransferHeadMapById",
         "parameters": [
           {
             "name": "byTransferHeadId",
@@ -494,9 +663,9 @@
     "/api/v1/by-transfer-headmaps": {
       "get": {
         "tags": [
-          "Pension: By Transfer"
+          "Pension: By-Transfer Head"
         ],
-        "operationId": "GetAllByTransferHeads",
+        "operationId": "GetByTransferHeadMaps",
         "responses": {
           "200": {
             "description": "OK",
@@ -2097,6 +2266,197 @@
         }
       }
     },
+    "/api/v1/ppo/{PpoId}/payment-history": {
+      "get": {
+        "tags": [
+          "Pension: Payment History"
+        ],
+        "operationId": "GetPensionerPaymentHistoryByPpoId",
+        "parameters": [
+          {
+            "name": "PpoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ppo/{ppoId}/by-transfer": {
+      "post": {
+        "tags": [
+          "Pension: PPO By-Transfer"
+        ],
+        "operationId": "CreatePpoByTransfer",
+        "parameters": [
+          {
+            "name": "ppoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountEntryDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountEntryDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountEntryDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PpoByTransferAmountResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ppo-by-transfer/{ppoByTransferId}": {
+      "put": {
+        "tags": [
+          "Pension: PPO By-Transfer"
+        ],
+        "operationId": "UpdatePpoByTransfer",
+        "parameters": [
+          {
+            "name": "ppoByTransferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountUpdateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountUpdateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PpoByTransferAmountUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PpoByTransferAmountResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pension: PPO By-Transfer"
+        ],
+        "operationId": "DeletePpoByTransferById",
+        "parameters": [
+          {
+            "name": "ppoByTransferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ppo/{ppoId}/by-transfers": {
+      "get": {
+        "tags": [
+          "Pension: PPO By-Transfer"
+        ],
+        "operationId": "GetByTransfersByPpoId",
+        "parameters": [
+          {
+            "name": "ppoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PpoByTransferAmountResponseListDTOTableResponseDTOJsonAPIResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/ppo/details": {
       "post": {
         "tags": [
@@ -2631,45 +2991,6 @@
           }
         }
       }
-    },
-    "/api/v1/ppo-by-transfer-headmap": {
-      "post": {
-        "tags": [
-          "Pension:Ppo By Transfer"
-        ],
-        "operationId": "CreatePPoByTransferHeadMap",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PpoByTransferEntryDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PpoByTransferEntryDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PpoByTransferEntryDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PpoByTransferHeadResponseDTOJsonAPIResponse"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -2852,6 +3173,32 @@
         },
         "additionalProperties": false
       },
+      "BaseDTO": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BaseDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/BaseDTO"
+          },
+          "apiResponseStatus": {
+            "$ref": "#/components/schemas/APIResponseStatus"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "BranchListItemResponseDTO": {
         "type": "object",
         "properties": {
@@ -2984,25 +3331,24 @@
             "maxLength": 500,
             "minLength": 0,
             "type": "string"
-          },
-          "agBytransfer": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
       },
       "ByTransferHeadResponseDTO": {
+        "required": [
+          "accountHeadId",
+          "byTransferDescription",
+          "byTransferType"
+        ],
         "type": "object",
         "properties": {
           "dataSource": {
             "type": "object",
             "nullable": true
           },
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "byTransferType": {
+            "pattern": "[PR]",
             "type": "string"
           },
           "accountHeadId": {
@@ -3010,11 +3356,13 @@
             "format": "int64"
           },
           "byTransferDescription": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
           },
-          "agBytransfer": {
-            "type": "boolean"
+          "id": {
+            "type": "integer",
+            "format": "int64"
           }
         },
         "additionalProperties": false
@@ -3076,6 +3424,34 @@
           "message": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ByTransferHeadUpdateDTO": {
+        "required": [
+          "accountHeadId",
+          "byTransferDescription",
+          "byTransferType"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "byTransferType": {
+            "pattern": "[PR]",
+            "type": "string"
+          },
+          "accountHeadId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "byTransferDescription": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -6131,6 +6507,39 @@
         },
         "additionalProperties": false
       },
+      "PermissionDTO": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "permissionNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PermissionDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/PermissionDTO"
+          },
+          "apiResponseStatus": {
+            "$ref": "#/components/schemas/APIResponseStatus"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PpoBillBreakupEntryDTO": {
         "required": [
           "breakupAmount",
@@ -6426,17 +6835,15 @@
         },
         "additionalProperties": false
       },
-      "PpoByTransferEntryDTO": {
+      "PpoByTransferAmountEntryDTO": {
+        "required": [
+          "bytransferAmount",
+          "bytransferHeadId",
+          "fromDate",
+          "toDate"
+        ],
         "type": "object",
         "properties": {
-          "pensionerId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "ppoId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "fromDate": {
             "type": "string",
             "format": "date-only"
@@ -6460,20 +6867,18 @@
         },
         "additionalProperties": false
       },
-      "PpoByTransferHeadResponseDTO": {
+      "PpoByTransferAmountResponseDTO": {
+        "required": [
+          "bytransferAmount",
+          "bytransferHeadId",
+          "fromDate",
+          "toDate"
+        ],
         "type": "object",
         "properties": {
           "dataSource": {
             "type": "object",
             "nullable": true
-          },
-          "pensionerId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "ppoId": {
-            "type": "integer",
-            "format": "int32"
           },
           "fromDate": {
             "type": "string",
@@ -6502,11 +6907,11 @@
         },
         "additionalProperties": false
       },
-      "PpoByTransferHeadResponseDTOJsonAPIResponse": {
+      "PpoByTransferAmountResponseDTOJsonAPIResponse": {
         "type": "object",
         "properties": {
           "result": {
-            "$ref": "#/components/schemas/PpoByTransferHeadResponseDTO"
+            "$ref": "#/components/schemas/PpoByTransferAmountResponseDTO"
           },
           "apiResponseStatus": {
             "$ref": "#/components/schemas/APIResponseStatus"
@@ -6514,6 +6919,123 @@
           "message": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoByTransferAmountResponseListDTO": {
+        "required": [
+          "bytransferAmount",
+          "bytransferHeadId",
+          "fromDate",
+          "toDate"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date-only"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date-only"
+          },
+          "bytransferHeadId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "bytransferAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "remarks": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ppoNo": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "pensionerName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoByTransferAmountResponseListDTOTableResponseDTO": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableHeader"
+            },
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PpoByTransferAmountResponseListDTO"
+            },
+            "nullable": true
+          },
+          "dataCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoByTransferAmountResponseListDTOTableResponseDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/PpoByTransferAmountResponseListDTOTableResponseDTO"
+          },
+          "apiResponseStatus": {
+            "$ref": "#/components/schemas/APIResponseStatus"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoByTransferAmountUpdateDTO": {
+        "required": [
+          "bytransferAmount",
+          "remarks"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "bytransferAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "remarks": {
+            "minLength": 1,
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -6776,6 +7298,81 @@
         "properties": {
           "result": {
             "$ref": "#/components/schemas/PpoListResponseDTO"
+          },
+          "apiResponseStatus": {
+            "$ref": "#/components/schemas/APIResponseStatus"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoPaymentHistoryResponseDTO": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "componentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "componentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "breakupAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date-only"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date-only"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoPaymentHistoryResponseDTOTableResponseDTO": {
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TableHeader"
+            },
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PpoPaymentHistoryResponseDTO"
+            },
+            "nullable": true
+          },
+          "dataCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PpoPaymentHistoryResponseDTOTableResponseDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/PpoPaymentHistoryResponseDTOTableResponseDTO"
           },
           "apiResponseStatus": {
             "$ref": "#/components/schemas/APIResponseStatus"
@@ -7378,6 +7975,39 @@
         },
         "additionalProperties": false
       },
+      "RoleDTO": {
+        "required": [
+          "roleName"
+        ],
+        "type": "object",
+        "properties": {
+          "dataSource": {
+            "type": "object",
+            "nullable": true
+          },
+          "roleName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleDTOJsonAPIResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/RoleDTO"
+          },
+          "apiResponseStatus": {
+            "$ref": "#/components/schemas/APIResponseStatus"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SeederEnums": {
         "enum": [
           "DatabaseSeeder",
@@ -7442,7 +8072,7 @@
     "securitySchemes": {
       "Bearer": {
         "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme.",
+        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
         "name": "Authorization",
         "in": "header"
       }

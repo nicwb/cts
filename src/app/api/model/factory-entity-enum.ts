@@ -8,33 +8,15 @@
  * Do not edit the class manually.
  */
 
-export type FactoryEntityEnum =
-    | 'ComponentRateEntryDTO'
-    | 'ManualPpoReceiptEntryDTO'
-    | 'PensionerEntryDTO'
-    | 'PpoSanctionDetailsEntryDTO'
-    | 'PensionPrimaryCategoryEntryDTO'
-    | 'PensionSubCategoryEntryDTO'
-    | 'PensionBreakupEntryDTO'
-    | 'NomineeEntryDTO';
-
 export const FactoryEntityEnum = {
-    ComponentRateEntryDto: 'ComponentRateEntryDTO' as FactoryEntityEnum,
-
-    ManualPpoReceiptEntryDto: 'ManualPpoReceiptEntryDTO' as FactoryEntityEnum,
-
-    PensionerEntryDto: 'PensionerEntryDTO' as FactoryEntityEnum,
-
-    PpoSanctionDetailsEntryDto:
-        'PpoSanctionDetailsEntryDTO' as FactoryEntityEnum,
-
-    PensionPrimaryCategoryEntryDto:
-        'PensionPrimaryCategoryEntryDTO' as FactoryEntityEnum,
-
-    PensionSubCategoryEntryDto:
-        'PensionSubCategoryEntryDTO' as FactoryEntityEnum,
-
-    PensionBreakupEntryDto: 'PensionBreakupEntryDTO' as FactoryEntityEnum,
-
-    NomineeEntryDto: 'NomineeEntryDTO' as FactoryEntityEnum,
-};
+    ComponentRateEntryDto: 'ComponentRateEntryDTO',
+    ManualPpoReceiptEntryDto: 'ManualPpoReceiptEntryDTO',
+    PensionerEntryDto: 'PensionerEntryDTO',
+    PpoSanctionDetailsEntryDto: 'PpoSanctionDetailsEntryDTO',
+    PensionPrimaryCategoryEntryDto: 'PensionPrimaryCategoryEntryDTO',
+    PensionSubCategoryEntryDto: 'PensionSubCategoryEntryDTO',
+    PensionBreakupEntryDto: 'PensionBreakupEntryDTO',
+    NomineeEntryDto: 'NomineeEntryDTO',
+} as const;
+export type FactoryEntityEnum =
+    (typeof FactoryEntityEnum)[keyof typeof FactoryEntityEnum];

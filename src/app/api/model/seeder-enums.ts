@@ -8,78 +8,30 @@
  * Do not edit the class manually.
  */
 
-export type SeederEnums =
-    | 'DatabaseSeeder'
-    | 'AccountHeadSeeder'
-    | 'BankSeeder'
-    | 'BillSeeder'
-    | 'BranchSeeder'
-    | 'BreakupSeeder'
-    | 'CategorySeeder'
-    | 'ClassificationSeeder'
-    | 'ComponentRateSeeder'
-    | 'EppoAmountSeeder'
-    | 'EppoNomineeSeeder'
-    | 'EppoReceiptSeeder'
-    | 'EppoRevisionSeeder'
-    | 'FinancialYearSeeder'
-    | 'LifeCertificateSeeder'
-    | 'NomineeSeeder'
-    | 'PensionerSeeder'
-    | 'PpoBillSeeder'
-    | 'PpoReceiptSeeder'
-    | 'PpoSanctionDetailsSeeder'
-    | 'PpoStatusFlagSeeder'
-    | 'PrimaryCategorySeeder'
-    | 'SubCategorySeeder'
-    | 'TreasurySeeder';
-
 export const SeederEnums = {
-    DatabaseSeeder: 'DatabaseSeeder' as SeederEnums,
-
-    AccountHeadSeeder: 'AccountHeadSeeder' as SeederEnums,
-
-    BankSeeder: 'BankSeeder' as SeederEnums,
-
-    BillSeeder: 'BillSeeder' as SeederEnums,
-
-    BranchSeeder: 'BranchSeeder' as SeederEnums,
-
-    BreakupSeeder: 'BreakupSeeder' as SeederEnums,
-
-    CategorySeeder: 'CategorySeeder' as SeederEnums,
-
-    ClassificationSeeder: 'ClassificationSeeder' as SeederEnums,
-
-    ComponentRateSeeder: 'ComponentRateSeeder' as SeederEnums,
-
-    EppoAmountSeeder: 'EppoAmountSeeder' as SeederEnums,
-
-    EppoNomineeSeeder: 'EppoNomineeSeeder' as SeederEnums,
-
-    EppoReceiptSeeder: 'EppoReceiptSeeder' as SeederEnums,
-
-    EppoRevisionSeeder: 'EppoRevisionSeeder' as SeederEnums,
-
-    FinancialYearSeeder: 'FinancialYearSeeder' as SeederEnums,
-
-    LifeCertificateSeeder: 'LifeCertificateSeeder' as SeederEnums,
-
-    NomineeSeeder: 'NomineeSeeder' as SeederEnums,
-
-    PensionerSeeder: 'PensionerSeeder' as SeederEnums,
-
-    PpoBillSeeder: 'PpoBillSeeder' as SeederEnums,
-
-    PpoReceiptSeeder: 'PpoReceiptSeeder' as SeederEnums,
-
-    PpoSanctionDetailsSeeder: 'PpoSanctionDetailsSeeder' as SeederEnums,
-
-    PpoStatusFlagSeeder: 'PpoStatusFlagSeeder' as SeederEnums,
-
-    PrimaryCategorySeeder: 'PrimaryCategorySeeder' as SeederEnums,
-
-    SubCategorySeeder: 'SubCategorySeeder' as SeederEnums,
-
-    TreasurySeeder: 'TreasurySeeder' as SeederEnums,
-};
+    DatabaseSeeder: 'DatabaseSeeder',
+    AccountHeadSeeder: 'AccountHeadSeeder',
+    BankSeeder: 'BankSeeder',
+    BillSeeder: 'BillSeeder',
+    BranchSeeder: 'BranchSeeder',
+    BreakupSeeder: 'BreakupSeeder',
+    CategorySeeder: 'CategorySeeder',
+    ClassificationSeeder: 'ClassificationSeeder',
+    ComponentRateSeeder: 'ComponentRateSeeder',
+    EppoAmountSeeder: 'EppoAmountSeeder',
+    EppoNomineeSeeder: 'EppoNomineeSeeder',
+    EppoReceiptSeeder: 'EppoReceiptSeeder',
+    EppoRevisionSeeder: 'EppoRevisionSeeder',
+    FinancialYearSeeder: 'FinancialYearSeeder',
+    LifeCertificateSeeder: 'LifeCertificateSeeder',
+    NomineeSeeder: 'NomineeSeeder',
+    PensionerSeeder: 'PensionerSeeder',
+    PpoBillSeeder: 'PpoBillSeeder',
+    PpoReceiptSeeder: 'PpoReceiptSeeder',
+    PpoSanctionDetailsSeeder: 'PpoSanctionDetailsSeeder',
+    PpoStatusFlagSeeder: 'PpoStatusFlagSeeder',
+    PrimaryCategorySeeder: 'PrimaryCategorySeeder',
+    SubCategorySeeder: 'SubCategorySeeder',
+    TreasurySeeder: 'TreasurySeeder',
+} as const;
+export type SeederEnums = (typeof SeederEnums)[keyof typeof SeederEnums];

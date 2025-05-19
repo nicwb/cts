@@ -118,13 +118,14 @@ export class PensionConvertToFamilyPensionService extends BaseService {
         }
 
         let localVarPath = `/api/v1/convert-to-family-pension-list`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionerListItemDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,

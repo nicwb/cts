@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    Input,
+    Output,
+    EventEmitter,
+} from '@angular/core';
 import { Subscription, timer } from 'rxjs';
 
 @Component({
@@ -17,7 +24,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     timePercentage: number = 100;
     private timerSubscription?: Subscription;
 
-    constructor() { }
+    constructor() {}
 
     ngOnInit(): void {
         this.updateDisplay(this.tokenRemainingTime);

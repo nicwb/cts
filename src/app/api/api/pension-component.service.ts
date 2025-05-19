@@ -138,14 +138,15 @@ export class PensionComponentService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension-component`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionBreakupResponseDTOJsonAPIResponse>(
             'post',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: pensionBreakupEntryDTO,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
@@ -229,13 +230,14 @@ export class PensionComponentService extends BaseService {
         }
 
         let localVarPath = `/api/v1/pension-components`;
+        const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PensionBreakupResponseDTOTableResponseDTOJsonAPIResponse>(
             'get',
-            `${this.configuration.basePath}${localVarPath}`,
+            `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
+                ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
                 observe: observe,
                 reportProgress: reportProgress,
