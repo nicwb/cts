@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    goToPage() {
-        this.router.navigate(['']);
+    login() {
+        console.log('login');
     }
 }

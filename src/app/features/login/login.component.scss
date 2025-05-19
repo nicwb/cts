@@ -1,0 +1,123 @@
+// Theme colors
+$primary: #1976d2;
+$primary-light: #42a5f5;
+$accent: #e91e63;
+$text-dark: #212121;
+$text-muted: #616161;
+// $bg-light: #f5f7fa;
+$bg-light: #f0f8ff; // Very light blue
+$card-bg: #ffffff;
+
+// Base resets
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; background: #f0f8ff; /* Very light blue */ }
+
+// 1. FULL‑VIEW CONTAINER
+.page {
+  background: $bg-light;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vw; /* Approximate 2cm margin */
+}
+
+// 2. EXPANDED CARD
+.login-container {
+    position: relative;
+    z-index: 1;
+    width: 96vw;               // Make it very wide
+    max-width: 1400px;
+    height: auto;               // Let height adjust to content
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    border-radius: 3rem;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    background-color: $card-bg;
+}
+
+// Left side - Image section
+.image-section {
+    flex: 0.6;
+    background: $primary;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#logo {
+    max-width: 150px;
+    filter: brightness(0) invert(1);
+    margin-bottom: 1rem;
+}
+
+.illustration-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.illustration {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+// Right side - Content section
+.content-section {
+    flex: 0.4;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.status-code {
+    background: $accent;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    padding: 0.6rem 1.8rem;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 2.2rem;
+    color: $text-dark;
+    margin-bottom: 0.75rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: $text-muted;
+    margin-bottom: 2rem;
+}
+
+.login-button {
+    background: $primary-light;
+    color: #fff;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 6px 20px rgba(66, 165, 245, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px) rotate(1deg); }
+}

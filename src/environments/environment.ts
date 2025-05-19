@@ -7,7 +7,8 @@ export const environment = {
     production: process.env['NG_APP_ENV']?.includes('production') ?? false,
     BaseURL: process.env['NG_APP_API_BASE_URL'] + '/api/', //'http://api.docker.test/api/',
     OpenApiBaseURL: process.env['NG_APP_API_BASE_URL'], //'http://api.docker.test',
-    refreshTokenUrl: 'auth/RefreshToken'
+    refreshTokenUrl:'/authapi/api/Auth/refresh-token',
+    authUrl: '/auth/'
     //   BaseURL:'https://localhost:7249/api/',
 };
 

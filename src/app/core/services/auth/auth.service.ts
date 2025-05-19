@@ -118,6 +118,7 @@ export class AuthService {
         this.refreshTokenValidityInMinutes = minutes;
     }
 
+
     isRefreshTokenExpired(): boolean {
         return this.refreshTokenExpired();
     }
