@@ -1,33 +1,15 @@
-<div class="timer-container">
-  <div class="timer-outer-ring">
-    <div class="timer-inner-ring">
-      <svg class="timer-progress-svg" viewBox="0 0 200 200">
-        <circle class="timer-bg-circle" cx="100" cy="100" r="90" />
-        <circle class="timer-progress-circle timer-progress-outer" cx="100" cy="100" r="90"
-          [attr.stroke-dasharray]="outerDashArray" [attr.stroke-dashoffset]="outerDashOffset" />
-
-        <circle class="timer-bg-circle timer-bg-circle-inner" cx="100" cy="100" r="70" />
-        <circle class="timer-progress-circle timer-progress-inner" cx="100" cy="100" r="70"
-          [attr.stroke-dasharray]="innerDashArray" [attr.stroke-dashoffset]="innerDashOffset" />
-
-        <g class="timer-ticks">
-          <line *ngFor="let tick of majorTicks" [attr.x1]="100 + 80 * Math.cos(tick * Math.PI / 180)"
-            [attr.y1]="100 + 80 * Math.sin(tick * Math.PI / 180)" [attr.x2]="100 + 90 * Math.cos(tick * Math.PI / 180)"
-            [attr.y2]="100 + 90 * Math.sin(tick * Math.PI / 180)" class="timer-tick-major" />
-
-          <line *ngFor="let tick of minorTicks" [attr.x1]="100 + 85 * Math.cos(tick * Math.PI / 180)"
-            [attr.y1]="100 + 85 * Math.sin(tick * Math.PI / 180)" [attr.x2]="100 + 90 * Math.cos(tick * Math.PI / 180)"
-            [attr.y2]="100 + 90 * Math.sin(tick * Math.PI / 180)" class="timer-tick-minor" />
-        </g>
-      </svg>
-
-      <div class="timer-display">
-        <span class="timer-minutes">{{minutes}}</span>
-        <span class="timer-separator">:</span>
-        <span class="timer-seconds">{{seconds}}</span>
-      </div>
-
-      <div class="timer-glow"></div>
+<div class="session-timer" [ngClass]="{'timer-warning': timePercentage < 30, 'timer-expired': isTokenExpired}">
+  <div class="timer-circle">
+    <svg viewBox="0 0 36 36" class="circular-chart">
+      <path class="circle-bg" d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831" />
+      <path class="circle" [attr.stroke-dasharray]="timePercentage + ', 100'" d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831" />
+    </svg>
+    <div class="timer-display">
+      <span>{{minutes}}:{{seconds}}</span>
     </div>
   </div>
 </div>

@@ -1,155 +1,90 @@
-:host {
-  --timer-gradient-outer: linear-gradient(135deg, #b8e6c1 0%, #e6f5e9 100%);
-  --timer-accent: #00796b;
-  --timer-accent-light: #4db6ac;
-  --timer-text: #004d40;
+.session-timer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    border-radius: 50%;
+    min-width: 40px;
+    transition: all 0.3s ease;
 }
 
-//Container for the timer component
-.timer-container {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  margin: 10px;
-  filter: drop-shadow(0 3px 8px rgba(0, 100, 80, 0.3));
+.timer-circle {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-//Outer ring of the timer
-.timer-outer-ring {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: var(--timer-gradient-outer);
-  padding: 3px;
-  box-shadow:
-    0 0 15px rgba(0, 120, 100, 0.25),
-    inset 0 0 1px rgba(255, 255, 255, 0.3);
-}
-
-//Inner ring of the timer
-.timer-inner-ring {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, rgba(230, 245, 233, 0.9), rgba(240, 250, 245, 0.95));
-  box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.1),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.2);
-  overflow: hidden;
-}
-
-//SVG for the timer
-.timer-progress-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.timer-bg-circle {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.03);
-  stroke-width: 2;
-}
-
-.timer-bg-circle-inner {
-  stroke: rgba(0, 0, 0, 0.02);
-}
-
-.timer-progress-circle {
-  fill: none;
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1s linear;
-}
-
-.timer-progress-outer {
-  stroke: var(--timer-accent);
-  filter: drop-shadow(0 0 3px var(--timer-accent));
-}
-
-.timer-progress-inner {
-  stroke: var(--timer-accent-light);
-  filter: drop-shadow(0 0 2px var(--timer-accent-light));
-}
-
-//Ticks for the timer
-.timer-tick-major {
-  stroke: rgba(0, 0, 0, 0.5);
-  stroke-width: 1;
-}
-
-.timer-tick-minor {
-  stroke: rgba(0, 0, 0, 0.2);
-  stroke-width: 0.5;
-}
-
-//Ticks for the timer
 .timer-display {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  font-family: 'Orbitron', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  color: var(--timer-text);
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 4px;
-  box-shadow:
-    0 0 5px rgba(0, 0, 0, 0.1),
-    inset 0 0 1px rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(2px);
-  z-index: 10;
+    position: absolute;
+    font-size: 10px;
+    font-weight: 500;
+    color: #2e7d32; /* Default green color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
-.timer-minutes, .timer-seconds {
-  min-width: 20px;
-  text-align: center;
+.timer-warning .timer-display {
+    color: #ff9800; /* Orange warning color */
 }
 
-.timer-separator {
-  margin: 0 2px;
-  animation: pulse 1s infinite;
+.timer-expired .timer-display {
+    color: #d32f2f; /* Red expired color */
 }
 
-//Glow effect for the timer
-.timer-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(77, 182, 172, 0.15), transparent 70%);
-  pointer-events: none;
+.circular-chart {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 3;
+}
+
+.circle {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke: #2e7d32; /* Default green color */
+    animation: progress 1s ease-out forwards;
+}
+
+.timer-warning .circle {
+    stroke: #ff9800; /* Orange warning color */
+}
+
+.timer-expired .circle {
+    stroke: #d32f2f; /* Red expired color */
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
+
+/* Material-style pulse animation when timer is expiring */
+.timer-warning,
+.timer-expired {
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.5; }
-}
-
-//Responsive design for the timer
-@media (max-width: 480px) {
-  .timer-container { width: 70px; height: 70px; }
-  .timer-display   { font-size: 14px; }
-}
-
-@media (max-width: 320px) {
-  .timer-container { width: 60px; height: 60px; }
-  .timer-display   { font-size: 12px; }
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(255, 152, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+    }
 }

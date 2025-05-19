@@ -22,7 +22,7 @@ export class AuthGuard {
         | UrlTree {
         const router = inject(Router);
         const authService = inject(AuthService);
-        if (!authService.isLoggedin()) {
+        if (!authService.isLoggedin) {
             return true;
         }
         authService.userLogout();

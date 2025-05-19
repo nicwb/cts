@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
         private authService: AuthService,
         private authTokenService: AuthTokenService,
         private ngxRolesService: NgxRolesService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.authService.clearAll();
@@ -33,5 +33,9 @@ export class LoginComponent implements OnInit {
             });
             this.router.navigate(['/']);
         }
+    }
+
+    goToPage() {
+        this.router.navigate(['']);
     }
 }

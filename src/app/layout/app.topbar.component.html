@@ -12,13 +12,18 @@
             <span> | CTS</span>
             <div class="mobile-timer-container">
                 <!-- Timer will appear here in mobile view -->
-                <app-timer [defaultMinutes]="30" (timeExpired)="onTimeExpired()"></app-timer>
+                <app-timer [tokenRemainingTime]="tokenRemainingTime()" [isTokenExpired]="isTokenExpired()"
+                    (timeExpired)="onTimeExpired()">
+                </app-timer>
             </div>
         </a>
         <!-- Timer will appear here in desktop view -->
-        ` <div class="desktop-timer-container">
-            <app-timer [defaultMinutes]="30" (timeExpired)="onTimeExpired()"></app-timer>
+        <div class="desktop-timer-container">
+            <app-timer [tokenRemainingTime]="tokenRemainingTime()" [isTokenExpired]="isTokenExpired()"
+                (timeExpired)="onTimeExpired()">
+            </app-timer>
         </div>
+        <span class="text profile-details">CTS {{appVersion}}</span>
 
         <button #topbarmenubutton class="p-link layout-topbar-menu-button layout-topbar-button"
             (click)="layoutService.showProfileSidebar()">

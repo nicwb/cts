@@ -1,10 +1,11 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, computed, isDevMode, ViewChild, OnInit } from '@angular/core';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { AuthService } from '../core/services/auth/auth.service';
 import { IUserDetails } from '../core/models/jwt-token';
 import { Router } from '@angular/router';
 import { ToastService } from '../core/services/toast.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-topbar',
@@ -15,12 +16,25 @@ export class AppTopBarComponent implements OnInit {
     timeExpired = false;
     userDetais: IUserDetails | undefined;
     items!: MenuItem[];
+    readonly clientVersion = import.meta.env.NG_APP_VERSION;
+    appVersion = environment.appVersion;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;
 
     @ViewChild('topbarmenu') menu!: ElementRef;
+    tokenRemainingTime = computed(() => this.authService.remainingTime());
+    isTokenExpired(): boolean {
+        return this.authService.isTokenExpired();
+    }
+    convertSeconds(seconds: number) {
+        if (seconds <= 0) return '--:--';
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds}`;
+    }
+
 
     constructor(
         public layoutService: LayoutService,
@@ -32,7 +46,10 @@ export class AppTopBarComponent implements OnInit {
         this.userDetais = authService.getUserDetails();
     }
     async ngOnInit(): Promise<void> {
-        const isLoggedIn = this.authService.isLoggedin();
+        if (isDevMode()) {
+            this.appVersion += '-dev';
+        }
+        const isLoggedIn = this.authService.isLoggedin;
         if (!isLoggedIn) {
             await this.router.navigate(['/static-login']);
         }
@@ -52,13 +69,12 @@ export class AppTopBarComponent implements OnInit {
             accept: () => {
                 this.logOut();
             },
-            reject: () => {},
+            reject: () => { },
         });
     }
 
-    async onTimeExpired(): Promise<void> {
-        this.timeExpired = true;
-        this.toastService.showError('Access token expired!');
-        await this.router.navigate(['/static-login']);
+    onTimeExpired(): void {
+        this.authService.logout();
     }
+
 }
