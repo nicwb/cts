@@ -42,7 +42,6 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     declarations: [
         AppComponent,
         ServerDownComponent,
-        LoginComponent,
         NotFoundComponent,
         StaticLoginComponent,
         PdfViewerComponent,
@@ -61,6 +60,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
         BrowserModule,
         FormsModule,
         ReactiveFormsModule,
+        LoginComponent,
         // PensionerStatusModule
     ],
     providers: [

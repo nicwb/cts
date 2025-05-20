@@ -26,23 +26,18 @@ export class localStorageService {
         localStorage.removeItem(key);
     }
     static set(key: string, value: any) {
-        //Fix
-        //key = this.crypto.set(environment.AesKey, key);
-        //Fix
-        //localStorage.setItem(key, this.crypto.set(environment.AesKey, value));
+        // key = this.crypto.set(environment.AesKey, key);
+        // localStorage.setItem(key, this.crypto.set(environment.AesKey, value));
         // console.log(localStorage.setItem(key, this.crypto.set(environment.AesKey, value)));
     }
     static get(key: string): any {
-        //Fix
-        //key = this.crypto.set(environment.AesKey, key);
-        // console.log(localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key)));
-        // const ss = localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key))
-        //Fix
-        //return localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key));
+        // key = this.crypto.set(environment.AesKey, key);
+        // // console.log(localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key)));
+        // // const ss = localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key))
+        // return localStorage.getItem(key) == null ? null : this.crypto.get(environment.AesKey, localStorage.getItem(key));
     }
     static del(key: string) {
-        //Fix
-        //key = this.crypto.set(environment.AesKey, key);
+        // key = this.crypto.set(environment.AesKey, key);
         localStorage.removeItem(key);
     }
 }

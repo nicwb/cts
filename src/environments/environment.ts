@@ -8,7 +8,9 @@ export const environment = {
     BaseURL: process.env['NG_APP_API_BASE_URL'] + '/api/', //'http://api.docker.test/api/',
     OpenApiBaseURL: process.env['NG_APP_API_BASE_URL'], //'http://api.docker.test',
     refreshTokenUrl: '/authapi/api/Auth/refresh-token',
-    authUrl: '/auth/',
+    authUrl: 'http://localhost:4203/static-login',
+    accessTokenKey: 'IFMS3-CTS-jwtToken',
+    refeshTokenKey: 'IFMS3-CTS-jwtRefreshToken',
     //   BaseURL:'https://localhost:7249/api/',
 };
 

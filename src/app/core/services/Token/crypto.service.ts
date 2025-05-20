@@ -42,10 +42,9 @@ export class CryptoService {
     }
 
     encrytedData(decrytedText: string) {
-        //Fix
-        //const key = CryptoJS.enc.Utf8.parse(environment.AesKey);
-        //const iv = CryptoJS.enc.Utf8.parse(environment.AesIV);
-        const text = decrytedText.toString();
+        // const key = CryptoJS.enc.Utf8.parse(environment.AesKey);
+        // const iv = CryptoJS.enc.Utf8.parse(environment.AesIV);
+        // const text = decrytedText.toString();
         // const encryptedMessage = CryptoJS.AES.encrypt(text, key, {
         // 	keySize: 128 / 8,
         // 	iv,
