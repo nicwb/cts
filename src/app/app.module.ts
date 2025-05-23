@@ -37,6 +37,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { PdfViewerComponent } from './core/services/pdf-viewer/pdf-viewer.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 @NgModule({
     declarations: [
@@ -44,6 +45,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
         ServerDownComponent,
         NotFoundComponent,
         StaticLoginComponent,
+        DashboardComponent,
         PdfViewerComponent,
     ],
     imports: [
@@ -80,8 +82,8 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
                             if (roles != null) {
                                 roles.forEach((role) => {
                                     rolesService.addRoleWithPermissions(
-                                        role.Name,
-                                        role.Permissions
+                                        role.name,
+                                        role.permissions
                                     );
                                 });
                             }

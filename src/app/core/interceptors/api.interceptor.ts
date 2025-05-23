@@ -69,16 +69,26 @@ export class ApiInterceptor implements HttpInterceptor {
         refreshToken: string,
         refreshTokenUrl: string
     ): Observable<{ accessToken: string; refreshToken: string }> {
+        console.log('makeRefreshTokenRequest called');
+        console.log('refreshToken:', refreshToken);
+        console.log('refreshTokenUrl:', refreshTokenUrl);
+
         return from(
             fetch(refreshTokenUrl, {
                 headers: { Authorization: `Bearer ${refreshToken}` },
-            }).then((response) => response.json())
+            }).then((response) => {
+                console.log('response:', response);
+                return response.json();
+            })
         ).pipe(
             switchMap((response) => {
+                console.log('response.json():', response);
+
                 if (
                     response.apiResponseStatus === 1 &&
                     response.result != null
                 ) {
+                    console.log('accessToken and refreshToken received');
                     this.authService.setAccessToken(
                         response.result.accessToken
                     );
@@ -89,6 +99,9 @@ export class ApiInterceptor implements HttpInterceptor {
                         accessToken: string;
                         refreshToken: string;
                     }>((observer) => {
+                        console.log(
+                            'emitting new accessToken and refreshToken'
+                        );
                         observer.next({
                             accessToken: response.result.accessToken,
                             refreshToken: response.result.refreshToken,
@@ -96,11 +109,15 @@ export class ApiInterceptor implements HttpInterceptor {
                         observer.complete();
                     });
                 } else {
+                    console.log('accessToken and refreshToken not received');
                     this.authService.logout();
                     return new Observable<{
                         accessToken: string;
                         refreshToken: string;
                     }>((observer) => {
+                        console.log(
+                            'emitting empty accessToken and refreshToken'
+                        );
                         observer.next({ accessToken: '', refreshToken: '' });
                         observer.complete();
                     });
@@ -120,6 +137,10 @@ export class ApiInterceptor implements HttpInterceptor {
                     const tokenTimeRemaining = parseInt(
                         headers.get('Remaining-Time') || '300'
                     );
+                    console.log(
+                        `Remaining token time: ${tokenTimeRemaining} seconds`
+                    );
+
                     this.authService.remainingTime.set(tokenTimeRemaining);
                     if (tokenTimeRemaining > 0) {
                         this.authService.startTokenTimer(tokenTimeRemaining);

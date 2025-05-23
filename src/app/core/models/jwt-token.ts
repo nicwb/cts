@@ -1,5 +1,9 @@
 export interface IJwtToken {
-    application: string;
+    application: any;
+    role: string;
+    permissions: string[];
+    level: string;
+    scope: string;
     nameid: string;
     name: string;
     nbf: number;
@@ -16,27 +20,26 @@ export interface IJwtDecodedToken {
     iat: number;
 }
 interface Level {
-    Id: number;
-    Name: string;
-    Scope: string[];
+    id: number;
+    name: string;
+    scope: string;
 }
 
 export interface Role {
-    Id: number;
-    Name: string;
-    Permissions: string[];
+    name: string;
+    permissions: string[];
 }
 
 export interface Application {
-    Id: number;
-    Name: string;
-    Levels: Level[];
-    Roles: Role[];
+    id: number;
+    name: string;
+    role: Role;
 }
 
 export interface IUserDetails {
-    Id: number;
-    Name: string;
-    Role: string;
-    Level: Level;
+    id: number;
+    name: string;
+    role: string;
+    level: string;
+    scope: string;
 }

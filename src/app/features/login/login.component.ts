@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxRolesService } from 'ngx-permissions';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthTokenService } from 'src/app/core/services/auth/auth-token.service';
+import {
+    HttpClient,
+    HttpClientModule,
+    HttpHeaders,
+} from '@angular/common/http';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { PensionAuthService } from 'src/app/api';
-import { catchError, forkJoin, of } from 'rxjs';
+import { firstValueFrom, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-login',
@@ -22,55 +25,71 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private authTokenService: AuthTokenService,
-        private pensionAuthService: PensionAuthService,
+        private http: HttpClient,
         private ngxRolesService: NgxRolesService
     ) {}
 
     ngOnInit(): void {
         this.token = localStorage.getItem(environment.accessTokenKey);
-
         if (this.token) {
-            this.pensionAuthService
-                .login()
-                .pipe(
-                    catchError((error) => {
-                        this.router.navigate(['login']);
-                        return of(null);
+            this.ssoLogin();
+        } else {
+            this.authService.logout();
+        }
+    }
+
+    async ssoLogin() {
+        const httpOptions = {
+            headers: new HttpHeaders({
+                Authorization: 'Bearer ' + this.token,
+            }),
+        };
+        const url = environment.BaseURL + environment.version + '/Auth/Login';
+        try {
+            const response = await firstValueFrom(
+                this.http.get<{ status: any }>(url, httpOptions)
+            );
+            if (response.status === 'ValidToken') {
+                this.authService.loadJwt(this.token);
+                const roles = this.authService.getRolesWithPermissions(
+                    this.token
+                );
+                if (roles.name && roles.permissions) {
+                    this.ngxRolesService.addRoleWithPermissions(
+                        roles.name,
+                        roles.permissions
+                    );
+                } else {
+                    alert('Roles, Permission structure is invalid.');
+                    return;
+                }
+                this.router.navigate(['dashboard']);
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Token',
+            });
+        }
+
+        await this.getApiVersion();
+    }
+
+    async getApiVersion() {
+        const request = this.http.get<{ Version: string }>(
+            environment.OpenApiBaseURL + '/get-version'
+        );
+
+        try {
+            const response = await firstValueFrom(
+                request.pipe(
+                    tap((res) => {
+                        this.authService.setApiVersion(res.Version);
                     })
                 )
-                .subscribe((response) => {
-                    if (response && response?.status === 'ValidToken') {
-                        this.authTokenService.saveToken(this.token);
-                        this.ngxRolesService.flushRoles();
-
-                        forkJoin({
-                            roles: this.pensionAuthService.getRoles(),
-                            permissions:
-                                this.pensionAuthService.getPermissions(),
-                        }).subscribe((results) => {
-                            const roleName = results.roles?.result?.roleName;
-                            const permissions =
-                                results.permissions?.result?.permissionNames ||
-                                [];
-
-                            if (roleName) {
-                                this.ngxRolesService.addRoleWithPermissions(
-                                    roleName,
-                                    permissions
-                                );
-                            }
-
-                            this.router.navigate(['pension-process'], {
-                                state: { showLoginSuccess: true },
-                            });
-                        });
-                    } else {
-                        this.router.navigate(['login']);
-                    }
-                });
-        } else {
-            this.router.navigate(['login']);
+            );
+        } catch (error) {
+            console.error('Error:', error);
         }
     }
 

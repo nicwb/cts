@@ -57,7 +57,9 @@ export class AppTopBarComponent implements OnInit {
         }
         const isLoggedIn = this.authService.isLoggedin;
         if (!isLoggedIn) {
-            await this.router.navigate(['/static-login']);
+            await this.router.navigate(['/login']);
+        } else {
+            this.authService.initializeTokenTimer();
         }
     }
     logOut() {

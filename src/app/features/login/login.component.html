@@ -1,29 +1,26 @@
 <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
     <div class="flex flex-column align-items-center justify-content-center">
-        <div class="page">
+        <!-- <img src="assets/demo/images/notfound/logo-blue.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0"> -->
+        <img src="assets/layout/images/logo_mini.png" alt="ifms logo" class="mb-5 w-6rem flex-shrink-0">
+        <div
+            style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, rgba(33, 150, 243, 0.4) 10%, rgba(33, 150, 243, 0) 30%);">
             <div class="w-full surface-card py-8 px-5 sm:px-8 flex flex-column align-items-center"
                 style="border-radius:53px">
-                <div class="login-container">
-                    <div class="image-section" style="padding-top: 4rem;">
-                        <img src="assets/layout/images/logo_mini.png" alt="ifms logo" id="logo"
-                            style="margin-bottom: 1rem;">
-                        <div class="illustration-container">
-                            <img src="assets/layout/images/common/logout.jpg" alt="Illustration" class="illustration"
-                                style="max-height: 300px;">
-                        </div>
-                    </div>
-
-                    <div class="content-section" style="padding: 3rem;">
-                        <span class="status-code">401</span>
-                        <h1 class="title" style="font-size: 2.5rem;">You are not logged in</h1>
-                        <p class="subtitle" style="font-size: 1.2rem; margin-bottom: 2.5rem;">Please log in to access
-                            features.</p>
-                        <button class="login-button" (click)="login()" style="padding: 1rem 3rem; font-size: 1.1rem;">
-                            <span class="login-icon">→</span>
-                            Login
-                        </button>
-                    </div>
-                </div>
+                <span class="bg-white text-pink-500 font-bold text-3xl inline-block px-3">401</span>
+                <h1 class="text-900 font-bold text-3xl mb-2">You are not logged in.</h1>
+                <div class="text-600 mb-5">Please log in to access features.</div>
+                <img src="assets/layout/images/common/logout.jpg" alt="Logo" height="300" />
+                <!-- <button type="button" pbutton="" pripple="" label="Go Back" icon="pi pi-arrow-left" class="p-element p-ripple p-button-text mr-2 p-button p-component">
+                        <span class="p-button-icon p-button-icon-left pi pi-arrow-left" aria-hidden="true"></span>
+                        <span class="p-button-label">Go Back</span>
+                        <span class="p-ink"></span>
+                    </button> -->
+                <button type="button" pbutton="" pripple="" label="Go to Dashboard" icon="pi pi-sign-in"
+                    class="p-element p-ripple p-button p-component" (click)="login()">
+                    <span class="p-button-icon p-button-icon-left pi pi-sign-in" aria-hidden="true"></span>
+                    <span class="p-button-label">Login</span>
+                    <span class="p-ink"></span>
+                </button>
             </div>
         </div>
     </div>

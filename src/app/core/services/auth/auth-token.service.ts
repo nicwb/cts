@@ -48,9 +48,9 @@ export class AuthTokenService {
         const transformedRoles: IRolesPermissions = {};
         const roles = this.getRolesWithPermissions();
         roles.forEach((role) => {
-            transformedRoles[role.Name] = {
-                name: role.Name,
-                validationFunction: role.Permissions,
+            transformedRoles[role.name] = {
+                name: role.name,
+                validationFunction: role.permissions,
             };
         });
 

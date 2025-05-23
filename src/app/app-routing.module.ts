@@ -7,6 +7,7 @@ import { AuthGuard } from './core/guard/auth.guard';
 import { NgxPermissionsGuard } from 'ngx-permissions';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { StaticLoginComponent } from './features/static-login/static-login.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,11 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                     path: '',
                     component: AppLayoutComponent,
                     children: [
+                        {
+                            path: '',
+                            redirectTo: 'dashboard',
+                            pathMatch: 'full',
+                        },
                         {
                             path: 'master',
                             loadChildren: () =>
@@ -42,6 +48,11 @@ import { StaticLoginComponent } from './features/static-login/static-login.compo
                         },
                     ],
                     data: { breadcrumb: 'CTS AppLayoutComponent' },
+                },
+                {
+                    path: 'dashboard',
+                    component: DashboardComponent,
+                    data: { breadcrumb: 'DashboardComponent' },
                 },
                 {
                     path: 'login',

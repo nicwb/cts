@@ -2,14 +2,13 @@ import { Injectable, isDevMode, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthTokenService } from './auth-token.service';
 import {
-    Application,
     IJwtDecodedToken,
     IJwtToken,
     IUserDetails,
     Role,
 } from '../../models/jwt-token';
 import { NgxPermissionsService } from 'ngx-permissions';
-import { localStorageService } from '../Token/localStorage.service';
+import { LocalStorageService } from '../Token/localStorage.service';
 import {
     catchError,
     EMPTY,
@@ -24,6 +23,7 @@ import { NotificationService } from '../notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import Swal from 'sweetalert2';
 
 interface AuthObject {
     role: string;
@@ -59,9 +59,9 @@ export class AuthService {
     ) {
         if (this.tokenTimer && !this.tokenTimer.closed) {
             this.tokenTimer.unsubscribe();
-            // console.log('resetTokenTimer');
+            console.log('resetTokenTimer');
         } else {
-            // console.log('startTokenTimer');
+            console.log('startTokenTimer');
         }
         this.countDownTimer(this.remainingTime());
         this.tokenTimer = timer(forSeconds * 1000).subscribe(() => {
@@ -73,7 +73,7 @@ export class AuthService {
     stopTokenTimer() {
         if (this.tokenTimer) {
             this.tokenTimer.unsubscribe();
-            // console.log('stopTokenTimer');
+            console.log('stopTokenTimer');
         }
         if (this.counter && !this.counter.closed) {
             this.counter.unsubscribe();
@@ -100,6 +100,34 @@ export class AuthService {
                 this.stopTokenTimer();
             }
         });
+    }
+
+    initializeTokenTimer(): void {
+        const token = this.getAccessToken();
+        if (token && this.isLoggedin) {
+            try {
+                const decodedToken = this.parseJwt(token);
+                if (decodedToken && decodedToken.exp) {
+                    const currentTime = Math.floor(Date.now() / 1000);
+                    const remainingSeconds = Math.max(
+                        0,
+                        decodedToken.exp - currentTime
+                    );
+
+                    if (remainingSeconds > 0) {
+                        this.remainingTime.set(remainingSeconds);
+                        this.startTokenTimer(remainingSeconds);
+                    } else {
+                        this.setTokenExpired();
+                    }
+                }
+            } catch (error) {
+                console.error('Error initializing timer:', error);
+                // Fallback to default 5 minutes
+                this.remainingTime.set(300);
+                this.startTokenTimer(300);
+            }
+        }
     }
 
     setApiVersion(version: string) {
@@ -138,7 +166,7 @@ export class AuthService {
         if (this.accessToken() == '') {
             this.accessToken.set(
                 localStorage.getItem('accessToken') ??
-                    localStorageService.get('auth_token')
+                    this.localStorageService.get('auth_token')
             );
         }
         return this.accessToken();
@@ -149,7 +177,7 @@ export class AuthService {
         localStorage.setItem('accessToken', token);
         this.accessTokenExpired.set(false);
         this.loadJwt(token);
-        // console.log("setAccessToken: " + this.getAccessToken());
+        console.log('setAccessToken: ' + this.getAccessToken());
     }
 
     getRefreshToken(): string {
@@ -169,7 +197,8 @@ export class AuthService {
         private notify: NotificationService,
         private http: HttpClient,
         private authTokenService: AuthTokenService,
-        private ngxPermissionsService: NgxPermissionsService
+        private ngxPermissionsService: NgxPermissionsService,
+        private localStorageService: LocalStorageService
     ) {}
     jwtHelper = new JwtHelperService();
     jwtToken!: IJwtToken | null;
@@ -178,19 +207,20 @@ export class AuthService {
     };
 
     get user() {
-        const decodedToken = localStorageService.get('decoded_jwt_payload');
+        const decodedToken = this.localStorageService.get(
+            'decoded_jwt_payload'
+        );
         if (decodedToken) {
-            // console.log(JSON.parse(localStorageService.get('decoded_jwt_payload'))   +"gyugfuyjuctfiug");
-            // console.log(localStorageService.get('decoded_jwt_payload'));
-            // return localStorageService.get('decoded_jwt_payload')
-            return JSON.parse(localStorageService.get('decoded_jwt_payload'));
+            return JSON.parse(
+                this.localStorageService.get('decoded_jwt_payload')
+            );
         } else {
             this.logout();
         }
     }
 
     get jwt() {
-        return localStorageService.get('auth_token');
+        return this.localStorageService.get('auth_token');
     }
 
     get parsedJwt() {
@@ -204,15 +234,9 @@ export class AuthService {
     getRolesWithPermissions(token: string): Role {
         let decodedToken: any = this.parseJwt(token);
         const currentTime = Math.floor(Date.now() / 1000);
-        // this line is required for testing as the token validation time is not valid time.
-        // so we aer adding 60 seconds to the token expiration time to bypass this validation
         isDevMode() &&
             decodedToken &&
             (decodedToken.exp = Math.floor(Date.now() / 1000) + 60000);
-        // console.log(decodedToken?.exp, currentTime);
-        // console.log(decodedToken);
-        // console.log(typeof(decodedToken?.permissions));
-        // console.log(decodedToken?.permissions);
         if (decodedToken && this.getExpiration(decodedToken) < currentTime) {
             this.logout();
             return {} as Role;
@@ -220,14 +244,11 @@ export class AuthService {
         let role: Role;
         if (token != null) {
             role = {
-                Id: decodedToken.id,
-                Name: decodedToken.role,
-                Permissions: JSON.parse(decodedToken.permissions),
+                name: decodedToken.role,
+                permissions: JSON.parse(decodedToken.permissions),
             };
             return role;
         }
-        //console.log('no token');
-
         return {} as Role;
     }
 
@@ -245,17 +266,9 @@ export class AuthService {
     }
 
     loadRolesAndPermissions(): Observable<Role> {
-        const token = localStorageService.get('auth_token');
+        const token = this.localStorageService.get('auth_token');
         return of(this.getRolesWithPermissions(token));
     }
-
-    //   validateToken(token: string): boolean {
-    //     const decodedToken = this.jwtHelper.decodeToken(token);
-    //     if (decodedToken.exp < Date.now() / 1000 && environment.production!=false) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
 
     userLogout() {
         this.clearAll();
@@ -273,14 +286,11 @@ export class AuthService {
 
         if (decodedToken != null) {
             userDetails = {
-                Id: decodedToken.Id,
-                Name: decodedToken.Name,
-                Role: decodedToken.Roles,
-                Level: {
-                    Id: decodedToken.LevelId,
-                    Name: decodedToken.Name,
-                    Scope: decodedToken.Scope,
-                },
+                id: decodedToken.id,
+                name: decodedToken.Name,
+                role: decodedToken.Roles,
+                level: decodedToken.Level,
+                scope: decodedToken.Scope,
             };
         }
 
@@ -289,30 +299,29 @@ export class AuthService {
     get isLoggedin(): boolean {
         if (
             !(
-                JSON.parse(localStorageService.get('iL') || 'false') &&
-                localStorageService.get('auth_token') !== null &&
-                localStorageService.get('decoded_jwt_payload') !== null
+                JSON.parse(this.localStorageService.get('iL') || 'false') &&
+                this.localStorageService.get('auth_token') !== null &&
+                this.localStorageService.get('decoded_jwt_payload') !== null
             )
         ) {
             return false;
         }
         const authObj = JSON.parse(
-            localStorageService.get('decoded_jwt_payload')
+            this.localStorageService.get('decoded_jwt_payload')
         );
         const currentTime = Math.floor(Date.now() / 1000);
-        // return this.getExpiration(authObj) < currentTime; // testing
-        return this.getExpiration(authObj) > currentTime; // original
+        return this.getExpiration(authObj) > currentTime;
     }
 
     set isLoggedin(v: boolean) {
-        localStorageService.set('iL', v);
+        this.localStorageService.set('iL', v);
     }
 
     loadJwt(token: string): boolean {
         const parsedToken = this.parseJwt(token);
         if (parsedToken) {
-            localStorageService.set('auth_token', token);
-            localStorageService.set(
+            this.localStorageService.set('auth_token', token);
+            this.localStorageService.set(
                 'decoded_jwt_payload',
                 JSON.stringify(parsedToken)
             );
@@ -348,16 +357,15 @@ export class AuthService {
                     })
                 )
         );
-        // alert(environment.authUrl);
     }
 
     invalidateSession() {
         this.ngxPermissionsService.flushPermissions();
-        localStorageService.del('decoded_jwt_payload');
-        localStorageService.del('auth_token');
-        localStorageService.del('iL');
-        localStorageService.del('th');
-        localStorageService.del('sidebar_drawer');
+        this.localStorageService.del('decoded_jwt_payload');
+        this.localStorageService.del('auth_token');
+        this.localStorageService.del('iL');
+        this.localStorageService.del('th');
+        this.localStorageService.del('sidebar_drawer');
         window.open(environment.BaseURL, '_self');
     }
 }

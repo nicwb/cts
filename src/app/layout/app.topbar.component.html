@@ -34,14 +34,14 @@
                     layoutService.state.profileSidebarVisible
             }">
             <div class="layout-topbar-user-details">
-                <p-avatar label="{{userDetais?.Name | firstLetter}}" styleClass="mr-2" size="large"
+                <p-avatar label="{{userDetais?.name | firstLetter}}" styleClass="mr-2" size="large"
                     [style]="{ 'background-color': '#2196F3', color: '#ffffff' }" shape="circle"></p-avatar>
                 <div class="flex flex-column flex-grow-1">
-                    <div class="flex font-semibold">{{userDetais?.Name}}</div>
-                    <div class="flex text-cyan-500 font-medium text-sm">{{userDetais?.Role|uppercase }}</div>
+                    <div class="flex font-semibold">{{userDetais?.name}}</div>
+                    <div class="flex text-cyan-500 font-medium text-sm">{{userDetais?.role|uppercase }}</div>
                 </div>
             </div>
-            <a class="p-link layout-topbar-button" routerLink="/static-login">
+            <a class="p-link layout-topbar-button" routerLink="/login">
                 <i class="pi pi-sign-in"></i>
                 <span>Sign</span>
             </a>
@@ -65,7 +65,7 @@
             </div>
         </ng-template>
     </p-toast>
-    <a class="p-link layout-topbar-button" routerLink="/static-login">
+    <a class="p-link layout-topbar-button" routerLink="/login">
         <i class="pi pi-sign-in"></i>
         <span>Sign in</span>
     </a>
